@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Giovanni Perillo">
+  <meta name="description" content="Trabalho de Conclusão de Curso da Universidade Federal do ABC sobre acessibilidade digital.">
+  <title>Trabalho de Conclusão de Curso — UFABC</title>
+</head>
+<body>
+  <header>
+    <h1>Como o Desenvolvimento Web assistido por Inteligência Artificial Generativa afeta negativamente a acessibilidade digital</h1>
+    <p>Trabalho de Conclusão de Curso pela Universidade Federal do ABC (UFABC)</p>
+    <p>Autor: Giovanni Perillo</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="descricao">
+      <h2 id="descricao">Descrição do trabalho</h2>
+      <p>
+        Esta pesquisa mostra a necessidade de compreender, mensurar e analisar os impactos negativos que o desenvolvimento assistido por Inteligência Artificial
+        Generativa pode exercer sobre a acessibilidade digital, identificando limitações, riscos e padrões recorrentes de falhas. Esse estudo também se justifica
+        pela crescente dependência dessas ferramentas na indústria de software e pela importância social da inclusão digital, considerando que barreiras de
+        acessibilidade podem excluir usuários do acesso a serviços essenciais, educação, trabalho e informação.
+      </p>
+    </section>
+
+    <section aria-labelledby="acessibilidade">
+      <h2 id="acessibilidade">O que é acessibilidade digital?</h2>
+      <p>
+        Acessibilidade Digital é a eliminação de barreiras na Web. O conceito pressupõe que os sites e portais sejam projetados de modo que todas as pessoas
+        possam perceber, entender, navegar e interagir de maneira efetiva com as páginas.
+        <a href="https://mwpt.com.br/wp-content/uploads/2025/04/ABNT-NBR-17225-Acessibilidade-Digital.pdf">ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS</a>
+      </p>
+    </section>
+
+
+    <section aria-labelledby="mensurando">
+      <h2 id="mensurar">Como medir a acessibilidade?</h2>
+      <p>
+        Os testes de acessibilidade referem-se a atividades que podem ser executadas por um engenheiro usando procedimentos de teste padrão para verificar se os
+        requisitos técnicos de acessibilidade foram atendidos e identificar defeitos de acessibilidade. A avaliação de acessibilidade refere-se a atividades
+        conduzidas com foco em, e geralmente envolvendo diretamente, usuários com deficiências para estabelecer se os requisitos de usabilidade foram atendidos.
+      </p>
+      <p>
+        Dentre as principais ferramentas de uso livre disponíveis no mercado, destacam-se:
+        <ul>
+            <li><a href="https://wave.webaim.org/">WAVE (Web Accessibility Evaluation Tool)</a>:
+                ferramenta desenvolvida pela WebAIM para ajudar a identificar barreiras de acessibilidade em páginas da web e orientar sua correção.</li>
+            <li><a href="https://developer.chrome.com/docs/lighthouse?hl=pt-br">Google Lighthouse</a>:
+                é uma ferramenta de código aberto que avalia automaticamente a qualidade de páginas da web e gera um relatório com resultados e recomendações de melhoria.
+            </li>
+            <li><a href="https://www.deque.com/axe/devtools/web-accessibility/">axe DevTools</a>:
+                é um conjunto de ferramentas da Deque para testar a acessibilidade de sites e aplicativos. Sua extensão de navegador permite analisar uma página e
+                encontrar problemas comuns, indicando onde estão, qual é seu impacto e oferecendo orientações para corrigi-los.</li>
+            <li><a href="https://asesweb.governoeletronico.gov.br/">ASES Web (Avaliador e Simulador de Acessibilidade em Sítios)</a>:
+                é uma ferramenta gratuita do governo brasileiro que analisa páginas e sites com base nas recomendações do eMAG, o Modelo de Acessibilidade em
+                Governo Eletrônico</li>
+        </ul>
+      </p>
+      <p>
+        "Ferramentas de teste automatizado podem encontrar de 30% a 60% das questões de acessibilidade." Por conta dessas limitações, classificar um site como
+        completamente acessível exige a realização de testes manuais e validações práticas.
+      </p>
+    </section>
+
+
+    <section aria-labelledby="mensurando">
+      <h2 id="mensurar">Testes realizados</h2>
+      <p>
+        Foram elaborados diversos prompts para a Inteligência Artificial tentar desenvolver um site.
+      </p>
+      <ol>
+        <li>
+            <p>Gere uma pagina da web de um estudio de fotografia, com um formulário de e-mail para que o cliente entre em contato conosco.</p>
+            <ul>
+                <li><a href="Prompt1/chatGPT.html">ChatGPT</a></li>
+                <li><a href="Prompt1/Claude.html">Claude</a></li>
+                <li><a href="Prompt1/Copilot.html">Microsoft Copilot</a></li>
+                <li><a href="Prompt1/Gemini.html">Gemini</a></li>
+            </ul>
+        </li>
+        <li>
+            <p>Papel: Você é um desenvolvedor front-end sênior especialista em landing pages de alta conversão.<br/>
+                Tarefa: Crie o código completo para uma página de contato com um formulario de envio de e-mail.<br/>
+                Contexto: A empresa oferece soluções de fotografia para pequenas empresas. O visual deve ser moderno, dinâmico e futurista.<br/>
+                Formato: Retorne o código em um único bloco contendo HTML5 e estilização CSS integrada no cabeçalho.<br/>
+                Restrições: Utilize um esquema de cores escuro (dark mode com tons de azul e neon), inclua botões com efeitos visuais ao passar o mouse (hover) e
+                um formulário de captura rápida. Não adicione explicações textuais fora do bloco de código.</p>
+            <ul>
+                <li><a href="Prompt2/chatGPT.html">ChatGPT</a></li>
+                <li><a href="Prompt2/Claude.html">Claude</a></li>
+                <li><a href="Prompt2/Copilot.html">Microsoft Copilot</a></li>
+                <li><a href="Prompt2/Gemini.html">Gemini</a></li>
+            </ul>
+        </li>
+        <li>
+            <p>Gere o código de uma página web institucional no formato single-page para um estúdio de fotografia. A página deve conter uma barra de navegação
+                fixa no topo, uma galeria de fotos em grade flexível (*Flexbox/Grid*), uma seção 'Sobre Nós' e um formulário de contato para enviar e-mail.
+                Forneça apenas o código HTML5 e CSS integrado dentro da tag.</p>
+            <ul>
+                <li><a href="Prompt3/chatGPT.html">ChatGPT</a></li>
+                <li><a href="Prompt3/Claude.html">Claude</a></li>
+                <li><a href="Prompt3/Copilot.html">Microsoft Copilot</a></li>
+                <li><a href="Prompt3/Gemini.html">Gemini</a></li>
+            </ul>
+        </li>
+        <li>
+            <p>Atue como um programador web. Primeiro, apresente a estrutura HTML5 da página principal de um estúdio de fotografia, contendo cabeçalho com ícone
+                de carrinho de compras, grade de produtos em destaque, um formulário de contato para enviar e-mail e rodapé. Em seguida, forneça o CSS para
+                estilizar os cartões de produtos com sombras e animações, mantendo a resposta estritamente limitada ao código funcional.</p>
+            <ul>
+                <li><a href="Prompt4/chatGPT.html">ChatGPT</a></li>
+                <li><a href="Prompt4/Claude.html">Claude</a></li>
+                <li><a href="Prompt4/Copilot.html">Microsoft Copilot</a></li>
+                <li><a href="Prompt4/Gemini.html">Gemini</a></li>
+            </ul>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <p>Trabalho acadêmico — Universidade Federal do ABC</p>
+  </footer>
+</body>
+</html>

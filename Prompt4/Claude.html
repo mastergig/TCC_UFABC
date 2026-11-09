@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estúdio de Fotografia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="cabecalho">
+    <a href="#inicio" class="logo">Estúdio<span>Lens</span></a>
+    <nav class="menu" aria-label="Navegação principal">
+      <a href="#produtos">Produtos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a href="#carrinho" class="carrinho" aria-label="Abrir carrinho de compras">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+      </svg>
+      <span class="carrinho-contador" id="contador">0</span>
+    </a>
+  </header>
+
+  <main id="inicio">
+
+    <section class="destaque" id="produtos">
+      <h2>Produtos em Destaque</h2>
+      <div class="grade-produtos">
+
+        <article class="cartao-produto">
+          <div class="cartao-imagem">
+            <img src="https://via.placeholder.com/400x300" alt="Ensaio Corporativo">
+          </div>
+          <div class="cartao-corpo">
+            <h3>Ensaio Corporativo</h3>
+            <p>Retratos profissionais para equipes e empresas.</p>
+            <div class="cartao-rodape">
+              <span class="preco">R$ 490,00</span>
+              <button class="btn-comprar" type="button">Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="cartao-produto">
+          <div class="cartao-imagem">
+            <img src="https://via.placeholder.com/400x300" alt="Fotografia de Produto">
+          </div>
+          <div class="cartao-corpo">
+            <h3>Fotografia de Produto</h3>
+            <p>Imagens em estúdio para catálogos e lojas virtuais.</p>
+            <div class="cartao-rodape">
+              <span class="preco">R$ 690,00</span>
+              <button class="btn-comprar" type="button">Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="cartao-produto">
+          <div class="cartao-imagem">
+            <img src="https://via.placeholder.com/400x300" alt="Cobertura de Eventos">
+          </div>
+          <div class="cartao-corpo">
+            <h3>Cobertura de Eventos</h3>
+            <p>Registro completo do seu evento, com entrega digital.</p>
+            <div class="cartao-rodape">
+              <span class="preco">R$ 1.200,00</span>
+              <button class="btn-comprar" type="button">Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="cartao-produto">
+          <div class="cartao-imagem">
+            <img src="https://via.placeholder.com/400x300" alt="Pacote Redes Sociais">
+          </div>
+          <div class="cartao-corpo">
+            <h3>Pacote Redes Sociais</h3>
+            <p>Fotos e vídeos curtos para fortalecer sua marca online.</p>
+            <div class="cartao-rodape">
+              <span class="preco">R$ 850,00</span>
+              <button class="btn-comprar" type="button">Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="contato" id="contato">
+      <h2>Fale Conosco</h2>
+      <form class="formulario" action="mailto:contato@seudominio.com.br" method="post"
+            enctype="text/plain">
+        <div class="campo">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+        </div>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" placeholder="voce@email.com" required>
+        </div>
+        <div class="campo">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" rows="5"
+                    placeholder="Conte sobre o seu projeto" required></textarea>
+        </div>
+        <button type="submit" class="btn-enviar">Enviar mensagem</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <p>&copy; 2026 EstúdioLens. Todos os direitos reservados.</p>
+    <p><a href="mailto:contato@seudominio.com.br">contato@seudominio.com.br</a></p>
+  </footer>
+
+  <script>
+    const contador = document.getElementById('contador');
+    let itens = 0;
+    document.querySelectorAll('.btn-comprar').forEach(function (botao) {
+      botao.addEventListener('click', function () {
+        itens += 1;
+        contador.textContent = itens;
+        contador.classList.remove('pulso');
+        void contador.offsetWidth;
+        contador.classList.add('pulso');
+      });
+    });
+  </script>
+
+</body>
+</html>
