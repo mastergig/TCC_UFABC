@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agendar consulta de castração</title>
+<style>
+  :root {
+    --azul-profundo: #1f4e79;
+    --azul-suave: #e6f0f8;
+    --verde-suave: #dff1e6;
+    --verde-medio: #4f9d77;
+    --texto: #1d2b36;
+    --texto-suave: #52636f;
+    --borda: #b9cddb;
+    --erro: #b3392f;
+    --fundo: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1rem;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    color: var(--texto);
+    background: linear-gradient(180deg, var(--azul-suave) 0%, var(--fundo) 60%);
+    line-height: 1.5;
+  }
+
+  .cartao {
+    max-width: 560px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .cartao header {
+    padding: 1.5rem 1.5rem 1.25rem;
+    background: var(--azul-profundo);
+    color: #fff;
+  }
+
+  .cartao header h1 { margin: 0 0 .25rem; font-size: 1.4rem; }
+  .cartao header p { margin: 0; font-size: .95rem; color: #d6e6f3; }
+
+  form { padding: 1.5rem; display: grid; gap: 1.1rem; }
+
+  .campo { display: grid; gap: .35rem; }
+
+  label, legend { font-weight: 600; font-size: .95rem; }
+
+  .dica { font-size: .82rem; color: var(--texto-suave); font-weight: 400; }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    padding: .65rem .75rem;
+    font: inherit;
+    color: inherit;
+    background: #fff;
+    border: 1.5px solid var(--borda);
+    border-radius: 8px;
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  button:focus-visible,
+  .opcao input:focus-visible + span {
+    outline: 3px solid var(--verde-medio);
+    outline-offset: 2px;
+  }
+
+  .linha { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: .5rem; }
+
+  .especies { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+
+  .opcao { position: relative; }
+
+  .opcao input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .opcao span {
+    display: block;
+    padding: .8rem;
+    text-align: center;
+    font-weight: 600;
+    border: 1.5px solid var(--borda);
+    border-radius: 8px;
+    background: #fff;
+    transition: background .15s, border-color .15s;
+  }
+
+  .opcao input:checked + span {
+    background: var(--verde-suave);
+    border-color: var(--verde-medio);
+    color: #21573c;
+  }
+
+  .erro { min-height: 1.1em; font-size: .82rem; color: var(--erro); }
+
+  .invalido { border-color: var(--erro) !important; }
+
+  button {
+    padding: .85rem 1rem;
+    font: inherit;
+    font-weight: 700;
+    color: #fff;
+    background: var(--verde-medio);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  button:hover { background: #3f8663; }
+
+  #confirmacao {
+    display: none;
+    padding: 1rem;
+    background: var(--verde-suave);
+    border-left: 4px solid var(--verde-medio);
+    border-radius: 6px;
+    color: #21573c;
+  }
+
+  #confirmacao.visivel { display: block; }
+
+  @media (max-width: 480px) {
+    .linha { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<main class="cartao">
+  <header>
+    <h1>Agendar consulta de castração</h1>
+    <p>Preencha os dados do seu pet e escolha uma data. Entraremos em contato para confirmar o horário.</p>
+  </header>
+
+  <form id="form-castracao" novalidate>
+
+    <div class="linha">
+      <div class="campo">
+        <label for="tutor">Nome do tutor</label>
+        <input type="text" id="tutor" name="tutor" autocomplete="name" required minlength="3">
+        <span class="erro" data-erro-de="tutor"></span>
+      </div>
+      <div class="campo">
+        <label for="telefone">WhatsApp</label>
+        <input type="tel" id="telefone" name="telefone" autocomplete="tel" placeholder="(11) 90000-0000" required>
+        <span class="erro" data-erro-de="telefone"></span>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="pet">Nome do pet</label>
+      <input type="text" id="pet" name="pet" required>
+      <span class="erro" data-erro-de="pet"></span>
+    </div>
+
+    <fieldset>
+      <legend>Espécie</legend>
+      <div class="especies">
+        <label class="opcao">
+          <input type="radio" name="especie" value="Cão" required>
+          <span>Cão</span>
+        </label>
+        <label class="opcao">
+          <input type="radio" name="especie" value="Gato" required>
+          <span>Gato</span>
+        </label>
+      </div>
+      <span class="erro" data-erro-de="especie"></span>
+    </fieldset>
+
+    <div class="linha">
+      <div class="campo">
+        <label for="idade">Idade <span class="dica">(em meses)</span></label>
+        <input type="number" id="idade" name="idade" min="1" max="300" inputmode="numeric" required>
+        <span class="erro" data-erro-de="idade"></span>
+      </div>
+      <div class="campo">
+        <label for="peso">Peso aproximado <span class="dica">(em kg)</span></label>
+        <input type="number" id="peso" name="peso" min="0.5" max="100" step="0.5" inputmode="decimal" required>
+        <span class="erro" data-erro-de="peso"></span>
+      </div>
+    </div>
+
+    <div class="linha">
+      <div class="campo">
+        <label for="data">Data de preferência</label>
+        <input type="date" id="data" name="data" required>
+        <span class="erro" data-erro-de="data"></span>
+      </div>
+      <div class="campo">
+        <label for="periodo">Período</label>
+        <select id="periodo" name="periodo" required>
+          <option value="">Selecione</option>
+          <option>Manhã</option>
+          <option>Tarde</option>
+        </select>
+        <span class="erro" data-erro-de="periodo"></span>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="obs">Observações <span class="dica">(opcional)</span></label>
+      <textarea id="obs" name="obs" placeholder="Doenças, alergias, cio recente, medicamentos em uso…"></textarea>
+    </div>
+
+    <button type="submit">Solicitar agendamento</button>
+
+    <div id="confirmacao" role="status" aria-live="polite"></div>
+  </form>
+</main>
+
+<script>
+  const form = document.getElementById('form-castracao');
+  const campoData = document.getElementById('data');
+  const confirmacao = document.getElementById('confirmacao');
+
+  // Impede datas passadas
+  const hoje = new Date();
+  hoje.setMinutes(hoje.getMinutes() - hoje.getTimezoneOffset());
+  campoData.min = hoje.toISOString().split('T')[0];
+
+  const mensagens = {
+    tutor: 'Informe o nome completo do tutor.',
+    telefone: 'Informe um WhatsApp com DDD.',
+    pet: 'Informe o nome do pet.',
+    especie: 'Escolha Cão ou Gato.',
+    idade: 'Informe a idade em meses (mínimo 1).',
+    peso: 'Informe o peso entre 0,5 e 100 kg.',
+    data: 'Escolha uma data a partir de hoje.',
+    periodo: 'Escolha manhã ou tarde.'
+  };
+
+  function validar() {
+    let valido = true;
+    document.querySelectorAll('[data-erro-de]').forEach(el => el.textContent = '');
+    form.querySelectorAll('.invalido').forEach(el => el.classList.remove('invalido'));
+
+    ['tutor', 'telefone', 'pet', 'idade', 'peso', 'data', 'periodo'].forEach(nome => {
+      const campo = form.elements[nome];
+      let ok = campo.checkValidity();
+      if (nome === 'telefone') ok = ok && campo.value.replace(/\D/g, '').length >= 10;
+      if (!ok) {
+        valido = false;
+        campo.classList.add('invalido');
+        document.querySelector(`[data-erro-de="${nome}"]`).textContent = mensagens[nome];
+      }
+    });
+
+    if (!form.elements.especie.value) {
+      valido = false;
+      document.querySelector('[data-erro-de="especie"]').textContent = mensagens.especie;
+    }
+    return valido;
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    confirmacao.classList.remove('visivel');
+    if (!validar()) return;
+
+    const dados = Object.fromEntries(new FormData(form));
+    const dataBR = dados.data.split('-').reverse().join('/');
+    confirmacao.textContent =
+      `Pedido enviado! Recebemos a solicitação de castração de ${dados.pet} (${dados.especie}) ` +
+      `para ${dataBR}, no período da ${dados.periodo.toLowerCase()}. Entraremos em contato pelo WhatsApp para confirmar.`;
+    confirmacao.classList.add('visivel');
+    form.reset();
+
+    // Aqui você pode enviar `dados` para seu back-end ou serviço de e-mail:
+    // fetch('/api/agendamentos', { method: 'POST', body: JSON.stringify(dados) });
+  });
+</script>
+</body>
+</html>

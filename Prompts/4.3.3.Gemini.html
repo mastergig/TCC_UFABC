@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER | Moda Minimalista & Contemporânea</title>
+    <!-- Carregamento do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carregamento da Fonte Inter e Playfair Display para elegância -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Ícones Lucide via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            200: '#e7e5e4',
+                            300: '#d6d3d1',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-stone-50 text-stone-900 font-sans antialiased selection:bg-stone-900 selection:text-white flex flex-col min-h-screen">
+
+    <!-- Notificação Toast Flutuante (Substitui alert()) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Cabeçalho Fixo (Navbar) -->
+    <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <span class="font-serif text-2xl sm:text-3xl tracking-tight font-semibold text-stone-900">ATELIER</span>
+                <span class="text-[10px] uppercase tracking-widest bg-stone-900 text-white px-1.5 py-0.5 rounded">SP</span>
+            </a>
+
+            <!-- Navegação Desktop -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
+                <button onclick="filterCategory('Todos')" class="category-link text-stone-900 font-semibold transition hover:text-stone-900" data-cat="Todos">Coleção Completa</button>
+                <button onclick="filterCategory('Camisetas')" class="category-link transition hover:text-stone-900" data-cat="Camisetas">Camisetas</button>
+                <button onclick="filterCategory('Calças')" class="category-link transition hover:text-stone-900" data-cat="Calças">Calças</button>
+                <button onclick="filterCategory('Jaquetas')" class="category-link transition hover:text-stone-900" data-cat="Jaquetas">Jaquetas</button>
+                <button onclick="filterCategory('Vestidos')" class="category-link transition hover:text-stone-900" data-cat="Vestidos">Vestidos</button>
+            </nav>
+
+            <!-- Botão do Carrinho -->
+            <div class="flex items-center gap-3">
+                <button id="open-cart-btn" onclick="toggleCart(true)" class="relative p-2.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-900 transition flex items-center gap-2 group" aria-label="Abrir carrinho de compras">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span class="hidden sm:inline text-sm font-medium">Sacola</span>
+                    <span id="cart-badge" class="bg-stone-900 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center transition-transform group-hover:scale-110">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filtros Mobile (Scroll Horizontal) -->
+        <div class="md:hidden border-t border-stone-100 bg-white px-4 py-2.5 overflow-x-auto flex items-center gap-2 no-scrollbar">
+            <button onclick="filterCategory('Todos')" class="category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-stone-900 text-white transition" data-cat="Todos">Todos</button>
+            <button onclick="filterCategory('Camisetas')" class="category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-cat="Camisetas">Camisetas</button>
+            <button onclick="filterCategory('Calças')" class="category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-cat="Calças">Calças</button>
+            <button onclick="filterCategory('Jaquetas')" class="category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-cat="Jaquetas">Jaquetas</button>
+            <button onclick="filterCategory('Vestidos')" class="category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-cat="Vestidos">Vestidos</button>
+        </div>
+    </header>
+
+    <!-- Banner Hero Minimalista -->
+    <section class="bg-stone-900 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-xl text-center md:text-left">
+                <span class="inline-block text-xs uppercase tracking-[0.2em] text-stone-300 mb-3">Nova Coleção Outono / Inverno</span>
+                <h1 class="font-serif text-3xl sm:text-5xl font-semibold leading-tight mb-4">Essenciais atemporais feitos para durar.</h1>
+                <p class="text-stone-300 text-sm sm:text-base mb-6 leading-relaxed">Tecidos naturais, cortes precisos e paleta neutra pensada para elevar o seu guarda-roupa diário com conforto absoluto.</p>
+                <a href="#catalogo" class="inline-flex items-center gap-2 bg-white text-stone-900 px-6 py-3 rounded-lg text-sm font-semibold hover:bg-stone-100 transition shadow-sm">
+                    Explorar Peças
+                    <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                </a>
+            </div>
+            <div class="hidden md:grid grid-cols-2 gap-3 w-full max-w-md opacity-90">
+                <div class="bg-stone-800 p-4 rounded-xl border border-stone-700">
+                    <i data-lucide="truck" class="w-6 h-6 text-stone-300 mb-2"></i>
+                    <p class="text-sm font-semibold">Frete Grátis</p>
+                    <p class="text-xs text-stone-400">Nas compras acima de R$ 299,00</p>
+                </div>
+                <div class="bg-stone-800 p-4 rounded-xl border border-stone-700">
+                    <i data-lucide="refresh-cw" class="w-6 h-6 text-stone-300 mb-2"></i>
+                    <p class="text-sm font-semibold">Primeira Troca Grátis</p>
+                    <p class="text-xs text-stone-400">Até 30 dias após o recebimento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conteúdo Principal: Catálogo de Produtos -->
+    <main id="catalogo" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        
+        <!-- Barra de Controle do Catálogo -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-stone-200">
+            <div>
+                <h2 id="catalog-title" class="text-2xl font-bold text-stone-900">Coleção Completa</h2>
+                <p id="product-count" class="text-sm text-stone-500 mt-0.5">Exibindo 8 produtos</p>
+            </div>
+
+            <!-- Busca e Ordenação -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="search-input" oninput="handleSearch()" placeholder="Buscar peça..." class="w-full sm:w-56 pl-9 pr-4 py-2 bg-white border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-stone-900 focus:border-transparent">
+                </div>
+                <select id="sort-select" onchange="handleSort()" class="px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-900">
+                    <option value="default">Ordenar por: Destaque</option>
+                    <option value="price-asc">Menor Preço</option>
+                    <option value="price-desc">Maior Preço</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grid de Produtos -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <!-- Os cards dos produtos serão renderizados dinamicamente via JavaScript -->
+        </div>
+
+        <!-- Estado Vazio da Busca -->
+        <div id="empty-search" class="hidden text-center py-16">
+            <i data-lucide="search-x" class="w-12 h-12 text-stone-300 mx-auto mb-3"></i>
+            <h3 class="text-lg font-semibold text-stone-800">Nenhuma peça encontrada</h3>
+            <p class="text-sm text-stone-500 mt-1">Tente buscar por outro termo ou limpe os filtros.</p>
+            <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-stone-900 text-white text-sm font-medium rounded-lg hover:bg-stone-800 transition">Limpar Filtros</button>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-white border-t border-stone-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-stone-500">
+            <div class="flex items-center gap-2">
+                <span class="font-serif text-lg font-semibold text-stone-900">ATELIER</span>
+                <span>© 2026 Todos os direitos reservados.</span>
+            </div>
+            <div class="flex gap-6">
+                <a href="#catalogo" class="hover:text-stone-900 transition">Sobre Nós</a>
+                <a href="#catalogo" class="hover:text-stone-900 transition">Guia de Medidas</a>
+                <a href="#catalogo" class="hover:text-stone-900 transition">Trocas e Devoluções</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Backdrop Escuro do Carrinho -->
+    <div id="cart-backdrop" onclick="toggleCart(false)" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs z-40 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Painel Lateral (Drawer) do Carrinho de Compras -->
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[440px] bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col" aria-label="Carrinho de compras">
+        
+        <!-- Cabeçalho do Carrinho -->
+        <div class="px-6 py-5 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+            <div class="flex items-center gap-2.5">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-stone-900"></i>
+                <h2 class="text-lg font-bold text-stone-900">Sua Sacola</h2>
+                <span id="drawer-count" class="text-xs font-medium bg-stone-200 text-stone-800 px-2 py-0.5 rounded-full">0 itens</span>
+            </div>
+            <button onclick="toggleCart(false)" class="p-2 rounded-lg text-stone-500 hover:text-stone-900 hover:bg-stone-200/60 transition" aria-label="Fechar carrinho">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Barra de Progresso para Frete Grátis -->
+        <div id="shipping-bar-container" class="px-6 py-3 bg-stone-100 border-b border-stone-200 text-xs">
+            <p id="shipping-text" class="text-stone-700 font-medium mb-1.5">Adicione R$ 299,00 para ganhar <strong>Frete Grátis</strong></p>
+            <div class="w-full bg-stone-200 h-1.5 rounded-full overflow-hidden">
+                <div id="shipping-progress" class="bg-emerald-600 h-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Lista de Itens do Carrinho (Área Rolável) -->
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-4">
+            <!-- Itens renderizados via JS -->
+        </div>
+
+        <!-- Estado do Carrinho Vazio -->
+        <div id="empty-cart-state" class="flex-grow flex flex-col items-center justify-center p-8 text-center">
+            <div class="w-16 h-16 rounded-full bg-stone-100 flex items-center justify-center mb-4">
+                <i data-lucide="shopping-bag" class="w-8 h-8 text-stone-400"></i>
+            </div>
+            <h3 class="text-base font-semibold text-stone-900">Sua sacola está vazia</h3>
+            <p class="text-sm text-stone-500 mt-1 max-w-xs">Explore nossa coleção e adicione suas peças favoritas para começar.</p>
+            <button onclick="toggleCart(false)" class="mt-6 px-5 py-2.5 bg-stone-900 text-white text-sm font-medium rounded-lg hover:bg-stone-800 transition">
+                Continuar Comprando
+            </button>
+        </div>
+
+        <!-- Rodapé do Carrinho (Resumo de Valores e Finalização) -->
+        <div id="cart-footer" class="hidden border-t border-stone-200 p-6 bg-stone-50 space-y-4">
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between text-stone-600">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between text-stone-600">
+                    <span>Frete estimado</span>
+                    <span id="cart-shipping">R$ 19,90</span>
+                </div>
+                <div class="flex justify-between text-base font-bold text-stone-900 pt-2 border-t border-stone-200">
+                    <span>Total</span>
+                    <span id="cart-total">R$ 0,00</span>
+                </div>
+            </div>
+
+            <button onclick="checkout()" class="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 active:scale-[0.99] text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                <span>Finalizar Compra</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Modal de Confirmação de Compra -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl transform transition-all">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="check-circle-2" class="w-9 h-9"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-stone-900">Pedido Confirmado!</h3>
+            <p class="text-sm text-stone-600 mt-2 leading-relaxed">
+                Obrigado por comprar na <strong>ATELIER</strong>. Seu pedido <span id="order-number" class="font-mono font-semibold text-stone-900">#AT-0000</span> foi recebido e está sendo preparado com cuidado.
+            </p>
+            <div class="bg-stone-50 rounded-xl p-4 my-5 text-left text-xs text-stone-600 space-y-1 border border-stone-200">
+                <div class="flex justify-between">
+                    <span>Valor Total Pago:</span>
+                    <span id="modal-total-paid" class="font-bold text-stone-900">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Previsão de Entrega:</span>
+                    <span class="font-medium text-stone-900">3 a 5 dias úteis</span>
+                </div>
+            </div>
+            <button onclick="closeCheckoutModal()" class="w-full py-3 bg-stone-900 text-white text-sm font-semibold rounded-xl hover:bg-stone-800 transition">
+                Voltar à Loja
+            </button>
+        </div>
+    </div>
+
+    <!-- Lógica JavaScript Completa -->
+    <script>
+        // ==========================================
+        // 1. DADOS DO CATÁLOGO DE PRODUTOS
+        // ==========================================
+        const products = [
+            {
+                id: 1,
+                name: "Camiseta Essencial Algodão Pima",
+                category: "Camisetas",
+                price: 129.90,
+                sizes: ["P", "M", "G", "GG"],
+                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80",
+                badge: "Mais Vendido"
+            },
+            {
+                id: 2,
+                name: "Calça Alfaiataria Reta Linho",
+                category: "Calças",
+                price: 289.90,
+                sizes: ["38", "40", "42", "44"],
+                image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+                badge: "Novo"
+            },
+            {
+                id: 3,
+                name: "Jaqueta Oversized Sarja Areia",
+                category: "Jaquetas",
+                price: 359.00,
+                sizes: ["P", "M", "G"],
+                image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80",
+                badge: null
+            },
+            {
+                id: 4,
+                name: "Vestido Midi Fluido Minimal",
+                category: "Vestidos",
+                price: 319.90,
+                sizes: ["PP", "P", "M", "G"],
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80",
+                badge: "Edição Limitada"
+            },
+            {
+                id: 5,
+                name: "Camiseta Heavyweight Off-White",
+                category: "Camisetas",
+                price: 149.90,
+                sizes: ["P", "M", "G", "GG"],
+                image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80",
+                badge: null
+            },
+            {
+                id: 6,
+                name: "Calça Chino Relaxed Preta",
+                category: "Calças",
+                price: 249.00,
+                sizes: ["38", "40", "42", "44"],
+                image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80",
+                badge: null
+            },
+            {
+                id: 7,
+                name: "Jaqueta Bomber Nylon Fosco",
+                category: "Jaquetas",
+                price: 389.90,
+                sizes: ["M", "G", "GG"],
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80",
+                badge: "Inverno"
+            },
+            {
+                id: 8,
+                name: "Vestido Tricot Canelado Oliva",
+                category: "Vestidos",
+                price: 279.90,
+                sizes: ["P", "M", "G"],
+                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=600&q=80",
+                badge: null
+            }
+        ];
+
+        // ==========================================
+        // 2. ESTADO DA APLICAÇÃO
+        // ==========================================
+        let cart = []; // Array de objetos: { key, id, name, price, image, size, quantity }
+        let selectedSizes = {}; // Armazena o tamanho escolhido em cada card de produto
+        let currentCategory = 'Todos';
+        let currentSearch = '';
+        let currentSort = 'default';
+
+        const FREE_SHIPPING_THRESHOLD = 299.00;
+        const STANDARD_SHIPPING = 19.90;
+
+        // ==========================================
+        // 3. FUNÇÕES UTILITÁRIAS
+        // ==========================================
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function saveCartToStorage() {
+            try {
+                localStorage.setItem('atelier_cart', JSON.stringify(cart));
+            } catch (e) {
+                console.warn('Não foi possível salvar no localStorage:', e);
+            }
+        }
+
+        function loadCartFromStorage() {
+            try {
+                const saved = localStorage.getItem('atelier_cart');
+                if (saved) {
+                    cart = JSON.parse(saved);
+                }
+            } catch (e) {
+                cart = [];
+            }
+        }
+
+        // Notificação Toast elegante
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-stone-900 text-white text-sm px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto';
+            toast.innerHTML = `
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            // Animar entrada
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            });
+
+            // Remover após 3 segundos
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 2800);
+        }
+
+        // ==========================================
+        // 4. RENDERIZAÇÃO DO CATÁLOGO E FILTROS
+        // ==========================================
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const emptyState = document.getElementById('empty-search');
+            const countLabel = document.getElementById('product-count');
+
+            // Filtrar por categoria e busca
+            let filtered = products.filter(p => {
+                const matchCat = currentCategory === 'Todos' || p.category === currentCategory;
+                const matchSearch = p.name.toLowerCase().includes(currentSearch.toLowerCase()) || 
+                                    p.category.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            // Ordenar
+            if (currentSort === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            }
+
+            countLabel.textContent = `Exibindo ${filtered.length} ${filtered.length === 1 ? 'produto' : 'produtos'}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(product => {
+                // Define o tamanho padrão selecionado (primeiro da lista se ainda não foi escolhido)
+                if (!selectedSizes[product.id]) {
+                    selectedSizes[product.id] = product.sizes[0];
+                }
+                const activeSize = selectedSizes[product.id];
+
+                const sizeButtons = product.sizes.map(size => {
+                    const isSelected = size === activeSize;
+                    return `
+                        <button 
+                            type="button"
+                            onclick="selectProductSize(${product.id}, '${size}')"
+                            class="min-w-[34px] h-8 px-2 text-xs font-medium rounded-md border transition cursor-pointer ${
+                                isSelected 
+                                ? 'border-stone-900 bg-stone-900 text-white' 
+                                : 'border-stone-200 bg-white text-stone-700 hover:border-stone-400'
+                            }">
+                            ${size}
+                        </button>
+                    `;
+                }).join('');
+
+                return `
+                    <article class="bg-white rounded-2xl border border-stone-200/80 overflow-hidden flex flex-col group hover:shadow-lg transition-all duration-300">
+                        <!-- Imagem com Fallback -->
+                        <div class="relative aspect-[4/5] bg-stone-100 overflow-hidden">
+                            <img 
+                                src="${product.image}" 
+                                alt="${product.name}" 
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://placehold.co/600x750/e7e5e4/292524?text=${encodeURIComponent(product.name)}';"
+                                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                            >
+                            ${product.badge ? `
+                                <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-stone-900 text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-xs">
+                                    ${product.badge}
+                                </span>
+                            ` : ''}
+                        </div>
+
+                        <!-- Detalhes do Produto -->
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs font-medium text-stone-400 uppercase tracking-wider">${product.category}</span>
+                                <h3 class="text-base font-semibold text-stone-900 mt-1 line-clamp-1" title="${product.name}">${product.name}</h3>
+                                <p class="text-lg font-bold text-stone-900 mt-1.5">${formatCurrency(product.price)}</p>
+                            </div>
+
+                            <div class="mt-4 pt-4 border-t border-stone-100">
+                                <!-- Seletor de Tamanho -->
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-xs text-stone-500 font-medium">Tamanho:</span>
+                                    <div class="flex items-center gap-1.5">
+                                        ${sizeButtons}
+                                    </div>
+                                </div>
+
+                                <!-- Botão Adicionar -->
+                                <button 
+                                    type="button"
+                                    onclick="addToCart(${product.id})"
+                                    class="w-full py-2.5 px-4 bg-stone-900 hover:bg-stone-800 active:scale-[0.98] text-white text-sm font-medium rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <span>Adicionar à Sacola</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function selectProductSize(productId, size) {
+            selectedSizes[productId] = size;
+            renderProducts();
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            document.getElementById('catalog-title').textContent = category === 'Todos' ? 'Coleção Completa' : category;
+
+            // Atualizar visual dos links desktop
+            document.querySelectorAll('.category-link').forEach(btn => {
+                if (btn.dataset.cat === category) {
+                    btn.classList.add('text-stone-900', 'font-semibold');
+                } else {
+                    btn.classList.remove('text-stone-900', 'font-semibold');
+                }
+            });
+
+            // Atualizar visual das pílulas mobile
+            document.querySelectorAll('.category-pill').forEach(btn => {
+                if (btn.dataset.cat === category) {
+                    btn.classList.remove('bg-stone-100', 'text-stone-700');
+                    btn.classList.add('bg-stone-900', 'text-white');
+                } else {
+                    btn.classList.remove('bg-stone-900', 'text-white');
+                    btn.classList.add('bg-stone-100', 'text-stone-700');
+                }
+            });
+
+            renderProducts();
+        }
+
+        function handleSearch() {
+            currentSearch = document.getElementById('search-input').value;
+            renderProducts();
+        }
+
+        function handleSort() {
+            currentSort = document.getElementById('sort-select').value;
+            renderProducts();
+        }
+
+        function resetFilters() {
+            currentCategory = 'Todos';
+            currentSearch = '';
+            currentSort = 'default';
+            document.getElementById('search-input').value = '';
+            document.getElementById('sort-select').value = 'default';
+            filterCategory('Todos');
+        }
+
+        // ==========================================
+        // 5. GERENCIAMENTO DO CARRINHO DE COMPRAS
+        // ==========================================
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const chosenSize = selectedSizes[productId] || product.sizes[0];
+            // Chave única combinando ID do produto + Tamanho escolhido
+            const itemKey = `${product.id}-${chosenSize}`;
+
+            const existingItem = cart.find(item => item.key === itemKey);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    key: itemKey,
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    size: chosenSize,
+                    quantity: 1
+                });
+            }
+
+            saveCartToStorage();
+            updateCartUI();
+            showToast(`${product.name} (${chosenSize}) adicionado!`);
+        }
+
+        function updateQuantity(itemKey, delta) {
+            const itemIndex = cart.findIndex(item => item.key === itemKey);
+            if (itemIndex === -1) return;
+
+            cart[itemIndex].quantity += delta;
+
+            if (cart[itemIndex].quantity <= 0) {
+                cart.splice(itemIndex, 1);
+            }
+
+            saveCartToStorage();
+            updateCartUI();
+        }
+
+        function removeItem(itemKey) {
+            cart = cart.filter(item => item.key !== itemKey);
+            saveCartToStorage();
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const itemsContainer = document.getElementById('cart-items-container');
+            const emptyState = document.getElementById('empty-cart-state');
+            const footer = document.getElementById('cart-footer');
+            const badge = document.getElementById('cart-badge');
+            const drawerCount = document.getElementById('drawer-count');
+
+            // Calcular totais
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Atualizar contadores
+            badge.textContent = totalItems;
+            drawerCount.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'itens'}`;
+
+            // Atualizar Barra de Frete Grátis
+            const shippingText = document.getElementById('shipping-text');
+            const shippingProgress = document.getElementById('shipping-progress');
+            const remainingForFree = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+            const progressPercent = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
+
+            shippingProgress.style.width = `${progressPercent}%`;
+            if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+                shippingText.innerHTML = `<span class="text-emerald-700 font-semibold">Parabéns! Você ganhou Frete Grátis 🎉</span>`;
+            } else {
+                shippingText.innerHTML = `Faltam <strong>${formatCurrency(remainingForFree)}</strong> para ganhar <strong>Frete Grátis</strong>`;
+            }
+
+            // Alternar entre carrinho vazio e preenchido
+            if (cart.length === 0) {
+                itemsContainer.classList.add('hidden');
+                footer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            itemsContainer.classList.remove('hidden');
+            footer.classList.remove('hidden');
+
+            // Renderizar itens no carrinho
+            itemsContainer.innerHTML = cart.map(item => `
+                <div class="flex gap-4 p-3 bg-white rounded-xl border border-stone-200/80 shadow-2xs">
+                    <!-- Miniatura -->
+                    <img 
+                        src="${item.image}" 
+                        alt="${item.name}" 
+                        onerror="this.onerror=null;this.src='https://placehold.co/150x180/e7e5e4/292524?text=Item';"
+                        class="w-20 h-24 object-cover rounded-lg bg-stone-100 shrink-0"
+                    >
+                    
+                    <!-- Informações e Controles -->
+                    <div class="flex-grow flex flex-col justify-between">
+                        <div class="flex justify-between items-start gap-2">
+                            <div>
+                                <h4 class="text-sm font-semibold text-stone-900 leading-snug line-clamp-1">${item.name}</h4>
+                                <span class="inline-block mt-1 text-xs font-medium text-stone-500 bg-stone-100 px-2 py-0.5 rounded">Tam: ${item.size}</span>
+                            </div>
+                            <button 
+                                onclick="removeItem('${item.key}')" 
+                                class="text-stone-400 hover:text-red-600 p-1 transition cursor-pointer" 
+                                title="Remover item"
+                                aria-label="Remover ${item.name}">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between mt-3">
+                            <!-- Controle de Quantidade (+/-) -->
+                            <div class="flex items-center border border-stone-200 rounded-lg bg-stone-50">
+                                <button 
+                                    onclick="updateQuantity('${item.key}', -1)" 
+                                    class="w-7 h-7 flex items-center justify-center text-stone-600 hover:text-stone-900 hover:bg-stone-200/70 rounded-l-lg transition cursor-pointer"
+                                    aria-label="Diminuir quantidade">
+                                    <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <span class="w-8 text-center text-xs font-semibold text-stone-900">${item.quantity}</span>
+                                <button 
+                                    onclick="updateQuantity('${item.key}', 1)" 
+                                    class="w-7 h-7 flex items-center justify-center text-stone-600 hover:text-stone-900 hover:bg-stone-200/70 rounded-r-lg transition cursor-pointer"
+                                    aria-label="Aumentar quantidade">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+
+                            <!-- Preço Total do Item -->
+                            <div class="text-right">
+                                <span class="text-sm font-bold text-stone-900">${formatCurrency(item.price * item.quantity)}</span>
+                                ${item.quantity > 1 ? `<p class="text-[11px] text-stone-400">${formatCurrency(item.price)} cada</p>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Atualizar Resumo Financeiro
+            const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
+            const total = subtotal + shippingCost;
+
+            document.getElementById('cart-subtotal').textContent = formatCurrency(subtotal);
+            document.getElementById('cart-shipping').innerHTML = shippingCost === 0 
+                ? '<span class="text-emerald-600 font-semibold">Grátis</span>' 
+                : formatCurrency(shippingCost);
+            document.getElementById('cart-total').textContent = formatCurrency(total);
+
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // 6. CONTROLE DO PAINEL LATERAL E CHECKOUT
+        // ==========================================
+        function toggleCart(open) {
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-backdrop');
+
+            if (open) {
+                backdrop.classList.remove('hidden');
+                // Pequeno delay para permitir a transição de opacidade
+                requestAnimationFrame(() => {
+                    backdrop.classList.remove('opacity-0');
+                    drawer.classList.remove('translate-x-full');
+                });
+                document.body.style.overflow = 'hidden';
+            } else {
+                backdrop.classList.add('opacity-0');
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => {
+                    backdrop.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = '';
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
+            const finalTotal = subtotal + shippingCost;
+
+            // Gerar número de pedido aleatório
+            const randomOrder = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('order-number').textContent = `#AT-${randomOrder}`;
+            document.getElementById('modal-total-paid').textContent = formatCurrency(finalTotal);
+
+            // Esvaziar carrinho
+            cart = [];
+            saveCartToStorage();
+            updateCartUI();
+
+            // Fechar painel do carrinho e abrir modal de confirmação
+            toggleCart(false);
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Fechar carrinho com a tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                toggleCart(false);
+                closeCheckoutModal();
+            }
+        });
+
+        // ==========================================
+        // 7. INICIALIZAÇÃO DA PÁGINA
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCartFromStorage();
+            renderProducts();
+            updateCartUI();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

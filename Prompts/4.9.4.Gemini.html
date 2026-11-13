@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Horizonte — Jornalismo Acessível</title>
+  <link rel="stylesheet" href="4.9.4.Gemini.css">
+</head>
+<body>
+  <!-- Link de salto para navegação rápida por teclado -->
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+  <!-- Barra de ferramentas de acessibilidade -->
+  <div class="a11y-toolbar" role="region" aria-label="Ferramentas de acessibilidade">
+    <div class="container a11y-controls">
+      <div class="control-group" role="group" aria-label="Tamanho da fonte">
+        <span id="label-fonte">Tamanho do texto:</span>
+        <button type="button" id="btn-diminuir" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button type="button" id="btn-resetar" aria-label="Restaurar tamanho padrão da fonte">A</button>
+        <button type="button" id="btn-aumentar" aria-label="Aumentar tamanho da fonte">A+</button>
+      </div>
+
+      <button type="button" id="btn-contraste" aria-pressed="false">
+        Alto Contraste
+      </button>
+    </div>
+  </div>
+
+  <!-- Cabeçalho e Navegação Principal -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo" aria-label="Portal Horizonte - Página Inicial">
+        Portal Horizonte
+      </a>
+
+      <nav aria-label="Navegação principal">
+        <ul class="nav-list">
+          <li><a href="#politica" aria-current="page">Política</a></li>
+          <li><a href="#economia">Economia</a></li>
+          <li><a href="#tecnologia">Tecnologia</a></li>
+          <li><a href="#ciencia">Ciência</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main id="conteudo-principal" class="container main-layout" tabindex="-1">
+    <section class="feed-noticias" aria-labelledby="titulo-destaques">
+      <h1 id="titulo-destaques" class="section-title">Destaques do Dia</h1>
+
+      <!-- Artigo Principal -->
+      <article class="news-card featured" aria-labelledby="artigo-1-titulo">
+        <header>
+          <span class="category-tag">Tecnologia</span>
+          <h2 id="artigo-1-titulo">
+            <a href="#noticia-1">Novos padrões web priorizam autonomia visual e leitura adaptativa</a>
+          </h2>
+          <p class="meta">
+            Por <span class="author">Mariana Silva</span> • 
+            <time datetime="2026-11-12T09:30">12 de novembro de 2026</time>
+          </p>
+        </header>
+        <p class="excerpt">
+          Especialistas apontam que interfaces construídas com unidades relativas eliminam barreiras de leitura em dispositivos móveis e monitores de alta densidade quando o zoom atinge 200%.
+        </p>
+      </article>
+
+      <!-- Grade de Artigos Secundários -->
+      <div class="news-grid">
+        <article class="news-card" aria-labelledby="artigo-2-titulo">
+          <header>
+            <span class="category-tag">Economia</span>
+            <h2 id="artigo-2-titulo">
+              <a href="#noticia-2">Investimentos em infraestrutura digital crescem no último trimestre</a>
+            </h2>
+            <p class="meta">
+              <time datetime="2026-11-12T08:15">12 de novembro de 2026</time>
+            </p>
+          </header>
+          <p class="excerpt">
+            Setor público e iniciativa privada ampliam aportes na modernização de redes regionais de dados.
+          </p>
+        </article>
+
+        <article class="news-card" aria-labelledby="artigo-3-titulo">
+          <header>
+            <span class="category-tag">Ciência</span>
+            <h2 id="artigo-3-titulo">
+              <a href="#noticia-3">Observatório registra fenômeno atmosférico inédito no Hemisfério Sul</a>
+            </h2>
+            <p class="meta">
+              <time datetime="2026-11-11T19:40">11 de novembro de 2026</time>
+            </p>
+          </header>
+          <p class="excerpt">
+            Dados coletados por sensores orbitais ajudarão a refinar modelos climáticos para a próxima década.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Conteúdo Complementar / Barra Lateral -->
+    <aside class="sidebar" aria-labelledby="titulo-mais-lidas">
+      <h2 id="titulo-mais-lidas" class="sidebar-title">Mais Lidas</h2>
+      <ol class="trending-list">
+        <li>
+          <a href="#lida-1">Guia prático sobre tipografia fluida e escala modular na web</a>
+        </li>
+        <li>
+          <a href="#lida-2">Como funcionam os leitores de tela modernos em aplicações complexas</a>
+        </li>
+        <li>
+          <a href="#lida-3">Relatório anual aponta avanços na inclusão digital em serviços públicos</a>
+        </li>
+      </ol>
+    </aside>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Portal Horizonte. Todos os direitos reservados.</p>
+      <nav aria-label="Links institucionais">
+        <ul class="footer-links">
+          <li><a href="#acessibilidade">Declaração de Acessibilidade</a></li>
+          <li><a href="#privacidade">Política de Privacidade</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Região viva oculta visualmente para anunciar mudanças de estado aos leitores de tela -->
+  <div id="a11y-announcer" class="sr-only" aria-live="polite"></div>
+
+  <script src="4.9.4.Gemini.js"></script>
+</body>
+</html>

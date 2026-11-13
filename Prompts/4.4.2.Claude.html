@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bistrô Alecrim — Cardápio</title>
+<style>
+  /* ============ VARIÁVEIS DE TEMA ============ */
+  :root {
+    --bg: #f6f1e9;
+    --surface: #fffdf9;
+    --ink: #2b2420;
+    --ink-soft: #6b5f57;
+    --line: #e4d9cb;
+    --accent: #b5532f;        /* terracota */
+    --accent-soft: #f3e1d6;
+    --herb: #4f6b4a;          /* verde alecrim */
+    --radius: 14px;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ CABEÇALHO ============ */
+  .hero {
+    text-align: center;
+    padding: 56px 20px 32px;
+  }
+  .hero .eyebrow {
+    font-size: .75rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--herb);
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    letter-spacing: -.01em;
+    margin: 8px 0 6px;
+  }
+  .hero p {
+    color: var(--ink-soft);
+    max-width: 460px;
+    margin: 0 auto;
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: .85rem;
+    color: var(--ink-soft);
+    background: var(--surface);
+  }
+  .status::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--herb);
+  }
+
+  /* ============ ABAS ============ */
+  .tabs-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(246, 241, 233, .92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .tabs {
+    display: flex;
+    gap: 4px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-soft);
+    font: 500 .95rem var(--sans);
+    cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .tab:hover { background: var(--accent-soft); color: var(--ink); }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tab[aria-selected="true"] {
+    background: var(--ink);
+    color: var(--surface);
+  }
+  .tab .icon { font-size: 1.05rem; line-height: 1; }
+
+  /* ============ PAINÉIS ============ */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 36px 20px 80px;
+  }
+
+  .panel[hidden] { display: none; }
+  .panel { animation: fadeIn .35s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel { animation: none; }
+  }
+
+  .panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 24px;
+    margin-bottom: 8px;
+  }
+  .panel-head h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 2rem;
+  }
+  .hours {
+    font-size: .85rem;
+    color: var(--herb);
+    font-weight: 600;
+  }
+  .panel-desc {
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+    max-width: 620px;
+  }
+
+  /* Destaque (ex.: combo do executivo) */
+  .callout {
+    background: var(--ink);
+    color: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .callout strong { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; }
+  .callout span { opacity: .75; font-size: .9rem; display: block; }
+  .callout .price-big {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    color: #f0b79c;
+  }
+
+  .section-title {
+    font-size: .75rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 32px 0 12px;
+  }
+  .section-title:first-of-type { margin-top: 0; }
+
+  /* ============ ITENS ============ */
+  .items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
+    gap: 0 40px;
+    list-style: none;
+  }
+  .item {
+    padding: 16px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .item-top {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .item-name {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+  .dots {
+    flex: 1;
+    border-bottom: 1px dotted #c9bba9;
+    transform: translateY(-4px);
+    min-width: 20px;
+  }
+  .item-price {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .item-desc {
+    color: var(--ink-soft);
+    font-size: .92rem;
+    margin-top: 4px;
+  }
+  .badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .badge {
+    font-size: .7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .badge.veg   { color: var(--herb); }
+  .badge.sg    { color: #8a6d1f; }
+  .badge.chef  { color: var(--accent); background: var(--accent-soft); border-color: transparent; }
+
+  /* ============ LEGENDA / RODAPÉ ============ */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: .82rem;
+    color: var(--ink-soft);
+  }
+  .legend .badge { margin-right: 6px; }
+
+  footer {
+    text-align: center;
+    padding: 32px 20px 48px;
+    font-size: .82rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding-top: 40px; }
+    .panel-head h2 { font-size: 1.6rem; }
+    .tab { padding: 9px 14px; font-size: .9rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Bistrô · desde 2019</div>
+  <h1>Alecrim</h1>
+  <p>Cozinha de estação, do primeiro café ao último brinde. Aberto todos os dias, das 7h às 23h.</p>
+  <div class="status" id="status">Servindo agora</div>
+</header>
+
+<!-- Barra de abas: os botões são gerados pelo JavaScript -->
+<nav class="tabs-wrap" aria-label="Categorias do cardápio">
+  <div class="tabs" role="tablist" id="tablist"></div>
+</nav>
+
+<!-- Painéis: também gerados pelo JavaScript -->
+<main id="panels"></main>
+
+<footer>
+  Taxa de serviço opcional de 10%. Informe-nos sobre alergias ou restrições alimentares.<br>
+  Bistrô Alecrim · Preços em reais (R$)
+</footer>
+
+<script>
+/* =========================================================
+   DADOS DO CARDÁPIO
+   Para editar o menu, altere apenas este objeto.
+   tags: "veg" (vegetariano), "sg" (sem glúten), "chef" (sugestão do chef)
+   ========================================================= */
+const MENU = [
+  {
+    id: "cafe",
+    label: "Café da Manhã",
+    icon: "☕",
+    hours: "7h às 11h",
+    start: 7, end: 11,
+    desc: "Pães de fermentação natural assados na casa, ovos caipiras e frutas da estação.",
+    sections: [
+      {
+        title: "Pratos",
+        items: [
+          { name: "Ovos Benedict", price: 38, desc: "Muffin inglês, presunto cru, ovos pochê e molho holandês.", tags: ["chef"] },
+          { name: "Tostada de Abacate", price: 32, desc: "Pão de fermentação natural, abacate, ovo pochê, gergelim e pimenta calabresa.", tags: ["veg"] },
+          { name: "Panquecas Americanas", price: 29, desc: "Três unidades, frutas vermelhas, manteiga batida e melado de cana.", tags: ["veg"] },
+          { name: "Omelete da Horta", price: 27, desc: "Espinafre, cogumelos, queijo minas frescal e ervas. Acompanha salada verde.", tags: ["veg", "sg"] },
+          { name: "Tapioca Recheada", price: 22, desc: "Queijo coalho, tomate confit e manjericão.", tags: ["veg", "sg"] }
+        ]
+      },
+      {
+        title: "Para acompanhar",
+        items: [
+          { name: "Cesta de Pães", price: 18, desc: "Seleção do dia com manteiga e geleia artesanal.", tags: ["veg"] },
+          { name: "Bowl de Açaí e Granola", price: 24, desc: "Granola da casa, banana, morango e mel.", tags: ["veg"] },
+          { name: "Iogurte Natural com Frutas", price: 19, desc: "Frutas da estação, mel e castanhas.", tags: ["veg", "sg"] }
+        ]
+      }
+    ]
+  },
+  {
+    id: "executivo",
+    label: "Almoço Executivo",
+    icon: "🍽️",
+    hours: "Seg. a sex., 11h30 às 15h",
+    start: 11.5, end: 15, weekdaysOnly: true,
+    desc: "Entrada, prato principal e sobremesa do dia por um preço fixo. O cardápio muda semanalmente.",
+    callout: { title: "Menu completo", sub: "Entrada + principal + sobremesa + suco natural", price: 59 },
+    sections: [
+      {
+        title: "Entradas (escolha uma)",
+        items: [
+          { name: "Caldo Verde", price: null, desc: "Couve, batata e paio defumado.", tags: ["sg"] },
+          { name: "Salada da Estação", price: null, desc: "Folhas, legumes assados e vinagrete de mostarda.", tags: ["veg", "sg"] }
+        ]
+      },
+      {
+        title: "Principais (escolha um)",
+        items: [
+          { name: "Frango Grelhado", price: 42, desc: "Sobrecoxa marinada no limão, purê de batata-doce e legumes salteados.", tags: ["sg"] },
+          { name: "Filé de Tilápia", price: 46, desc: "Crosta de ervas, arroz de brócolis e molho de manteiga e alcaparras." },
+          { name: "Escondidinho de Carne-Seca", price: 44, desc: "Purê de mandioca gratinado com queijo coalho.", tags: ["sg"] },
+          { name: "Risoto de Cogumelos", price: 45, desc: "Arbóreo, mix de cogumelos frescos e parmesão.", tags: ["veg", "sg", "chef"] }
+        ]
+      }
+    ],
+    note: "Os preços ao lado valem para o prato principal avulso."
+  },
+  {
+    id: "alacarte",
+    label: "À la Carte",
+    icon: "🌿",
+    hours: "12h às 23h",
+    start: 12, end: 23,
+    desc: "Pratos autorais preparados com ingredientes de pequenos produtores.",
+    sections: [
+      {
+        title: "Entradas",
+        items: [
+          { name: "Burrata", price: 54, desc: "Tomates heirloom, pesto de manjericão e focaccia.", tags: ["veg"] },
+          { name: "Carpaccio", price: 48, desc: "Lâminas de filé, rúcula, parmesão e molho de alcaparras.", tags: ["sg"] },
+          { name: "Bolinhos de Bacalhau", price: 42, desc: "Seis unidades com aioli de limão-siciliano." }
+        ]
+      },
+      {
+        title: "Principais",
+        items: [
+          { name: "Bife Ancho", price: 98, desc: "300 g na brasa, batatas rústicas e chimichurri.", tags: ["sg", "chef"] },
+          { name: "Polvo Grelhado", price: 112, desc: "Batatas ao murro, azeitonas pretas e páprica defumada.", tags: ["sg"] },
+          { name: "Magret de Pato", price: 94, desc: "Molho de laranja e cardamomo, purê de mandioquinha.", tags: ["sg"] },
+          { name: "Nhoque de Abóbora", price: 68, desc: "Manteiga de sálvia, avelãs tostadas e queijo da Canastra.", tags: ["veg"] },
+          { name: "Salmão em Crosta", price: 89, desc: "Crosta de castanha-do-pará, risoto de limão-siciliano." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "bebidas",
+    label: "Bebidas",
+    icon: "🍷",
+    hours: "Todo o dia",
+    start: 7, end: 23,
+    desc: "Cafés especiais, sucos prensados na hora, coquetéis autorais e uma carta enxuta de vinhos.",
+    sections: [
+      {
+        title: "Cafés",
+        items: [
+          { name: "Espresso", price: 8, desc: "Grãos especiais do Sul de Minas.", tags: ["sg"] },
+          { name: "Cappuccino", price: 14, desc: "Espresso, leite vaporizado e espuma cremosa.", tags: ["sg"] },
+          { name: "Coado na Hora", price: 12, desc: "Método V60, 250 ml.", tags: ["sg"] }
+        ]
+      },
+      {
+        title: "Sem álcool",
+        items: [
+          { name: "Suco Natural", price: 15, desc: "Laranja, abacaxi com hortelã ou melancia.", tags: ["sg"] },
+          { name: "Limonada Suíça", price: 16, desc: "Limão-taiti batido com leite condensado.", tags: ["sg"] },
+          { name: "Kombucha da Casa", price: 18, desc: "Sabor do dia, 300 ml.", tags: ["sg"] }
+        ]
+      },
+      {
+        title: "Coquetéis e vinhos",
+        items: [
+          { name: "Gin Tônica de Alecrim", price: 36, desc: "Gin, tônica, alecrim tostado e casca de limão-siciliano.", tags: ["sg", "chef"] },
+          { name: "Negroni", price: 38, desc: "Gin, vermute rosso e Campari.", tags: ["sg"] },
+          { name: "Vinho da Casa (taça)", price: 32, desc: "Tinto, branco ou rosé. Consulte a seleção.", tags: ["sg"] }
+        ]
+      }
+    ]
+  },
+  {
+    id: "sobremesas",
+    label: "Sobremesas",
+    icon: "🍰",
+    hours: "12h às 23h",
+    start: 12, end: 23,
+    desc: "Feitas diariamente pela nossa confeitaria.",
+    sections: [
+      {
+        title: "Doces",
+        items: [
+          { name: "Petit Gâteau", price: 34, desc: "Chocolate 70% e sorvete de baunilha do Taiti.", tags: ["veg", "chef"] },
+          { name: "Crème Brûlée", price: 28, desc: "Fava de baunilha e açúcar caramelizado na hora.", tags: ["veg", "sg"] },
+          { name: "Tarte Tatin", price: 30, desc: "Maçã caramelizada, massa folhada e crème fraîche.", tags: ["veg"] },
+          { name: "Pudim de Leite", price: 22, desc: "Receita de família, calda de caramelo.", tags: ["veg", "sg"] },
+          { name: "Sorbet do Dia", price: 18, desc: "Duas bolas, sabores de frutas da estação.", tags: ["veg", "sg"] }
+        ]
+      }
+    ]
+  }
+];
+
+const TAG_LABELS = { veg: "Vegetariano", sg: "Sem glúten", chef: "Sugestão do chef" };
+
+/* =========================================================
+   UTILITÁRIOS
+   ========================================================= */
+const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+function el(tag, attrs = {}, children = []) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") node.className = v;
+    else if (k === "text") node.textContent = v;
+    else node.setAttribute(k, v);
+  }
+  [].concat(children).forEach(c => c && node.append(c));
+  return node;
+}
+
+/* =========================================================
+   RENDERIZAÇÃO
+   ========================================================= */
+const tablist = document.getElementById("tablist");
+const panelsRoot = document.getElementById("panels");
+
+function renderItem(item) {
+  const top = el("div", { class: "item-top" }, [
+    el("span", { class: "item-name", text: item.name }),
+    el("span", { class: "dots", "aria-hidden": "true" }),
+    el("span", { class: "item-price", text: item.price != null ? brl.format(item.price) : "incluso" })
+  ]);
+  const badges = (item.tags || []).length
+    ? el("div", { class: "badges" },
+        item.tags.map(t => el("span", { class: `badge ${t}`, text: TAG_LABELS[t] })))
+    : null;
+  return el("li", { class: "item" }, [top, el("p", { class: "item-desc", text: item.desc }), badges]);
+}
+
+function renderPanel(cat) {
+  const panel = el("section", {
+    class: "panel",
+    id: `panel-${cat.id}`,
+    role: "tabpanel",
+    "aria-labelledby": `tab-${cat.id}`,
+    tabindex: "0",
+    hidden: ""
+  });
+
+  panel.append(
+    el("div", { class: "panel-head" }, [
+      el("h2", { text: cat.label }),
+      el("span", { class: "hours", text: cat.hours })
+    ]),
+    el("p", { class: "panel-desc", text: cat.desc })
+  );
+
+  if (cat.callout) {
+    panel.append(el("div", { class: "callout" }, [
+      el("div", {}, [
+        el("strong", { text: cat.callout.title }),
+        el("span", { text: cat.callout.sub })
+      ]),
+      el("div", { class: "price-big", text: brl.format(cat.callout.price) })
+    ]));
+  }
+
+  cat.sections.forEach(sec => {
+    panel.append(
+      el("h3", { class: "section-title", text: sec.title }),
+      el("ul", { class: "items" }, sec.items.map(renderItem))
+    );
+  });
+
+  if (cat.note) panel.append(el("p", { class: "panel-desc", style: "margin-top:20px;font-size:.85rem", text: cat.note }));
+
+  panel.append(el("div", { class: "legend" },
+    Object.entries(TAG_LABELS).map(([k, v]) =>
+      el("span", {}, [el("span", { class: `badge ${k}`, text: v.split(" ")[0] }), document.createTextNode(v)]))
+  ));
+
+  return panel;
+}
+
+MENU.forEach(cat => {
+  const tab = el("button", {
+    class: "tab",
+    role: "tab",
+    id: `tab-${cat.id}`,
+    "aria-controls": `panel-${cat.id}`,
+    "aria-selected": "false",
+    tabindex: "-1",
+    type: "button"
+  }, [
+    el("span", { class: "icon", "aria-hidden": "true", text: cat.icon }),
+    el("span", { text: cat.label })
+  ]);
+  tab.addEventListener("click", () => activate(cat.id));
+  tablist.append(tab);
+  panelsRoot.append(renderPanel(cat));
+});
+
+/* =========================================================
+   ALTERNÂNCIA DE ABAS (sem recarregar a página)
+   ========================================================= */
+const tabs = [...tablist.querySelectorAll('[role="tab"]')];
+
+function activate(id, { focus = false, updateUrl = true } = {}) {
+  tabs.forEach(tab => {
+    const selected = tab.id === `tab-${id}`;
+    tab.setAttribute("aria-selected", selected);
+    tab.tabIndex = selected ? 0 : -1;
+    document.getElementById(tab.getAttribute("aria-controls")).hidden = !selected;
+    if (selected) {
+      tab.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+      if (focus) tab.focus();
+    }
+  });
+  // Atualiza o endereço (#cafe, #bebidas...) sem recarregar, permitindo compartilhar o link da aba
+  if (updateUrl) history.replaceState(null, "", `#${id}`);
+}
+
+// Navegação pelo teclado: setas, Home e End (padrão WAI-ARIA para abas)
+tablist.addEventListener("keydown", e => {
+  const i = tabs.indexOf(document.activeElement);
+  if (i < 0) return;
+  let next = null;
+  if (e.key === "ArrowRight") next = (i + 1) % tabs.length;
+  if (e.key === "ArrowLeft")  next = (i - 1 + tabs.length) % tabs.length;
+  if (e.key === "Home") next = 0;
+  if (e.key === "End")  next = tabs.length - 1;
+  if (next !== null) {
+    e.preventDefault();
+    activate(MENU[next].id, { focus: true });
+  }
+});
+
+/* =========================================================
+   ABA INICIAL: pelo link (#id) ou pelo horário atual
+   ========================================================= */
+function categoryForNow() {
+  const now = new Date();
+  const h = now.getHours() + now.getMinutes() / 60;
+  const weekday = now.getDay() >= 1 && now.getDay() <= 5;
+  if (h >= 7 && h < 11) return "cafe";
+  if (weekday && h >= 11.5 && h < 15) return "executivo";
+  if (h >= 12 && h < 23) return "alacarte";
+  return "cafe";
+}
+
+function updateStatus() {
+  const h = new Date().getHours();
+  const status = document.getElementById("status");
+  if (h >= 7 && h < 23) {
+    const cat = MENU.find(c => c.id === categoryForNow());
+    status.textContent = `Aberto agora · servindo ${cat.label}`;
+  } else {
+    status.textContent = "Fechado agora · abrimos às 7h";
+  }
+}
+
+const fromHash = location.hash.slice(1);
+activate(MENU.some(c => c.id === fromHash) ? fromHash : categoryForNow(), { updateUrl: false });
+updateStatus();
+
+// Botões voltar/avançar do navegador, caso o hash mude
+window.addEventListener("hashchange", () => {
+  const id = location.hash.slice(1);
+  if (MENU.some(c => c.id === id)) activate(id, { updateUrl: false });
+});
+</script>
+</body>
+</html>

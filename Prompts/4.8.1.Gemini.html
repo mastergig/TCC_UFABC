@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizonte Viagens | Voos, Hotéis e Pacotes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        ocean: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        coral: {
+                            400: '#fb7185',
+                            500: '#f97316',
+                            600: '#ea580c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(12, 74, 110, 0.88), rgba(3, 105, 161, 0.72)), 
+                              url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-ocean-600 selection:text-white">
+
+    <!-- Notificação Toast Flutuante -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Cabeçalho Elegante -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logotipo -->
+            <a href="#" onclick="resetAllFilters()" class="flex items-center gap-2.5 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-ocean-600 to-ocean-800 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+                    <i class="ph-fill ph-airplane-tilt text-2xl"></i>
+                </div>
+                <div>
+                    <span class="font-display font-extrabold text-xl tracking-tight text-ocean-900 block leading-none">Horizonte</span>
+                    <span class="text-xs font-semibold tracking-widest uppercase text-coral-500">Viagens</span>
+                </div>
+            </a>
+
+            <!-- Menu Desktop -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#resultados" onclick="setSectionFilter('voos')" class="text-sm font-semibold text-slate-600 hover:text-ocean-600 transition-colors flex items-center gap-1.5">
+                    <i class="ph ph-airplane text-lg"></i> Voos
+                </a>
+                <a href="#resultados" onclick="setSectionFilter('hoteis')" class="text-sm font-semibold text-slate-600 hover:text-ocean-600 transition-colors flex items-center gap-1.5">
+                    <i class="ph ph-buildings text-lg"></i> Hotéis
+                </a>
+                <a href="#destinos" class="text-sm font-semibold text-slate-600 hover:text-ocean-600 transition-colors flex items-center gap-1.5">
+                    <i class="ph ph-compass text-lg"></i> Destinos em Alta
+                </a>
+                <button onclick="openBookingsModal()" class="text-sm font-semibold text-slate-600 hover:text-ocean-600 transition-colors flex items-center gap-1.5">
+                    <i class="ph ph-ticket text-lg"></i> Minhas Reservas
+                </button>
+            </nav>
+
+            <!-- Ações / Botão Minhas Reservas com Contador -->
+            <div class="flex items-center gap-3">
+                <button onclick="openBookingsModal()" class="relative inline-flex items-center gap-2 bg-ocean-50 hover:bg-ocean-100 text-ocean-800 border border-ocean-200 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm active:scale-95">
+                    <i class="ph-fill ph-suitcase-rolling text-lg text-ocean-600"></i>
+                    <span class="hidden sm:inline">Minhas Reservas</span>
+                    <span id="booking-badge" class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 text-xs font-bold text-white bg-coral-500 rounded-full shadow-sm">
+                        0
+                    </span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Seção Hero & Motor de Busca -->
+    <section class="hero-bg pt-12 pb-20 lg:pt-16 lg:pb-24 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-7xl mx-auto">
+            <!-- Título Principal -->
+            <div class="max-w-2xl text-white mb-8 lg:mb-10">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-xs font-semibold tracking-wide uppercase mb-4 text-amber-200">
+                    <i class="ph-fill ph-sparkle"></i> Ofertas exclusivas 2026
+                </span>
+                <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3">
+                    Descubra o seu próximo horizonte pelo mundo.
+                </h1>
+                <p class="text-ocean-100 text-base sm:text-lg leading-relaxed">
+                    Compare passagens aéreas e hospedagens selecionadas com tarifas transparentes e confirmação imediata.
+                </p>
+            </div>
+
+            <!-- Card do Buscador Interativo -->
+            <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 sm:p-6 lg:p-8">
+                <!-- Abas do Buscador -->
+                <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-4 mb-6" role="tablist">
+                    <button type="button" id="tab-todos" onclick="switchSearchTab('todos')" class="search-tab active flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-ocean-600 text-white shadow-sm">
+                        <i class="ph-fill ph-globe-hemisphere-west text-lg"></i> Voo + Hotel
+                    </button>
+                    <button type="button" id="tab-voos" onclick="switchSearchTab('voos')" class="search-tab flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="ph-fill ph-airplane-takeoff text-lg"></i> Somente Voos
+                    </button>
+                    <button type="button" id="tab-hoteis" onclick="switchSearchTab('hoteis')" class="search-tab flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="ph-fill ph-bed text-lg"></i> Somente Hotéis
+                    </button>
+                </div>
+
+                <!-- Formulário de Busca -->
+                <form id="search-form" onsubmit="handleSearch(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
+                    <!-- Origem -->
+                    <div id="origin-field-wrapper" class="lg:col-span-3">
+                        <label for="search-origin" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Origem</label>
+                        <div class="relative">
+                            <i class="ph ph-airplane-takeoff absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                            <input type="text" id="search-origin" value="São Paulo (GRU)" placeholder="Cidade ou aeroporto"
+                                class="w-full pl-10 pr-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Destino -->
+                    <div id="dest-field-wrapper" class="lg:col-span-3">
+                        <label for="search-destination" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Destino</label>
+                        <div class="relative">
+                            <i class="ph ph-map-pin absolute left-3.5 top-1/2 -translate-y-1/2 text-coral-500 text-lg"></i>
+                            <input type="text" id="search-destination" placeholder="Para onde você vai? (ex: Rio, Lisboa...)"
+                                class="w-full pl-10 pr-8 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white transition-all">
+                            <button type="button" onclick="clearDestination()" title="Limpar destino" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                                <i class="ph ph-x-circle text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Data Ida / Check-in -->
+                    <div class="lg:col-span-2">
+                        <label id="label-date-start" for="search-date-start" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Ida / Check-in</label>
+                        <div class="relative">
+                            <input type="date" id="search-date-start" value="2026-12-10"
+                                class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Data Volta / Check-out -->
+                    <div class="lg:col-span-2">
+                        <label id="label-date-end" for="search-date-end" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Volta / Check-out</label>
+                        <div class="relative">
+                            <input type="date" id="search-date-end" value="2026-12-17"
+                                class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Passageiros / Hóspedes -->
+                    <div class="lg:col-span-2 flex gap-2">
+                        <div class="flex-1">
+                            <label id="label-guests" for="search-guests" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Viajantes</label>
+                            <div class="relative">
+                                <select id="search-guests" class="w-full pl-3 pr-7 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white appearance-none">
+                                    <option value="1">1 Adulto</option>
+                                    <option value="2" selected>2 Adultos</option>
+                                    <option value="3">3 Pessoas</option>
+                                    <option value="4">4 Pessoas</option>
+                                </select>
+                                <i class="ph ph-caret-down absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botão Buscar -->
+                    <div class="md:col-span-2 lg:col-span-12 flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100 mt-1">
+                        <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                            <span class="font-semibold text-slate-700">Sugestões rápidas:</span>
+                            <button type="button" onclick="quickFillDestination('Rio de Janeiro')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-ocean-50 hover:text-ocean-700 transition-colors">Rio de Janeiro</button>
+                            <button type="button" onclick="quickFillDestination('Lisboa')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-ocean-50 hover:text-ocean-700 transition-colors">Lisboa</button>
+                            <button type="button" onclick="quickFillDestination('Maceió')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-ocean-50 hover:text-ocean-700 transition-colors">Maceió</button>
+                            <button type="button" onclick="quickFillDestination('Buenos Aires')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-ocean-50 hover:text-ocean-700 transition-colors">Buenos Aires</button>
+                        </div>
+                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-coral-500 to-amber-500 hover:from-coral-600 hover:to-amber-600 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-coral-500/25 transition-all active:scale-95">
+                            <i class="ph-bold ph-magnifying-glass text-lg"></i>
+                            <span>Buscar Ofertas</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Destinos em Destaque -->
+    <section id="destinos" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-coral-500">Explore o mundo</span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl text-slate-900 mt-1">Destinos em Destaque</h2>
+            </div>
+            <p class="text-sm text-slate-500 max-w-md">Clique em um destino abaixo para filtrar automaticamente os voos e hotéis disponíveis.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="featured-destinations-grid">
+            <!-- Cards gerados via JS -->
+        </div>
+    </section>
+
+    <!-- Seção de Resultados Dinâmicos (Voos & Hotéis) -->
+    <section id="resultados" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <!-- Barra de Controle e Filtros -->
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-sm font-semibold text-slate-500 mr-1">Exibir:</span>
+                <button onclick="setSectionFilter('todos')" id="filter-btn-todos" class="section-filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-ocean-900 text-white transition-all">
+                    Todos (<span id="count-todos">0</span>)
+                </button>
+                <button onclick="setSectionFilter('voos')" id="filter-btn-voos" class="section-filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all flex items-center gap-1.5">
+                    <i class="ph-fill ph-airplane"></i> Voos (<span id="count-voos">0</span>)
+                </button>
+                <button onclick="setSectionFilter('hoteis')" id="filter-btn-hoteis" class="section-filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all flex items-center gap-1.5">
+                    <i class="ph-fill ph-buildings"></i> Hotéis (<span id="count-hoteis">0</span>)
+                </button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <div id="active-filter-tag" class="hidden items-center gap-1.5 bg-ocean-50 text-ocean-700 border border-ocean-200 px-3 py-1.5 rounded-lg text-xs font-semibold">
+                    <span>Destino: <strong id="active-filter-text"></strong></span>
+                    <button onclick="resetAllFilters()" class="hover:text-coral-600 ml-1"><i class="ph-bold ph-x"></i></button>
+                </div>
+
+                <select id="sort-select" onchange="renderResults()" class="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-ocean-500">
+                    <option value="recommended">Ordenar: Recomendados</option>
+                    <option value="price-asc">Menor Preço</option>
+                    <option value="price-desc">Maior Preço</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Container de Voos -->
+        <div id="flights-section" class="mb-14">
+            <div class="flex items-center gap-2.5 mb-5">
+                <div class="w-9 h-9 rounded-lg bg-ocean-100 text-ocean-700 flex items-center justify-center">
+                    <i class="ph-fill ph-airplane-tilt text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-xl text-slate-900">Passagens Aéreas Disponíveis</h3>
+                    <p class="text-xs text-slate-500">Tarifas por adulto com taxas aeroportuárias inclusas</p>
+                </div>
+            </div>
+            <div id="flights-list" class="grid grid-cols-1 gap-4">
+                <!-- Voos injetados via JS -->
+            </div>
+        </div>
+
+        <!-- Container de Hotéis -->
+        <div id="hotels-section">
+            <div class="flex items-center gap-2.5 mb-5">
+                <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
+                    <i class="ph-fill ph-buildings text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-xl text-slate-900">Hotéis & Resorts Selecionados</h3>
+                    <p class="text-xs text-slate-500">Cancelamento flexível e café da manhã disponível</p>
+                </div>
+            </div>
+            <div id="hotels-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Hotéis injetados via JS -->
+            </div>
+        </div>
+
+        <!-- Estado Vazio (Sem resultados) -->
+        <div id="empty-state" class="hidden bg-white rounded-2xl border border-slate-200 p-12 text-center max-w-lg mx-auto my-8">
+            <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
+                <i class="ph ph-airplane-landing text-3xl"></i>
+            </div>
+            <h4 class="font-display font-bold text-lg text-slate-800 mb-2">Nenhuma oferta encontrada</h4>
+            <p class="text-sm text-slate-500 mb-6">Não encontramos voos ou hotéis para o termo pesquisado. Tente buscar por Rio de Janeiro, Lisboa, Maceió, Buenos Aires ou Gramado.</p>
+            <button onclick="resetAllFilters()" class="px-5 py-2.5 bg-ocean-600 hover:bg-ocean-700 text-white font-semibold rounded-xl text-sm transition-colors">
+                Ver todos os destinos
+            </button>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-ocean-900 text-ocean-100 border-t border-ocean-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-2.5 mb-4">
+                    <div class="w-9 h-9 rounded-xl bg-ocean-600 flex items-center justify-center text-white">
+                        <i class="ph-fill ph-airplane-tilt text-xl"></i>
+                    </div>
+                    <span class="font-display font-extrabold text-xl text-white">Horizonte Viagens</span>
+                </div>
+                <p class="text-sm text-ocean-200 max-w-sm leading-relaxed">
+                    Conectando viajantes aos melhores destinos nacionais e internacionais desde 2015. Atendimento humanizado 24h e segurança total em cada reserva.
+                </p>
+            </div>
+            <div>
+                <h5 class="font-bold text-white text-sm uppercase tracking-wider mb-3">Navegação</h5>
+                <ul class="space-y-2 text-sm text-ocean-200">
+                    <li><a href="#resultados" onclick="setSectionFilter('voos')" class="hover:text-white transition-colors">Passagens Aéreas</a></li>
+                    <li><a href="#resultados" onclick="setSectionFilter('hoteis')" class="hover:text-white transition-colors">Hotéis e Resorts</a></li>
+                    <li><a href="#destinos" class="hover:text-white transition-colors">Destinos em Destaque</a></li>
+                    <li><button onclick="openBookingsModal()" class="hover:text-white transition-colors">Minhas Reservas</button></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-bold text-white text-sm uppercase tracking-wider mb-3">Central de Ajuda</h5>
+                <ul class="space-y-2 text-sm text-ocean-200">
+                    <li class="flex items-center gap-2"><i class="ph ph-phone"></i> 0800 777 2026</li>
+                    <li class="flex items-center gap-2"><i class="ph ph-envelope"></i> atendimento@horizonteviagens.com.br</li>
+                    <li class="flex items-center gap-2"><i class="ph ph-shield-check"></i> Pagamento 100% Seguro</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-ocean-800/80 py-5 text-center text-xs text-ocean-300">
+            © 2026 Horizonte Viagens Turismo Ltda. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- MODAL 1: RESERVA E CHECKOUT INTERATIVO     -->
+    <!-- ========================================== -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden my-8 border border-slate-100 animate-fadeIn">
+            <!-- Header do Modal -->
+            <div class="bg-ocean-900 text-white px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i id="checkout-header-icon" class="ph-fill ph-airplane-tilt text-2xl text-amber-400"></i>
+                    <div>
+                        <h3 class="font-display font-bold text-lg leading-tight" id="checkout-modal-title">Finalizar Reserva</h3>
+                        <p class="text-xs text-ocean-200">Preencha os dados para emissão imediata do voucher</p>
+                    </div>
+                </div>
+                <button onclick="closeCheckoutModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+
+            <!-- Corpo do Modal -->
+            <form id="checkout-form" onsubmit="confirmBooking(event)" class="p-6 space-y-6 max-h-[82vh] overflow-y-auto">
+                <!-- Resumo do Item Selecionado -->
+                <div id="checkout-item-summary" class="bg-ocean-50/70 border border-ocean-200 rounded-xl p-4">
+                    <!-- Preenchido via JS -->
+                </div>
+
+                <!-- Seleção de Extras -->
+                <div>
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
+                        <i class="ph-fill ph-plus-circle text-coral-500 text-base"></i> Personalize sua viagem (Extras opcionais)
+                    </h4>
+                    <div id="checkout-extras-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Extras dinâmicos via JS -->
+                    </div>
+                </div>
+
+                <!-- Dados do Passageiro / Hóspede Principal -->
+                <div>
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
+                        <i class="ph-fill ph-user-circle text-ocean-600 text-base"></i> Dados do Titular da Reserva
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo (como no documento) *</label>
+                            <input type="text" id="guest-name" required placeholder="Ex: Mariana Oliveira Silva"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail para envio do voucher *</label>
+                            <input type="email" id="guest-email" required placeholder="mariana@email.com"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">CPF ou Passaporte *</label>
+                            <input type="text" id="guest-doc" required placeholder="000.000.000-00"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total e Botão Confirmar -->
+                <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs text-slate-500 block">Valor Total Final</span>
+                        <span id="checkout-total-price" class="font-display font-extrabold text-2xl text-ocean-900">R$ 0,00</span>
+                        <span id="checkout-price-detail" class="text-xs text-slate-500 block"></span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="closeCheckoutModal()" class="px-4 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="px-6 py-3 rounded-xl bg-gradient-to-r from-coral-500 to-amber-500 hover:from-coral-600 hover:to-amber-600 text-white font-bold text-sm shadow-lg shadow-coral-500/25 flex items-center gap-2 transition-all active:scale-95">
+                            <i class="ph-bold ph-check-circle text-lg"></i> Confirmar Reserva
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL 2: MINHAS RESERVAS (CARRINHO)        -->
+    <!-- ========================================== -->
+    <div id="bookings-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full overflow-hidden my-8 border border-slate-100">
+            <!-- Header -->
+            <div class="bg-ocean-900 text-white px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="ph-fill ph-suitcase-rolling text-2xl text-amber-400"></i>
+                    <div>
+                        <h3 class="font-display font-bold text-lg">Minhas Reservas Confirmadas</h3>
+                        <p class="text-xs text-ocean-200">Gerencie seus vouchers e códigos localizadores</p>
+                    </div>
+                </div>
+                <button onclick="closeBookingsModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+
+            <!-- Lista de Reservas -->
+            <div class="p-6 max-h-[75vh] overflow-y-auto" id="bookings-list-container">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <!-- Footer Modal -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
+                <div id="bookings-total-summary" class="text-sm font-semibold text-slate-700"></div>
+                <button onclick="closeBookingsModal()" class="px-5 py-2.5 bg-ocean-600 hover:bg-ocean-700 text-white font-semibold rounded-xl text-sm transition-colors">
+                    Continuar Explorando
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT DA APLICAÇÃO                    -->
+    <!-- ========================================== -->
+    <script>
+        // --- DADOS MOCKADOS DE VOOS ---
+        const flightsData = [
+            {
+                id: 'FL-101',
+                airline: 'LATAM Airlines',
+                airlineCode: 'LA',
+                airlineColor: 'bg-indigo-600',
+                origin: 'São Paulo (GRU)',
+                destination: 'Rio de Janeiro',
+                destCode: 'GIG',
+                departureTime: '08:30',
+                arrivalTime: '09:35',
+                duration: '1h 05m',
+                stops: 'Voo Direto',
+                price: 429,
+                cabin: 'Econômica',
+                badge: 'Mais vendido'
+            },
+            {
+                id: 'FL-102',
+                airline: 'TAP Air Portugal',
+                airlineCode: 'TP',
+                airlineColor: 'bg-emerald-600',
+                origin: 'São Paulo (GRU)',
+                destination: 'Lisboa',
+                destCode: 'LIS',
+                departureTime: '22:15',
+                arrivalTime: '11:45',
+                duration: '9h 30m',
+                stops: 'Voo Direto',
+                price: 3890,
+                cabin: 'Econômica Plus',
+                badge: 'Internacional'
+            },
+            {
+                id: 'FL-103',
+                airline: 'Azul Linhas Aéreas',
+                airlineCode: 'AD',
+                airlineColor: 'bg-sky-600',
+                origin: 'São Paulo (VCP)',
+                destination: 'Maceió',
+                destCode: 'MCZ',
+                departureTime: '10:15',
+                arrivalTime: '13:25',
+                duration: '3h 10m',
+                stops: 'Voo Direto',
+                price: 789,
+                cabin: 'Econômica',
+                badge: 'Oferta Relâmpago'
+            },
+            {
+                id: 'FL-104',
+                airline: 'Aerolíneas Argentinas',
+                airlineCode: 'AR',
+                airlineColor: 'bg-cyan-600',
+                origin: 'São Paulo (GRU)',
+                destination: 'Buenos Aires',
+                destCode: 'EZE',
+                departureTime: '14:20',
+                arrivalTime: '17:15',
+                duration: '2h 55m',
+                stops: 'Voo Direto',
+                price: 1240,
+                cabin: 'Econômica',
+                badge: 'Escapada'
+            },
+            {
+                id: 'FL-105',
+                airline: 'GOL Linhas Aéreas',
+                airlineCode: 'G3',
+                airlineColor: 'bg-orange-500',
+                origin: 'São Paulo (CGH)',
+                destination: 'Gramado',
+                destCode: 'POA',
+                departureTime: '07:45',
+                arrivalTime: '09:30',
+                duration: '1h 45m',
+                stops: 'Voo Direto + Transfer',
+                price: 560,
+                cabin: 'Econômica',
+                badge: 'Serra Gaúcha'
+            },
+            {
+                id: 'FL-106',
+                airline: 'Air France',
+                airlineCode: 'AF',
+                airlineColor: 'bg-blue-800',
+                origin: 'São Paulo (GRU)',
+                destination: 'Paris',
+                destCode: 'CDG',
+                departureTime: '19:10',
+                arrivalTime: '11:20',
+                duration: '11h 10m',
+                stops: 'Voo Direto',
+                price: 4450,
+                cabin: 'Econômica',
+                badge: 'Europa'
+            }
+        ];
+
+        // --- DADOS MOCKADOS DE HOTÉIS ---
+        const hotelsData = [
+            {
+                id: 'HT-201',
+                name: 'Hotel Atlântico Copacabana Palace View',
+                destination: 'Rio de Janeiro',
+                neighborhood: 'Copacabana, Rio de Janeiro',
+                stars: 5,
+                rating: 9.4,
+                reviews: 842,
+                pricePerNight: 680,
+                amenities: ['Piscina no Terraço', 'Café da Manhã', 'Frente Mar', 'Wi-Fi Grátis'],
+                image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'HT-202',
+                name: 'Boutique Hotel Chiado Heritage',
+                destination: 'Lisboa',
+                neighborhood: 'Baixa Chiado, Lisboa',
+                stars: 4,
+                rating: 9.2,
+                reviews: 519,
+                pricePerNight: 820,
+                amenities: ['Centro Histórico', 'Transfer Aeroporto', 'Spa', 'Wi-Fi Grátis'],
+                image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'HT-203',
+                name: 'Jatiúca Beach Resort & Spa',
+                destination: 'Maceió',
+                neighborhood: 'Praia de Jatiúca, Maceió',
+                stars: 5,
+                rating: 9.6,
+                reviews: 1120,
+                pricePerNight: 740,
+                amenities: ['Pé na Areia', 'All Inclusive Opcional', 'Kids Club', 'Piscinas'],
+                image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'HT-204',
+                name: 'Palermo Soho Design Hotel',
+                destination: 'Buenos Aires',
+                neighborhood: 'Palermo, Buenos Aires',
+                stars: 4,
+                rating: 9.0,
+                reviews: 410,
+                pricePerNight: 490,
+                amenities: ['Rooftop Bar', 'Café da Manhã', 'Academia', 'Pet Friendly'],
+                image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'HT-205',
+                name: 'Chalés Vale das Araucárias',
+                destination: 'Gramado',
+                neighborhood: 'Bairro Bavária, Gramado',
+                stars: 5,
+                rating: 9.7,
+                reviews: 675,
+                pricePerNight: 610,
+                amenities: ['Lareira', 'Café Colonial', 'Jardim Privativo', 'Estacionamento'],
+                image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'HT-206',
+                name: 'Le Marais Lumière Boutique',
+                destination: 'Paris',
+                neighborhood: 'Le Marais, Paris',
+                stars: 4,
+                rating: 9.1,
+                reviews: 390,
+                pricePerNight: 1150,
+                amenities: ['Metrô a 100m', 'Concierge 24h', 'Vista Cidade', 'Wi-Fi Grátis'],
+                image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80'
+            }
+        ];
+
+        // --- DESTINOS EM DESTAQUE ---
+        const featuredDestinations = [
+            {
+                city: 'Rio de Janeiro',
+                country: 'Brasil',
+                startingPrice: 429,
+                tag: 'Praia & Cultura',
+                image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                city: 'Lisboa',
+                country: 'Portugal',
+                startingPrice: 3890,
+                tag: 'Europa Histórica',
+                image: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                city: 'Maceió',
+                country: 'Brasil',
+                startingPrice: 789,
+                tag: 'Caribe Brasileiro',
+                image: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                city: 'Gramado',
+                country: 'Brasil',
+                startingPrice: 560,
+                tag: 'Inverno & Gastronomia',
+                image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=700&q=80'
+            }
+        ];
+
+        // --- ESTADO DA APLICAÇÃO ---
+        let state = {
+            searchTab: 'todos',      // 'todos', 'voos', 'hoteis'
+            sectionFilter: 'todos',  // 'todos', 'voos', 'hoteis'
+            destinationQuery: '',
+            originQuery: 'São Paulo (GRU)',
+            dateStart: '2026-12-10',
+            dateEnd: '2026-12-17',
+            guests: 2,
+            selectedItem: null,      // Item aberto no modal de checkout
+            selectedType: null,      // 'flight' | 'hotel'
+            selectedExtras: [],
+            bookings: []             // Reservas confirmadas
+        };
+
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedBookings();
+            renderFeaturedDestinations();
+            renderResults();
+            updateBookingBadge();
+        });
+
+        function loadSavedBookings() {
+            try {
+                const saved = localStorage.getItem('horizonte_bookings');
+                if (saved) {
+                    state.bookings = JSON.parse(saved);
+                }
+            } catch (e) {
+                console.warn('Não foi possível ler o localStorage', e);
+            }
+        }
+
+        function saveBookingsToStorage() {
+            try {
+                localStorage.setItem('horizonte_bookings', JSON.stringify(state.bookings));
+            } catch (e) {
+                console.warn('Erro ao salvar no localStorage', e);
+            }
+        }
+
+        // --- FORMATAÇÃO DE MOEDA E DATA ---
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function formatDateBR(dateStr) {
+            if (!dateStr) return '';
+            const [year, month, day] = dateStr.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        function calculateNights() {
+            const start = new Date(state.dateStart);
+            const end = new Date(state.dateEnd);
+            const diff = Math.round((end - start) / (1000 * 60 * 60 * 24));
+            return diff > 0 ? diff : 3; // Padrão de 3 diárias caso datas sejam iguais/inválidas
+        }
+
+        // --- RENDERIZAÇÃO DE DESTINOS EM DESTAQUE ---
+        function renderFeaturedDestinations() {
+            const grid = document.getElementById('featured-destinations-grid');
+            grid.innerHTML = featuredDestinations.map(dest => `
+                <div onclick="selectFeaturedDestination('${dest.city}')" 
+                     class="group relative h-72 rounded-2xl overflow-hidden shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:-translate-y-1">
+                    <img src="${dest.image}" alt="${dest.city}" 
+                         onerror="this.src='https://placehold.co/600x400/0369a1/ffffff?text=${encodeURIComponent(dest.city)}'"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent"></div>
+                    <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-ocean-900 text-xs font-bold shadow-sm">
+                        ${dest.tag}
+                    </span>
+                    <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <p class="text-xs text-amber-300 font-semibold uppercase tracking-wider">${dest.country}</p>
+                        <h3 class="font-display font-bold text-xl leading-tight mb-1">${dest.city}</h3>
+                        <div class="flex items-center justify-between pt-2 border-t border-white/20 text-xs">
+                            <span class="text-slate-200">Voos a partir de</span>
+                            <span class="font-bold text-base text-white">${formatCurrency(dest.startingPrice)}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectFeaturedDestination(city) {
+            document.getElementById('search-destination').value = city;
+            state.destinationQuery = city;
+            renderResults();
+            document.getElementById('resultados').scrollIntoView({ behavior: 'smooth' });
+            showToast(`Exibindo ofertas para ${city}`, 'info');
+        }
+
+        // --- CONTROLE DAS ABAS DO HERO ---
+        function switchSearchTab(tab) {
+            state.searchTab = tab;
+            state.sectionFilter = tab;
+
+            // Atualiza estilo visual das abas
+            document.querySelectorAll('.search-tab').forEach(btn => {
+                btn.classList.remove('bg-ocean-600', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+            activeBtn.classList.add('bg-ocean-600', 'text-white', 'shadow-sm');
+
+            // Ajusta campos visíveis conforme aba
+            const originWrapper = document.getElementById('origin-field-wrapper');
+            const destWrapper = document.getElementById('dest-field-wrapper');
+            const labelStart = document.getElementById('label-date-start');
+            const labelEnd = document.getElementById('label-date-end');
+            const labelGuests = document.getElementById('label-guests');
+
+            if (tab === 'hoteis') {
+                originWrapper.classList.add('hidden');
+                destWrapper.classList.remove('lg:col-span-3');
+                destWrapper.classList.add('lg:col-span-6');
+                labelStart.textContent = 'Check-in';
+                labelEnd.textContent = 'Check-out';
+                labelGuests.textContent = 'Hóspedes';
+            } else {
+                originWrapper.classList.remove('hidden');
+                destWrapper.classList.remove('lg:col-span-6');
+                destWrapper.classList.add('lg:col-span-3');
+                labelStart.textContent = tab === 'voos' ? 'Data de Ida' : 'Ida / Check-in';
+                labelEnd.textContent = tab === 'voos' ? 'Data de Volta' : 'Volta / Check-out';
+                labelGuests.textContent = tab === 'voos' ? 'Passageiros' : 'Viajantes';
+            }
+
+            setSectionFilter(tab);
+        }
+
+        function setSectionFilter(filter) {
+            state.sectionFilter = filter;
+            document.querySelectorAll('.section-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-ocean-900', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            const activeFilterBtn = document.getElementById(`filter-btn-${filter}`);
+            if (activeFilterBtn) {
+                activeFilterBtn.classList.remove('bg-slate-100', 'text-slate-600');
+                activeFilterBtn.classList.add('bg-ocean-900', 'text-white');
+            }
+            renderResults();
+        }
+
+        // --- EXECUTAR BUSCA ---
+        function handleSearch(e) {
+            e.preventDefault();
+            state.originQuery = document.getElementById('search-origin').value.trim() || 'São Paulo (GRU)';
+            state.destinationQuery = document.getElementById('search-destination').value.trim();
+            state.dateStart = document.getElementById('search-date-start').value;
+            state.dateEnd = document.getElementById('search-date-end').value;
+            state.guests = parseInt(document.getElementById('search-guests').value, 10) || 1;
+
+            renderResults();
+            document.getElementById('resultados').scrollIntoView({ behavior: 'smooth' });
+            
+            const targetMsg = state.destinationQuery ? `para ${state.destinationQuery}` : 'em todos os destinos';
+            showToast(`Busca atualizada ${targetMsg}!`, 'success');
+        }
+
+        function quickFillDestination(city) {
+            document.getElementById('search-destination').value = city;
+            state.destinationQuery = city;
+            renderResults();
+            document.getElementById('resultados').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearDestination() {
+            document.getElementById('search-destination').value = '';
+            state.destinationQuery = '';
+            renderResults();
+        }
+
+        function resetAllFilters() {
+            document.getElementById('search-destination').value = '';
+            state.destinationQuery = '';
+            state.sectionFilter = 'todos';
+            switchSearchTab('todos');
+            renderResults();
+        }
+
+        // --- RENDERIZAÇÃO DE VOOS E HOTÉIS ---
+        function renderResults() {
+            const query = state.destinationQuery.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const sortOrder = document.getElementById('sort-select').value;
+
+            // Tag de filtro ativo
+            const filterTag = document.getElementById('active-filter-tag');
+            const filterText = document.getElementById('active-filter-text');
+            if (state.destinationQuery) {
+                filterTag.classList.remove('hidden');
+                filterTag.classList.add('inline-flex');
+                filterText.textContent = state.destinationQuery;
+            } else {
+                filterTag.classList.add('hidden');
+                filterTag.classList.remove('inline-flex');
+            }
+
+            // Filtra Voos
+            let filteredFlights = flightsData.filter(f => {
+                const destNorm = f.destination.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return !query || destNorm.includes(query);
+            });
+
+            // Filtra Hotéis
+            let filteredHotels = hotelsData.filter(h => {
+                const destNorm = h.destination.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const nameNorm = h.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return !query || destNorm.includes(query) || nameNorm.includes(query);
+            });
+
+            // Ordenação
+            if (sortOrder === 'price-asc') {
+                filteredFlights.sort((a, b) => a.price - b.price);
+                filteredHotels.sort((a, b) => a.pricePerNight - b.pricePerNight);
+            } else if (sortOrder === 'price-desc') {
+                filteredFlights.sort((a, b) => b.price - a.price);
+                filteredHotels.sort((a, b) => b.pricePerNight - a.pricePerNight);
+            }
+
+            // Atualiza contadores
+            document.getElementById('count-voos').textContent = filteredFlights.length;
+            document.getElementById('count-hoteis').textContent = filteredHotels.length;
+            document.getElementById('count-todos').textContent = filteredFlights.length + filteredHotels.length;
+
+            const flightsSection = document.getElementById('flights-section');
+            const hotelsSection = document.getElementById('hotels-section');
+            const emptyState = document.getElementById('empty-state');
+
+            const showFlights = (state.sectionFilter === 'todos' || state.sectionFilter === 'voos') && filteredFlights.length > 0;
+            const showHotels = (state.sectionFilter === 'todos' || state.sectionFilter === 'hoteis') && filteredHotels.length > 0;
+
+            flightsSection.classList.toggle('hidden', !showFlights);
+            hotelsSection.classList.toggle('hidden', !showHotels);
+            emptyState.classList.toggle('hidden', showFlights || showHotels);
+
+            // Renderiza Lista de Voos
+            const flightsListEl = document.getElementById('flights-list');
+            flightsListEl.innerHTML = filteredFlights.map(flight => {
+                const totalPassengersPrice = flight.price * state.guests;
+                return `
+                <div class="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-ocean-300 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <!-- Companhia e Badge -->
+                    <div class="flex items-center gap-4 lg:w-1/4">
+                        <div class="w-12 h-12 rounded-xl ${flight.airlineColor} text-white font-display font-bold text-lg flex items-center justify-center shadow-sm shrink-0">
+                            ${flight.airlineCode}
+                        </div>
+                        <div>
+                            <span class="inline-block px-2 py-0.5 rounded-md bg-ocean-50 text-ocean-700 text-[11px] font-bold uppercase tracking-wide mb-1">
+                                ${flight.badge}
+                            </span>
+                            <h4 class="font-bold text-slate-900 text-base leading-tight">${flight.airline}</h4>
+                            <p class="text-xs text-slate-500">${flight.cabin}</p>
+                        </div>
+                    </div>
+
+                    <!-- Trajeto e Horários -->
+                    <div class="flex items-center justify-between sm:justify-center gap-4 sm:gap-8 lg:w-2/4 bg-slate-50/80 px-4 py-3 rounded-xl border border-slate-100">
+                        <div class="text-center sm:text-left">
+                            <span class="font-display font-extrabold text-xl text-slate-900 block">${flight.departureTime}</span>
+                            <span class="text-xs font-semibold text-slate-500">${state.originQuery.split(' ')[0]}</span>
+                        </div>
+
+                        <div class="flex-1 max-w-[180px] flex flex-col items-center">
+                            <span class="text-[11px] font-semibold text-slate-500 mb-1">${flight.duration}</span>
+                            <div class="w-full flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-ocean-600"></span>
+                                <div class="flex-1 h-[2px] bg-slate-300 relative">
+                                    <i class="ph-fill ph-airplane text-ocean-600 text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-50 px-1"></i>
+                                </div>
+                                <span class="w-2 h-2 rounded-full bg-coral-500"></span>
+                            </div>
+                            <span class="text-[11px] font-bold text-emerald-600 mt-1">${flight.stops}</span>
+                        </div>
+
+                        <div class="text-center sm:text-right">
+                            <span class="font-display font-extrabold text-xl text-slate-900 block">${flight.arrivalTime}</span>
+                            <span class="text-xs font-semibold text-slate-500">${flight.destination} (${flight.destCode})</span>
+                        </div>
+                    </div>
+
+                    <!-- Preço e Botão -->
+                    <div class="flex sm:items-center justify-between lg:justify-end gap-5 lg:w-1/4 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100">
+                        <div class="lg:text-right">
+                            <span class="text-xs text-slate-500 block">Por adulto: ${formatCurrency(flight.price)}</span>
+                            <span class="font-display font-extrabold text-2xl text-ocean-900 block">${formatCurrency(totalPassengersPrice)}</span>
+                            <span class="text-[11px] text-slate-400">Total para ${state.guests} ${state.guests > 1 ? 'viajantes' : 'viajante'}</span>
+                        </div>
+                        <button onclick="openCheckoutModal('flight', '${flight.id}')" 
+                                class="px-5 py-3 rounded-xl bg-ocean-600 hover:bg-ocean-700 text-white font-bold text-sm shadow-sm transition-all active:scale-95 whitespace-nowrap flex items-center gap-1.5">
+                            <span>Reservar Voo</span>
+                            <i class="ph-bold ph-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // Renderiza Grid de Hotéis
+            const nights = calculateNights();
+            const hotelsListEl = document.getElementById('hotels-list');
+            hotelsListEl.innerHTML = filteredHotels.map(hotel => {
+                const starsHtml = Array(hotel.stars).fill('<i class="ph-fill ph-star text-amber-400 text-xs"></i>').join('');
+                const totalStayPrice = hotel.pricePerNight * nights;
+                return `
+                <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-xl hover:border-ocean-300 transition-all flex flex-col justify-between group">
+                    <div>
+                        <!-- Foto do Hotel -->
+                        <div class="relative h-52 overflow-hidden bg-slate-200">
+                            <img src="${hotel.image}" alt="${hotel.name}"
+                                 onerror="this.src='https://placehold.co/800x500/0284c7/ffffff?text=${encodeURIComponent(hotel.name)}'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                                ${starsHtml}
+                            </div>
+                            <div class="absolute top-3 right-3 bg-ocean-900/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm">
+                                <span class="bg-emerald-500 text-white px-1.5 py-0.5 rounded text-[11px]">${hotel.rating}</span>
+                                <span>Excelente</span>
+                            </div>
+                        </div>
+
+                        <!-- Conteúdo do Card -->
+                        <div class="p-5">
+                            <p class="text-xs font-semibold text-coral-500 flex items-center gap-1 mb-1">
+                                <i class="ph-fill ph-map-pin"></i> ${hotel.neighborhood}
+                            </p>
+                            <h4 class="font-display font-bold text-lg text-slate-900 leading-snug mb-3 group-hover:text-ocean-700 transition-colors">
+                                ${hotel.name}
+                            </h4>
+
+                            <!-- Comodidades -->
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                ${hotel.amenities.map(am => `
+                                    <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-xs font-medium">
+                                        ${am}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rodapé Preço & Botão -->
+                    <div class="px-5 pb-5 pt-3 border-t border-slate-100 flex items-end justify-between gap-3">
+                        <div>
+                            <span class="text-xs text-slate-400 block">Diária a partir de</span>
+                            <span class="font-display font-extrabold text-xl text-ocean-900">${formatCurrency(hotel.pricePerNight)}</span>
+                            <span class="text-[11px] text-slate-500 block">${nights} ${nights > 1 ? 'diárias' : 'diária'}: <strong>${formatCurrency(totalStayPrice)}</strong></span>
+                        </div>
+                        <button onclick="openCheckoutModal('hotel', '${hotel.id}')" 
+                                class="px-4 py-2.5 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-sm shadow-sm transition-all active:scale-95 whitespace-nowrap">
+                            Reservar Hotel
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- MODAL DE CHECKOUT E RESERVA ---
+        function openCheckoutModal(type, itemId) {
+            state.selectedType = type;
+            state.selectedExtras = [];
+
+            const modal = document.getElementById('checkout-modal');
+            const summaryEl = document.getElementById('checkout-item-summary');
+            const extrasEl = document.getElementById('checkout-extras-list');
+            const headerIcon = document.getElementById('checkout-header-icon');
+            const modalTitle = document.getElementById('checkout-modal-title');
+
+            if (type === 'flight') {
+                const flight = flightsData.find(f => f.id === itemId);
+                state.selectedItem = flight;
+                headerIcon.className = 'ph-fill ph-airplane-tilt text-2xl text-amber-400';
+                modalTitle.textContent = 'Reservar Passagem Aérea';
+
+                summaryEl.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-ocean-700">${flight.airline} • ${flight.cabin}</span>
+                            <h4 class="font-display font-bold text-lg text-slate-900">${state.originQuery} → ${flight.destination} (${flight.destCode})</h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                <i class="ph ph-calendar-blank"></i> Ida: <strong>${formatDateBR(state.dateStart)}</strong> (${flight.departureTime}) • 
+                                <i class="ph ph-users"></i> <strong>${state.guests} ${state.guests > 1 ? 'passageiros' : 'passageiro'}</strong>
+                            </p>
+                        </div>
+                        <div class="sm:text-right">
+                            <span class="text-xs text-slate-500 block">Tarifa base (${state.guests}x)</span>
+                            <span class="font-bold text-base text-ocean-900">${formatCurrency(flight.price * state.guests)}</span>
+                        </div>
+                    </div>
+                `;
+
+                const flightExtras = [
+                    { id: 'bag-23', name: 'Bagagem Despachada (23kg)', price: 140, icon: 'ph-suitcase' },
+                    { id: 'seat-comfort', name: 'Assento Espaço + Conforto', price: 95, icon: 'ph-armchair' },
+                    { id: 'insurance', name: 'Seguro Viagem Completo', price: 110, icon: 'ph-shield-plus' },
+                    { id: 'flex-ticket', name: 'Remarcação Flexível 100%', price: 85, icon: 'ph-arrows-clockwise' }
+                ];
+                renderExtrasCheckboxes(flightExtras);
+
+            } else {
+                const hotel = hotelsData.find(h => h.id === itemId);
+                const nights = calculateNights();
+                state.selectedItem = hotel;
+                headerIcon.className = 'ph-fill ph-buildings text-2xl text-amber-400';
+                modalTitle.textContent = 'Reservar Hospedagem';
+
+                summaryEl.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-coral-600">${hotel.destination} • ${hotel.stars} Estrelas</span>
+                            <h4 class="font-display font-bold text-lg text-slate-900">${hotel.name}</h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                <i class="ph ph-calendar-check"></i> Check-in: <strong>${formatDateBR(state.dateStart)}</strong> até <strong>${formatDateBR(state.dateEnd)}</strong> (${nights} ${nights > 1 ? 'diárias' : 'diária'})
+                            </p>
+                        </div>
+                        <div class="sm:text-right">
+                            <span class="text-xs text-slate-500 block">${nights}x ${formatCurrency(hotel.pricePerNight)}</span>
+                            <span class="font-bold text-base text-ocean-900">${formatCurrency(hotel.pricePerNight * nights)}</span>
+                        </div>
+                    </div>
+                `;
+
+                const hotelExtras = [
+                    { id: 'breakfast', name: 'Café da Manhã Buffet', price: 65 * nights, icon: 'ph-coffee' },
+                    { id: 'transfer', name: 'Transfer Aeroporto ↔ Hotel', price: 160, icon: 'ph-car' },
+                    { id: 'late-checkout', name: 'Late Check-out até 16h', price: 120, icon: 'ph-clock' },
+                    { id: 'insurance-ht', name: 'Seguro Cancelamento', price: 90, icon: 'ph-shield-check' }
+                ];
+                renderExtrasCheckboxes(hotelExtras);
+            }
+
+            updateCheckoutTotal();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function renderExtrasCheckboxes(extrasList) {
+            const extrasEl = document.getElementById('checkout-extras-list');
+            extrasEl.innerHTML = extrasList.map(ext => `
+                <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-ocean-400 cursor-pointer transition-all bg-white select-none">
+                    <div class="flex items-center gap-2.5">
+                        <input type="checkbox" onchange="toggleExtra('${ext.id}', '${ext.name}', ${ext.price}, this.checked)"
+                               class="w-4 h-4 text-ocean-600 rounded border-slate-300 focus:ring-ocean-500">
+                        <div class="flex items-center gap-1.5">
+                            <i class="ph ${ext.icon} text-ocean-600 text-base"></i>
+                            <span class="text-xs font-semibold text-slate-700">${ext.name}</span>
+                        </div>
+                    </div>
+                    <span class="text-xs font-bold text-slate-900">+${formatCurrency(ext.price)}</span>
+                </label>
+            `).join('');
+        }
+
+        function toggleExtra(id, name, price, isChecked) {
+            if (isChecked) {
+                state.selectedExtras.push({ id, name, price });
+            } else {
+                state.selectedExtras = state.selectedExtras.filter(e => e.id !== id);
+            }
+            updateCheckoutTotal();
+        }
+
+        function getCheckoutTotalAmount() {
+            if (!state.selectedItem) return 0;
+            let base = 0;
+            if (state.selectedType === 'flight') {
+                base = state.selectedItem.price * state.guests;
+            } else {
+                base = state.selectedItem.pricePerNight * calculateNights();
+            }
+            const extrasSum = state.selectedExtras.reduce((acc, item) => acc + item.price, 0);
+            return base + extrasSum;
+        }
+
+        function updateCheckoutTotal() {
+            const total = getCheckoutTotalAmount();
+            document.getElementById('checkout-total-price').textContent = formatCurrency(total);
+            const extrasCount = state.selectedExtras.length;
+            document.getElementById('checkout-price-detail').textContent = extrasCount > 0 
+                ? `Inclui ${extrasCount} ${extrasCount > 1 ? 'adicionais selecionados' : 'adicional selecionado'}`
+                : 'Tarifa padrão sem adicionais';
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // --- CONFIRMAR RESERVA E GERAR CÓDIGO LOCALIZADOR ---
+        function generateLocatorCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = 'HZ-';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        function confirmBooking(e) {
+            e.preventDefault();
+            const guestName = document.getElementById('guest-name').value.trim();
+            const guestEmail = document.getElementById('guest-email').value.trim();
+            const guestDoc = document.getElementById('guest-doc').value.trim();
+
+            if (!guestName || !guestEmail || !guestDoc) return;
+
+            const locator = generateLocatorCode();
+            const totalAmount = getCheckoutTotalAmount();
+            const nights = calculateNights();
+
+            const newBooking = {
+                locator,
+                type: state.selectedType,
+                title: state.selectedType === 'flight' 
+                    ? `${state.originQuery} → ${state.selectedItem.destination}` 
+                    : state.selectedItem.name,
+                subtitle: state.selectedType === 'flight'
+                    ? `${state.selectedItem.airline} • Ida ${formatDateBR(state.dateStart)} • ${state.guests} viajante(s)`
+                    : `${state.selectedItem.destination} • ${nights} diária(s) (${formatDateBR(state.dateStart)} a ${formatDateBR(state.dateEnd)})`,
+                guestName,
+                guestEmail,
+                extras: state.selectedExtras.map(ex => ex.name),
+                total: totalAmount,
+                createdAt: new Date().toLocaleDateString('pt-BR')
+            };
+
+            state.bookings.unshift(newBooking);
+            saveBookingsToStorage();
+            updateBookingBadge();
+            closeCheckoutModal();
+
+            showToast(`Reserva confirmada! Localizador: ${locator}`, 'success');
+            setTimeout(() => openBookingsModal(), 400);
+        }
+
+        // --- MODAL MINHAS RESERVAS ---
+        function updateBookingBadge() {
+            const badge = document.getElementById('booking-badge');
+            badge.textContent = state.bookings.length;
+        }
+
+        function openBookingsModal() {
+            const modal = document.getElementById('bookings-modal');
+            const container = document.getElementById('bookings-list-container');
+            const totalSummary = document.getElementById('bookings-total-summary');
+
+            if (state.bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 rounded-full bg-ocean-50 text-ocean-500 flex items-center justify-center mx-auto mb-4">
+                            <i class="ph ph-ticket text-3xl"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-lg text-slate-800 mb-1">Você ainda não possui reservas</h4>
+                        <p class="text-sm text-slate-500 max-w-sm mx-auto">Explore nossos voos e hotéis e garanta sua próxima viagem com confirmação instantânea.</p>
+                    </div>
+                `;
+                totalSummary.textContent = '0 reservas ativas';
+            } else {
+                const grandTotal = state.bookings.reduce((sum, b) => sum + b.total, 0);
+                totalSummary.innerHTML = `Total acumulado (${state.bookings.length} ${state.bookings.length > 1 ? 'reservas' : 'reserva'}): <span class="text-ocean-900 font-extrabold text-base">${formatCurrency(grandTotal)}</span>`;
+
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        ${state.bookings.map((b, idx) => `
+                            <div class="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/60 hover:bg-white transition-all relative">
+                                <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-200/80">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2.5 py-1 rounded-lg text-xs font-bold uppercase ${b.type === 'flight' ? 'bg-ocean-100 text-ocean-800' : 'bg-amber-100 text-amber-800'}">
+                                            <i class="ph-fill ${b.type === 'flight' ? 'ph-airplane' : 'ph-buildings'}"></i>
+                                            ${b.type === 'flight' ? 'Passagem Aérea' : 'Hospedagem'}
+                                        </span>
+                                        <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-bold">
+                                            Confirmada
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-slate-500">Localizador:</span>
+                                        <code class="px-2.5 py-1 rounded-md bg-ocean-900 text-amber-300 font-mono font-bold text-xs tracking-wider">${b.locator}</code>
+                                        <button onclick="cancelBooking(${idx})" title="Cancelar reserva" class="text-slate-400 hover:text-rose-600 p-1 transition-colors">
+                                            <i class="ph ph-trash text-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div>
+                                        <h5 class="font-display font-bold text-base text-slate-900">${b.title}</h5>
+                                        <p class="text-xs text-slate-600 mt-0.5">${b.subtitle}</p>
+                                        <p class="text-xs text-slate-500 mt-1.5">
+                                            Titular: <strong class="text-slate-700">${b.guestName}</strong> (${b.guestEmail})
+                                        </p>
+                                        ${b.extras && b.extras.length > 0 ? `
+                                            <div class="flex flex-wrap gap-1 mt-2">
+                                                ${b.extras.map(ex => `<span class="text-[11px] bg-white border border-slate-200 px-2 py-0.5 rounded text-slate-600">+ ${ex}</span>`).join('')}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    <div class="sm:text-right shrink-0">
+                                        <span class="text-[11px] text-slate-400 block">Valor pago</span>
+                                        <span class="font-display font-extrabold text-lg text-ocean-900">${formatCurrency(b.total)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function cancelBooking(index) {
+            const removed = state.bookings.splice(index, 1)[0];
+            saveBookingsToStorage();
+            updateBookingBadge();
+            openBookingsModal();
+            showToast(`Reserva ${removed.locator} cancelada.`, 'info');
+        }
+
+        function closeBookingsModal() {
+            const modal = document.getElementById('bookings-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // --- SISTEMA DE NOTIFICAÇÃO TOAST ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-ocean-900 border-ocean-700' : 'bg-slate-800 border-slate-700';
+            const icon = type === 'success' ? 'ph-check-circle text-emerald-400' : 'ph-info text-amber-400';
+
+            toast.className = `pointer-events-auto flex items-center gap-2.5 ${bgColor} text-white border px-4 py-3 rounded-xl shadow-xl text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<i class="ph-fill ${icon} text-lg"></i><span>${message}</span>`;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>

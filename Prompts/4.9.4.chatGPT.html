@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portal de notícias locais com recursos de acessibilidade.">
+    <title>Notícias da Cidade | Portal Local</title>
+
+    <style>
+        /* CONFIGURAÇÕES GERAIS */
+        :root {
+            font-size: 100%;
+            --primary: #174c75;
+            --secondary: #e9f1f7;
+            --background: #ffffff;
+            --text: #222222;
+            --border: #cccccc;
+            --focus: #e58b00;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            color: var(--primary);
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible {
+            outline: 0.2rem solid var(--focus);
+            outline-offset: 0.2rem;
+        }
+
+        button {
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 75rem;
+            margin: 0 auto;
+        }
+
+        /* ACESSIBILIDADE */
+        .skip-link {
+            position: absolute;
+            top: -10rem;
+            left: 1rem;
+            padding: 0.8rem;
+            background: #ffffff;
+            color: #000000;
+            z-index: 1000;
+        }
+
+        .skip-link:focus {
+            top: 1rem;
+        }
+
+        .accessibility {
+            background: #eeeeee;
+            padding: 0.8rem 0;
+        }
+
+        .accessibility .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .accessibility button {
+            padding: 0.5rem 0.9rem;
+            border: 0.1rem solid #333333;
+            background: white;
+            color: #111111;
+            border-radius: 0.3rem;
+        }
+
+        .accessibility button:hover {
+            background: #dddddd;
+        }
+
+        /* CABEÇALHO */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 0.3rem 0 0;
+        }
+
+        /* MENU */
+        nav {
+            background: #103650;
+        }
+
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0.7rem 0;
+        }
+
+        nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 0.25rem;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            background: #28648e;
+            color: white;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        main {
+            padding: 2rem 0;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(14rem, 1fr);
+            gap: 2rem;
+        }
+
+        .news-list {
+            min-width: 0;
+        }
+
+        .news-list h2,
+        aside h2 {
+            border-bottom: 0.15rem solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        article {
+            border: 0.06rem solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            overflow-wrap: anywhere;
+        }
+
+        article h3 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.35rem;
+        }
+
+        article p {
+            margin-bottom: 0.8rem;
+        }
+
+        .category {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #444444;
+        }
+
+        .read-more {
+            font-weight: bold;
+        }
+
+        /* BARRA LATERAL */
+        aside {
+            background: var(--secondary);
+            padding: 1.2rem;
+            border-radius: 0.5rem;
+            align-self: start;
+        }
+
+        aside ul {
+            padding-left: 1.3rem;
+        }
+
+        aside li {
+            margin-bottom: 0.8rem;
+        }
+
+        /* RODAPÉ */
+        footer {
+            background: #103650;
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: white;
+        }
+
+        /* ALTO CONTRASTE */
+        body.high-contrast {
+            --background: #000000;
+            --text: #ffffff;
+            --primary: #ffff00;
+            --secondary: #222222;
+            --border: #ffffff;
+            --focus: #00ffff;
+        }
+
+        body.high-contrast header,
+        body.high-contrast nav,
+        body.high-contrast footer {
+            background: #000000;
+            color: #ffffff;
+            border-bottom: 0.1rem solid #ffffff;
+        }
+
+        body.high-contrast a,
+        body.high-contrast article h3,
+        body.high-contrast .category {
+            color: #ffff00;
+        }
+
+        body.high-contrast .accessibility {
+            background: #222222;
+        }
+
+        body.high-contrast .accessibility button {
+            background: #000000;
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 48rem) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.7rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a {
+                padding: 0.7rem;
+            }
+
+            aside {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 30rem) {
+            .container {
+                width: 94%;
+            }
+
+            .accessibility .container {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .accessibility button {
+                width: 100%;
+            }
+
+            article {
+                padding: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="#conteudo" class="skip-link">
+        Pular para o conteúdo principal
+    </a>
+
+    <!-- FERRAMENTAS DE ACESSIBILIDADE -->
+    <section class="accessibility" aria-label="Ferramentas de acessibilidade">
+        <div class="container">
+            <strong>Acessibilidade:</strong>
+
+            <button type="button" id="increaseFont"
+                aria-label="Aumentar tamanho da fonte">
+                A+
+            </button>
+
+            <button type="button" id="decreaseFont"
+                aria-label="Diminuir tamanho da fonte">
+                A-
+            </button>
+
+            <button type="button" id="resetFont">
+                Tamanho padrão
+            </button>
+
+            <button type="button" id="contrastButton"
+                aria-pressed="false">
+                Alto contraste
+            </button>
+        </div>
+    </section>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <div class="container">
+            <h1>Notícias da Cidade</h1>
+            <p>Informação local para toda a comunidade.</p>
+        </div>
+    </header>
+
+    <!-- NAVEGAÇÃO -->
+    <nav aria-label="Menu principal">
+        <div class="container">
+            <ul>
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#cidade">Cidade</a></li>
+                <li><a href="#educacao">Educação</a></li>
+                <li><a href="#esportes">Esportes</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main id="conteudo" class="container">
+
+        <div class="layout">
+
+            <section class="news-list" id="inicio"
+                aria-labelledby="news-title">
+
+                <h2 id="news-title">Últimas Notícias</h2>
+
+                <article id="cidade">
+                    <span class="category">CIDADE</span>
+                    <h3>Prefeitura anuncia melhorias na infraestrutura urbana</h3>
+
+                    <p>
+                        A prefeitura anunciou um novo projeto de
+                        revitalização das ruas e avenidas da cidade.
+                        As obras devem melhorar a mobilidade urbana
+                        e a segurança dos moradores.
+                    </p>
+
+                    <a class="read-more" href="#cidade">
+                        Leia mais sobre a notícia
+                    </a>
+                </article>
+
+                <article id="educacao">
+                    <span class="category">EDUCAÇÃO</span>
+                    <h3>Escolas municipais recebem novos equipamentos</h3>
+
+                    <p>
+                        As unidades escolares receberão computadores,
+                        equipamentos multimídia e materiais pedagógicos
+                        para apoiar o desenvolvimento dos estudantes.
+                    </p>
+
+                    <a class="read-more" href="#educacao">
+                        Leia mais sobre a notícia
+                    </a>
+                </article>
+
+                <article id="esportes">
+                    <span class="category">ESPORTES</span>
+                    <h3>Campeonato municipal começa neste sábado</h3>
+
+                    <p>
+                        O campeonato municipal reunirá equipes
+                        de diferentes bairros em uma competição
+                        que promete movimentar a comunidade.
+                    </p>
+
+                    <a class="read-more" href="#esportes">
+                        Leia mais sobre a notícia
+                    </a>
+                </article>
+
+            </section>
+
+            <!-- BARRA LATERAL -->
+            <aside aria-labelledby="sidebar-title">
+
+                <h2 id="sidebar-title">Destaques</h2>
+
+                <ul>
+                    <li>
+                        <a href="#cidade">
+                            Obras de mobilidade urbana
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#educacao">
+                            Investimentos na educação
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#esportes">
+                            Calendário esportivo municipal
+                        </a>
+                    </li>
+                </ul>
+
+                <h2>Sobre o portal</h2>
+
+                <p>
+                    Nosso objetivo é divulgar informações
+                    relevantes para os moradores, oferecendo
+                    conteúdo acessível a todos.
+                </p>
+
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer id="contato">
+        <div class="container">
+            <p>
+                &copy; 2026 Notícias da Cidade.
+                Todos os direitos reservados.
+            </p>
+
+            <p>
+                Portal desenvolvido com foco em acessibilidade digital.
+            </p>
+
+            <a href="#inicio">Voltar ao início</a>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT: ACESSIBILIDADE -->
+    <script>
+        const root = document.documentElement;
+
+        let fontSize = 100;
+
+        const increaseButton =
+            document.getElementById("increaseFont");
+
+        const decreaseButton =
+            document.getElementById("decreaseFont");
+
+        const resetButton =
+            document.getElementById("resetFont");
+
+        const contrastButton =
+            document.getElementById("contrastButton");
+
+        // Aumentar fonte
+        increaseButton.addEventListener("click", () => {
+            if (fontSize < 200) {
+                fontSize += 10;
+                root.style.fontSize = fontSize + "%";
+            }
+        });
+
+        // Diminuir fonte
+        decreaseButton.addEventListener("click", () => {
+            if (fontSize > 80) {
+                fontSize -= 10;
+                root.style.fontSize = fontSize + "%";
+            }
+        });
+
+        // Restaurar tamanho original
+        resetButton.addEventListener("click", () => {
+            fontSize = 100;
+            root.style.fontSize = "100%";
+        });
+
+        // Alternar alto contraste
+        contrastButton.addEventListener("click", () => {
+            const active =
+                document.body.classList.toggle("high-contrast");
+
+            contrastButton.setAttribute(
+                "aria-pressed",
+                String(active)
+            );
+
+            contrastButton.textContent = active
+                ? "Desativar alto contraste"
+                : "Alto contraste";
+        });
+    </script>
+
+</body>
+</html>

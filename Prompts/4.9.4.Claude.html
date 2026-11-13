@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal de Notícias Acessível</title>
+<meta name="description" content="Protótipo de portal de notícias com HTML semântico, CSS em unidades relativas e controles de fonte e contraste.">
+<style>
+/* =========================================================
+   PASSO 2 — CSS responsivo em unidades relativas
+   Regra: nada de px. Tamanhos em rem (relativos à raiz),
+   espaçamentos internos em em (relativos ao próprio texto),
+   larguras em %, ch ou rem, breakpoints em em.
+   ========================================================= */
+
+/* --- Tokens de tema (contraste padrão) --- */
+:root {
+  --escala: 1;                 /* alterada pelo seletor de fonte (Passo 3) */
+  --fundo: #fbfaf7;
+  --superficie: #ffffff;
+  --texto: #1d1d1f;            /* 16.1:1 sobre --fundo */
+  --texto-suave: #4a4a4f;      /* 8.6:1 */
+  --marca: #0b4f8a;            /* 8.0:1 — links e destaques */
+  --marca-texto: #ffffff;
+  --borda: #c9c6bf;
+  --destaque: #8a1c1c;         /* rótulo "Urgente" — 8.4:1 */
+  --foco: #b34700;             /* contorno de foco — 4.9:1 sobre fundo claro */
+  --foco-halo: #ffffff;
+
+  --raio: 0.375rem;
+  --espaco-1: 0.5rem;
+  --espaco-2: 1rem;
+  --espaco-3: 1.5rem;
+  --espaco-4: 2.5rem;
+  --largura-max: 75rem;
+  --medida: 68ch;              /* linha de leitura confortável */
+}
+
+/* --- Tema de alto contraste (Passo 3) --- */
+:root[data-contraste="alto"] {
+  --fundo: #000000;
+  --superficie: #000000;
+  --texto: #ffffff;            /* 21:1 */
+  --texto-suave: #ffffff;
+  --marca: #ffff00;            /* 19.6:1 */
+  --marca-texto: #000000;
+  --borda: #ffffff;
+  --destaque: #ffff00;
+  --foco: #00ffff;             /* 16.7:1 sobre preto */
+  --foco-halo: #000000;
+}
+
+/* A escala multiplica 100% (o tamanho que a própria pessoa
+   configurou no navegador), em vez de impor 16px. Assim o
+   zoom do navegador, o ajuste de fonte do sistema e o nosso
+   seletor se somam sem conflito. */
+html {
+  font-size: calc(100% * var(--escala));
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--texto);
+  background: var(--fundo);
+  overflow-wrap: break-word;   /* palavras longas não estouram o layout no zoom */
+}
+
+img, svg { max-width: 100%; height: auto; display: block; }
+
+h1, h2, h3 { line-height: 1.25; margin: 0 0 0.5em; }
+h1 { font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem); }
+h2 { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem); }
+h3 { font-size: 1.25rem; }
+p  { margin: 0 0 1em; }
+
+a { color: var(--marca); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 0.16em; }
+
+/* --- Foco visível (Passo 3) ---
+   Contorno duplo: cor de foco + halo, visível sobre qualquer
+   fundo. :focus-visible evita o anel em cliques de mouse,
+   mas sempre aparece na navegação por teclado. */
+:focus { outline: none; }
+:focus-visible {
+  outline: 0.1875rem solid var(--foco);
+  outline-offset: 0.125rem;
+  box-shadow: 0 0 0 0.3125rem var(--foco-halo);
+  border-radius: 0.125rem;
+}
+/* Fallback para navegadores sem :focus-visible */
+@supports not selector(:focus-visible) {
+  :focus { outline: 0.1875rem solid var(--foco); outline-offset: 0.125rem; }
+}
+
+/* Link "pular para o conteúdo" — aparece ao receber foco */
+.pular-link {
+  position: absolute;
+  left: var(--espaco-2);
+  top: -10em;
+  z-index: 100;
+  padding: 0.75em 1em;
+  background: var(--marca);
+  color: var(--marca-texto);
+  font-weight: 700;
+  border-radius: var(--raio);
+}
+.pular-link:focus { top: var(--espaco-1); }
+
+/* Texto só para leitores de tela */
+.visualmente-oculto {
+  position: absolute !important;
+  width: 0.0625rem; height: 0.0625rem;
+  padding: 0; margin: -0.0625rem;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.container {
+  width: min(100% - 2 * var(--espaco-2), var(--largura-max));
+  margin-inline: auto;
+}
+
+/* ===== Barra de acessibilidade ===== */
+.barra-acessibilidade {
+  background: var(--superficie);
+  border-bottom: 0.0625rem solid var(--borda);
+  font-size: 0.9375rem;
+}
+.barra-acessibilidade .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-1) var(--espaco-3);
+  align-items: center;
+  justify-content: flex-end;
+  padding-block: var(--espaco-1);
+}
+.grupo-controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375em;
+}
+.grupo-controles > span { font-weight: 600; margin-right: 0.25em; }
+
+.botao {
+  font: inherit;
+  font-weight: 600;
+  min-height: 2.75rem;          /* alvo de toque ≥ 44 CSS px na escala padrão */
+  min-width: 2.75rem;
+  padding: 0.4em 0.8em;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 0.125rem solid var(--borda);
+  border-radius: var(--raio);
+  cursor: pointer;
+}
+.botao:hover { border-color: var(--marca); }
+.botao[aria-pressed="true"] {
+  background: var(--marca);
+  color: var(--marca-texto);
+  border-color: var(--marca);
+}
+.botao[aria-disabled="true"] { opacity: 0.6; cursor: not-allowed; }
+
+.indicador-fonte {
+  min-width: 4ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Cabeçalho e navegação ===== */
+.cabecalho {
+  background: var(--superficie);
+  border-bottom: 0.25rem solid var(--marca);
+}
+.cabecalho .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+  padding-block: var(--espaco-2);
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 1.625rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--texto);
+  text-decoration: none;
+}
+.logo svg { width: 1.6em; height: 1.6em; flex: none; }
+.logo .data { display: block; font-size: 0.5em; font-weight: 500; color: var(--texto-suave); letter-spacing: 0; }
+
+.botao-menu { display: none; }
+
+.nav-principal ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+}
+.nav-principal a {
+  display: block;
+  padding: 0.6em 0.85em;
+  border-radius: var(--raio);
+  color: var(--texto);
+  font-weight: 600;
+  text-decoration: none;
+}
+.nav-principal a:hover { text-decoration: underline; }
+.nav-principal a[aria-current="page"] {
+  background: var(--marca);
+  color: var(--marca-texto);
+}
+
+/* ===== Layout principal: conteúdo + aside ===== */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+  gap: var(--espaco-4);
+  padding-block: var(--espaco-4);
+}
+
+/* Matéria principal */
+.materia-destaque {
+  background: var(--superficie);
+  border: 0.0625rem solid var(--borda);
+  border-radius: var(--raio);
+  padding: var(--espaco-3);
+  margin-bottom: var(--espaco-4);
+}
+.materia-destaque > * { max-width: var(--medida); }
+.chapeu {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--destaque);
+  margin-bottom: 0.5em;
+}
+.linha-fina { font-size: 1.1875rem; color: var(--texto-suave); }
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em 1em;
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+  border-block: 0.0625rem solid var(--borda);
+  padding-block: 0.75em;
+  margin-block: 1.25em;
+}
+.ilustracao {
+  margin: 0 0 1.5em;
+  max-width: none;
+}
+.ilustracao svg { width: 100%; border-radius: var(--raio); }
+.ilustracao figcaption { font-size: 0.875rem; color: var(--texto-suave); margin-top: 0.5em; }
+
+/* Lista de matérias */
+.secao-titulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 0.125rem solid var(--texto);
+  padding-bottom: 0.25em;
+  margin-bottom: var(--espaco-3);
+}
+.grade-materias {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: var(--espaco-3);
+}
+.cartao {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--superficie);
+  border: 0.0625rem solid var(--borda);
+  border-radius: var(--raio);
+  padding: 1.25em;
+  position: relative;
+}
+.cartao h3 { font-size: 1.1875rem; }
+/* O link cobre o cartão inteiro, mas só o título é anunciado */
+.cartao h3 a { color: var(--texto); text-decoration: none; }
+.cartao h3 a::after { content: ""; position: absolute; inset: 0; }
+.cartao:hover h3 a { text-decoration: underline; }
+.cartao:focus-within {
+  outline: 0.1875rem solid var(--foco);
+  outline-offset: 0.125rem;
+}
+.cartao h3 a:focus-visible { outline: none; box-shadow: none; }
+.cartao p { color: var(--texto-suave); font-size: 0.9375rem; }
+.cartao time { margin-top: auto; font-size: 0.8125rem; color: var(--texto-suave); }
+
+/* Aside */
+.lateral { display: flex; flex-direction: column; gap: var(--espaco-3); }
+.bloco-lateral {
+  background: var(--superficie);
+  border: 0.0625rem solid var(--borda);
+  border-radius: var(--raio);
+  padding: var(--espaco-3);
+}
+.bloco-lateral h2 { font-size: 1.25rem; }
+.mais-lidas { margin: 0; padding-left: 1.5em; }
+.mais-lidas li { margin-bottom: 0.75em; }
+.mais-lidas li::marker { font-weight: 800; color: var(--marca); }
+
+.form-news label { display: block; font-weight: 600; margin-bottom: 0.35em; }
+.form-news input {
+  font: inherit;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5em 0.75em;
+  color: var(--texto);
+  background: var(--fundo);
+  border: 0.125rem solid var(--texto-suave);
+  border-radius: var(--raio);
+  margin-bottom: 0.75em;
+}
+.form-news .dica { font-size: 0.8125rem; color: var(--texto-suave); margin: -0.4em 0 0.75em; }
+.form-news .botao { width: 100%; background: var(--marca); color: var(--marca-texto); border-color: var(--marca); }
+.mensagem-form { margin: 0.75em 0 0; font-weight: 600; }
+.mensagem-form:empty { display: none; }
+
+/* ===== Rodapé ===== */
+.rodape {
+  background: var(--superficie);
+  border-top: 0.0625rem solid var(--borda);
+  padding-block: var(--espaco-4);
+  font-size: 0.9375rem;
+  color: var(--texto-suave);
+}
+.rodape .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--espaco-3);
+}
+.rodape h2 { font-size: 1rem; color: var(--texto); }
+.rodape ul { list-style: none; margin: 0; padding: 0; }
+.rodape li { margin-bottom: 0.4em; }
+
+/* Ajuda de atalhos */
+kbd {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.875em;
+  padding: 0.1em 0.4em;
+  border: 0.0625rem solid var(--borda);
+  border-radius: 0.25rem;
+  background: var(--fundo);
+}
+
+/* ===== Responsividade (breakpoints em em: acompanham o zoom) =====
+   60em ≈ 960 CSS px na escala padrão. Com zoom de 200% numa
+   tela de 1280 px, a janela "encolhe" para 640 px e o layout
+   já cai para uma coluna — sem rolagem horizontal. */
+@media (max-width: 60em) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 45em) {
+  .botao-menu { display: inline-flex; align-items: center; gap: 0.5em; }
+  .nav-principal { flex-basis: 100%; }
+  .nav-principal ul { flex-direction: column; }
+  .nav-principal[data-aberto="false"] ul { display: none; }
+  .barra-acessibilidade .container { justify-content: flex-start; }
+  .materia-destaque { padding: var(--espaco-2); }
+}
+
+/* Movimento reduzido */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .botao, .nav-principal a { transition: background-color .15s, border-color .15s, color .15s; }
+}
+
+/* Modo de cores forçadas do Windows (Alto Contraste do SO) */
+@media (forced-colors: active) {
+  :focus-visible { outline: 0.1875rem solid Highlight; box-shadow: none; }
+  .botao[aria-pressed="true"] { border-style: double; border-width: 0.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     PASSO 1 — HTML5 semântico + ARIA
+     ========================================================= -->
+
+<a class="pular-link" href="#conteudo">Pular para o conteúdo principal</a>
+
+<!-- Barra de acessibilidade: é uma região de controles, por isso role="region" com rótulo -->
+<div class="barra-acessibilidade" role="region" aria-label="Ferramentas de acessibilidade">
+  <div class="container">
+    <div class="grupo-controles" role="group" aria-labelledby="rotulo-fonte">
+      <span id="rotulo-fonte">Tamanho do texto:</span>
+      <button type="button" class="botao" id="fonte-menos" aria-describedby="nivel-fonte" aria-keyshortcuts="Alt+Shift+Minus">
+        A<span aria-hidden="true">−</span><span class="visualmente-oculto"> Diminuir texto</span>
+      </button>
+      <button type="button" class="botao" id="fonte-padrao" aria-describedby="nivel-fonte" aria-keyshortcuts="Alt+Shift+0">
+        A<span class="visualmente-oculto"> Tamanho padrão</span>
+      </button>
+      <button type="button" class="botao" id="fonte-mais" aria-describedby="nivel-fonte" aria-keyshortcuts="Alt+Shift+Equal">
+        A<span aria-hidden="true">+</span><span class="visualmente-oculto"> Aumentar texto</span>
+      </button>
+      <output id="nivel-fonte" class="indicador-fonte" aria-label="Tamanho atual">100%</output>
+    </div>
+
+    <div class="grupo-controles" role="group" aria-labelledby="rotulo-contraste">
+      <span id="rotulo-contraste">Contraste:</span>
+      <button type="button" class="botao" id="alto-contraste" aria-pressed="false" aria-keyshortcuts="Alt+Shift+C">
+        Alto contraste
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Região viva: anuncia mudanças de fonte/contraste para leitores de tela -->
+<div id="anuncio" class="visualmente-oculto" role="status" aria-live="polite"></div>
+
+<header class="cabecalho">
+  <div class="container">
+    <a class="logo" href="#" aria-label="Diário Aberto — página inicial">
+      <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <rect x="2" y="6" width="36" height="28" rx="4" fill="currentColor"/>
+        <rect x="8" y="12" width="12" height="10" fill="var(--superficie)"/>
+        <rect x="23" y="12" width="9" height="2.5" fill="var(--superficie)"/>
+        <rect x="23" y="17" width="9" height="2.5" fill="var(--superficie)"/>
+        <rect x="8" y="26" width="24" height="2.5" fill="var(--superficie)"/>
+      </svg>
+      <span>Diário Aberto
+        <span class="data"><time datetime="2026-11-12">Quinta-feira, 12 de novembro de 2026</time></span>
+      </span>
+    </a>
+
+    <button type="button" class="botao botao-menu" id="botao-menu"
+            aria-expanded="false" aria-controls="menu-principal">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" style="width:1.25em;height:1.25em">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      Menu
+    </button>
+
+    <nav class="nav-principal" id="nav-principal" aria-label="Seções do portal" data-aberto="true">
+      <ul id="menu-principal">
+        <li><a href="#" aria-current="page">Início</a></li>
+        <li><a href="#">Cidades</a></li>
+        <li><a href="#">Meio ambiente</a></li>
+        <li><a href="#">Tecnologia</a></li>
+        <li><a href="#">Educação</a></li>
+        <li><a href="#">Cultura</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="container layout">
+  <main id="conteudo" tabindex="-1">
+
+    <article class="materia-destaque" aria-labelledby="titulo-destaque">
+      <header>
+        <p class="chapeu">Mobilidade urbana</p>
+        <h1 id="titulo-destaque">Região metropolitana testa corredor de ônibus com embarque em nível e informação sonora</h1>
+        <p class="linha-fina">Projeto-piloto prevê plataformas sem degraus, piso tátil contínuo e painéis que leem em voz alta o tempo de espera.</p>
+        <div class="meta">
+          <span>Por <a href="#" rel="author">Redação Diário Aberto</a></span>
+          <span>Publicado em <time datetime="2026-11-12T08:30-03:00">12/11/2026, 8h30</time></span>
+          <span>Leitura de <span aria-label="4 minutos">4 min</span></span>
+        </div>
+      </header>
+
+      <figure class="ilustracao">
+        <svg viewBox="0 0 800 320" role="img" aria-labelledby="ilus-titulo ilus-desc">
+          <title id="ilus-titulo">Ilustração de estação de ônibus acessível</title>
+          <desc id="ilus-desc">Ônibus parado junto a uma plataforma na mesma altura da porta; uma pessoa em cadeira de rodas embarca sem rampa, e uma faixa de piso tátil acompanha a borda.</desc>
+          <rect width="800" height="320" fill="#dbe7f3"/>
+          <rect y="230" width="800" height="90" fill="#9aa5b1"/>
+          <rect x="60" y="195" width="680" height="35" fill="#e9e4da"/>
+          <rect x="60" y="195" width="680" height="10" fill="#f2c200"/>
+          <rect x="300" y="95" width="440" height="110" rx="14" fill="#0b4f8a"/>
+          <rect x="330" y="115" width="70" height="45" rx="4" fill="#cfe2f5"/>
+          <rect x="420" y="115" width="70" height="45" rx="4" fill="#cfe2f5"/>
+          <rect x="590" y="115" width="70" height="45" rx="4" fill="#cfe2f5"/>
+          <rect x="510" y="110" width="60" height="95" rx="3" fill="#123a5e"/>
+          <circle cx="360" cy="215" r="18" fill="#222"/><circle cx="680" cy="215" r="18" fill="#222"/>
+          <circle cx="200" cy="135" r="14" fill="#1d1d1f"/>
+          <path d="M190 152h22v30h-22z" fill="#1d1d1f"/>
+          <circle cx="205" cy="190" r="16" fill="none" stroke="#1d1d1f" stroke-width="5"/>
+          <rect x="90" y="60" width="150" height="60" rx="6" fill="#1d1d1f"/>
+          <text x="165" y="98" font-size="22" fill="#ffd400" text-anchor="middle" font-family="sans-serif">Linha 12 · 3 min</text>
+        </svg>
+        <figcaption>Ilustração do embarque em nível previsto no projeto-piloto.</figcaption>
+      </figure>
+
+      <p>O corredor de 9 km ligará dois terminais e servirá de teste para um padrão que poderá ser estendido a outras linhas. Segundo a proposta, todas as estações terão plataformas alinhadas à altura do piso do ônibus, o que elimina degraus e rampas no momento do embarque.</p>
+      <p>Além do piso tátil contínuo, cada parada terá painéis com informação visual e sonora: um botão aciona a leitura em voz alta das próximas partidas. A ideia, segundo os técnicos, é atender pessoas com deficiência visual, idosos e quem não lê bem o painel à distância.</p>
+
+      <h2>O que muda para quem usa o transporte</h2>
+      <ul>
+        <li>Embarque sem degraus em todas as portas;</li>
+        <li>Anúncio sonoro da próxima parada dentro do veículo;</li>
+        <li>Tempo de espera exibido em fonte ampliada e alto contraste.</li>
+      </ul>
+      <p>A consulta pública sobre o traçado fica aberta por 30 dias. <a href="#">Leia o resumo do projeto</a>.</p>
+    </article>
+
+    <section aria-labelledby="titulo-ultimas">
+      <div class="secao-titulo">
+        <h2 id="titulo-ultimas">Últimas notícias</h2>
+        <a href="#">Ver todas<span class="visualmente-oculto"> as últimas notícias</span></a>
+      </div>
+      <ul class="grade-materias">
+        <li>
+          <article class="cartao" aria-labelledby="c1">
+            <span class="chapeu">Meio ambiente</span>
+            <h3 id="c1"><a href="#">Sensores de baixo custo passam a medir a qualidade do ar em escolas</a></h3>
+            <p>Dados ficam disponíveis em painel aberto e alimentam alertas para dias de poluição alta.</p>
+            <time datetime="2026-11-12T07:10-03:00">Hoje, 7h10</time>
+          </article>
+        </li>
+        <li>
+          <article class="cartao" aria-labelledby="c2">
+            <span class="chapeu">Tecnologia</span>
+            <h3 id="c2"><a href="#">Prefeituras adotam selo de acessibilidade digital para sites públicos</a></h3>
+            <p>Critério toma como base as diretrizes WCAG e prevê auditoria anual.</p>
+            <time datetime="2026-11-11T18:45-03:00">Ontem, 18h45</time>
+          </article>
+        </li>
+        <li>
+          <article class="cartao" aria-labelledby="c3">
+            <span class="chapeu">Educação</span>
+            <h3 id="c3"><a href="#">Biblioteca municipal amplia acervo em braile e audiolivros</a></h3>
+            <p>Empréstimo poderá ser feito também por aplicativo com leitor de tela.</p>
+            <time datetime="2026-11-11T14:00-03:00">Ontem, 14h</time>
+          </article>
+        </li>
+        <li>
+          <article class="cartao" aria-labelledby="c4">
+            <span class="chapeu">Cidades</span>
+            <h3 id="c4"><a href="#">Plano diretor entra na fase de audiências por bairro</a></h3>
+            <p>Encontros terão intérprete de Libras e transmissão com legendas.</p>
+            <time datetime="2026-11-10T20:30-03:00">10/11, 20h30</time>
+          </article>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <aside class="lateral" aria-label="Conteúdo complementar">
+    <section class="bloco-lateral" aria-labelledby="titulo-mais-lidas">
+      <h2 id="titulo-mais-lidas">Mais lidas</h2>
+      <ol class="mais-lidas">
+        <li><a href="#">Como pedir adaptação de calçada em frente de casa</a></li>
+        <li><a href="#">Novo horário das linhas noturnas a partir de dezembro</a></li>
+        <li><a href="#">Feira de ciências reúne 40 escolas no fim de semana</a></li>
+        <li><a href="#">Guia: configurar o celular para letras maiores</a></li>
+      </ol>
+    </section>
+
+    <section class="bloco-lateral" aria-labelledby="titulo-news">
+      <h2 id="titulo-news">Receba o boletim</h2>
+      <form class="form-news" id="form-news" novalidate>
+        <label for="email-news">E-mail</label>
+        <p class="dica" id="dica-email">Exemplo: nome@provedor.com.br</p>
+        <input type="email" id="email-news" name="email" autocomplete="email"
+               aria-describedby="dica-email mensagem-news" required>
+        <button type="submit" class="botao">Assinar</button>
+        <p class="mensagem-form" id="mensagem-news" role="alert"></p>
+      </form>
+    </section>
+
+    <section class="bloco-lateral" aria-labelledby="titulo-atalhos">
+      <h2 id="titulo-atalhos">Atalhos de teclado</h2>
+      <dl>
+        <dt><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd></dt><dd>Avança / volta entre links e botões</dd>
+        <dt><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>=</kbd> ou <kbd>-</kbd></dt><dd>Aumenta / diminui o texto</dd>
+        <dt><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>0</kbd></dt><dd>Volta ao tamanho padrão</dd>
+        <dt><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd></dt><dd>Liga / desliga alto contraste</dd>
+        <dt><kbd>Esc</kbd></dt><dd>Fecha o menu no celular</dd>
+      </dl>
+    </section>
+  </aside>
+</div>
+
+<footer class="rodape">
+  <div class="container">
+    <section aria-labelledby="rod-sobre">
+      <h2 id="rod-sobre">Diário Aberto</h2>
+      <p>Protótipo de portal de notícias para estudo de acessibilidade web. Notícias fictícias.</p>
+    </section>
+    <nav aria-labelledby="rod-inst">
+      <h2 id="rod-inst">Institucional</h2>
+      <ul>
+        <li><a href="#">Declaração de acessibilidade</a></li>
+        <li><a href="#">Política de privacidade</a></li>
+        <li><a href="#">Fale com a redação</a></li>
+      </ul>
+    </nav>
+    <section aria-labelledby="rod-contato">
+      <h2 id="rod-contato">Contato</h2>
+      <address>
+        Redação: redacao@diarioaberto.exemplo<br>
+        Telefone: (11) 0000-0000
+      </address>
+    </section>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   PASSO 3 — Seletores de fonte e contraste + teclado
+   ========================================================= */
+(function () {
+  "use strict";
+  var raiz = document.documentElement;
+  var NIVEIS = [0.875, 1, 1.125, 1.25, 1.5, 1.75, 2];   // 87,5% a 200%
+  var PADRAO = 1;
+  var indice = NIVEIS.indexOf(PADRAO);
+
+  var btnMenos = document.getElementById("fonte-menos");
+  var btnPadrao = document.getElementById("fonte-padrao");
+  var btnMais = document.getElementById("fonte-mais");
+  var saida = document.getElementById("nivel-fonte");
+  var btnContraste = document.getElementById("alto-contraste");
+  var anuncio = document.getElementById("anuncio");
+
+  // localStorage pode não existir ou lançar erro: sempre em try/catch
+  function ler(chave) { try { return localStorage.getItem(chave); } catch (e) { return null; } }
+  function gravar(chave, valor) { try { localStorage.setItem(chave, valor); } catch (e) {} }
+
+  function anunciar(texto) {
+    // limpa e repõe para que leitores de tela anunciem até mensagens repetidas
+    anuncio.textContent = "";
+    setTimeout(function () { anuncio.textContent = texto; }, 50);
+  }
+
+  function aplicarFonte(novoIndice, falar) {
+    indice = Math.max(0, Math.min(NIVEIS.length - 1, novoIndice));
+    var escala = NIVEIS[indice];
+    raiz.style.setProperty("--escala", escala);
+    var pct = Math.round(escala * 100) + "%";
+    saida.value = pct;
+    saida.textContent = pct;
+    // aria-disabled em vez de disabled: o botão continua no Tab
+    // e o foco não "some" quando se chega ao limite
+    btnMenos.setAttribute("aria-disabled", indice === 0 ? "true" : "false");
+    btnMais.setAttribute("aria-disabled", indice === NIVEIS.length - 1 ? "true" : "false");
+    gravar("da-escala", String(escala));
+    if (falar) anunciar("Tamanho do texto: " + pct);
+  }
+
+  function aplicarContraste(ligado, falar) {
+    if (ligado) raiz.setAttribute("data-contraste", "alto");
+    else raiz.removeAttribute("data-contraste");
+    btnContraste.setAttribute("aria-pressed", ligado ? "true" : "false");
+    gravar("da-contraste", ligado ? "alto" : "padrao");
+    if (falar) anunciar(ligado ? "Alto contraste ativado" : "Alto contraste desativado");
+  }
+
+  btnMenos.addEventListener("click", function () {
+    if (indice === 0) { anunciar("Já está no menor tamanho"); return; }
+    aplicarFonte(indice - 1, true);
+  });
+  btnMais.addEventListener("click", function () {
+    if (indice === NIVEIS.length - 1) { anunciar("Já está no maior tamanho"); return; }
+    aplicarFonte(indice + 1, true);
+  });
+  btnPadrao.addEventListener("click", function () { aplicarFonte(NIVEIS.indexOf(PADRAO), true); });
+  btnContraste.addEventListener("click", function () {
+    aplicarContraste(btnContraste.getAttribute("aria-pressed") !== "true", true);
+  });
+
+  // Atalhos globais (Alt+Shift evita conflito com atalhos do navegador e de leitores de tela)
+  document.addEventListener("keydown", function (e) {
+    if (!(e.altKey && e.shiftKey) || e.ctrlKey || e.metaKey) return;
+    var c = e.code;
+    if (c === "Equal" || c === "NumpadAdd") { e.preventDefault(); btnMais.click(); }
+    else if (c === "Minus" || c === "NumpadSubtract") { e.preventDefault(); btnMenos.click(); }
+    else if (c === "Digit0" || c === "Numpad0") { e.preventDefault(); btnPadrao.click(); }
+    else if (c === "KeyC") { e.preventDefault(); btnContraste.click(); }
+  });
+
+  // Estado inicial: preferência salva > preferência do sistema
+  var escalaSalva = parseFloat(ler("da-escala"));
+  var i = NIVEIS.indexOf(escalaSalva);
+  aplicarFonte(i >= 0 ? i : NIVEIS.indexOf(PADRAO), false);
+
+  var contrasteSalvo = ler("da-contraste");
+  var prefereMais = window.matchMedia && matchMedia("(prefers-contrast: more)").matches;
+  aplicarContraste(contrasteSalvo ? contrasteSalvo === "alto" : prefereMais, false);
+
+  /* ---- Menu móvel: aria-expanded + Esc devolve o foco ---- */
+  var btnMenu = document.getElementById("botao-menu");
+  var nav = document.getElementById("nav-principal");
+  var mq = matchMedia("(max-width: 45em)");
+
+  function definirMenu(aberto) {
+    btnMenu.setAttribute("aria-expanded", aberto ? "true" : "false");
+    nav.setAttribute("data-aberto", aberto ? "true" : "false");
+  }
+  function sincronizarMenu() { definirMenu(!mq.matches); }
+  sincronizarMenu();
+  if (mq.addEventListener) mq.addEventListener("change", sincronizarMenu);
+  else mq.addListener(sincronizarMenu);
+
+  btnMenu.addEventListener("click", function () {
+    var aberto = btnMenu.getAttribute("aria-expanded") === "true";
+    definirMenu(!aberto);
+    if (!aberto) { var primeiro = nav.querySelector("a"); if (primeiro) primeiro.focus(); }
+  });
+  nav.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && mq.matches) { definirMenu(false); btnMenu.focus(); }
+  });
+
+  /* ---- Link "pular para o conteúdo": garante o foco no <main> ---- */
+  document.querySelector(".pular-link").addEventListener("click", function (e) {
+    e.preventDefault();
+    var main = document.getElementById("conteudo");
+    main.focus();
+    main.scrollIntoView();
+  });
+
+  /* ---- Formulário: validação acessível (sem envio real) ---- */
+  var form = document.getElementById("form-news");
+  var campo = document.getElementById("email-news");
+  var msg = document.getElementById("mensagem-news");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!campo.value || !campo.checkValidity()) {
+      campo.setAttribute("aria-invalid", "true");
+      msg.textContent = "Digite um e-mail válido, por exemplo nome@provedor.com.br.";
+      campo.focus();
+    } else {
+      campo.removeAttribute("aria-invalid");
+      msg.textContent = "Obrigado! Este é um protótipo: nenhum dado foi enviado.";
+    }
+  });
+})();
+</script>
+</body>
+</html>

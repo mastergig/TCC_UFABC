@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidaPet Clínica Veterinária | Castração e Posse Responsável</title>
+  <style>
+    :root {
+      --azul-escuro: #1d4e68;
+      --azul-medio: #2b7a9b;
+      --azul-suave: #e6f2f7;
+      --verde-principal: #3ca374;
+      --verde-hover: #2e855d;
+      --verde-suave: #eaf7f0;
+      --texto-principal: #2c3e50;
+      --texto-secundario: #5a6c7d;
+      --branco: #ffffff;
+      --cinza-borda: #d1e0e5;
+      --fundo-geral: #f8fbfc;
+      --sombra: 0 4px 12px rgba(29, 78, 104, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--texto-principal);
+      background-color: var(--fundo-geral);
+      line-height: 1.6;
+    }
+
+    /* Cabeçalho e Navegação */
+    header {
+      background-color: var(--branco);
+      box-shadow: var(--sombra);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--azul-escuro);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--verde-principal);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--texto-principal);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--azul-medio);
+    }
+
+    .btn-nav {
+      background-color: var(--verde-principal);
+      color: var(--branco) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 25px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-nav:hover {
+      background-color: var(--verde-hover);
+    }
+
+    /* Hero Section (Cabeçalho Informativo) */
+    .hero {
+      background: linear-gradient(135deg, var(--azul-suave) 0%, var(--verde-suave) 100%);
+      padding: 4.5rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--cinza-borda);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--branco);
+      color: var(--azul-medio);
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      color: var(--azul-escuro);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--texto-secundario);
+      margin-bottom: 2rem;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background-color: var(--verde-principal);
+      color: var(--branco);
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(60, 163, 116, 0.3);
+      transition: transform 0.2s, background-color 0.3s;
+    }
+
+    .btn-cta:hover {
+      background-color: var(--verde-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Estrutura Geral das Seções */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section {
+      padding: 4rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      color: var(--azul-escuro);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header p {
+      color: var(--texto-secundario);
+    }
+
+    /* Grid de Benefícios */
+    .beneficios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card-beneficio {
+      background-color: var(--branco);
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--sombra);
+      border-top: 4px solid var(--azul-medio);
+      transition: transform 0.3s;
+    }
+
+    .card-beneficio:nth-child(even) {
+      border-top-color: var(--verde-principal);
+    }
+
+    .card-beneficio:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .card-beneficio h3 {
+      font-size: 1.25rem;
+      color: var(--azul-escuro);
+      margin-bottom: 0.75rem;
+    }
+
+    .card-beneficio p {
+      color: var(--texto-secundario);
+      font-size: 0.95rem;
+    }
+
+    /* Tabela de Orientações */
+    .tabela-wrapper {
+      background-color: var(--branco);
+      border-radius: 12px;
+      box-shadow: var(--sombra);
+      overflow-x: auto;
+      border: 1px solid var(--cinza-borda);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead {
+      background-color: var(--azul-escuro);
+      color: var(--branco);
+    }
+
+    th, td {
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--cinza-borda);
+    }
+
+    th {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: var(--azul-suave);
+    }
+
+    tbody tr:hover {
+      background-color: var(--verde-suave);
+    }
+
+    .fase-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background-color: var(--branco);
+      color: var(--azul-escuro);
+      border: 1px solid var(--cinza-borda);
+    }
+
+    /* Formulário de Agendamento */
+    .agendamento-section {
+      background-color: var(--branco);
+      border-radius: 16px;
+      box-shadow: var(--sombra);
+      padding: 3rem 2rem;
+      margin-bottom: 4rem;
+      border: 1px solid var(--cinza-borda);
+    }
+
+    .form-container {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 600;
+      color: var(--azul-escuro);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    input, select, textarea {
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--cinza-borda);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--texto-principal);
+      background-color: var(--fundo-geral);
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--azul-medio);
+      background-color: var(--branco);
+    }
+
+    /* Estilização nativa de validação HTML5 */
+    input:invalid:not(:placeholder-shown),
+    select:invalid:not(:focus) {
+      border-color: #d9534f;
+    }
+
+    input:valid:not(:placeholder-shown) {
+      border-color: var(--verde-principal);
+    }
+
+    .helper-text {
+      font-size: 0.8rem;
+      color: var(--texto-secundario);
+      margin-top: 0.3rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--azul-escuro);
+      color: var(--branco);
+      border: none;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--azul-medio);
+    }
+
+    /* Rodapé */
+    footer {
+      background-color: var(--azul-escuro);
+      color: var(--branco);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+    }
+
+    footer p {
+      color: var(--azul-suave);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav ul {
+        gap: 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho de Navegação -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">🐾 Vida<span>Pet</span></a>
+      <nav aria-label="Navegação Principal">
+        <ul>
+          <li><a href="#beneficios">Benefícios</a></li>
+          <li><a href="#orientacoes">Orientações</a></li>
+          <li><a href="#agendamento" class="btn-nav">Agendar Avaliação</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Cabeçalho Informativo (Hero) -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="badge">Campanha de Posse Responsável</span>
+      <h1>Castração é um ato de amor, saúde e proteção</h1>
+      <p>
+        A cirurgia preventiva aumenta a expectativa de vida do seu cão ou gato, evita doenças graves e combate o abandono animal. Agende uma consulta pré-operatória com nossa equipe especializada.
+      </p>
+      <a href="#agendamento" class="btn-cta">Marcar Consulta Pré-Operatória</a>
+    </div>
+  </section>
+
+  <main>
+    <!-- Seção de Benefícios -->
+    <section id="beneficios">
+      <div class="section-header">
+        <h2>Por que castrar o seu pet?</h2>
+        <p>Além do controle populacional, o procedimento traz ganhos diretos para a saúde física e comportamental do animal.</p>
+      </div>
+
+      <div class="beneficios-grid">
+        <article class="card-beneficio">
+          <span class="card-icon" aria-hidden="true">🩺</span>
+          <h3>Prevenção de Doenças</h3>
+          <p>Reduz drasticamente o risco de tumores de mama, infecções uterinas graves (piometra) nas fêmeas e câncer de próstata ou testículos nos machos.</p>
+        </article>
+
+        <article class="card-beneficio">
+          <span class="card-icon" aria-hidden="true">🏡</span>
+          <h3>Menos Fugas e Brigas</h3>
+          <p>Diminui o instinto de demarcação de território e a necessidade de sair à procura de parceiros, protegendo o pet de atropelamentos e zoonoses.</p>
+        </article>
+
+        <article class="card-beneficio">
+          <span class="card-icon" aria-hidden="true">💚</span>
+          <h3>Mais Longevidade</h3>
+          <p>Animais castrados vivem, em média, de 1 a 3 anos a mais do que animais não castrados, mantendo uma rotina mais tranquila e equilibrada.</p>
+        </article>
+
+        <article class="card-beneficio">
+          <span class="card-icon" aria-hidden="true">🌎</span>
+          <h3>Controle Populacional</h3>
+          <p>Evita crias indesejadas e reduz diretamente o número de cães e gatos abandonados nas ruas e abrigos da cidade.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Tabela de Orientações -->
+    <section id="orientacoes">
+      <div class="section-header">
+        <h2>Guia de Orientações Cirúrgicas</h2>
+        <p>Confira os cuidados essenciais antes, durante e após o procedimento para garantir uma recuperação segura.</p>
+      </div>
+
+      <div class="tabela-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Etapa</th>
+              <th>Cuidado Principal</th>
+              <th>Recomendações ao Tutor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="fase-tag">1. Pré-Operatório</span></td>
+              <td>Avaliação e Exames</td>
+              <td>Realizar hemograma completo e avaliação cardiológica na consulta prévia para garantir segurança anestésica.</td>
+            </tr>
+            <tr>
+              <td><span class="fase-tag">2. Dia da Cirurgia</span></td>
+              <td>Jejum Rigoroso</td>
+              <td>Manter jejum alimentar de 8 a 12 horas e hídrico de 2 a 4 horas (conforme orientação médica). Transportar gatos em caixas seguras.</td>
+            </tr>
+            <tr>
+              <td><span class="fase-tag">3. Pós-Operatório</span></td>
+              <td>Proteção dos Pontos</td>
+              <td>Uso obrigatório de colar elizabetano ou roupa cirúrgica por 7 a 10 dias para evitar lambeduras na incisão.</td>
+            </tr>
+            <tr>
+              <td><span class="fase-tag">4. Recuperação</span></td>
+              <td>Medicação e Repouso</td>
+              <td>Administrar analgésicos e anti-inflamatórios nos horários prescritos, mantendo o pet em local limpo e sem acesso a escadas ou saltos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Formulário de Agendamento -->
+    <section id="agendamento" class="agendamento-section">
+      <div class="section-header">
+        <h2>Agende a Consulta Pré-Operatória</h2>
+        <p>Preencha os dados abaixo. Nossa equipe entrará em contato para confirmar o horário e passar as instruções iniciais.</p>
+      </div>
+
+      <div class="form-container">
+        <form action="#agendamento" method="post">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="nome-tutor">Nome Completo do Tutor *</label>
+              <input 
+                type="text" 
+                id="nome-tutor" 
+                name="nome_tutor" 
+                placeholder="Ex: Mariana Silva" 
+                minlength="3" 
+                required
+              >
+              <span class="helper-text">Mínimo de 3 caracteres.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="especie-pet">Espécie do Pet *</label>
+              <select id="especie-pet" name="especie_pet" required>
+                <option value="" disabled selected>Selecione a espécie</option>
+                <option value="canina">Cão (Canina)</option>
+                <option value="felina">Gato (Felina)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="idade-pet">Idade Aproximada *</label>
+              <input 
+                type="text" 
+                id="idade-pet" 
+                name="idade_pet" 
+                placeholder="Ex: 8 meses ou 2 anos" 
+                pattern="[A-Za-zÀ-ÿ0-9\s]+"
+                required
+              >
+              <span class="helper-text">Idade mínima recomendada: 4 a 6 meses.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="data-desejada">Data Desejada para Avaliação *</label>
+              <input 
+                type="date" 
+                id="data-desejada" 
+                name="data_desejada" 
+                min="2026-11-12" 
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="telefone-tutor">Telefone / WhatsApp *</label>
+              <input 
+                type="tel" 
+                id="telefone-tutor" 
+                name="telefone_tutor" 
+                placeholder="(11) 99999-9999" 
+                pattern="^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$"
+                required
+              >
+            </div>
+
+            <div class="form-group full-width">
+              <label for="observacoes">Observações sobre o Pet (Opcional)</label>
+              <textarea 
+                id="observacoes" 
+                name="observacoes" 
+                rows="3" 
+                placeholder="Informe se o pet possui alguma condição pré-existente, alergia ou comportamento específico."
+              ></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">Solicitar Agendamento</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <strong>VidaPet Clínica Veterinária & PetShop</strong>
+    <p>Cuidando com responsabilidade e carinho do seu melhor amigo.</p>
+    <p>Atendimento de Segunda a Sábado, das 08h às 19h • CRMV-SP 00000</p>
+  </footer>
+
+</body>
+</html>

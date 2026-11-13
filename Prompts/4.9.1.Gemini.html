@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folha do Bairro — Jornalismo Local Acessível e Comunitário</title>
+  <meta name="description" content="Portal de notícias locais da Vila Mariana e região. Informação comunitária, mobilidade, serviços e cultura com acessibilidade total.">
+  
+  <!-- Fontes Editoriais: Merriweather (Títulos) e Inter (Corpo e UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ==========================================================================
+       VARIÁVEIS DE DESIGN, TIPOGRAFIA FLUIDA E TEMAS ACESSÍVEIS (WCAG AA/AAA)
+       ========================================================================== */
+    :root {
+      /* Fator de escala de fonte controlado pelo usuário (padrão 100%) */
+      --font-scale: 1;
+      
+      /* Paleta Editorial Padrão (Contraste verificado > 7:1) */
+      --bg-page: #FAF9F6;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F0EDE6;
+      --bg-toolbar: #0F3D5E;
+      --text-toolbar: #FFFFFF;
+      
+      --text-primary: #14171A;
+      --text-secondary: #3B4248;
+      --text-muted: #4E565E;
+      
+      --brand-primary: #0F3D5E;      /* Azul-marinho institucional (Contraste 11.4:1 no off-white) */
+      --brand-primary-hover: #09263B;
+      --brand-accent: #B83A1B;       /* Terracota editorial (Contraste 5.4:1 no off-white / 5.7:1 no branco) */
+      --brand-accent-bg: #FDF2EF;
+      
+      --border-color: #D5D0C5;
+      --focus-ring: #B83A1B;
+      
+      /* Espaçamento e Tipografia Adaptáveis */
+      --line-height-body: 1.65;
+      --line-height-heading: 1.25;
+      --letter-spacing-body: normal;
+      --word-spacing-body: normal;
+      
+      --radius-sm: 0.375rem;
+      --radius-md: 0.625rem;
+      --radius-lg: 0.875rem;
+    }
+
+    /* Tema Alto Contraste / Escuro (WCAG AAA > 12:1) */
+    html[data-theme="high-contrast"] {
+      --bg-page: #0B0D0F;
+      --bg-surface: #14181D;
+      --bg-subtle: #1E242B;
+      --bg-toolbar: #000000;
+      --text-toolbar: #FFD60A;
+      
+      --text-primary: #FFFFFF;
+      --text-secondary: #E6EAF0;
+      --text-muted: #CBD2D9;
+      
+      --brand-primary: #66B2FF;
+      --brand-primary-hover: #99CCFF;
+      --brand-accent: #FFD60A;
+      --brand-accent-bg: #2A2408;
+      
+      --border-color: #525E6B;
+      --focus-ring: #FFD60A;
+    }
+
+    /* Espaçamento Ampliado para Dislexia / Baixa Visão (WCAG 1.4.12 Text Spacing) */
+    html[data-spacing="relaxed"] {
+      --line-height-body: 1.9;
+      --line-height-heading: 1.4;
+      --letter-spacing-body: 0.06em;
+      --word-spacing-body: 0.14em;
+    }
+
+    /* Base Fluida e Prevenção Rigorosa de Rolagem Horizontal */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      /* Permite que tanto o zoom do navegador quanto o seletor interno escalem todos os rem */
+      font-size: calc(100% * var(--font-scale));
+      scroll-behavior: smooth;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 1rem;
+      line-height: var(--line-height-body);
+      letter-spacing: var(--letter-spacing-body);
+      word-spacing: var(--word-spacing-body);
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Tipografia Editorial */
+    h1, h2, h3, h4, .font-editorial {
+      font-family: 'Merriweather', Georgia, serif;
+      line-height: var(--line-height-heading);
+      color: var(--text-primary);
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    .fluid-h1 {
+      font-size: clamp(1.5rem, 3.2vw + 0.75rem, 2.5rem);
+      font-weight: 900;
+    }
+
+    .fluid-h2 {
+      font-size: clamp(1.25rem, 2.2vw + 0.65rem, 1.875rem);
+      font-weight: 700;
+    }
+
+    .fluid-h3 {
+      font-size: clamp(1.1rem, 1.5vw + 0.6rem, 1.375rem);
+      font-weight: 700;
+    }
+
+    .fluid-masthead {
+      font-size: clamp(1.75rem, 4vw + 0.75rem, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    /* Mídia e Containers Sempre Fluidos */
+    img, svg, picture, video, canvas, iframe {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Foco Visível de Alto Contraste (WCAG 2.4.7 / 2.4.11) */
+    :focus-visible {
+      outline: 0.1875rem solid var(--focus-ring);
+      outline-offset: 0.1875rem;
+      border-radius: 0.25rem;
+    }
+
+    /* Skip Link (Pular para conteúdo) */
+    .skip-link {
+      position: absolute;
+      top: -10rem;
+      left: 1rem;
+      z-index: 100;
+      background-color: var(--brand-accent);
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      min-height: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.3);
+      transition: top 0.15s ease;
+    }
+
+    html[data-theme="high-contrast"] .skip-link {
+      color: #000000;
+    }
+
+    .skip-link:focus {
+      top: 0.75rem;
+    }
+
+    /* Áreas de Toque Mínimas (WCAG 2.5.5 / 2.5.8 -> mínimo 44x44px = 2.75rem) */
+    .touch-target {
+      min-height: 2.75rem;
+      min-width: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Grids Auto-Responsivos que colapsam graciosamente sob zoom de 200%-400% */
+    .auto-grid-news {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18.5rem), 1fr));
+      gap: 1.5rem;
+    }
+
+    .layout-main-sidebar {
+      display: grid;
+      /* Quando a largura disponível da coluna lateral cair abaixo de 19rem (ex: zoom 250%+), empilha automaticamente */
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+      gap: 2rem;
+    }
+
+    @media (min-width: 64rem) {
+      .layout-main-sidebar {
+        /* Em telas grandes sem zoom extremo, mantém proporção 2:1 mas permite quebra se o texto crescer muito */
+        grid-template-columns: minmax(0, 2fr) minmax(min(100%, 19rem), 1fr);
+      }
+    }
+
+    /* Utilitários Semânticos vinculados às Variáveis CSS */
+    .surface-card {
+      background-color: var(--bg-surface);
+      border: 0.0625rem solid var(--border-color);
+      border-radius: var(--radius-lg);
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .surface-card:hover {
+      border-color: var(--brand-primary);
+    }
+
+    .surface-subtle {
+      background-color: var(--bg-subtle);
+      border: 0.0625rem solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .badge-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.25rem 0.625rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-radius: var(--radius-sm);
+      background-color: var(--brand-accent-bg);
+      color: var(--brand-accent);
+      border: 0.0625rem solid currentColor;
+      max-width: 100%;
+    }
+
+    /* Botões Acessíveis */
+    .btn-primary {
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      font-weight: 600;
+      padding: 0.625rem 1.125rem;
+      border-radius: var(--radius-md);
+      border: 0.125rem solid transparent;
+      cursor: pointer;
+      min-height: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-align: center;
+      transition: background-color 0.15s ease;
+    }
+
+    html[data-theme="high-contrast"] .btn-primary {
+      color: #000000;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--brand-primary-hover);
+    }
+
+    .btn-outline {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 0.5rem 0.875rem;
+      border-radius: var(--radius-md);
+      border: 0.125rem solid var(--border-color);
+      cursor: pointer;
+      min-height: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--brand-primary);
+      background-color: var(--bg-subtle);
+    }
+
+    .btn-outline[aria-pressed="true"],
+    .btn-filter[aria-pressed="true"] {
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      border-color: var(--brand-primary);
+    }
+
+    html[data-theme="high-contrast"] .btn-outline[aria-pressed="true"],
+    html[data-theme="high-contrast"] .btn-filter[aria-pressed="true"] {
+      color: #000000;
+    }
+
+    /* Modal / Dialog Acessível */
+    dialog.article-modal {
+      width: min(94vw, 48rem);
+      max-width: 100%;
+      max-height: 90dvh;
+      margin: auto;
+      padding: 0;
+      border: 0.125rem solid var(--border-color);
+      border-radius: var(--radius-lg);
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.35);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    dialog.article-modal::backdrop {
+      background-color: rgba(10, 15, 22, 0.78);
+      backdrop-filter: blur(0.1875rem);
+    }
+
+    /* Container Principal Fluido */
+    .page-container {
+      width: 100%;
+      max-width: 78rem;
+      margin-inline: auto;
+      padding-inline: clamp(0.875rem, 3vw, 2rem);
+    }
+
+    /* Animação sutil respeitando preferência de movimento reduzido */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Link de Salto para Acessibilidade por Teclado / Leitores de Tela -->
+  <a href="#conteudo-principal" class="skip-link">
+    Pular para o conteúdo principal
+  </a>
+
+  <!-- ========================================================================
+       BARRA INTERATIVA DE ACESSIBILIDADE (CONTROLE DE ZOOM DE FONTE E CONTRASTE)
+       ======================================================================== -->
+  <section aria-label="Controles de acessibilidade e leitura" style="background-color: var(--bg-toolbar); color: var(--text-toolbar); border-bottom: 0.125rem solid var(--border-color);">
+    <div class="page-container py-2.5 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Identificação e Status ao Vivo -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="font-bold text-sm tracking-wide uppercase flex items-center gap-1.5">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM6 9.5h12M12 9.5v5m0 0l-2.5 5m2.5-5l2.5 5"/>
+          </svg>
+          <span>Acessibilidade</span>
+        </span>
+        <span id="a11y-status-badge" class="text-xs font-semibold px-2 py-0.5 rounded" style="background-color: rgba(255,255,255,0.16);" aria-live="polite">
+          Texto: 100%
+        </span>
+      </div>
+
+      <!-- Grupo de Botões Interativos -->
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Ajustes visuais da página">
+        
+        <!-- Diminuir Fonte -->
+        <button type="button" id="btn-font-decrease" class="touch-target px-3 py-1.5 rounded text-sm font-bold border transition" style="background-color: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.45); color: inherit;" aria-label="Diminuir tamanho do texto">
+          A−
+        </button>
+
+        <!-- Aumentar Fonte -->
+        <button type="button" id="btn-font-increase" class="touch-target px-3 py-1.5 rounded text-sm font-bold border transition" style="background-color: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.45); color: inherit;" aria-label="Aumentar tamanho do texto (até 200%)">
+          A+
+        </button>
+
+        <!-- Alternar Alto Contraste -->
+        <button type="button" id="btn-toggle-contrast" aria-pressed="false" class="touch-target px-3 py-1.5 rounded text-sm font-semibold border transition flex items-center gap-1.5" style="background-color: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.45); color: inherit;">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v18a9 9 0 000-18z" fill="currentColor"/>
+          </svg>
+          <span>Alto Contraste</span>
+        </button>
+
+        <!-- Alternar Espaçamento de Leitura -->
+        <button type="button" id="btn-toggle-spacing" aria-pressed="false" class="touch-target px-3 py-1.5 rounded text-sm font-semibold border transition flex items-center gap-1.5" style="background-color: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.45); color: inherit;">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/>
+          </svg>
+          <span>Espaçamento</span>
+        </button>
+
+        <!-- Redefinir -->
+        <button type="button" id="btn-a11y-reset" class="touch-target px-3 py-1.5 rounded text-sm font-semibold underline transition" style="color: inherit;" aria-label="Redefinir configurações de acessibilidade">
+          Redefinir
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       CABEÇALHO PRINCIPAL DO JORNAL E NAVEGAÇÃO ADAPTÁVEL
+       ======================================================================== -->
+  <header style="background-color: var(--bg-surface); border-bottom: 0.125rem solid var(--border-color);">
+    <div class="page-container pt-4 pb-3">
+      
+      <!-- Faixa Superior de Data, Edição e Clima Rápido -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-3 text-sm" style="color: var(--text-secondary); border-bottom: 0.0625rem solid var(--border-color);">
+        <p class="m-0 font-medium">
+          <time datetime="2026-11-12">Quinta-feira, 12 de novembro de 2026</time> · Edição Regional Zona Sul / Vila Mariana
+        </p>
+        <p class="m-0 font-semibold flex items-center gap-1.5" style="color: var(--brand-primary);">
+          <span aria-hidden="true">⛅</span>
+          <span>23°C — Parcialmente nublado</span>
+        </p>
+      </div>
+
+      <!-- Logotipo / Masthead e Botão de Menu Mobile -->
+      <div class="py-4 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <a href="#conteudo-principal" class="no-underline inline-block" style="color: var(--text-primary);">
+            <span class="fluid-masthead font-editorial block tracking-tight">Folha do Bairro</span>
+          </a>
+          <p class="m-0 mt-1 text-sm font-medium" style="color: var(--text-secondary);">
+            Jornalismo comunitário independente, serviços públicos e memória local
+          </p>
+        </div>
+
+        <!-- Botão de Menu Colapsável (visível em telas menores ou quando necessário) -->
+        <button type="button" id="btn-mobile-menu" class="btn-outline md:hidden" aria-expanded="false" aria-controls="primary-navigation">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <span>Seções</span>
+        </button>
+      </div>
+
+      <!-- Navegação Principal com flex-wrap (nunca corta links mesmo com texto em 200%) -->
+      <nav id="primary-navigation" aria-label="Seções do jornal" class="hidden md:block pt-2 pb-1" style="border-top: 0.0625rem solid var(--border-color);">
+        <ul class="list-none m-0 p-0 flex flex-wrap items-center gap-2">
+          <li>
+            <a href="#destaque" class="touch-target px-3.5 py-2 rounded-md font-semibold no-underline transition hover:underline" style="color: var(--brand-primary);">
+              Manchete
+            </a>
+          </li>
+          <li>
+            <a href="#ultimas-noticias" class="touch-target px-3.5 py-2 rounded-md font-semibold no-underline transition hover:underline" style="color: var(--text-primary);">
+              Últimas Notícias
+            </a>
+          </li>
+          <li>
+            <a href="#utilidades-locais" class="touch-target px-3.5 py-2 rounded-md font-semibold no-underline transition hover:underline" style="color: var(--text-primary);">
+              Transporte e Clima
+            </a>
+          </li>
+          <li>
+            <a href="#agenda-cultural" class="touch-target px-3.5 py-2 rounded-md font-semibold no-underline transition hover:underline" style="color: var(--text-primary);">
+              Agenda do Bairro
+            </a>
+          </li>
+          <li>
+            <a href="#envie-pauta" class="touch-target px-3.5 py-2 rounded-md font-semibold no-underline transition hover:underline" style="color: var(--brand-accent);">
+              Envie sua Pauta
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       FAIXA DE ALERTA DE SERVIÇO PÚBLICO (BOLETIM URGENTE LOCAL)
+       ======================================================================== -->
+  <div role="region" aria-label="Aviso de utilidade pública" style="background-color: var(--brand-accent-bg); border-bottom: 0.0625rem solid var(--border-color);">
+    <div class="page-container py-2.5 flex flex-wrap items-center gap-2.5 text-sm">
+      <span class="font-bold uppercase px-2 py-0.5 rounded text-xs" style="background-color: var(--brand-accent); color: #FFFFFF;">
+        Serviço Público
+      </span>
+      <p class="m-0 font-medium" style="color: var(--text-primary);">
+        Manutenção programada na rede de água afeta trecho da Rua Vergueiro nesta sexta (13/11) das 8h às 16h.
+        <button type="button" class="underline font-bold ml-1 cursor-pointer bg-transparent border-0 p-0" style="color: var(--brand-accent); min-height: 2.75rem;" data-article-id="alerta-agua">
+          Ver ruas afetadas
+        </button>
+      </p>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       CONTEÚDO PRINCIPAL
+       ======================================================================== -->
+  <main id="conteudo-principal" class="page-container py-6 sm:py-8" tabindex="-1">
+    
+    <!-- SEÇÃO 1: MANCHETE PRINCIPAL EM DESTAQUE -->
+    <section id="destaque" aria-labelledby="titulo-secao-destaque" class="mb-10">
+      <h2 id="titulo-secao-destaque" class="sr-only">Manchete Principal</h2>
+      
+      <article class="surface-card p-4 sm:p-6 lg:p-8 shadow-sm">
+        <div class="layout-main-sidebar items-start">
+          
+          <!-- Coluna de Texto da Manchete -->
+          <div class="flex flex-col justify-between gap-4">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <span class="badge-category">Mobilidade Urbana</span>
+              <time datetime="2026-11-12T09:15" class="text-sm font-medium" style="color: var(--text-muted);">
+                Atualizado hoje às 09h15 · Por Mariana Albuquerque
+              </time>
+            </div>
+
+            <h1 class="fluid-h1 m-0">
+              Nova ciclovia conectando o Parque Ibirapuera ao Metrô Vila Mariana entra em operação nesta semana
+            </h1>
+
+            <p class="m-0 text-base sm:text-lg" style="color: var(--text-secondary);">
+              Trajeto de 3,8 quilômetros conta com sinalização tátil nos cruzamentos, semáforos sonoros para pedestres com deficiência visual e bicicletários gratuitos integrados ao terminal.
+            </p>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <button type="button" class="btn-primary" data-article-id="manchete-ciclovia">
+                <span>Ler reportagem completa</span>
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                </svg>
+              </button>
+              <span class="text-sm font-medium" style="color: var(--text-muted);">
+                Tempo estimado de leitura: 4 min
+              </span>
+            </div>
+          </div>
+
+          <!-- Figura Responsiva da Manchete com Proporção Fluida -->
+          <figure class="m-0">
+            <div class="w-full rounded-lg overflow-hidden border" style="aspect-ratio: 16 / 10; border-color: var(--border-color); background-color: var(--bg-subtle);">
+              <!-- Ilustração SVG editorial de alta definição (zero falhas de carregamento e escalável infinitamente) -->
+              <svg viewBox="0 0 800 500" class="w-full h-full object-cover" role="img" aria-label="Ilustração do novo corredor cicloviário arborizado com faixa exclusiva, travessia acessível e ciclistas">
+                <defs>
+                  <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#D9EAF7"/>
+                    <stop offset="100%" stop-color="#F4F8FB"/>
+                  </linearGradient>
+                </defs>
+                <rect width="800" height="500" fill="url(#skyGrad)"/>
+                <!-- Edifícios do bairro ao fundo -->
+                <rect x="40" y="130" width="110" height="220" rx="6" fill="#B8C9D9"/>
+                <rect x="170" y="95" width="130" height="255" rx="6" fill="#9EB6CC"/>
+                <rect x="520" y="110" width="120" height="240" rx="6" fill="#A9BFD4"/>
+                <rect x="660" y="145" width="100" height="205" rx="6" fill="#C2D2E0"/>
+                <!-- Copas das árvores -->
+                <circle cx="120" cy="270" r="55" fill="#2E6F40"/>
+                <circle cx="340" cy="260" r="65" fill="#3A834E"/>
+                <circle cx="460" cy="265" r="58" fill="#2E6F40"/>
+                <circle cx="690" cy="275" r="52" fill="#3A834E"/>
+                <!-- Calçada acessível -->
+                <rect x="0" y="330" width="800" height="45" fill="#E6E1D6"/>
+                <!-- Piso tátil alerta amarelo -->
+                <rect x="0" y="365" width="800" height="10" fill="#E0A800"/>
+                <!-- Ciclovia vermelha -->
+                <rect x="0" y="375" width="800" height="65" fill="#B83A1B"/>
+                <line x1="0" y1="407" x2="800" y2="407" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="24,18"/>
+                <!-- Faixa de rolamento -->
+                <rect x="0" y="440" width="800" height="60" fill="#343A40"/>
+                <!-- Símbolo de bicicleta na pista -->
+                <circle cx="240" cy="408" r="14" fill="none" stroke="#FFFFFF" stroke-width="3.5"/>
+                <circle cx="285" cy="408" r="14" fill="none" stroke="#FFFFFF" stroke-width="3.5"/>
+                <path d="M240 408 L260 390 L285 408 M260 390 L255 380 M275 385 L285 408" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/>
+                <!-- Semáforo acessível -->
+                <rect x="565" y="245" width="10" height="120" fill="#1E242B"/>
+                <rect x="554" y="235" width="32" height="58" rx="6" fill="#14171A"/>
+                <circle cx="570" cy="250" r="8" fill="#E63946"/>
+                <circle cx="570" cy="276" r="8" fill="#2A9D8F"/>
+              </svg>
+            </div>
+            <figcaption class="mt-2.5 text-sm" style="color: var(--text-muted);">
+              Trecho revitalizado na Rua Sena Madureira recebeu calçadas niveladas, piso tátil direcional e iluminação em LED. (Ilustração: Equipe Folha do Bairro)
+            </figcaption>
+          </figure>
+
+        </div>
+      </article>
+    </section>
+
+    <!-- ======================================================================
+         GRID PRINCIPAL + PAINEL LATERAL DE UTILIDADES LOCAIS
+         ====================================================================== -->
+    <div class="layout-main-sidebar items-start">
+      
+      <!-- COLUNA PRINCIPAL: ÚLTIMAS NOTÍCIAS COM FILTRO ACESSÍVEL -->
+      <section id="ultimas-noticias" aria-labelledby="titulo-ultimas-noticias">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5 pb-3" style="border-bottom: 0.125rem solid var(--brand-primary);">
+          <h2 id="titulo-ultimas-noticias" class="fluid-h2 m-0">
+            Últimas Notícias do Bairro
+          </h2>
+          <span id="contador-noticias" class="text-sm font-semibold" style="color: var(--text-secondary);" aria-live="polite">
+            Exibindo 6 reportagens
+          </span>
+        </div>
+
+        <!-- Barra de Filtros por Categoria (com flex-wrap e aria-pressed) -->
+        <div role="group" aria-label="Filtrar notícias por categoria" class="flex flex-wrap gap-2 mb-6">
+          <button type="button" class="btn-outline btn-filter text-sm" data-filter="todas" aria-pressed="true">
+            Todas
+          </button>
+          <button type="button" class="btn-outline btn-filter text-sm" data-filter="Mobilidade" aria-pressed="false">
+            Mobilidade
+          </button>
+          <button type="button" class="btn-outline btn-filter text-sm" data-filter="Cultura" aria-pressed="false">
+            Cultura e Lazer
+          </button>
+          <button type="button" class="btn-outline btn-filter text-sm" data-filter="Economia" aria-pressed="false">
+            Comércio Local
+          </button>
+          <button type="button" class="btn-outline btn-filter text-sm" data-filter="Saúde e Educação" aria-pressed="false">
+            Saúde e Educação
+          </button>
+        </div>
+
+        <!-- Grid Fluido de Cards de Notícias (nunca corta texto, sem alturas fixas) -->
+        <div id="grid-noticias" class="auto-grid-news">
+          <!-- Os cards são renderizados via JavaScript para permitir filtragem acessível e leitura em modal -->
+        </div>
+      </section>
+
+      <!-- PAINEL LATERAL: UTILIDADES LOCAIS E SERVIÇOS -->
+      <aside id="utilidades-locais" aria-label="Utilidades e serviços do bairro" class="flex flex-col gap-6">
+        
+        <!-- Card 1: Status do Transporte Público -->
+        <section class="surface-card p-5" aria-labelledby="titulo-transporte">
+          <h3 id="titulo-transporte" class="fluid-h3 m-0 mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 shrink-0" style="color: var(--brand-primary);" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="3" width="16" height="15" rx="3"/>
+              <path d="M4 11h16M8 18l-2 3M16 18l2 3"/>
+            </svg>
+            <span>Transporte na Região</span>
+          </h3>
+          <ul class="list-none m-0 p-0 flex flex-col gap-3 text-sm">
+            <li class="surface-subtle p-3 flex flex-wrap items-center justify-between gap-2">
+              <strong style="color: var(--text-primary);">Linha 1-Azul (Metrô)</strong>
+              <span class="font-bold px-2 py-0.5 rounded text-xs" style="background-color: #E3F5EA; color: #115E31;">
+                Operação Normal
+              </span>
+            </li>
+            <li class="surface-subtle p-3 flex flex-wrap items-center justify-between gap-2">
+              <strong style="color: var(--text-primary);">Linha 5-Lilás (Metrô)</strong>
+              <span class="font-bold px-2 py-0.5 rounded text-xs" style="background-color: #E3F5EA; color: #115E31;">
+                Operação Normal
+              </span>
+            </li>
+            <li class="surface-subtle p-3 flex flex-col gap-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <strong style="color: var(--text-primary);">Corredor Lins de Vasconcelos</strong>
+                <span class="font-bold px-2 py-0.5 rounded text-xs" style="background-color: #FEF0D9; color: #8A4B00;">
+                  Desvio Pontual
+                </span>
+              </div>
+              <span style="color: var(--text-secondary);">Obras de recapeamento alteram 2 pontos até 18h.</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Card 2: Previsão do Tempo e Defesa Civil -->
+        <section class="surface-card p-5" aria-labelledby="titulo-clima">
+          <h3 id="titulo-clima" class="fluid-h3 m-0 mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 shrink-0" style="color: var(--brand-primary);" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+            </svg>
+            <span>Tempo e Defesa Civil</span>
+          </h3>
+          <div class="surface-subtle p-3.5 mb-3">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <span class="text-2xl font-extrabold" style="color: var(--brand-primary);">23°C</span>
+              <span class="text-sm font-medium" style="color: var(--text-secondary);">Mín 17°C · Máx 26°C</span>
+            </div>
+            <p class="m-0 mt-1.5 text-sm" style="color: var(--text-secondary);">
+              Pancadas isoladas no fim da tarde. Sem alerta de alagamento na bacia do Córrego Uberaba.
+            </p>
+          </div>
+          <p class="m-0 text-xs font-medium" style="color: var(--text-muted);">
+            Emergências Defesa Civil: ligue <strong>199</strong> (atendimento 24h gratuito).
+          </p>
+        </section>
+
+        <!-- Card 3: Agenda Cultural do Fim de Semana -->
+        <section id="agenda-cultural" class="surface-card p-5" aria-labelledby="titulo-agenda">
+          <h3 id="titulo-agenda" class="fluid-h3 m-0 mb-3">
+            Agenda Comunitária
+          </h3>
+          <ul class="list-none m-0 p-0 flex flex-col gap-3.5 text-sm">
+            <li class="pb-3" style="border-bottom: 0.0625rem solid var(--border-color);">
+              <span class="font-bold block" style="color: var(--brand-accent);">Sábado, 14/11 · 08h às 13h</span>
+              <strong class="block text-base mt-0.5" style="color: var(--text-primary);">Feira de Produtores Orgânicos</strong>
+              <span style="color: var(--text-secondary);">Praça Lions Clube — Entrada gratuita e acessível.</span>
+            </li>
+            <li class="pb-3" style="border-bottom: 0.0625rem solid var(--border-color);">
+              <span class="font-bold block" style="color: var(--brand-accent);">Sábado, 14/11 · 15h</span>
+              <strong class="block text-base mt-0.5" style="color: var(--text-primary);">Roda de Choro e Leitura Infantil</strong>
+              <span style="color: var(--text-secondary);">Biblioteca Viriato Corrêa — Com intérprete de Libras.</span>
+            </li>
+            <li>
+              <span class="font-bold block" style="color: var(--brand-accent);">Domingo, 15/11 · 09h</span>
+              <strong class="block text-base mt-0.5" style="color: var(--text-primary);">Mutirão de Plantio Urbano</strong>
+              <span style="color: var(--text-secondary);">Parque da Aclimação — Ponto de encontro Portão 1.</span>
+            </li>
+          </ul>
+        </section>
+
+      </aside>
+    </div>
+
+    <!-- ======================================================================
+         SEÇÃO DE PARTICIPAÇÃO CIDADÃ: ENVIO DE PAUTA E BOLETIM POR E-MAIL
+         ====================================================================== -->
+    <section id="envie-pauta" aria-labelledby="titulo-participacao" class="mt-12 surface-card p-5 sm:p-8">
+      <div class="max-w-3xl">
+        <span class="badge-category mb-2">Jornalismo Colaborativo</span>
+        <h2 id="titulo-participacao" class="fluid-h2 m-0 mb-2">
+          Tem uma sugestão de pauta ou problema na sua rua?
+        </h2>
+        <p class="m-0 mb-6" style="color: var(--text-secondary);">
+          Envie relatos sobre zeladoria, eventos culturais ou histórias de moradores do bairro. Todos os campos marcados com asterisco (*) são obrigatórios.
+        </p>
+
+        <form id="form-pauta" novalidate class="flex flex-col gap-4">
+          <div class="auto-grid-news">
+            <!-- Campo Nome -->
+            <div class="flex flex-col gap-1.5">
+              <label for="input-nome" class="font-bold text-sm" style="color: var(--text-primary);">
+                Seu nome completo *
+              </label>
+              <input type="text" id="input-nome" name="nome" required autocomplete="name"
+                class="w-full px-3.5 py-2.5 rounded-md text-base"
+                style="background-color: var(--bg-page); color: var(--text-primary); border: 0.125rem solid var(--border-color); min-height: 2.75rem;"
+                aria-describedby="erro-nome">
+              <span id="erro-nome" class="text-sm font-semibold hidden" style="color: var(--brand-accent);" role="alert"></span>
+            </div>
+
+            <!-- Campo Bairro / Rua -->
+            <div class="flex flex-col gap-1.5">
+              <label for="input-local" class="font-bold text-sm" style="color: var(--text-primary);">
+                Rua ou região do bairro *
+              </label>
+              <input type="text" id="input-local" name="local" required placeholder="Ex.: Rua Joaquim Távora"
+                class="w-full px-3.5 py-2.5 rounded-md text-base"
+                style="background-color: var(--bg-page); color: var(--text-primary); border: 0.125rem solid var(--border-color); min-height: 2.75rem;"
+                aria-describedby="erro-local">
+              <span id="erro-local" class="text-sm font-semibold hidden" style="color: var(--brand-accent);" role="alert"></span>
+            </div>
+          </div>
+
+          <!-- Campo Relato -->
+          <div class="flex flex-col gap-1.5">
+            <label for="input-mensagem" class="font-bold text-sm" style="color: var(--text-primary);">
+              Resumo da notícia ou solicitação *
+            </label>
+            <textarea id="input-mensagem" name="mensagem" rows="4" required
+              class="w-full px-3.5 py-2.5 rounded-md text-base"
+              style="background-color: var(--bg-page); color: var(--text-primary); border: 0.125rem solid var(--border-color);"
+              aria-describedby="erro-mensagem"></textarea>
+            <span id="erro-mensagem" class="text-sm font-semibold hidden" style="color: var(--brand-accent);" role="alert"></span>
+          </div>
+
+          <!-- Checkbox Newsletter -->
+          <div class="flex items-start gap-3 pt-1">
+            <input type="checkbox" id="check-boletim" name="boletim"
+              class="mt-1 shrink-0 cursor-pointer"
+              style="width: 1.375rem; height: 1.375rem; accent-color: var(--brand-primary);">
+            <label for="check-boletim" class="text-sm cursor-pointer" style="color: var(--text-secondary);">
+              Quero receber o resumo semanal da <strong>Folha do Bairro</strong> com os serviços públicos e eventos da região.
+            </label>
+          </div>
+
+          <!-- Botão Enviar e Feedback -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <button type="submit" class="btn-primary">
+              Enviar sugestão à redação
+            </button>
+          </div>
+
+          <div id="form-feedback" class="hidden p-4 rounded-md font-semibold text-sm" role="status" aria-live="polite"
+            style="background-color: var(--brand-accent-bg); border: 0.125rem solid var(--brand-accent); color: var(--text-primary);">
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       RODAPÉ EDITORIAL E DECLARAÇÃO DE ACESSIBILIDADE
+       ======================================================================== -->
+  <footer class="mt-12 py-8" style="background-color: var(--bg-surface); border-top: 0.125rem solid var(--border-color);">
+    <div class="page-container flex flex-col gap-6">
+      <div class="flex flex-wrap items-start justify-between gap-6">
+        <div class="max-w-md">
+          <span class="font-editorial font-black text-xl block" style="color: var(--text-primary);">
+            Folha do Bairro
+          </span>
+          <p class="m-0 mt-2 text-sm" style="color: var(--text-secondary);">
+            Publicação comunitária dedicada à transparência municipal, cultura de proximidade e acesso universal à informação.
+          </p>
+        </div>
+
+        <div class="text-sm" style="color: var(--text-secondary);">
+          <strong class="block mb-1" style="color: var(--text-primary);">Compromisso de Acessibilidade (WCAG 2.2 AA/AAA)</strong>
+          <p class="m-0 max-w-md">
+            Este portal foi desenvolvido com tipografia fluida, navegação integral por teclado e suporte a ampliação de até 400% sem perda de conteúdo ou rolagem horizontal.
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-4 text-xs flex flex-wrap items-center justify-between gap-2" style="border-top: 0.0625rem solid var(--border-color); color: var(--text-muted);">
+        <span>© 2026 Folha do Bairro — Redação Comunitária Vila Mariana, São Paulo/SP.</span>
+        <span>Atalhos: Tab para navegar · Esc para fechar janelas de leitura.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL ACESSÍVEL PARA LEITURA COMPLETA DA NOTÍCIA (<dialog>)
+       ======================================================================== -->
+  <dialog id="modal-noticia" class="article-modal" aria-labelledby="modal-titulo">
+    <div class="p-5 sm:p-8 flex flex-col gap-4">
+      
+      <!-- Cabeçalho do Modal -->
+      <div class="flex flex-wrap items-start justify-between gap-3 pb-3" style="border-bottom: 0.0625rem solid var(--border-color);">
+        <div class="flex flex-wrap items-center gap-2">
+          <span id="modal-categoria" class="badge-category">Categoria</span>
+          <time id="modal-data" class="text-sm font-medium" style="color: var(--text-muted);">Data</time>
+        </div>
+        <button type="button" id="btn-fechar-modal" class="btn-outline text-sm" aria-label="Fechar reportagem">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <span>Fechar (Esc)</span>
+        </button>
+      </div>
+
+      <!-- Título e Autor -->
+      <h2 id="modal-titulo" class="fluid-h2 m-0">Título da Reportagem</h2>
+      <p id="modal-autor" class="m-0 text-sm font-semibold" style="color: var(--brand-primary);">Por Redação</p>
+
+      <!-- Corpo da Notícia -->
+      <div id="modal-corpo" class="flex flex-col gap-4 text-base" style="color: var(--text-primary);">
+        <!-- Parágrafos inseridos dinamicamente -->
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="pt-4 mt-2 flex flex-wrap items-center justify-between gap-3" style="border-top: 0.0625rem solid var(--border-color);">
+        <button type="button" id="btn-copiar-link" class="btn-outline text-sm">
+          Copiar resumo para compartilhar
+        </button>
+        <span id="status-copia" class="text-sm font-semibold" style="color: var(--brand-primary);" aria-live="polite"></span>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ========================================================================
+       LÓGICA JAVASCRIPT (ACESSIBILIDADE, DADOS LOCAIS, FILTROS E MODAL)
+       ======================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ----------------------------------------------------------------------
+         1. BANCO DE NOTÍCIAS LOCAIS REALISTAS
+         ---------------------------------------------------------------------- */
+      const ARTICLES = {
+        'manchete-ciclovia': {
+          id: 'manchete-ciclovia',
+          category: 'Mobilidade',
+          date: '12 de novembro de 2026 · 09h15',
+          author: 'Por Mariana Albuquerque',
+          title: 'Nova ciclovia conectando o Parque Ibirapuera ao Metrô Vila Mariana entra em operação nesta semana',
+          summary: 'Trajeto de 3,8 quilômetros conta com sinalização tátil nos cruzamentos, semáforos sonoros para pedestres com deficiência visual e bicicletários gratuitos.',
+          content: [
+            'Moradores e ciclistas da região da Vila Mariana já podem utilizar o novo corredor cicloviário de 3,8 quilômetros que liga o Portão 3 do Parque Ibirapuera diretamente ao terminal integrado da Estação Vila Mariana do Metrô.',
+            'O projeto foi desenvolvido após três audiências públicas com associações de bairro e coletivos de acessibilidade. Além da faixa exclusiva bidirecional com pavimento drenante, todas as 14 esquinas ao longo do trajeto receberam rebaixamento total de guias, piso tátil alerta e direcional, além de botoeiras sonoras nos semáforos.',
+            'Para quem utiliza a bicicleta como integração ao transporte sobre trilhos, o bicicletário anexo à estação ganhou 120 novas vagas cobertas, monitoramento 24 horas e estação gratuita de calibragem de pneus.',
+            'Agentes de trânsito estarão posicionados nos principais cruzamentos durante os primeiros 15 dias para orientar motoristas, ciclistas e pedestres sobre a nova sinalização.'
+          ]
+        },
+        'alerta-agua': {
+          id: 'alerta-agua',
+          category: 'Serviço Público',
+          date: '12 de novembro de 2026 · 08h00',
+          author: 'Por Boletim de Utilidade Pública',
+          title: 'Manutenção programada na rede de abastecimento afeta trecho da Rua Vergueiro nesta sexta-feira',
+          summary: 'Intervenção preventiva para troca de registros ocorre das 8h às 16h. Imóveis com caixa-d’água dimensionada não devem sentir desabastecimento.',
+          content: [
+            'A companhia de saneamento informou que realizará nesta sexta-feira (13/11), entre 8h e 16h, a substituição de válvulas reguladoras de pressão na rede principal que atende parte da Vila Mariana e Aclimação.',
+            'As vias com possível redução temporária de pressão incluem trechos da Rua Vergueiro (entre as ruas Pelotas e Neto Araújo), Rua Topázio e Rua Safira.',
+            'A recomendação aos moradores e comerciantes é manter a reserva domiciliar cheia e evitar lavagem de calçadas ou veículos durante o período. A normalização gradativa está prevista para o início da noite de sexta-feira.'
+          ]
+        },
+        'feira-produtor': {
+          id: 'feira-produtor',
+          category: 'Economia',
+          date: '11 de novembro de 2026 · 17h30',
+          author: 'Por Carlos Eduardo Mendes',
+          title: 'Feira de produtores orgânicos da Praça Lions Clube amplia horário e ganha barracas de agricultura familiar',
+          summary: 'Com 28 expositores do cinturão verde paulista, evento passa a funcionar até às 13h aos sábados e oferece espaço de troca de mudas e compostagem.',
+          content: [
+            'A tradicional feira de orgânicos realizada aos sábados na Praça Lions Clube foi ampliada neste mês e agora funciona das 7h30 às 13h, atendendo a um pedido antigo dos moradores que frequentam o espaço no fim da manhã.',
+            'Ao todo, 28 famílias produtoras vindas de Parelheiros, Ibiúna e Mogi das Cruzes comercializam hortaliças, frutas da estação, pães de fermentação natural e mel sem intermediários.',
+            'A nova configuração também garantiu corredores mais largos entre as barracas para facilitar a circulação de carrinhos de bebê, idosos e pessoas em cadeira de rodas, além de um ponto de entrega voluntária de resíduos orgânicos para compostagem comunitária.'
+          ]
+        },
+        'ubs-vacinacao': {
+          id: 'ubs-vacinacao',
+          category: 'Saúde e Educação',
+          date: '11 de novembro de 2026 · 14h20',
+          author: 'Por Juliana Soares',
+          title: 'UBS Vila Mariana estende horário de atendimento até às 20h para atualização vacinal e exames preventivos',
+          summary: 'Iniciativa busca atender trabalhadores que não conseguem comparecer durante o horário comercial. Não é necessário agendamento prévio para vacinas.',
+          content: [
+            'A Unidade Básica de Saúde (UBS) da Vila Mariana passou a operar em horário estendido, de segunda a sexta-feira, das 7h às 20h, oferecendo aplicação de vacinas do calendário nacional, aferição de pressão arterial, testes rápidos e coleta de exames preventivos.',
+            'Segundo a gerência da unidade, a medida já aumentou em 35% o comparecimento de moradores que trabalham em horário comercial e tinham dificuldade de manter a caderneta de saúde em dia.',
+            'Para o atendimento noturno, basta apresentar documento com foto e, se possível, o cartão do SUS ou caderneta de vacinação.'
+          ]
+        },
+        'festival-biblioteca': {
+          id: 'festival-biblioteca',
+          category: 'Cultura',
+          date: '10 de novembro de 2026 · 16h10',
+          author: 'Por Beatriz Nogueira',
+          title: 'Biblioteca Viriato Corrêa celebra aniversário com maratona literária gratuita e sessões com audiodescrição',
+          summary: 'Programação cultural deste sábado reúne escritores locais, oficina de encadernação artesanal e contação de histórias acessível para todas as idades.',
+          content: [
+            'Referência cultural do bairro há mais de sete décadas, a Biblioteca Pública Viriato Corrêa promove neste sábado (14/11) uma programação gratuita especial ao longo de todo o dia.',
+            'Entre os destaques estão a mesa de debate com autores independentes da Zona Sul às 11h, a roda de choro no jardim interno às 15h e a sessão de contação de histórias infantis com tradução simultânea em Libras e audiodescrição.',
+            'Durante o evento, a biblioteca também inaugura seu novo acervo de livros em Braille e fontes ampliadas disponíveis para empréstimo domiciliar.'
+          ]
+        },
+        'escola-horta': {
+          id: 'escola-horta',
+          category: 'Saúde e Educação',
+          date: '10 de novembro de 2026 · 10h45',
+          author: 'Por Carlos Eduardo Mendes',
+          title: 'Alunos de escola municipal transformam terreno ocioso em horta pedagógica e laboratório de ciências',
+          summary: 'Projeto desenvolvido por estudantes do ensino fundamental produz temperos e hortaliças utilizados na própria merenda escolar.',
+          content: [
+            'Um espaço antes subutilizado nos fundos da Escola Municipal de Ensino Fundamental do bairro deu lugar a 18 canteiros elevados de hortaliças, ervas medicinais e plantas alimentícias não convencionais.',
+            'Os canteiros foram construídos em altura ergonômica para permitir que estudantes com mobilidade reduzida participem ativamente do plantio, da rega e da colheita.',
+            'De acordo com a coordenação pedagógica, o projeto integra aulas de ciências, matemática e educação ambiental, além de enriquecer a alimentação servida diariamente aos 420 alunos da unidade.'
+          ]
+        },
+        'comercio-calcadas': {
+          id: 'comercio-calcadas',
+          category: 'Economia',
+          date: '09 de novembro de 2026 · 18h05',
+          author: 'Por Mariana Albuquerque',
+          title: 'Comerciantes da Rua Domingos de Morais lançam guia colaborativo de lojas com acessibilidade arquitetônica',
+          summary: 'Selo comunitário identifica estabelecimentos com rampas regulamentares, banheiros adaptados e cardápios em formato digital acessível.',
+          content: [
+            'Mais de 45 padarias, livrarias, farmácias e restaurantes do eixo comercial da Rua Domingos de Morais aderiram ao guia colaborativo de comércio acessível.',
+            'O mapeamento foi realizado em parceria com moradores com deficiência da região, avaliando largura de portas, inclinação de rampas de acesso, iluminação interna e disponibilidade de cardápios digitais compatíveis com leitores de tela.',
+            'O mapa impresso em letras ampliadas está disponível gratuitamente na subprefeitura e nos estabelecimentos participantes.'
+          ]
+        }
+      };
+
+      const FEED_IDS = [
+        'feira-produtor',
+        'ubs-vacinacao',
+        'festival-biblioteca',
+        'escola-horta',
+        'comercio-calcadas',
+        'alerta-agua'
+      ];
+
+      /* ----------------------------------------------------------------------
+         2. CONTROLES DE ACESSIBILIDADE (ESCALA DE FONTE, CONTRASTE, ESPAÇAMENTO)
+         ---------------------------------------------------------------------- */
+      const rootEl = document.documentElement;
+      const statusBadge = document.getElementById('a11y-status-badge');
+      const btnDecrease = document.getElementById('btn-font-decrease');
+      const btnIncrease = document.getElementById('btn-font-increase');
+      const btnContrast = document.getElementById('btn-toggle-contrast');
+      const btnSpacing = document.getElementById('btn-toggle-spacing');
+      const btnReset = document.getElementById('btn-a11y-reset');
+
+      const SCALE_STEPS = [0.9, 1, 1.15, 1.3, 1.5, 1.75, 2.0];
+      let currentStepIndex = 1; // 100%
+
+      function updateFontScale() {
+        const scale = SCALE_STEPS[currentStepIndex];
+        rootEl.style.setProperty('--font-scale', scale);
+        const pct = Math.round(scale * 100);
+        statusBadge.textContent = `Texto: ${pct}%`;
+        btnDecrease.disabled = currentStepIndex === 0;
+        btnIncrease.disabled = currentStepIndex === SCALE_STEPS.length - 1;
+        btnDecrease.style.opacity = btnDecrease.disabled ? '0.5' : '1';
+        btnIncrease.style.opacity = btnIncrease.disabled ? '0.5' : '1';
+      }
+
+      btnIncrease.addEventListener('click', () => {
+        if (currentStepIndex < SCALE_STEPS.length - 1) {
+          currentStepIndex++;
+          updateFontScale();
+        }
+      });
+
+      btnDecrease.addEventListener('click', () => {
+        if (currentStepIndex > 0) {
+          currentStepIndex--;
+          updateFontScale();
+        }
+      });
+
+      btnContrast.addEventListener('click', () => {
+        const isHighContrast = rootEl.getAttribute('data-theme') === 'high-contrast';
+        if (isHighContrast) {
+          rootEl.removeAttribute('data-theme');
+          btnContrast.setAttribute('aria-pressed', 'false');
+        } else {
+          rootEl.setAttribute('data-theme', 'high-contrast');
+          btnContrast.setAttribute('aria-pressed', 'true');
+        }
+      });
+
+      btnSpacing.addEventListener('click', () => {
+        const isRelaxed = rootEl.getAttribute('data-spacing') === 'relaxed';
+        if (isRelaxed) {
+          rootEl.removeAttribute('data-spacing');
+          btnSpacing.setAttribute('aria-pressed', 'false');
+        } else {
+          rootEl.setAttribute('data-spacing', 'relaxed');
+          btnSpacing.setAttribute('aria-pressed', 'true');
+        }
+      });
+
+      btnReset.addEventListener('click', () => {
+        currentStepIndex = 1;
+        updateFontScale();
+        rootEl.removeAttribute('data-theme');
+        rootEl.removeAttribute('data-spacing');
+        btnContrast.setAttribute('aria-pressed', 'false');
+        btnSpacing.setAttribute('aria-pressed', 'false');
+      });
+
+      /* ----------------------------------------------------------------------
+         3. MENU MOBILE ACESSÍVEL
+         ---------------------------------------------------------------------- */
+      const btnMobileMenu = document.getElementById('btn-mobile-menu');
+      const primaryNav = document.getElementById('primary-navigation');
+
+      btnMobileMenu.addEventListener('click', () => {
+        const isExpanded = btnMobileMenu.getAttribute('aria-expanded') === 'true';
+        btnMobileMenu.setAttribute('aria-expanded', String(!isExpanded));
+        primaryNav.classList.toggle('hidden');
+      });
+
+      /* ----------------------------------------------------------------------
+         4. RENDERIZAÇÃO E FILTRAGEM DE NOTÍCIAS
+         ---------------------------------------------------------------------- */
+      const gridNoticias = document.getElementById('grid-noticias');
+      const contadorNoticias = document.getElementById('contador-noticias');
+      const filterButtons = document.querySelectorAll('.btn-filter');
+
+      function renderNewsCards(categoryFilter = 'todas') {
+        gridNoticias.innerHTML = '';
+
+        const filteredIds = FEED_IDS.filter((id) => {
+          const item = ARTICLES[id];
+          if (!item) return false;
+          if (categoryFilter === 'todas') return true;
+          return item.category.toLowerCase() === categoryFilter.toLowerCase();
+        });
+
+        contadorNoticias.textContent = filteredIds.length === 1
+          ? 'Exibindo 1 reportagem'
+          : `Exibindo ${filteredIds.length} reportagens`;
+
+        filteredIds.forEach((id) => {
+          const article = ARTICLES[id];
+          const cardEl = document.createElement('article');
+          cardEl.className = 'surface-card p-5 flex flex-col justify-between gap-4';
+
+          cardEl.innerHTML = `
+            <div class="flex flex-col gap-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="badge-category">${article.category}</span>
+                <span class="text-xs font-medium" style="color: var(--text-muted);">${article.date.split('·')[0].trim()}</span>
+              </div>
+              <h3 class="fluid-h3 m-0">
+                <button type="button" class="text-left bg-transparent border-0 p-0 cursor-pointer hover:underline font-editorial font-bold" style="color: var(--text-primary); font-size: inherit; line-height: inherit;" data-article-id="${article.id}">
+                  ${article.title}
+                </button>
+              </h3>
+              <p class="m-0 text-sm" style="color: var(--text-secondary);">
+                ${article.summary}
+              </p>
+            </div>
+            <div class="pt-2 flex flex-wrap items-center justify-between gap-2" style="border-top: 0.0625rem solid var(--border-color);">
+              <span class="text-xs font-medium" style="color: var(--text-muted);">${article.author}</span>
+              <button type="button" class="btn-outline text-sm" data-article-id="${article.id}">
+                Ler notícia
+              </button>
+            </div>
+          `;
+
+          gridNoticias.appendChild(cardEl);
+        });
+      }
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+          btn.setAttribute('aria-pressed', 'true');
+          const selectedCategory = btn.getAttribute('data-filter');
+          renderNewsCards(selectedCategory);
+        });
+      });
+
+      /* ----------------------------------------------------------------------
+         5. MODAL DE LEITURA ACESSÍVEL (<dialog> com gerenciamento de foco)
+         ---------------------------------------------------------------------- */
+      const modal = document.getElementById('modal-noticia');
+      const modalCategoria = document.getElementById('modal-categoria');
+      const modalData = document.getElementById('modal-data');
+      const modalTitulo = document.getElementById('modal-titulo');
+      const modalAutor = document.getElementById('modal-autor');
+      const modalCorpo = document.getElementById('modal-corpo');
+      const btnFecharModal = document.getElementById('btn-fechar-modal');
+      const btnCopiarLink = document.getElementById('btn-copiar-link');
+      const statusCopia = document.getElementById('status-copia');
+
+      let lastFocusedElement = null;
+      let currentArticle = null;
+
+      function openArticleModal(articleId) {
+        const article = ARTICLES[articleId];
+        if (!article) return;
+
+        lastFocusedElement = document.activeElement;
+        currentArticle = article;
+
+        modalCategoria.textContent = article.category;
+        modalData.textContent = article.date;
+        modalTitulo.textContent = article.title;
+        modalAutor.textContent = article.author;
+        statusCopia.textContent = '';
+
+        modalCorpo.innerHTML = '';
+        article.content.forEach((paragraph) => {
+          const p = document.createElement('p');
+          p.className = 'm-0';
+          p.textContent = paragraph;
+          modalCorpo.appendChild(p);
+        });
+
+        if (typeof modal.showModal === 'function') {
+          modal.showModal();
+        } else {
+          modal.setAttribute('open', 'true');
+        }
+        modal.scrollTop = 0;
+        btnFecharModal.focus();
+      }
+
+      function closeArticleModal() {
+        if (typeof modal.close === 'function') {
+          modal.close();
+        } else {
+          modal.removeAttribute('open');
+        }
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }
+
+      // Delegação de clique para abrir qualquer notícia
+      document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-article-id]');
+        if (trigger) {
+          const id = trigger.getAttribute('data-article-id');
+          openArticleModal(id);
+        }
+      });
+
+      btnFecharModal.addEventListener('click', closeArticleModal);
+
+      // Fechar ao clicar fora do conteúdo interno do dialog
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          closeArticleModal();
+        }
+      });
+
+      // Restaurar foco ao fechar com Esc nativo do <dialog>
+      modal.addEventListener('close', () => {
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      });
+
+      // Copiar resumo usando execCommand (compatível com iframes)
+      btnCopiarLink.addEventListener('click', () => {
+        if (!currentArticle) return;
+        const shareText = `${currentArticle.title} — Folha do Bairro (${currentArticle.date})`;
+        const tempInput = document.createElement('textarea');
+        tempInput.value = shareText;
+        tempInput.style.position = 'fixed';
+        tempInput.style.opacity = '0';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+          document.execCommand('copy');
+          statusCopia.textContent = 'Resumo copiado para a área de transferência!';
+        } catch (err) {
+          statusCopia.textContent = 'Não foi possível copiar automaticamente.';
+        }
+        document.body.removeChild(tempInput);
+      });
+
+      /* ----------------------------------------------------------------------
+         6. VALIDAÇÃO ACESSÍVEL DO FORMULÁRIO DE PAUTA
+         ---------------------------------------------------------------------- */
+      const formPauta = document.getElementById('form-pauta');
+      const inputNome = document.getElementById('input-nome');
+      const inputLocal = document.getElementById('input-local');
+      const inputMensagem = document.getElementById('input-mensagem');
+      const erroNome = document.getElementById('erro-nome');
+      const erroLocal = document.getElementById('erro-local');
+      const erroMensagem = document.getElementById('erro-mensagem');
+      const formFeedback = document.getElementById('form-feedback');
+
+      function setFieldError(inputEl, errorEl, message) {
+        if (message) {
+          errorEl.textContent = message;
+          errorEl.classList.remove('hidden');
+          inputEl.setAttribute('aria-invalid', 'true');
+          inputEl.style.borderColor = 'var(--brand-accent)';
+        } else {
+          errorEl.textContent = '';
+          errorEl.classList.add('hidden');
+          inputEl.removeAttribute('aria-invalid');
+          inputEl.style.borderColor = 'var(--border-color)';
+        }
+      }
+
+      formPauta.addEventListener('submit', (event) => {
+        event.preventDefault();
+        formFeedback.classList.add('hidden');
+
+        let firstInvalid = null;
+
+        if (!inputNome.value.trim()) {
+          setFieldError(inputNome, erroNome, 'Por favor, informe seu nome.');
+          firstInvalid = firstInvalid || inputNome;
+        } else {
+          setFieldError(inputNome, erroNome, '');
+        }
+
+        if (!inputLocal.value.trim()) {
+          setFieldError(inputLocal, erroLocal, 'Por favor, informe a rua ou região do bairro.');
+          firstInvalid = firstInvalid || inputLocal;
+        } else {
+          setFieldError(inputLocal, erroLocal, '');
+        }
+
+        if (inputMensagem.value.trim().length < 10) {
+          setFieldError(inputMensagem, erroMensagem, 'Escreva um breve resumo com pelo menos 10 caracteres.');
+          firstInvalid = firstInvalid || inputMensagem;
+        } else {
+          setFieldError(inputMensagem, erroMensagem, '');
+        }
+
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return;
+        }
+
+        const nomeUsuario = inputNome.value.trim();
+        formFeedback.textContent = `Obrigado, ${nomeUsuario}! Sua pauta foi registrada e encaminhada à redação comunitária da Folha do Bairro.`;
+        formFeedback.classList.remove('hidden');
+        formPauta.reset();
+        formFeedback.focus();
+      });
+
+      // Inicialização
+      updateFontScale();
+      renderNewsCards('todas');
+    })();
+  </script>
+</body>
+</html>

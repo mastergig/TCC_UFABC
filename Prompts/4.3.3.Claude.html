@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RUA 27 — Moda Urbana</title>
+<style>
+:root{
+  --bg:#f5f3ee;--surface:#fff;--text:#16161a;--muted:#6b6b73;--line:#e2dfd7;
+  --accent:#ff4d2e;--accent-text:#fff;--shadow:0 8px 30px rgba(0,0,0,.12);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#111114;--surface:#1b1b20;--text:#f2f0ea;--muted:#9a9aa3;--line:#2c2c33;--shadow:0 8px 30px rgba(0,0,0,.6);color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#111114;--surface:#1b1b20;--text:#f2f0ea;--muted:#9a9aa3;--line:#2c2c33;--shadow:0 8px 30px rgba(0,0,0,.6);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+button{font:inherit;cursor:pointer;color:inherit}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 5%;background:var(--bg);border-bottom:1px solid var(--line)}
+.logo{font-weight:900;font-size:1.5rem;letter-spacing:.08em}
+.logo span{color:var(--accent)}
+.actions{display:flex;gap:10px;align-items:center}
+.icon-btn{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:600}
+.badge{position:absolute;top:-7px;right:-5px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-text);font-size:.75rem;display:grid;place-items:center}
+.hero{padding:56px 5% 28px}
+.hero h1{margin:0;font-size:clamp(2rem,6vw,3.6rem);line-height:1;font-weight:900;letter-spacing:-.02em;text-transform:uppercase}
+.hero p{color:var(--muted);max-width:46ch;margin:12px 0 0}
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding:8px 5% 20px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 15px;font-size:.9rem}
+.chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;padding:0 5% 60px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{aspect-ratio:1/1;display:grid;place-items:center;font-size:4.6rem}
+.info{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.info h3{margin:0;font-size:1rem}
+.cat{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+.price{font-weight:800;font-size:1.1rem}
+.add{margin-top:auto;background:var(--text);color:var(--bg);border:0;border-radius:10px;padding:10px;font-weight:700;transition:transform .1s}
+.add:hover{background:var(--accent);color:var(--accent-text)}
+.add:active{transform:scale(.97)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:30}
+.overlay.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--surface);z-index:40;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .3s;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.open{transform:none}
+.d-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.d-head h2{margin:0;font-size:1.2rem}
+.close{background:none;border:0;font-size:1.6rem;line-height:1}
+.items{flex:1;overflow-y:auto;padding:8px 20px}
+.empty{text-align:center;color:var(--muted);padding:60px 10px}
+.empty .big{font-size:3rem}
+.row{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.mini{width:56px;height:56px;border-radius:10px;display:grid;place-items:center;font-size:1.8rem}
+.row h4{margin:0;font-size:.95rem}
+.row small{color:var(--muted)}
+.qty{display:inline-flex;align-items:center;margin-top:6px;border:1px solid var(--line);border-radius:8px}
+.qty button{background:none;border:0;width:30px;height:28px;font-size:1.1rem}
+.qty span{min-width:26px;text-align:center;font-weight:700}
+.line-total{text-align:right;font-weight:800}
+.remove{display:block;margin-top:8px;background:none;border:0;color:var(--accent);font-size:.82rem;text-decoration:underline;margin-left:auto}
+.foot{padding:18px 20px;border-top:1px solid var(--line)}
+.sum{display:flex;justify-content:space-between;font-size:1.25rem;font-weight:900;margin-bottom:12px}
+.btn{width:100%;border:0;border-radius:12px;padding:13px;font-weight:800;background:var(--accent);color:var(--accent-text)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.ghost{background:none;border:0;color:var(--muted);width:100%;margin-top:8px;font-size:.88rem;text-decoration:underline}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--text);color:var(--bg);padding:11px 20px;border-radius:999px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">RUA<span>27</span></div>
+  <div class="actions">
+    <button class="icon-btn" id="theme" aria-label="Alternar tema">◐</button>
+    <button class="icon-btn" id="openCart" aria-label="Abrir carrinho">🛒 Carrinho<span class="badge" id="count">0</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Vista a cidade.</h1>
+  <p>Moda urbana feita para andar, correr e ocupar a rua. Peças novas toda semana.</p>
+</section>
+
+<div class="filters" id="filters"></div>
+<main class="grid" id="grid"></main>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Carrinho de compras">
+  <div class="d-head"><h2>Seu carrinho</h2><button class="close" id="closeCart" aria-label="Fechar">×</button></div>
+  <div class="items" id="items"></div>
+  <div class="foot">
+    <div class="sum"><span>Total</span><span id="total">R$ 0,00</span></div>
+    <button class="btn" id="checkout">Finalizar compra</button>
+    <button class="ghost" id="clear">Esvaziar carrinho</button>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+const PRODUCTS = [
+  {id:1,name:"Camiseta Oversized Preta",cat:"Camisetas",price:89.9,emoji:"👕",bg:"#2a2a2f"},
+  {id:2,name:"Camiseta Boxy Off-White",cat:"Camisetas",price:79.9,emoji:"👕",bg:"#d9d4c5"},
+  {id:3,name:"Moletom Canguru Cinza",cat:"Moletons",price:219.9,emoji:"🧥",bg:"#8a8d94"},
+  {id:4,name:"Jaqueta Corta-Vento",cat:"Moletons",price:289.9,emoji:"🧥",bg:"#ff4d2e"},
+  {id:5,name:"Calça Cargo Verde",cat:"Calças",price:199.9,emoji:"👖",bg:"#5b6b4a"},
+  {id:6,name:"Jeans Baggy Azul",cat:"Calças",price:239.9,emoji:"👖",bg:"#3d5a80"},
+  {id:7,name:"Boné Dad Hat",cat:"Acessórios",price:69.9,emoji:"🧢",bg:"#e9b44c"},
+  {id:8,name:"Tênis Street Branco",cat:"Acessórios",price:349.9,emoji:"👟",bg:"#c8c8cf"}
+];
+const brl = n => n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const $ = id => document.getElementById(id);
+let cart = [], filter = "Todos";
+
+try{ cart = JSON.parse(localStorage.getItem("rua27-cart")) || []; }catch(e){ cart = []; }
+cart = cart.filter(i => PRODUCTS.some(p => p.id === i.id) && i.qty > 0);
+const save = () => { try{ localStorage.setItem("rua27-cart", JSON.stringify(cart)); }catch(e){} };
+
+function renderFilters(){
+  const cats = ["Todos", ...new Set(PRODUCTS.map(p => p.cat))];
+  $("filters").innerHTML = cats.map(c => `<button class="chip ${c===filter?"on":""}" data-cat="${c}">${c}</button>`).join("");
+}
+function renderGrid(){
+  $("grid").innerHTML = PRODUCTS.filter(p => filter==="Todos" || p.cat===filter).map(p => `
+    <article class="card">
+      <div class="thumb" style="background:${p.bg}">${p.emoji}</div>
+      <div class="info">
+        <span class="cat">${p.cat}</span>
+        <h3>${p.name}</h3>
+        <span class="price">${brl(p.price)}</span>
+        <button class="add" data-add="${p.id}">Adicionar ao carrinho</button>
+      </div>
+    </article>`).join("");
+}
+function renderCart(){
+  const total = cart.reduce((s,i) => s + PRODUCTS.find(p=>p.id===i.id).price * i.qty, 0);
+  const count = cart.reduce((s,i) => s + i.qty, 0);
+  $("count").textContent = count;
+  $("total").textContent = brl(total);
+  $("checkout").disabled = $("clear").disabled = !count;
+  $("clear").style.visibility = count ? "visible" : "hidden";
+  $("items").innerHTML = count ? cart.map(i => {
+    const p = PRODUCTS.find(x => x.id === i.id);
+    return `<div class="row">
+      <div class="mini" style="background:${p.bg}">${p.emoji}</div>
+      <div><h4>${p.name}</h4><small>${brl(p.price)} cada</small>
+        <div class="qty"><button data-dec="${p.id}" aria-label="Diminuir">−</button><span>${i.qty}</span><button data-inc="${p.id}" aria-label="Aumentar">+</button></div></div>
+      <div><div class="line-total">${brl(p.price*i.qty)}</div><button class="remove" data-rm="${p.id}">Remover</button></div>
+    </div>`;
+  }).join("") : `<div class="empty"><div class="big">🛍️</div><p>Seu carrinho está vazio.<br>Adicione algumas peças!</p></div>`;
+  save();
+}
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 1800);
+}
+function add(id){
+  const item = cart.find(i => i.id === id);
+  item ? item.qty++ : cart.push({id, qty:1});
+  renderCart();
+  toast("Adicionado ao carrinho ✓");
+}
+function change(id, d){
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  item.qty += d;
+  if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  renderCart();
+}
+const toggle = open => { $("drawer").classList.toggle("open", open); $("overlay").classList.toggle("open", open); };
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("button"); if(!t) return;
+  const d = t.dataset;
+  if(d.add) add(+d.add);
+  else if(d.inc) change(+d.inc, 1);
+  else if(d.dec) change(+d.dec, -1);
+  else if(d.rm){ cart = cart.filter(i => i.id !== +d.rm); renderCart(); }
+  else if(d.cat){ filter = d.cat; renderFilters(); renderGrid(); }
+});
+$("openCart").onclick = () => toggle(true);
+$("closeCart").onclick = $("overlay").onclick = () => toggle(false);
+document.addEventListener("keydown", e => { if(e.key==="Escape") toggle(false); });
+$("clear").onclick = () => { cart = []; renderCart(); };
+$("checkout").onclick = () => {
+  const total = cart.reduce((s,i) => s + PRODUCTS.find(p=>p.id===i.id).price * i.qty, 0);
+  cart = []; renderCart(); toggle(false);
+  toast("Pedido de " + brl(total) + " realizado! Obrigado 🙌");
+};
+$("theme").onclick = () => {
+  const r = document.documentElement;
+  const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.dataset.theme = dark ? "light" : "dark";
+};
+
+renderFilters(); renderGrid(); renderCart();
+</script>
+</body>
+</html>

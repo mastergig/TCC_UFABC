@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Clínica veterinária especializada em castração animal e posse responsável.">
+    <title>PetVida | Clínica Veterinária</title>
+
+    <style>
+        :root {
+            --azul: #247ba0;
+            --azul-escuro: #174b63;
+            --verde: #a8d5ba;
+            --verde-claro: #e8f5ed;
+            --branco: #ffffff;
+            --cinza: #f4f7f8;
+            --texto: #34495e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: var(--texto);
+            background: var(--branco);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--azul-escuro);
+            color: var(--branco);
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            font-size: 26px;
+        }
+
+        nav a {
+            color: var(--branco);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: var(--verde);
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #247ba0, #a8d5ba);
+            color: white;
+            text-align: center;
+            padding: 90px 20px;
+        }
+
+        .hero h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 650px;
+            margin: 0 auto 25px;
+        }
+
+        .botao {
+            display: inline-block;
+            background: var(--azul-escuro);
+            color: white;
+            padding: 13px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .botao:hover {
+            background: #10384c;
+            transform: translateY(-3px);
+        }
+
+        section {
+            padding: 60px 8%;
+        }
+
+        section h2 {
+            color: var(--azul-escuro);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 30px;
+        }
+
+        .beneficios {
+            background: var(--cinza);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+        }
+
+        .card .icone {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            color: var(--azul);
+            margin-bottom: 10px;
+        }
+
+        .orientacoes table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+
+        .orientacoes th,
+        .orientacoes td {
+            border: 1px solid #dce5e8;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .orientacoes th {
+            background: var(--azul);
+            color: white;
+        }
+
+        .orientacoes tr:nth-child(even) {
+            background: var(--verde-claro);
+        }
+
+        .agendamento {
+            background: var(--verde-claro);
+        }
+
+        form {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: var(--azul-escuro);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdcbd0;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid var(--azul);
+            border-color: var(--azul);
+        }
+
+        .aviso {
+            font-size: 13px;
+            margin-top: 15px;
+            color: #667;
+        }
+
+        footer {
+            background: var(--azul-escuro);
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media (max-width: 650px) {
+            header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            section {
+                padding: 40px 5%;
+            }
+
+            .orientacoes {
+                overflow-x: auto;
+            }
+
+            .orientacoes table {
+                min-width: 550px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <h1>🐾 PetVida</h1>
+
+        <nav aria-label="Navegação principal">
+            <a href="#inicio">Início</a>
+            <a href="#beneficios">Benefícios</a>
+            <a href="#orientacoes">Orientações</a>
+            <a href="#agendamento">Agendamento</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- APRESENTAÇÃO -->
+        <section class="hero" id="inicio">
+            <h2>Amor, cuidado e responsabilidade!</h2>
+
+            <p>
+                A castração é um ato de amor.
+                Cuide da saúde do seu animal e ajude
+                a combater o abandono e a reprodução
+                descontrolada.
+            </p>
+
+            <a href="#agendamento" class="botao">
+                Agende uma consulta
+            </a>
+        </section>
+
+        <!-- BENEFÍCIOS -->
+        <section class="beneficios" id="beneficios">
+            <h2>Por que castrar seu pet?</h2>
+
+            <div class="cards">
+
+                <article class="card">
+                    <div class="icone">❤️</div>
+                    <h3>Mais saúde</h3>
+                    <p>
+                        Pode reduzir o risco de determinadas
+                        doenças reprodutivas, conforme o
+                        sexo, a idade e o histórico do animal.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="icone">🐶</div>
+                    <h3>Controle populacional</h3>
+                    <p>
+                        Ajuda a evitar ninhadas não planejadas
+                        e contribui para reduzir o abandono
+                        de animais.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="icone">🏡</div>
+                    <h3>Posse responsável</h3>
+                    <p>
+                        É uma medida importante para promover
+                        o bem-estar animal e a responsabilidade
+                        dos tutores.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ORIENTAÇÕES -->
+        <section class="orientacoes" id="orientacoes">
+            <h2>Orientações para a castração</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Etapa</th>
+                        <th>Orientação</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Consulta pré-operatória</td>
+                        <td>
+                            Realizar avaliação veterinária
+                            para verificar as condições de saúde.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Jejum</td>
+                        <td>
+                            Seguir rigorosamente o período
+                            de jejum indicado pelo veterinário.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Exames</td>
+                        <td>
+                            Realizar os exames solicitados
+                            pelo profissional responsável.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Pós-operatório</td>
+                        <td>
+                            Respeitar o repouso, administrar
+                            medicamentos prescritos e evitar
+                            que o animal lamba a região operada.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="aviso">
+                Atenção: as orientações podem variar de acordo
+                com a espécie, idade e condição clínica do animal.
+                Nunca estabeleça jejum ou medicação sem orientação
+                veterinária.
+            </p>
+        </section>
+
+        <!-- FORMULÁRIO -->
+        <section class="agendamento" id="agendamento">
+            <h2>Agende uma consulta</h2>
+
+            <form action="#" method="post">
+
+                <div class="campo">
+                    <label for="tutor">Nome do tutor:</label>
+                    <input
+                        type="text"
+                        id="tutor"
+                        name="tutor"
+                        placeholder="Digite seu nome completo"
+                        minlength="3"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="pet">Nome do animal:</label>
+                    <input
+                        type="text"
+                        id="pet"
+                        name="pet"
+                        placeholder="Nome do seu pet"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="especie">Espécie do animal:</label>
+                    <select id="especie" name="especie" required>
+                        <option value="">Selecione</option>
+                        <option value="cao">Cachorro</option>
+                        <option value="gato">Gato</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="idade">Idade do animal:</label>
+                    <input
+                        type="number"
+                        id="idade"
+                        name="idade"
+                        placeholder="Idade em anos"
+                        min="0"
+                        max="50"
+                        step="0.1"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="data">Data desejada para consulta:</label>
+                    <input
+                        type="date"
+                        id="data"
+                        name="data"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="telefone">Telefone para contato:</label>
+                    <input
+                        type="tel"
+                        id="telefone"
+                        name="telefone"
+                        placeholder="(11) 99999-9999"
+                        required>
+                </div>
+
+                <button type="submit" class="botao">
+                    Solicitar agendamento
+                </button>
+
+                <p class="aviso">
+                    O envio representa uma solicitação de consulta.
+                    Nossa equipe deverá confirmar a disponibilidade
+                    e entrar em contato com o tutor.
+                </p>
+
+            </form>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 PetVida - Clínica Veterinária</p>
+        <p>Amor e cuidado para quem faz parte da sua família! 🐾</p>
+        <p>Telefone: (11) 3333-4444</p>
+    </footer>
+
+</body>
+</html>

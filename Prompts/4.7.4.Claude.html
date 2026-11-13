@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PulseFit Academia — Treine do seu jeito</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #181b22;
+    --line: #2a2f3a;
+    --text: #eef0f4;
+    --muted: #9aa3b2;
+    --accent: #c6f432;
+    --accent-ink: #11140a;
+    --danger: #ff6b6b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { width: min(1080px, 92%); margin: 0 auto; }
+
+  /* Header */
+  header { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(15,17,21,.92); backdrop-filter: blur(8px); z-index: 10; }
+  header .container { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+  .logo { font-weight: 800; font-size: 1.25rem; letter-spacing: .5px; }
+  .logo span { color: var(--accent); }
+  nav { display: flex; gap: 22px; font-size: .95rem; color: var(--muted); }
+  nav a:hover { color: var(--text); }
+
+  /* Buttons */
+  .btn {
+    display: inline-block; background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; padding: 12px 26px; border-radius: 999px; border: 0;
+    cursor: pointer; font-size: 1rem; transition: transform .15s, filter .15s;
+  }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+
+  /* Hero */
+  .hero { padding: 96px 0 80px; text-align: center; }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 18px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: var(--muted); max-width: 560px; margin: 0 auto 30px; font-size: 1.1rem; }
+  .hero .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .stats { display: flex; justify-content: center; gap: 48px; margin-top: 56px; flex-wrap: wrap; }
+  .stats strong { display: block; font-size: 1.9rem; color: var(--accent); }
+  .stats span { color: var(--muted); font-size: .9rem; }
+
+  section { padding: 72px 0; }
+  .section-title { text-align: center; margin-bottom: 44px; }
+  .section-title h2 { font-size: 2rem; margin-bottom: 8px; }
+  .section-title p { color: var(--muted); }
+
+  /* Modalidades */
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+  .card h3 { margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: .95rem; }
+
+  /* Planos — mesmo padrão do card de exemplo: h3 + p (preço) + ul */
+  .plans { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); align-items: stretch; }
+  .plan { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 32px 28px; display: flex; flex-direction: column; position: relative; }
+  .plan h3 { font-size: 1.35rem; }
+  .plan .price { font-size: 2.2rem; font-weight: 800; margin: 10px 0 20px; }
+  .plan .price small { font-size: .95rem; font-weight: 400; color: var(--muted); }
+  .plan ul { list-style: none; margin-bottom: 28px; flex: 1; }
+  .plan li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+  .plan li::before { content: "✓"; color: var(--accent); font-weight: 700; margin-right: 10px; }
+  .plan .btn { text-align: center; }
+  .plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 20px 50px -20px rgba(198,244,50,.35); }
+  .badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--accent-ink); font-size: .75rem; font-weight: 800; padding: 4px 14px; border-radius: 999px; letter-spacing: .5px; }
+
+  /* Comparativo */
+  .table-wrap { overflow-x: auto; margin-top: 48px; border: 1px solid var(--line); border-radius: 16px; }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  th, td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--line); font-size: .93rem; }
+  th:first-child, td:first-child { text-align: left; color: var(--muted); }
+  thead th { background: var(--panel); }
+  tbody tr:last-child td { border-bottom: 0; }
+  .yes { color: var(--accent); font-weight: 700; }
+  .no { color: #5b6270; }
+
+  /* Formulário */
+  .form-box { max-width: 680px; margin: 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 40px; }
+  .row { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: .88rem; margin-bottom: 6px; color: var(--muted); }
+  input, select, textarea {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--bg); color: var(--text); font: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .field.invalid input, .field.invalid select { border-color: var(--danger); }
+  .error { color: var(--danger); font-size: .8rem; margin-top: 4px; display: none; }
+  .field.invalid .error { display: block; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-size: .88rem; color: var(--muted); margin-bottom: 22px; }
+  .check input { width: auto; margin-top: 4px; accent-color: var(--accent); }
+  .form-box .btn { width: 100%; }
+  .success { display: none; text-align: center; padding: 20px 0; }
+  .success h3 { color: var(--accent); font-size: 1.5rem; margin-bottom: 8px; }
+  .success p { color: var(--muted); }
+
+  footer { border-top: 1px solid var(--line); padding: 36px 0; text-align: center; color: var(--muted); font-size: .88rem; }
+
+  @media (max-width: 640px) {
+    nav { display: none; }
+    .row { grid-template-columns: 1fr; }
+    .form-box { padding: 26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a href="#inicio" class="logo">PULSE<span>FIT</span></a>
+    <nav>
+      <a href="#modalidades">Modalidades</a>
+      <a href="#planos">Planos</a>
+      <a href="#inscricao">Inscrição</a>
+    </nav>
+    <a href="#inscricao" class="btn" style="padding:8px 20px;font-size:.9rem">Matricule-se</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="container">
+      <h1>Seu corpo em <em>movimento</em>.<br>Sua melhor versão começa aqui.</h1>
+      <p>Equipamentos modernos, professores presentes e planos que cabem no seu bolso. Venha treinar na PulseFit.</p>
+      <div class="actions">
+        <a href="#planos" class="btn">Ver planos</a>
+        <a href="#inscricao" class="btn ghost">Aula experimental grátis</a>
+      </div>
+      <div class="stats">
+        <div><strong>+2.500</strong><span>alunos ativos</span></div>
+        <div><strong>6h–23h</strong><span>de segunda a sábado</span></div>
+        <div><strong>18</strong><span>modalidades</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modalidades">
+    <div class="container">
+      <div class="section-title">
+        <h2>Modalidades</h2>
+        <p>Escolha o que combina com seu objetivo.</p>
+      </div>
+      <div class="grid">
+        <div class="card"><h3>Musculação</h3><p>Área ampla com equipamentos de última geração e acompanhamento de instrutores.</p></div>
+        <div class="card"><h3>Natação</h3><p>Piscina aquecida e semiolímpica, com turmas para todos os níveis.</p></div>
+        <div class="card"><h3>Funcional</h3><p>Treinos dinâmicos em grupo para ganhar condicionamento e queimar calorias.</p></div>
+        <div class="card"><h3>Spinning</h3><p>Aulas de ciclismo indoor com playlists animadas e muita energia.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="planos">
+    <div class="container">
+      <div class="section-title">
+        <h2>Nossos planos</h2>
+        <p>Sem taxa de adesão e sem fidelidade abusiva.</p>
+      </div>
+
+      <div class="plans">
+        <div class="plan">
+          <h3>Plano Básico</h3>
+          <p class="price">R$ 79<small>/mês</small></p>
+          <ul>
+            <li>Acesso à musculação</li>
+            <li>Horário comercial (6h–16h)</li>
+            <li>Avaliação física inicial</li>
+          </ul>
+          <a href="#inscricao" class="btn ghost" data-plano="basico">Escolher Básico</a>
+        </div>
+
+        <div class="plan featured">
+          <span class="badge">MAIS POPULAR</span>
+          <h3>Plano Premium</h3>
+          <p class="price">R$ 99<small>/mês</small></p>
+          <ul>
+            <li>Musculação + aulas coletivas</li>
+            <li>Acesso em todos os horários</li>
+            <li>Avaliação física trimestral</li>
+            <li>Traga um amigo 2x ao mês</li>
+          </ul>
+          <a href="#inscricao" class="btn" data-plano="premium">Escolher Premium</a>
+        </div>
+
+        <div class="plan">
+          <h3>Plano VIP</h3>
+          <p class="price">R$ 119<small>/mês</small></p>
+          <ul>
+            <li>Acesso total</li>
+            <li>Musculação + Natação</li>
+            <li>Personal trainer 2x ao mês</li>
+            <li>Toalha e armário exclusivo</li>
+          </ul>
+          <a href="#inscricao" class="btn ghost" data-plano="vip">Escolher VIP</a>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Benefício</th><th>Básico</th><th>Premium</th><th>VIP</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Musculação</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Aulas coletivas</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Natação</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><td>Horário livre</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Personal trainer</td><td class="no">—</td><td class="no">—</td><td class="yes">2x/mês</td></tr>
+            <tr><td>Avaliação física</td><td>Inicial</td><td>Trimestral</td><td>Mensal</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="inscricao">
+    <div class="container">
+      <div class="section-title">
+        <h2>Faça sua inscrição</h2>
+        <p>Preencha os dados e nossa equipe entra em contato em até 24 horas.</p>
+      </div>
+
+      <div class="form-box">
+        <form id="form-inscricao" novalidate>
+          <div class="field">
+            <label for="nome">Nome completo</label>
+            <input type="text" id="nome" name="nome" autocomplete="name" placeholder="Seu nome">
+            <div class="error">Informe seu nome completo.</div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" autocomplete="email" placeholder="voce@email.com">
+              <div class="error">Informe um e-mail válido.</div>
+            </div>
+            <div class="field">
+              <label for="telefone">Telefone / WhatsApp</label>
+              <input type="tel" id="telefone" name="telefone" autocomplete="tel" placeholder="(11) 90000-0000" maxlength="15">
+              <div class="error">Informe um telefone com DDD.</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="nascimento">Data de nascimento</label>
+              <input type="date" id="nascimento" name="nascimento">
+              <div class="error">Informe sua data de nascimento.</div>
+            </div>
+            <div class="field">
+              <label for="plano">Plano desejado</label>
+              <select id="plano" name="plano">
+                <option value="">Selecione…</option>
+                <option value="basico">Básico — R$ 79/mês</option>
+                <option value="premium">Premium — R$ 99/mês</option>
+                <option value="vip">VIP — R$ 119/mês</option>
+              </select>
+              <div class="error">Escolha um plano.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="objetivo">Objetivo principal</label>
+            <select id="objetivo" name="objetivo">
+              <option value="">Selecione…</option>
+              <option>Emagrecimento</option>
+              <option>Ganho de massa muscular</option>
+              <option>Condicionamento físico</option>
+              <option>Saúde e qualidade de vida</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="obs">Observações (opcional)</label>
+            <textarea id="obs" name="obs" rows="3" placeholder="Restrições, lesões, horários de preferência…"></textarea>
+          </div>
+
+          <label class="check" for="termos">
+            <input type="checkbox" id="termos" name="termos">
+            <span>Li e concordo com os termos de uso e com o contato da academia por e-mail ou WhatsApp.</span>
+          </label>
+          <div class="error" id="erro-termos" style="margin:-14px 0 18px">É necessário aceitar os termos.</div>
+
+          <button type="submit" class="btn">Enviar inscrição</button>
+        </form>
+
+        <div class="success" id="sucesso" role="status">
+          <h3>Inscrição recebida! 💪</h3>
+          <p id="msg-sucesso"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p><strong>PulseFit Academia</strong> · Rua das Palmeiras, 450 — São Paulo/SP · (11) 4000-0000</p>
+    <p style="margin-top:6px">Segunda a sábado, 6h–23h · Domingos e feriados, 8h–14h</p>
+    <p style="margin-top:6px">© 2026 PulseFit. Página demonstrativa.</p>
+  </div>
+</footer>
+
+<script>
+  const form = document.getElementById('form-inscricao');
+  const selectPlano = document.getElementById('plano');
+
+  // Botões dos planos pré-selecionam o plano no formulário
+  document.querySelectorAll('[data-plano]').forEach(btn => {
+    btn.addEventListener('click', () => { selectPlano.value = btn.dataset.plano; });
+  });
+
+  // Máscara simples de telefone
+  document.getElementById('telefone').addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 6) v = v.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+    else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2');
+    e.target.value = v;
+  });
+
+  function setInvalid(id, invalid) {
+    document.getElementById(id).closest('.field').classList.toggle('invalid', invalid);
+    return invalid;
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const nome = form.nome.value.trim();
+    const email = form.email.value.trim();
+    const tel = form.telefone.value.replace(/\D/g, '');
+
+    const erros = [
+      setInvalid('nome', nome.split(/\s+/).length < 2),
+      setInvalid('email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)),
+      setInvalid('telefone', tel.length < 10),
+      setInvalid('nascimento', !form.nascimento.value),
+      setInvalid('plano', !form.plano.value),
+    ];
+    const termosErro = !form.termos.checked;
+    document.getElementById('erro-termos').style.display = termosErro ? 'block' : 'none';
+
+    if (erros.some(Boolean) || termosErro) return;
+
+    const nomePlano = selectPlano.options[selectPlano.selectedIndex].text.split(' — ')[0];
+    document.getElementById('msg-sucesso').textContent =
+      `Obrigado, ${nome.split(' ')[0]}! Recebemos sua inscrição no plano ${nomePlano}. Em breve entraremos em contato.`;
+    form.style.display = 'none';
+    document.getElementById('sucesso').style.display = 'block';
+  });
+
+  document.getElementById('erro-termos').style.display = 'none';
+</script>
+</body>
+</html>

@@ -1,0 +1,778 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Explore os melhores destinos turísticos do Brasil. Dicas, roteiros e experiências de viagem.">
+<title>Brasil pelo Mundo | Blog de Viagens</title>
+
+<style>
+:root {
+    --primary: #087e70;
+    --secondary: #f2a541;
+    --dark: #173b35;
+    --light: #f5f8f6;
+    --text: #34433e;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+/* CABEÇALHO */
+
+header {
+    background: var(--white);
+    box-shadow: 0 2px 12px #00000010;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-content {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.logo span {
+    color: var(--secondary);
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+/* DESTAQUE */
+
+.hero {
+    min-height: 430px;
+    background:
+        linear-gradient(90deg, #102d27dd, #102d2740),
+        url("https://images.unsplash.com/photo-1544986581-efac024faf62?auto=format&fit=crop&w=1800&q=85")
+        center/cover;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.hero-content {
+    max-width: 650px;
+    padding: 70px 0;
+}
+
+.hero-tag {
+    background: var(--secondary);
+    color: #222;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.hero h1 {
+    font-size: clamp(35px, 5vw, 55px);
+    line-height: 1.15;
+    margin: 22px 0;
+}
+
+.hero p {
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.btn {
+    display: inline-block;
+    background: var(--secondary);
+    color: #222;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* BUSCA */
+
+.search-section {
+    background: white;
+    padding: 30px 0;
+    box-shadow: 0 3px 12px #00000008;
+}
+
+.search-box {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-box input,
+.search-box select {
+    flex: 1;
+    min-width: 180px;
+    padding: 14px;
+    border: 1px solid #dce4df;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+}
+
+.search-box button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+main {
+    padding: 55px 0;
+}
+
+.content-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 35px;
+}
+
+.section-heading {
+    margin-bottom: 25px;
+}
+
+.section-heading h2 {
+    font-size: 27px;
+    color: var(--dark);
+}
+
+.section-heading p {
+    color: #77847e;
+    font-size: 14px;
+}
+
+/* FILTROS */
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.filter-btn {
+    border: 1px solid #d9e4df;
+    background: white;
+    padding: 9px 17px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* CARDS */
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.article-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px #00000009;
+    transition: transform .25s;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+}
+
+.article-card img {
+    width: 100%;
+    height: 205px;
+    object-fit: cover;
+    display: block;
+}
+
+.article-content {
+    padding: 20px;
+}
+
+.category {
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.article-content h3 {
+    color: var(--dark);
+    font-size: 19px;
+    line-height: 1.35;
+    margin: 10px 0;
+}
+
+.article-content p {
+    font-size: 13px;
+    color: #77847e;
+}
+
+.article-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-top: 1px solid #edf0ed;
+    margin-top: 18px;
+    padding-top: 13px;
+    font-size: 11px;
+    color: #7b8983;
+}
+
+.read-more {
+    display: inline-block;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 15px;
+}
+
+.no-results {
+    display: none;
+    padding: 30px;
+    text-align: center;
+    background: white;
+    border-radius: 8px;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sidebar-box {
+    background: white;
+    padding: 23px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px #00000009;
+}
+
+.sidebar-box h3 {
+    color: var(--dark);
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+.destination {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.destination img {
+    width: 65px;
+    height: 60px;
+    border-radius: 7px;
+    object-fit: cover;
+}
+
+.destination strong {
+    display: block;
+    font-size: 13px;
+    color: var(--dark);
+}
+
+.destination small {
+    font-size: 11px;
+    color: #87918b;
+}
+
+.newsletter {
+    background: var(--dark);
+    color: white;
+    padding: 24px;
+    border-radius: 10px;
+}
+
+.newsletter h3 {
+    margin-bottom: 10px;
+}
+
+.newsletter p {
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.newsletter input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.newsletter button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: var(--secondary);
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* RODAPÉ */
+
+footer {
+    background: #102d27;
+    color: white;
+    padding: 35px 0;
+    text-align: center;
+}
+
+footer p {
+    font-size: 13px;
+    color: #bdccc5;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 850px) {
+    .content-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .header-content {
+        flex-direction: column;
+        padding: 15px 0;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .articles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        min-height: 380px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container header-content">
+        <a href="#" class="logo">Brasil<span> pelo Mundo.</span></a>
+
+        <nav aria-label="Navegação principal">
+            <a href="#">Início</a>
+            <a href="#artigos">Destinos</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#newsletter">Newsletter</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container hero-content">
+        <span class="hero-tag">EXPLORE O BRASIL</span>
+        <h1>Seu próximo destino está mais perto do que imagina.</h1>
+        <p>
+            Descubra paisagens incríveis, culturas fascinantes e
+            experiências inesquecíveis pelos quatro cantos do Brasil.
+        </p>
+        <a href="#artigos" class="btn">Explorar destinos</a>
+    </div>
+</section>
+
+<section class="search-section">
+    <div class="container">
+        <form class="search-box" id="searchForm">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Qual destino você deseja conhecer?"
+                aria-label="Pesquisar destino, estado ou artigo"
+            >
+
+            <select id="regionSelect" aria-label="Selecionar região">
+                <option value="">Todas as regiões</option>
+                <option value="nordeste">Nordeste</option>
+                <option value="amazonia">Amazônia</option>
+                <option value="sudeste">Sudeste</option>
+                <option value="sul">Sul</option>
+            </select>
+
+            <button type="submit">Pesquisar</button>
+        </form>
+    </div>
+</section>
+
+<main class="container" id="artigos">
+
+    <div class="content-layout">
+
+        <section>
+            <div class="section-heading">
+                <h2>Inspire-se para viajar</h2>
+                <p>Histórias, roteiros e dicas para conhecer o Brasil.</p>
+            </div>
+
+            <div class="filters" aria-label="Filtrar artigos por região">
+                <button class="filter-btn active" data-region="todos">Todos</button>
+                <button class="filter-btn" data-region="nordeste">Nordeste</button>
+                <button class="filter-btn" data-region="amazonia">Amazônia</button>
+                <button class="filter-btn" data-region="sudeste">Sudeste</button>
+                <button class="filter-btn" data-region="sul">Sul</button>
+            </div>
+
+            <div class="articles-grid" id="articlesGrid">
+
+                <article class="article-card"
+                    data-region="nordeste"
+                    data-search="maragogi alagoas nordeste praias piscinas naturais">
+                    <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80"
+                         alt="Praia tropical de águas cristalinas">
+                    <div class="article-content">
+                        <span class="category">Nordeste • Alagoas</span>
+                        <h3>Maragogi: o paraíso das águas cristalinas</h3>
+                        <p>Conheça as famosas piscinas naturais, praias e passeios imperdíveis de Alagoas.</p>
+                        <div class="article-meta">
+                            <span>Por Ana Martins</span>
+                            <span>6 min de leitura</span>
+                        </div>
+                        <a href="#" class="read-more">Ler artigo →</a>
+                    </div>
+                </article>
+
+                <article class="article-card"
+                    data-region="amazonia"
+                    data-search="manaus amazonas amazonia floresta encontro das aguas">
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80"
+                         alt="Floresta tropical da Amazônia">
+                    <div class="article-content">
+                        <span class="category">Amazônia • Amazonas</span>
+                        <h3>Manaus e os encantos da floresta amazônica</h3>
+                        <p>Uma viagem pela biodiversidade, rios e cultura de uma das maiores florestas do planeta.</p>
+                        <div class="article-meta">
+                            <span>Por Pedro Costa</span>
+                            <span>8 min de leitura</span>
+                        </div>
+                        <a href="#" class="read-more">Ler artigo →</a>
+                    </div>
+                </article>
+
+                <article class="article-card"
+                    data-region="sudeste"
+                    data-search="rio de janeiro rio janeiro sudeste cristo redentor copacabana">
+                    <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80"
+                         alt="Vista panorâmica do Rio de Janeiro">
+                    <div class="article-content">
+                        <span class="category">Sudeste • Rio de Janeiro</span>
+                        <h3>Rio de Janeiro: a cidade maravilhosa</h3>
+                        <p>Descubra praias, montanhas, gastronomia e os cartões-postais cariocas.</p>
+                        <div class="article-meta">
+                            <span>Por Lucas Almeida</span>
+                            <span>5 min de leitura</span>
+                        </div>
+                        <a href="#" class="read-more">Ler artigo →</a>
+                    </div>
+                </article>
+
+                <article class="article-card"
+                    data-region="sul"
+                    data-search="gramado rio grande do sul sul serra gaucha inverno">
+                    <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80"
+                         alt="Chalé em meio à natureza">
+                    <div class="article-content">
+                        <span class="category">Sul • Rio Grande do Sul</span>
+                        <h3>Gramado: charme e aconchego na Serra Gaúcha</h3>
+                        <p>Roteiros românticos, gastronomia e atrações para aproveitar o inverno brasileiro.</p>
+                        <div class="article-meta">
+                            <span>Por Marina Souza</span>
+                            <span>7 min de leitura</span>
+                        </div>
+                        <a href="#" class="read-more">Ler artigo →</a>
+                    </div>
+                </article>
+
+                <article class="article-card"
+                    data-region="nordeste"
+                    data-search="jericoacoara ceara nordeste dunas lagoas">
+                    <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80"
+                         alt="Mar e paisagem de praia">
+                    <div class="article-content">
+                        <span class="category">Nordeste • Ceará</span>
+                        <h3>Jericoacoara: dunas, lagoas e aventura</h3>
+                        <p>Explore um dos destinos mais encantadores do litoral cearense.</p>
+                        <div class="article-meta">
+                            <span>Por Ana Martins</span>
+                            <span>6 min de leitura</span>
+                        </div>
+                        <a href="#" class="read-more">Ler artigo →</a>
+                    </div>
+                </article>
+
+                <article class="article-card"
+                    data-region="sudeste"
+                    data-search="ouro preto minas gerais sudeste historia arquitetura">
+                    <img src="https://images.unsplash.com/photo-1598948485421-33a1655d3c18?auto=format&fit=crop&w=800&q=80"
+                         alt="Arquitetura histórica brasileira">
+                    <div class="article-content">
+                        <span class="category">Sudeste • Minas Gerais</span>
+                        <h3>Ouro Preto: uma viagem pela história do Brasil</h3>
+                        <p>Conheça igrejas, casarões coloniais e a riqueza cultural mineira.</p>
+                        <div class="article-meta">
+                            <span>Por Pedro Costa</span>
+                            <span>9 min de leitura</span>
+                        </div>
+                        <a href="#" class="read-more">Ler artigo →</a>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="no-results" id="noResults">
+                <h3>Nenhum destino encontrado.</h3>
+                <p>Tente pesquisar outro estado, região ou destino turístico.</p>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+
+            <section class="sidebar-box">
+                <h3>Destinos em destaque</h3>
+
+                <a href="#" class="destination">
+                    <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=200&q=80" alt="Praia de Maragogi">
+                    <div>
+                        <strong>Maragogi</strong>
+                        <small>Alagoas • Nordeste</small>
+                    </div>
+                </a>
+
+                <a href="#" class="destination">
+                    <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=200&q=80" alt="Rio de Janeiro">
+                    <div>
+                        <strong>Rio de Janeiro</strong>
+                        <small>Rio de Janeiro • Sudeste</small>
+                    </div>
+                </a>
+
+                <a href="#" class="destination">
+                    <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=200&q=80" alt="Paisagem de Gramado">
+                    <div>
+                        <strong>Gramado</strong>
+                        <small>Rio Grande do Sul • Sul</small>
+                    </div>
+                </a>
+
+                <a href="#" class="destination">
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=200&q=80" alt="Floresta amazônica">
+                    <div>
+                        <strong>Manaus</strong>
+                        <small>Amazonas • Amazônia</small>
+                    </div>
+                </a>
+            </section>
+
+            <section class="newsletter" id="newsletter">
+                <h3>Receba dicas de viagem!</h3>
+                <p>Cadastre seu e-mail e receba novidades sobre os melhores destinos brasileiros.</p>
+
+                <form id="newsletterForm">
+                    <input type="email" placeholder="Seu melhor e-mail"
+                           aria-label="Seu e-mail" required>
+                    <button type="submit">Quero receber</button>
+                </form>
+                <p id="newsletterMessage" aria-live="polite"></p>
+            </section>
+
+            <section class="sidebar-box" id="sobre">
+                <h3>Sobre o blog</h3>
+                <p style="font-size:13px">
+                    O Brasil pelo Mundo é um espaço dedicado a explorar
+                    as belezas naturais, culturais e históricas do nosso
+                    país, incentivando o turismo nacional.
+                </p>
+            </section>
+
+        </aside>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <h3>Brasil pelo Mundo.</h3>
+        <p>Descubra o Brasil. Viva novas experiências.</p>
+        <p style="margin-top:12px">
+            © 2026 Brasil pelo Mundo. Todos os direitos reservados.
+        </p>
+    </div>
+</footer>
+
+<script>
+// FILTROS E PESQUISA
+
+const searchForm = document.getElementById("searchForm");
+const searchInput = document.getElementById("searchInput");
+const regionSelect = document.getElementById("regionSelect");
+const articles = document.querySelectorAll(".article-card");
+const filterButtons = document.querySelectorAll(".filter-btn");
+const noResults = document.getElementById("noResults");
+
+let activeRegion = "todos";
+
+function filterArticles() {
+    const search = searchInput.value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+    const region = regionSelect.value || activeRegion;
+    let visibleCount = 0;
+
+    articles.forEach(article => {
+        const articleRegion = article.dataset.region;
+        const articleText = (
+            article.innerText + " " + article.dataset.search
+        ).toLowerCase().normalize("NFD")
+         .replace(/[\u0300-\u036f]/g, "");
+
+        const matchesRegion =
+            region === "todos" || articleRegion === region;
+
+        const matchesSearch = articleText.includes(search);
+
+        const visible = matchesRegion && matchesSearch;
+
+        article.style.display = visible ? "block" : "none";
+
+        if (visible) visibleCount++;
+    });
+
+    noResults.style.display =
+        visibleCount === 0 ? "block" : "none";
+}
+
+// Pesquisa por texto e região
+searchForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    filterArticles();
+});
+
+// Atualização automática da pesquisa
+searchInput.addEventListener("input", filterArticles);
+regionSelect.addEventListener("change", function() {
+    activeRegion = this.value || "todos";
+    updateActiveButton(activeRegion);
+    filterArticles();
+});
+
+// Botões de filtro
+function updateActiveButton(region) {
+    filterButtons.forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.region === region
+        );
+    });
+}
+
+filterButtons.forEach(button => {
+    button.addEventListener("click", function() {
+        activeRegion = this.dataset.region;
+        regionSelect.value = "";
+        updateActiveButton(activeRegion);
+        filterArticles();
+    });
+});
+
+// NEWSLETTER - DEMONSTRAÇÃO
+// Para receber inscrições reais, integrar com um backend ou serviço de e-mail.
+
+document.getElementById("newsletterForm")
+    .addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        document.getElementById("newsletterMessage").textContent =
+            "Inscrição demonstrativa realizada com sucesso!";
+
+        this.reset();
+    });
+</script>
+
+</body>
+</html>

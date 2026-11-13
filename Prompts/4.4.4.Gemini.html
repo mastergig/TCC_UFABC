@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio Interativo</title>
+    <style>
+        /* Estilos essenciais para o funcionamento da filtragem e legibilidade */
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .filter-btn.active {
+            background: #222;
+            color: #fff;
+            border-color: #222;
+        }
+        .menu-section {
+            margin-bottom: 30px;
+        }
+        .menu-section.hidden {
+            display: none;
+        }
+        .menu-item {
+            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .price {
+            font-weight: bold;
+            color: #2c7a3f;
+        }
+        .allergens {
+            font-size: 0.85em;
+            color: #b03a2e;
+            background: #fdf2e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cardápio da Casa</h1>
+        
+        <!-- PASSO 2: Barra de navegação superior com botões de filtro -->
+        <nav aria-label="Filtros de categoria do cardápio">
+            <button type="button" class="filter-btn active" data-filter="todos">Todos</button>
+            <button type="button" class="filter-btn" data-filter="entradas">Entradas</button>
+            <button type="button" class="filter-btn" data-filter="principais">Pratos Principais</button>
+            <button type="button" class="filter-btn" data-filter="sobremesas">Sobremesas</button>
+        </nav>
+    </header>
+
+    <!-- PASSO 1: Estrutura HTML5 com seções semânticas, preços, descrições e alérgenos -->
+    <main id="menu-container">
+        
+        <!-- Seção: Entradas -->
+        <section class="menu-section" data-category="entradas" aria-labelledby="heading-entradas">
+            <h2 id="heading-entradas">Entradas</h2>
+            
+            <article class="menu-item">
+                <header class="item-header">
+                    <h3>Bruschetta Tradicional</h3>
+                    <data class="price" value="28.00">R$ 28,00</data>
+                </header>
+                <p>Pão italiano tostado com tomates frescos, manjericão, alho e azeite extravirgem.</p>
+                <footer>
+                    <small class="allergens" role="note">Alérgenos: Contém glúten (trigo).</small>
+                </footer>
+            </article>
+
+            <article class="menu-item">
+                <header class="item-header">
+                    <h3>Carpaccio de Carne</h3>
+                    <data class="price" value="42.00">R$ 42,00</data>
+                </header>
+                <p>Finas fatias de filé mignon cru, alcaparras, lascas de parmesão e molho de mostarda.</p>
+                <footer>
+                    <small class="allergens" role="note">Alérgenos: Contém leite e mostarda.</small>
+                </footer>
+            </article>
+        </section>
+
+        <!-- Seção: Pratos Principais -->
+        <section class="menu-section" data-category="principais" aria-labelledby="heading-principais">
+            <h2 id="heading-principais">Pratos Principais</h2>
+            
+            <article class="menu-item">
+                <header class="item-header">
+                    <h3>Risoto de Cogumelos</h3>
+                    <data class="price" value="64.00">R$ 64,00</data>
+                </header>
+                <p>Arroz arbóreo cremoso preparado com mix de cogumelos frescos, vinho branco e queijo grana padano.</p>
+                <footer>
+                    <small class="allergens" role="note">Alérgenos: Contém leite. Não contém glúten.</small>
+                </footer>
+            </article>
+
+            <article class="menu-item">
+                <header class="item-header">
+                    <h3>Salmão Grelhado</h3>
+                    <data class="price" value="78.00">R$ 78,00</data>
+                </header>
+                <p>Posta de salmão grelhada acompanhada de purê de mandioquinha e aspargos salteados.</p>
+                <footer>
+                    <small class="allergens" role="note">Alérgenos: Contém peixe e leite.</small>
+                </footer>
+            </article>
+        </section>
+
+        <!-- Seção: Sobremesas -->
+        <section class="menu-section" data-category="sobremesas" aria-labelledby="heading-sobremesas">
+            <h2 id="heading-sobremesas">Sobremesas</h2>
+            
+            <article class="menu-item">
+                <header class="item-header">
+                    <h3>Petit Gâteau</h3>
+                    <data class="price" value="32.00">R$ 32,00</data>
+                </header>
+                <p>Bolo quente de chocolate meio amargo com interior cremoso, servido com sorvete de baunilha.</p>
+                <footer>
+                    <small class="allergens" role="note">Alérgenos: Contém glúten, ovos, leite e soja.</small>
+                </footer>
+            </article>
+        </section>
+
+    </main>
+
+    <!-- PASSO 3: Script JavaScript para ocultar/exibir as seções -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const menuSections = document.querySelectorAll('.menu-section');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 1. Atualiza o estado visual e de acessibilidade dos botões
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-pressed', 'false');
+                    });
+                    button.classList.add('active');
+                    button.setAttribute('aria-pressed', 'true');
+
+                    // 2. Obtém a categoria selecionada
+                    const selectedCategory = button.getAttribute('data-filter');
+
+                    // 3. Filtra as seções correspondentes
+                    menuSections.forEach(section => {
+                        const sectionCategory = section.getAttribute('data-category');
+
+                        if (selectedCategory === 'todos' || selectedCategory === sectionCategory) {
+                            section.classList.remove('hidden');
+                            section.removeAttribute('hidden');
+                        } else {
+                            section.classList.add('hidden');
+                            section.setAttribute('hidden', 'true');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

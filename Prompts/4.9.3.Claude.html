@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- Viewport sem "maximum-scale" nem "user-scalable=no": o zoom nunca é bloqueado -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Gazeta do Bairro: notícias locais de mobilidade, obras, cultura e serviços públicos.">
+  <title>Gazeta do Bairro | Notícias locais</title>
+  <style>
+    /* ===== 1. Base: tudo em unidades relativas ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --cor-fundo: #fdfcf9;
+      --cor-texto: #1d1d1f;          /* contraste ~16:1 sobre o fundo */
+      --cor-suave: #4a4a4f;          /* contraste ~8:1 */
+      --cor-marca: #0b4f6c;          /* contraste ~8,6:1 com branco */
+      --cor-destaque: #b3261e;
+      --cor-borda: #d9d6cf;
+      --cor-cartao: #ffffff;
+      --raio: 0.5rem;
+      --espaco: clamp(1rem, 0.6rem + 1.5vw, 2rem);
+      --largura-max: 75rem;           /* limite de leitura, não largura fixa */
+      font-size: 100%;                /* respeita o tamanho de fonte do usuário */
+    }
+
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--cor-texto);
+      background: var(--cor-fundo);
+      /* Palavras/URLs longas quebram em vez de empurrar a largura */
+      overflow-wrap: break-word;
+    }
+
+    img, svg, video, iframe { max-width: 100%; height: auto; display: block; }
+
+    h1, h2, h3 { line-height: 1.25; margin: 0 0 0.5em; }
+    h1 { font-size: clamp(1.5rem, 1.1rem + 2vw, 2.5rem); }
+    h2 { font-size: clamp(1.25rem, 1rem + 1.2vw, 1.875rem); }
+    h3 { font-size: clamp(1.0625rem, 1rem + 0.5vw, 1.375rem); }
+    p  { margin: 0 0 1em; max-width: 70ch; }
+
+    a { color: var(--cor-marca); text-underline-offset: 0.15em; }
+    a:hover { text-decoration-thickness: 0.15em; }
+
+    /* Foco sempre visível para quem navega por teclado */
+    :focus-visible {
+      outline: 0.1875rem solid var(--cor-destaque);
+      outline-offset: 0.1875rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--largura-max);
+      margin-inline: auto;
+      padding-inline: var(--espaco);
+    }
+
+    .visualmente-oculto {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0 0 0 0);
+      white-space: nowrap; border: 0; padding: 0; margin: -1px;
+    }
+
+    /* ===== 2. Link "pular para o conteúdo" ===== */
+    .pular-link {
+      position: absolute;
+      left: 1rem; top: -10rem;
+      background: var(--cor-marca); color: #fff;
+      padding: 0.75em 1em; border-radius: var(--raio);
+      z-index: 100;
+    }
+    .pular-link:focus { top: 1rem; }
+
+    /* ===== 3. Cabeçalho e navegação ===== */
+    .topo { background: var(--cor-marca); color: #fff; }
+    .topo a { color: #fff; }
+
+    .topo__barra {
+      display: flex;
+      flex-wrap: wrap;               /* quebra de linha em vez de estourar */
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem 1.5rem;
+      padding-block: 1rem;
+    }
+
+    .logo {
+      font-size: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .logo span { font-weight: 400; }
+
+    .data-edicao { margin: 0; font-size: 0.875rem; opacity: 0.9; }
+
+    .busca { display: flex; flex: 1 1 16rem; max-width: 26rem; min-width: 0; }
+    .busca input {
+      flex: 1; min-width: 0;
+      font: inherit; padding: 0.5em 0.75em;
+      border: 0.125rem solid transparent;
+      border-radius: var(--raio) 0 0 var(--raio);
+    }
+    .busca button {
+      font: inherit; font-weight: 600;
+      padding: 0.5em 1em; cursor: pointer;
+      background: #ffd166; color: #1d1d1f;
+      border: 0; border-radius: 0 var(--raio) var(--raio) 0;
+    }
+
+    .menu-botao {
+      display: none;
+      font: inherit; font-weight: 600;
+      background: transparent; color: #fff;
+      border: 0.125rem solid #fff; border-radius: var(--raio);
+      padding: 0.4em 0.9em; cursor: pointer;
+    }
+
+    .nav-principal { background: #083a50; }
+    .nav-principal ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-wrap: wrap; gap: 0.25rem;
+    }
+    .nav-principal a {
+      display: block;
+      padding: 0.75em 1em;
+      text-decoration: none; font-weight: 600;
+      min-height: 2.75rem;           /* alvo de toque >= 44px */
+    }
+    .nav-principal a[aria-current="page"] {
+      box-shadow: inset 0 -0.25rem 0 #ffd166;
+    }
+
+    /* ===== 4. Faixa de alerta ===== */
+    .alerta {
+      background: #fff4d6;
+      border-block: 0.0625rem solid #e8c66a;
+      padding-block: 0.75rem;
+    }
+    .alerta p { margin: 0; max-width: none; }
+    .alerta strong { color: var(--cor-destaque); }
+
+    /* ===== 5. Layout principal ===== */
+    main { padding-block: var(--espaco); }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);   /* minmax(0,…) evita estouro */
+      gap: var(--espaco);
+    }
+
+    /* Notícia principal */
+    .manchete {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+      background: var(--cor-cartao);
+      border: 0.0625rem solid var(--cor-borda);
+      border-radius: var(--raio);
+      padding: var(--espaco);
+    }
+
+    .chapeu {
+      display: inline-block;
+      font-size: 0.8125rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--cor-destaque);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta {
+      font-size: 0.875rem;
+      color: var(--cor-suave);
+      display: flex; flex-wrap: wrap; gap: 0.25rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    figure { margin: 0; }
+    figcaption { font-size: 0.875rem; color: var(--cor-suave); margin-top: 0.5rem; }
+
+    .ilustra {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--raio);
+      height: auto;
+    }
+
+    /* Grade de notícias: colunas se adaptam sozinhas */
+    .secao-titulo {
+      border-bottom: 0.1875rem solid var(--cor-marca);
+      padding-bottom: 0.25rem;
+      margin-top: var(--espaco);
+    }
+
+    .grade-noticias {
+      list-style: none; margin: 0; padding: 0;
+      display: grid;
+      /* min(100%, 16rem) garante que nenhuma coluna exija mais que a tela */
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+      gap: 1.25rem;
+    }
+
+    .cartao {
+      height: 100%;
+      display: flex; flex-direction: column;
+      background: var(--cor-cartao);
+      border: 0.0625rem solid var(--cor-borda);
+      border-radius: var(--raio);
+      padding: 1.25rem;
+      position: relative;
+    }
+    .cartao h3 a { text-decoration: none; color: var(--cor-texto); }
+    /* Cartão inteiro clicável, mantendo um único link acessível */
+    .cartao h3 a::after { content: ""; position: absolute; inset: 0; }
+    .cartao:focus-within { outline: 0.1875rem solid var(--cor-destaque); outline-offset: 0.125rem; }
+    .cartao:hover h3 a { text-decoration: underline; }
+    .cartao p:last-child { margin-bottom: 0; margin-top: auto; }
+
+    /* Barra lateral */
+    .lateral { display: grid; gap: var(--espaco); align-content: start; }
+    .lateral section {
+      background: var(--cor-cartao);
+      border: 0.0625rem solid var(--cor-borda);
+      border-radius: var(--raio);
+      padding: 1.25rem;
+    }
+    .mais-lidas { margin: 0; padding-left: 1.5rem; }
+    .mais-lidas li { margin-bottom: 0.75rem; }
+    .mais-lidas li:last-child { margin-bottom: 0; }
+
+    /* Lista de serviço: definição em vez de tabela larga */
+    .servico { margin: 0; }
+    .servico div {
+      display: flex; flex-wrap: wrap; justify-content: space-between;
+      gap: 0.25rem 1rem;
+      padding-block: 0.5rem;
+      border-bottom: 0.0625rem dashed var(--cor-borda);
+    }
+    .servico div:last-child { border-bottom: 0; }
+    .servico dt { font-weight: 600; }
+    .servico dd { margin: 0; }
+
+    /* Formulário de newsletter */
+    .form-campo { display: grid; gap: 0.375rem; margin-bottom: 0.75rem; }
+    .form-campo label { font-weight: 600; }
+    .form-campo input {
+      font: inherit; width: 100%;
+      padding: 0.6em 0.75em;
+      border: 0.125rem solid var(--cor-suave);
+      border-radius: var(--raio);
+    }
+    .dica { font-size: 0.875rem; color: var(--cor-suave); margin: 0; }
+    .botao {
+      font: inherit; font-weight: 700;
+      width: 100%; min-height: 2.75rem;
+      background: var(--cor-marca); color: #fff;
+      border: 0; border-radius: var(--raio);
+      padding: 0.6em 1em; cursor: pointer;
+    }
+    .botao:hover { background: #083a50; }
+    .retorno { margin: 0.75rem 0 0; font-weight: 600; }
+
+    /* ===== 6. Rodapé ===== */
+    .rodape {
+      background: #1d1d1f; color: #f2f2f2;
+      margin-top: var(--espaco);
+      padding-block: var(--espaco);
+    }
+    .rodape a { color: #9fd8f0; }
+    .rodape__grade {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+      gap: var(--espaco);
+    }
+    .rodape h2 { font-size: 1.125rem; }
+    .rodape ul { list-style: none; margin: 0; padding: 0; }
+    .rodape li { margin-bottom: 0.5rem; }
+    .rodape__copy {
+      border-top: 0.0625rem solid #444;
+      margin-top: var(--espaco); padding-top: 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* ===== 7. Pontos de quebra em em (acompanham o zoom e a fonte) ===== */
+    @media (min-width: 48em) {
+      .manchete { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+    }
+
+    @media (min-width: 64em) {
+      .layout { grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem); }
+    }
+
+    /* Menu recolhível apenas em telas estreitas (ou zoom alto) e com JS ativo */
+    @media (max-width: 40em) {
+      .js .menu-botao { display: inline-block; }
+      .js .nav-principal ul { flex-direction: column; }
+      .js .nav-principal[data-aberto="false"] { display: none; }
+    }
+
+    /* ===== 8. Preferências do usuário ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+
+    @media (forced-colors: active) {
+      .cartao, .lateral section, .manchete { border: 1px solid CanvasText; }
+    }
+
+    @media print {
+      .nav-principal, .busca, .menu-botao, .newsletter, .pular-link { display: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo principal</a>
+
+  <header class="topo">
+    <div class="container topo__barra">
+      <div>
+        <a class="logo" href="#" aria-label="Gazeta do Bairro, página inicial">Gazeta<span> do Bairro</span></a>
+        <p class="data-edicao">Edição de <time datetime="2026-11-12">quinta-feira, 12 de novembro de 2026</time></p>
+      </div>
+
+      <form class="busca" role="search" action="#" onsubmit="return false;">
+        <label class="visualmente-oculto" for="campo-busca">Buscar notícias</label>
+        <input id="campo-busca" type="search" name="q" placeholder="Buscar notícias…" autocomplete="off">
+        <button type="submit">Buscar</button>
+      </form>
+
+      <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu">
+        Menu
+      </button>
+    </div>
+
+    <nav class="nav-principal" id="menu" aria-label="Seções do portal" data-aberto="false">
+      <div class="container">
+        <ul>
+          <li><a href="#" aria-current="page">Início</a></li>
+          <li><a href="#">Cidade</a></li>
+          <li><a href="#">Mobilidade</a></li>
+          <li><a href="#">Meio ambiente</a></li>
+          <li><a href="#">Cultura</a></li>
+          <li><a href="#">Serviços</a></li>
+          <li><a href="#">Opinião</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <aside class="alerta" aria-label="Aviso urgente">
+    <div class="container">
+      <p><strong>Aviso:</strong> Rua das Palmeiras interditada entre os números 200 e 450 até sexta-feira (14). Use a Av. Brasil como desvio.</p>
+    </div>
+  </aside>
+
+  <main id="conteudo" tabindex="-1">
+    <div class="container layout">
+
+      <!-- Coluna principal -->
+      <div>
+        <h1 class="visualmente-oculto">Últimas notícias da região</h1>
+
+        <!-- Estrutura-base do enunciado, ampliada -->
+        <article class="manchete" aria-labelledby="titulo-manchete">
+          <figure>
+            <svg class="ilustra" viewBox="0 0 320 180" role="img" aria-labelledby="desc-obra">
+              <title id="desc-obra">Ilustração de máquinas trabalhando na reforma de uma praça central</title>
+              <rect width="320" height="180" fill="#cfe6f0"/>
+              <rect y="120" width="320" height="60" fill="#8a7d6b"/>
+              <rect x="40" y="70" width="70" height="50" fill="#f2b705"/>
+              <rect x="95" y="50" width="12" height="70" fill="#444"/>
+              <line x1="101" y1="52" x2="170" y2="95" stroke="#444" stroke-width="6"/>
+              <rect x="190" y="60" width="90" height="60" fill="#e8e3d8"/>
+              <rect x="205" y="75" width="18" height="18" fill="#7fb3c8"/>
+              <rect x="245" y="75" width="18" height="18" fill="#7fb3c8"/>
+              <circle cx="55" cy="125" r="10" fill="#222"/>
+              <circle cx="95" cy="125" r="10" fill="#222"/>
+            </svg>
+            <figcaption>Máquinas na Praça Central na manhã desta quinta-feira.</figcaption>
+          </figure>
+
+          <div>
+            <span class="chapeu">Urbanismo</span>
+            <h2 id="titulo-manchete">Obras no Centro Urbano</h2>
+            <p class="meta">
+              <span>Por <a href="#">Equipe de Reportagem</a></span>
+              <time datetime="2026-11-12T08:30">12 nov. 2026, 8h30</time>
+              <span>Leitura: 4 min</span>
+            </p>
+            <p>A requalificação da Praça Central entrou na segunda fase nesta semana. O projeto prevê calçadas mais largas, rampas de acessibilidade em todas as esquinas e ampliação da área arborizada em cerca de 30%.</p>
+            <p>Segundo a Secretaria de Obras, a conclusão está prevista para março de 2027. Durante o período, linhas de ônibus que passam pela Rua XV terão o ponto deslocado em um quarteirão.</p>
+            <p><a href="#">Leia a reportagem completa<span class="visualmente-oculto"> sobre as obras no Centro Urbano</span></a></p>
+          </div>
+        </article>
+
+        <section aria-labelledby="titulo-recentes">
+          <h2 id="titulo-recentes" class="secao-titulo">Mais notícias</h2>
+          <ul class="grade-noticias">
+            <li>
+              <article class="cartao">
+                <span class="chapeu">Mobilidade</span>
+                <h3><a href="#">Nova ciclofaixa vai ligar a estação ao campus universitário</a></h3>
+                <p class="meta"><time datetime="2026-11-12">12 nov. 2026</time></p>
+                <p>Trecho de 3,2 km terá separação física e sinalização semafórica própria.</p>
+              </article>
+            </li>
+            <li>
+              <article class="cartao">
+                <span class="chapeu">Meio ambiente</span>
+                <h3><a href="#">Sensores de qualidade do ar começam a operar em cinco bairros</a></h3>
+                <p class="meta"><time datetime="2026-11-11">11 nov. 2026</time></p>
+                <p>Dados ficarão disponíveis em painel público atualizado a cada hora.</p>
+              </article>
+            </li>
+            <li>
+              <article class="cartao">
+                <span class="chapeu">Cidade</span>
+                <h3><a href="#">Audiência pública discute revisão do Plano Diretor</a></h3>
+                <p class="meta"><time datetime="2026-11-10">10 nov. 2026</time></p>
+                <p>Encontro acontece na Câmara Municipal e terá transmissão com intérprete de Libras.</p>
+              </article>
+            </li>
+            <li>
+              <article class="cartao">
+                <span class="chapeu">Cultura</span>
+                <h3><a href="#">Feira de artesanato volta ao Largo da Matriz no fim de semana</a></h3>
+                <p class="meta"><time datetime="2026-11-10">10 nov. 2026</time></p>
+                <p>Mais de 80 expositores locais; entrada gratuita das 9h às 18h.</p>
+              </article>
+            </li>
+            <li>
+              <article class="cartao">
+                <span class="chapeu">Serviços</span>
+                <h3><a href="#">Unidade de saúde do Jardim Esperança amplia horário de atendimento</a></h3>
+                <p class="meta"><time datetime="2026-11-09">9 nov. 2026</time></p>
+                <p>Atendimento passa a ir até as 22h de segunda a sexta-feira.</p>
+              </article>
+            </li>
+            <li>
+              <article class="cartao">
+                <span class="chapeu">Habitação</span>
+                <h3><a href="#">Programa de regularização fundiária atende 400 famílias</a></h3>
+                <p class="meta"><time datetime="2026-11-08">8 nov. 2026</time></p>
+                <p>Moradores recebem títulos de propriedade em cerimônia no centro comunitário.</p>
+              </article>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Barra lateral -->
+      <aside class="lateral" aria-label="Conteúdo complementar">
+        <section aria-labelledby="titulo-lidas">
+          <h2 id="titulo-lidas">Mais lidas</h2>
+          <ol class="mais-lidas">
+            <li><a href="#">Obras no Centro Urbano: o que muda no trânsito</a></li>
+            <li><a href="#">Calendário de vacinação de novembro</a></li>
+            <li><a href="#">Onde descartar eletrônicos na cidade</a></li>
+            <li><a href="#">Coleta seletiva ganha novos horários</a></li>
+          </ol>
+        </section>
+
+        <section aria-labelledby="titulo-servico">
+          <h2 id="titulo-servico">Serviço do dia</h2>
+          <dl class="servico">
+            <div><dt>Rodízio de água</dt><dd>Zona Norte, 22h às 5h</dd></div>
+            <div><dt>Feira livre</dt><dd>Rua Amazonas, 7h às 13h</dd></div>
+            <div><dt>Temperatura</dt><dd>Mín. 17 °C · Máx. 28 °C</dd></div>
+            <div><dt>Telefone da Defesa Civil</dt><dd><a href="tel:199">199</a></dd></div>
+          </dl>
+        </section>
+
+        <section class="newsletter" aria-labelledby="titulo-news">
+          <h2 id="titulo-news">Receba as notícias do bairro</h2>
+          <form id="form-news" action="#" novalidate>
+            <div class="form-campo">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-dica">
+              <p id="email-dica" class="dica">Enviamos um resumo por semana. Cancele quando quiser.</p>
+            </div>
+            <button class="botao" type="submit">Inscrever-se</button>
+            <p class="retorno" id="retorno" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape__grade">
+        <section aria-labelledby="rod-sobre">
+          <h2 id="rod-sobre">Gazeta do Bairro</h2>
+          <p>Jornalismo local independente, feito por e para a comunidade.</p>
+        </section>
+        <nav aria-labelledby="rod-secoes">
+          <h2 id="rod-secoes">Seções</h2>
+          <ul>
+            <li><a href="#">Cidade</a></li>
+            <li><a href="#">Mobilidade</a></li>
+            <li><a href="#">Cultura</a></li>
+          </ul>
+        </nav>
+        <section aria-labelledby="rod-contato">
+          <h2 id="rod-contato">Contato</h2>
+          <address>
+            Redação: Rua Exemplo, 100 – Centro<br>
+            <a href="mailto:redacao@gazetadobairro.exemplo">redacao@gazetadobairro.exemplo</a>
+          </address>
+        </section>
+      </div>
+      <p class="rodape__copy">© 2026 Gazeta do Bairro. <a href="#">Declaração de acessibilidade</a>.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Aprimoramento progressivo: sem JS, o menu fica sempre visível.
+    document.documentElement.classList.add('js');
+
+    const botao = document.querySelector('.menu-botao');
+    const menu = document.getElementById('menu');
+    botao.addEventListener('click', () => {
+      const aberto = botao.getAttribute('aria-expanded') === 'true';
+      botao.setAttribute('aria-expanded', String(!aberto));
+      menu.dataset.aberto = String(!aberto);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && botao.getAttribute('aria-expanded') === 'true') {
+        botao.click();
+        botao.focus();
+      }
+    });
+
+    // Newsletter com mensagem anunciada por leitores de tela
+    const form = document.getElementById('form-news');
+    const email = document.getElementById('email');
+    const retorno = document.getElementById('retorno');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!email.checkValidity()) {
+        email.setAttribute('aria-invalid', 'true');
+        retorno.textContent = 'Informe um e-mail válido, por exemplo: nome@dominio.com.';
+        email.focus();
+        return;
+      }
+      email.removeAttribute('aria-invalid');
+      retorno.textContent = 'Inscrição confirmada. Obrigado!';
+      form.reset();
+    });
+  </script>
+</body>
+</html>

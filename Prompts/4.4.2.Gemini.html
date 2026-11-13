@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bistrô L'Aube — Menu Contemporâneo</title>
+    
+    <!-- Google Fonts: Cormorant Garamond (Serifada Editorial) & Plus Jakarta Sans (Sem Serifa Limpa) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração de Design Tokens do Bistrô -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF8F5',
+                        linen: '#F3EFEA',
+                        charcoal: '#1E1E1E',
+                        muted: '#635F59',
+                        terracotta: '#B86B4B',
+                        gold: '#9A7B4F',
+                        sand: '#E4DDD3'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos customizados para refinamento editorial e rolagem suave */
+        body {
+            background-color: #FAF8F5;
+            color: #1E1E1E;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ocultar barra de rolagem nas abas mobile mantendo a funcionalidade */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Animação suave de entrada dos itens do menu */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-panel-enter {
+            animation: fadeSlideUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Linha pontilhada sutil entre nome do prato e preço (estilo bistrô clássico) */
+        .leader-dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #D5CEC4;
+            margin: 0 0.75rem;
+            position: relative;
+            top: -5px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-terracotta/20 selection:text-charcoal">
+
+    <!-- Cabeçalho Editorial do Bistrô -->
+    <header class="pt-10 pb-6 sm:pt-14 sm:pb-8 px-4 sm:px-8 max-w-4xl mx-auto w-full text-center">
+        <div class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-gold font-medium mb-3">
+            <span>São Paulo</span>
+            <span class="w-1 h-1 rounded-full bg-terracotta"></span>
+            <span>Cozinha Autoral</span>
+        </div>
+        
+        <h1 class="font-serif text-4xl sm:text-6xl font-semibold tracking-tight text-charcoal mb-2">
+            Bistrô L’Aube
+        </h1>
+        
+        <p class="font-serif italic text-lg sm:text-xl text-muted max-w-xl mx-auto mb-5">
+            Do primeiro café da manhã aos encontros à meia-luz: ingredientes sazonais e técnica francesa com alma brasileira.
+        </p>
+
+        <!-- Horário de Funcionamento e Status -->
+        <div class="inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-muted bg-linen/80 border border-sand/80 px-4 py-2 rounded-full">
+            <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-600/80 animate-pulse"></span>
+                Aberto todos os dias
+            </span>
+            <span class="text-sand hidden sm:inline">|</span>
+            <span>07h30 às 23h30</span>
+        </div>
+    </header>
+
+    <!-- Barra de Navegação por Abas (Sticky no topo ao rolar) -->
+    <nav aria-label="Categorias do Cardápio" class="sticky top-0 z-30 bg-cream/95 backdrop-blur-md border-y border-sand/80 transition-shadow">
+        <div class="max-w-4xl mx-auto px-2 sm:px-6">
+            <div id="category-tabs" role="tablist" class="flex items-center sm:justify-center overflow-x-auto no-scrollbar gap-1 sm:gap-2 py-1">
+                <!-- As 5 abas obrigatórias serão renderizadas e controladas via JavaScript -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal do Cardápio -->
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-8 pt-6 pb-16">
+        
+        <!-- Barra Discreta de Busca e Filtros Dietéticos -->
+        <section aria-label="Filtros do Cardápio" class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-sand/70">
+            <!-- Filtros rápidos por restrição alimentar -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar" id="dietary-filters">
+                <button type="button" data-filter="all" class="filter-btn active px-3.5 py-1.5 rounded-full text-xs font-medium transition-all bg-charcoal text-cream">
+                    Todos os itens
+                </button>
+                <button type="button" data-filter="Vegetariano" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-medium transition-all bg-linen text-muted hover:text-charcoal border border-sand">
+                    Vegetariano
+                </button>
+                <button type="button" data-filter="Sem Glúten" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-medium transition-all bg-linen text-muted hover:text-charcoal border border-sand">
+                    Sem Glúten
+                </button>
+            </div>
+
+            <!-- Campo de busca minimalista -->
+            <div class="relative w-full sm:w-64">
+                <svg class="w-4 h-4 text-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3" stroke-linecap="round"></path>
+                </svg>
+                <input 
+                    type="search" 
+                    id="search-input" 
+                    placeholder="Buscar prato ou ingrediente..." 
+                    aria-label="Buscar prato ou ingrediente"
+                    class="w-full pl-9 pr-4 py-1.5 text-sm bg-linen/70 border border-sand rounded-full text-charcoal placeholder:text-muted/70 focus:outline-none focus:border-terracotta focus:bg-white transition-colors"
+                >
+            </div>
+        </section>
+
+        <!-- Cabeçalho Contextual da Categoria Ativa -->
+        <div id="category-header" class="mb-8 text-center sm:text-left flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+            <div>
+                <h2 id="active-category-title" class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal">
+                    Café da Manhã
+                </h2>
+                <p id="active-category-subtitle" class="text-sm text-muted mt-1">
+                    Servido diariamente das 07h30 às 11h30 · Pães de fermentação natural assados na casa
+                </p>
+            </div>
+            <span id="items-count" class="text-xs uppercase tracking-widest text-gold font-medium">
+                6 opções
+            </span>
+        </div>
+
+        <!-- Lista de Pratos (Renderizada dinamicamente sem recarregar a página) -->
+        <div id="menu-container" role="tabpanel" class="menu-panel-enter">
+            <!-- Itens injetados via JavaScript -->
+        </div>
+
+        <!-- Estado Vazio (quando a busca/filtro não encontra resultados na aba atual) -->
+        <div id="empty-state" class="hidden py-14 text-center bg-linen/50 rounded-2xl border border-sand/60 px-4">
+            <p class="font-serif text-2xl text-charcoal mb-2">Nenhum prato encontrado nesta seção</p>
+            <p class="text-sm text-muted mb-5">Tente limpar a busca ou explorar outra categoria do dia.</p>
+            <button type="button" id="reset-filters-btn" class="px-5 py-2 rounded-full text-xs font-medium uppercase tracking-wider bg-terracotta text-white hover:bg-terracotta/90 transition-colors">
+                Limpar filtros
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Rodapé Discreto -->
+    <footer class="border-t border-sand/80 py-8 px-4 sm:px-8 text-center text-xs text-muted bg-linen/40">
+        <div class="max-w-4xl mx-auto space-y-2">
+            <p class="font-serif italic text-base text-charcoal">Bistrô L’Aube</p>
+            <p>Informe nossa equipe sobre alergias ou restrições alimentares · Taxa de serviço opcional (12%).</p>
+            <p class="text-[11px] text-muted/80 pt-1">Preços expressos em Reais (R$).</p>
+        </div>
+    </footer>
+
+    <!-- Script de Dados e Interatividade do Menu -->
+    <script>
+        /**
+         * Banco de dados estruturado do Bistrô L'Aube.
+         * Dividido exatamente nas 5 categorias solicitadas, com 6 itens cada.
+         */
+        const MENU_DATA = [
+            {
+                id: 'cafe-da-manha',
+                label: 'Café da Manhã',
+                schedule: 'Servido diariamente das 07h30 às 11h30 · Pães de fermentação natural assados na casa',
+                items: [
+                    {
+                        name: 'Œufs Brouillés & Trufa Negra',
+                        description: 'Ovos caipiras cremosos preparados lentamente na manteiga noisette, lascas de trufa negra, cebolinha francesa e fatia de brioche tostado.',
+                        price: 46.00,
+                        tags: ['Vegetariano', 'Especialidade da Casa']
+                    },
+                    {
+                        name: 'Tartine de Abacate & Gravlax de Salmão',
+                        description: 'Pão levain rústico, creme de abacate temperado com flor de sal e limão-siciliano, salmão curado na casa, ovo mollet e brotos de rabanete.',
+                        price: 54.00,
+                        tags: []
+                    },
+                    {
+                        name: 'Croissant Folhado & Compota Artesanal',
+                        description: 'Massa folhada francesa com manteiga de primeira qualidade, acompanhada de manteiga batida com flor de sal e geleia de frutas vermelhas da estação.',
+                        price: 28.00,
+                        tags: ['Vegetariano']
+                    },
+                    {
+                        name: 'Bowl de Iogurte Grego, Figos & Mel Silvestre',
+                        description: 'Iogurte natural dessorado, figos frescos assados com tomilho, granola crocante de castanhas brasileiras sem aveia e fio de mel silvestre.',
+                        price: 36.00,
+                        tags: ['Vegetariano', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Croque Madame L’Aube',
+                        description: 'Pão de forma artesanal, presunto royale, queijo gruyère gratinado, molho béchamel leve com noz-moscada e ovo caipira estalado.',
+                        price: 48.00,
+                        tags: []
+                    },
+                    {
+                        name: 'Panquecas de Ricota Fresca & Limão-Siciliano',
+                        description: 'Três panquecas aeradas de ricota artesanal e raspas de limão-siciliano, finalizadas com mirtilos frescos e xarope de bordo puro.',
+                        price: 42.00,
+                        tags: ['Vegetariano']
+                    }
+                ]
+            },
+            {
+                id: 'almoco-executivo',
+                label: 'Almoço Executivo',
+                schedule: 'Segunda a sexta, das 12h00 às 15h30 · Inclui couvert de pães artesanais da casa',
+                items: [
+                    {
+                        name: 'Paillard de Mignon & Fettuccine na Manteiga de Sálvia',
+                        description: 'Escalope fino de filé mignon grelhado no ponto, acompanhado de fettuccine fresco envolto em manteiga de sálvia crocante e parmesão 24 meses.',
+                        price: 78.00,
+                        tags: ['Especialidade da Casa']
+                    },
+                    {
+                        name: 'Peixe do Dia em Crosta de Ervas & Purê de Mandioquinha',
+                        description: 'Filé de robalo fresco grelhado, purê aveludado de mandioquinha baroa, aspargos salteados e emulsão leve de limão-cravo.',
+                        price: 82.00,
+                        tags: ['Sem Glúten']
+                    },
+                    {
+                        name: 'Risoto de Cogumelos Silvestres & Queijo Tulha',
+                        description: 'Arroz arbóreo cozido em caldo de legumes tostados, mix de cogumelos eryngui e portobello, finalizado com queijo Tulha curado e azeite trufado.',
+                        price: 69.00,
+                        tags: ['Vegetariano', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Suprême de Frango Caipira & Ratatouille Provençal',
+                        description: 'Peito de frango caipira dourado com pele crocante, jus reduzido de tomilho e legumes mediterrâneos assados lentamente.',
+                        price: 66.00,
+                        tags: ['Sem Glúten']
+                    },
+                    {
+                        name: 'Picadinho Contemporâneo do Bistrô',
+                        description: 'Cubos de filé mignon cortados na ponta da faca em molho escuro reduzido, arroz branco soltinho, farofa panko na manteiga, banana-da-terra e ovo poché.',
+                        price: 74.00,
+                        tags: []
+                    },
+                    {
+                        name: 'Gnocchi de Batata-Doce Roxa & Fonduta de Gorgonzola Dolce',
+                        description: 'Nhoque artesanal dourado na manteiga, creme suave de gorgonzola dolce, nozes pecan caramelizadas e rúcula selvagem.',
+                        price: 68.00,
+                        tags: ['Vegetariano']
+                    }
+                ]
+            },
+            {
+                id: 'a-la-carte',
+                label: 'À la Carte',
+                schedule: 'Disponível no almoço e jantar · Sugestões principais do Chef',
+                items: [
+                    {
+                        name: 'Steak Tartare Clássico & Frites',
+                        description: 'Filé mignon picado na faca, alcaparras, cornichons, cebola roxa, gema caipira curada e mostarda Dijon. Acompanha batatas fritas rústicas e salada verde.',
+                        price: 89.00,
+                        tags: ['Especialidade da Casa', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Magret de Canard ao Molho de Jabuticaba',
+                        description: 'Peito de pato selado rosado, redução agridoce de jabuticaba e vinho tinto, acompanhado de mil-folhas de batata e mini cenouras glaceadas.',
+                        price: 118.00,
+                        tags: ['Especialidade da Casa', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Polvo Grelhado & Arroz Negro Cremoso',
+                        description: 'Tentáculos de polvo macios finalizados na brasa, arroz negro cremoso com tinta de lula, aioli de alho assado e crocantes de alho-poró.',
+                        price: 124.00,
+                        tags: ['Sem Glúten']
+                    },
+                    {
+                        name: 'Entrecôte Black Angus & Béarnaise',
+                        description: 'Corte alto de 300g grelhado na parrilla, clássico molho béarnaise de estragão fresco e gratin dauphinois cremoso.',
+                        price: 112.00,
+                        tags: ['Sem Glúten']
+                    },
+                    {
+                        name: 'Couve-Flor Assada Inteira, Tahine & Romã',
+                        description: 'Couve-flor assada em especiarias suaves sobre creme de tahine cítrico, amêndoas laminadas tostadas, grãos de romã e ervas frescas.',
+                        price: 76.00,
+                        tags: ['Vegetariano', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Ravióli de Abóbora Cabotiá & Manteiga de Avelãs',
+                        description: 'Massa fresca artesanal recheada com abóbora assada e queijo de cabra, servida com manteiga noisette de avelãs tostadas e sálvia.',
+                        price: 84.00,
+                        tags: ['Vegetariano']
+                    }
+                ]
+            },
+            {
+                id: 'bebidas',
+                label: 'Bebidas',
+                schedule: 'Cafés especiais, coquetelaria autoral e refrescos naturais ao longo de todo o dia',
+                items: [
+                    {
+                        name: 'L’Aube Spritz (Autoral)',
+                        description: 'Aperitivo artesanal de ruibarbo e hibisco, espumante brut natureza, água com gás e fatia de laranja-baía desidratada.',
+                        price: 42.00,
+                        tags: ['Especialidade da Casa', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Negroni Envelhecido em Carvalho',
+                        description: 'Gin botânico nacional, vermute tinto artesanal e bitter italiano descansados por 30 dias em barril de carvalho francês.',
+                        price: 46.00,
+                        tags: ['Sem Glúten']
+                    },
+                    {
+                        name: 'Soda Botânica de Tangerina & Alecrim',
+                        description: 'Redução natural de tangerina-cravo fresca, infusão fria de alecrim da horta, água gaseificada e toque de limão.',
+                        price: 22.00,
+                        tags: ['Vegetariano', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Espresso Duplo — Microlote Cerrado Mineiro',
+                        description: 'Grãos 100% arábica de torra média-clara com notas sensoriais de caramelo, chocolate ao leite e amêndoas tostadas.',
+                        price: 14.00,
+                        tags: ['Vegetariano', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Matcha Latte Gelado com Baunilha Natural',
+                        description: 'Matcha cerimonial japonês batido na hora com leite vaporizado (opção vegetal disponível) e extrato de fava de baunilha.',
+                        price: 24.00,
+                        tags: ['Vegetariano', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Taça de Vinho Branco — Sauvignon Blanc (Vale de Casablanca)',
+                        description: 'Fresco, vibrante e mineral, com aromas de maracujá, lima e ervas frescas. Ideal para entradas e pratos leves.',
+                        price: 38.00,
+                        tags: ['Sem Glúten']
+                    }
+                ]
+            },
+            {
+                id: 'sobremesas',
+                label: 'Sobremesas',
+                schedule: 'Confeitaria francesa clássica preparada diariamente pela nossa equipe de pâtisserie',
+                items: [
+                    {
+                        name: 'Crème Brûlée de Baunilha de Madagascar',
+                        description: 'Creme delicado de gemas caipiras infusionado com favas reais de baunilha, finalizado com fina crosta de açúcar caramelizado na hora.',
+                        price: 34.00,
+                        tags: ['Vegetariano', 'Sem Glúten', 'Especialidade da Casa']
+                    },
+                    {
+                        name: 'Tarte Tatin Morna & Sorvete de Creme',
+                        description: 'Clássica torta invertida de maçãs caramelizadas na manteiga sobre massa folhada crocante, servida com quenelle de sorvete artesanal.',
+                        price: 38.00,
+                        tags: ['Vegetariano']
+                    },
+                    {
+                        name: 'Mousse de Chocolate 70% Origem Bahia',
+                        description: 'Textura aerada e intensa de chocolate amargo brasileiro, finalizada com flor de sal, azeite extravirgem frutado e tuile de cacau.',
+                        price: 36.00,
+                        tags: ['Vegetariano']
+                    },
+                    {
+                        name: 'Pavlova de Frutas Vermelhas & Chantilly de Mascarpone',
+                        description: 'Suspiro crocante por fora e macio por dentro, creme leve de queijo mascarpone, coulis de framboesa e morangos orgânicos.',
+                        price: 37.00,
+                        tags: ['Vegetariano', 'Sem Glúten']
+                    },
+                    {
+                        name: 'Profiteroles ao Chocolate Quente',
+                        description: 'Três carolinas recheadas com sorvete de fava de baunilha, regadas à mesa com calda morna de chocolate meio amargo e amêndoas.',
+                        price: 39.00,
+                        tags: ['Vegetariano']
+                    }
+                ]
+            }
+        ];
+
+        // Estado da Aplicação
+        const state = {
+            activeCategoryId: MENU_DATA[0].id,
+            activeDietFilter: 'all',
+            searchQuery: ''
+        };
+
+        // Referências do DOM
+        const tabsContainer = document.getElementById('category-tabs');
+        const menuContainer = document.getElementById('menu-container');
+        const activeCategoryTitle = document.getElementById('active-category-title');
+        const activeCategorySubtitle = document.getElementById('active-category-subtitle');
+        const itemsCountLabel = document.getElementById('items-count');
+        const emptyState = document.getElementById('empty-state');
+        const searchInput = document.getElementById('search-input');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const resetFiltersBtn = document.getElementById('reset-filters-btn');
+
+        /**
+         * Formata valores numéricos para moeda brasileira (R$ 00,00)
+         */
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+        }
+
+        /**
+         * Renderiza os botões das 5 abas principais com indicador ativo
+         */
+        function renderTabs() {
+            tabsContainer.innerHTML = MENU_DATA.map(category => {
+                const isActive = category.id === state.activeCategoryId;
+                return `
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected="${isActive}"
+                        data-category="${category.id}"
+                        class="tab-btn relative whitespace-nowrap px-4 sm:px-5 py-3.5 text-sm sm:text-[15px] font-medium transition-colors duration-200 focus:outline-none ${
+                            isActive 
+                                ? 'text-terracotta font-semibold' 
+                                : 'text-muted hover:text-charcoal'
+                        }"
+                    >
+                        ${category.label}
+                        <span class="absolute bottom-0 left-3 right-3 h-[2px] rounded-full transition-all duration-300 ${
+                            isActive ? 'bg-terracotta opacity-100 scale-x-100' : 'bg-transparent opacity-0 scale-x-0'
+                        }"></span>
+                    </button>
+                `;
+            }).join('');
+
+            // Adiciona eventos de clique em cada aba
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const selectedId = e.currentTarget.getAttribute('data-category');
+                    if (selectedId !== state.activeCategoryId) {
+                        state.activeCategoryId = selectedId;
+                        
+                        // Centraliza suavemente a aba selecionada no scroll horizontal mobile
+                        e.currentTarget.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                            inline: 'center'
+                        });
+
+                        renderTabs();
+                        renderMenuItems(true);
+                    }
+                });
+            });
+        }
+
+        /**
+         * Retorna o estilo visual sutil para cada tipo de tag do prato
+         */
+        function getTagBadgeHTML(tag) {
+            if (tag === 'Especialidade da Casa') {
+                return `<span class="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-terracotta/12 text-terracotta border border-terracotta/25">
+                    ★ ${tag}
+                </span>`;
+            }
+            if (tag === 'Vegetariano') {
+                return `<span class="inline-flex items-center text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-900/8 text-emerald-800 border border-emerald-800/20">
+                    ${tag}
+                </span>`;
+            }
+            return `<span class="inline-flex items-center text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-gold/12 text-gold border border-gold/25">
+                ${tag}
+            </span>`;
+        }
+
+        /**
+         * Filtra e renderiza os pratos da categoria ativa com animação suave
+         */
+        function renderMenuItems(animate = false) {
+            const currentCategory = MENU_DATA.find(cat => cat.id === state.activeCategoryId);
+            if (!currentCategory) return;
+
+            // Atualiza cabeçalho da seção
+            activeCategoryTitle.textContent = currentCategory.label;
+            activeCategorySubtitle.textContent = currentCategory.schedule;
+
+            // Aplica filtros de dieta e busca textual
+            const query = state.searchQuery.trim().toLowerCase();
+            const filteredItems = currentCategory.items.filter(item => {
+                const matchesDiet = state.activeDietFilter === 'all' || item.tags.includes(state.activeDietFilter);
+                const matchesSearch = !query || 
+                    item.name.toLowerCase().includes(query) || 
+                    item.description.toLowerCase().includes(query) ||
+                    item.tags.some(t => t.toLowerCase().includes(query));
+                
+                return matchesDiet && matchesSearch;
+            });
+
+            // Atualiza contador discreto
+            const total = filteredItems.length;
+            itemsCountLabel.textContent = `${total} ${total === 1 ? 'opção' : 'opções'}`;
+
+            // Reinicia animação de entrada do painel ao trocar de aba
+            if (animate) {
+                menuContainer.classList.remove('menu-panel-enter');
+                void menuContainer.offsetWidth; // força reflow
+                menuContainer.classList.add('menu-panel-enter');
+            }
+
+            // Trata estado vazio
+            if (filteredItems.length === 0) {
+                menuContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            // Renderiza os cartões editoriais dos pratos
+            menuContainer.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+                    ${filteredItems.map(item => `
+                        <article class="group flex flex-col justify-between pb-6 border-b border-sand/60 hover:border-terracotta/40 transition-colors">
+                            <div>
+                                <!-- Linha superior: Nome do prato + pontos guias + Preço -->
+                                <div class="flex items-baseline justify-between gap-2 mb-2">
+                                    <h3 class="font-serif text-xl sm:text-2xl font-semibold text-charcoal group-hover:text-terracotta transition-colors leading-snug">
+                                        ${item.name}
+                                    </h3>
+                                    <span class="leader-dots hidden sm:block" aria-hidden="true"></span>
+                                    <span class="font-sans text-sm sm:text-base font-semibold text-charcoal whitespace-nowrap tabular-nums">
+                                        ${formatCurrency(item.price)}
+                                    </span>
+                                </div>
+
+                                <!-- Descrição apetitosa dos ingredientes -->
+                                <p class="text-sm text-muted leading-relaxed font-normal">
+                                    ${item.description}
+                                </p>
+                            </div>
+
+                            <!-- Tags discretas (quando existirem) -->
+                            ${item.tags.length > 0 ? `
+                                <div class="flex flex-wrap items-center gap-1.5 mt-3.5">
+                                    ${item.tags.map(tag => getTagBadgeHTML(tag)).join('')}
+                                </div>
+                            ` : ''}
+                        </article>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        /**
+         * Inicializa ouvintes de eventos para busca e filtros dietéticos
+         */
+        function initFilters() {
+            // Filtros por restrição alimentar
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.activeDietFilter = btn.getAttribute('data-filter');
+
+                    // Atualiza estado visual dos botões de filtro
+                    filterButtons.forEach(b => {
+                        const isSelected = b === btn;
+                        b.classList.toggle('bg-charcoal', isSelected);
+                        b.classList.toggle('text-cream', isSelected);
+                        b.classList.toggle('bg-linen', !isSelected);
+                        b.classList.toggle('text-muted', !isSelected);
+                        b.classList.toggle('border', !isSelected);
+                        b.classList.toggle('border-sand', !isSelected);
+                    });
+
+                    renderMenuItems(true);
+                });
+            });
+
+            // Busca em tempo real
+            searchInput.addEventListener('input', (e) => {
+                state.searchQuery = e.target.value;
+                renderMenuItems(false);
+            });
+
+            // Botão para limpar filtros no estado vazio
+            resetFiltersBtn.addEventListener('click', () => {
+                state.activeDietFilter = 'all';
+                state.searchQuery = '';
+                searchInput.value = '';
+                
+                filterButtons.forEach(b => {
+                    const isAll = b.getAttribute('data-filter') === 'all';
+                    b.classList.toggle('bg-charcoal', isAll);
+                    b.classList.toggle('text-cream', isAll);
+                    b.classList.toggle('bg-linen', !isAll);
+                    b.classList.toggle('text-muted', !isAll);
+                    b.classList.toggle('border', !isAll);
+                    b.classList.toggle('border-sand', !isAll);
+                });
+
+                renderMenuItems(true);
+            });
+        }
+
+        // Inicialização da aplicação
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTabs();
+            initFilters();
+            renderMenuItems(false);
+        });
+    </script>
+</body>
+</html>

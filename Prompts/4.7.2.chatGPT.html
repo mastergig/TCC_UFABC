@@ -1,0 +1,876 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FITZONE | Transforme seu treino</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+:root {
+    --primary: #c6ff00;
+    --dark: #111;
+    --gray: #202020;
+    --light: #f5f5f5;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--dark);
+    color: white;
+}
+
+header {
+    background: #090909;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+.btn {
+    background: var(--primary);
+    color: #111;
+    border: none;
+    padding: 14px 25px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: white;
+    transform: scale(1.04);
+}
+
+/* HERO */
+
+.hero {
+    min-height: 570px;
+    padding: 100px 8%;
+    display: flex;
+    align-items: center;
+    background:
+    linear-gradient(90deg, #000 20%, rgba(0,0,0,.65)),
+    url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=85")
+    center/cover;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 6vw, 70px);
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: var(--primary);
+}
+
+.hero p {
+    color: #ccc;
+    font-size: 18px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* SEÇÕES */
+
+section {
+    padding: 75px 8%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-title h2 {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.section-title span {
+    color: var(--primary);
+}
+
+.section-title p {
+    color: #aaa;
+}
+
+/* MODALIDADES */
+
+.modalidades {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.modalidade {
+    background: var(--gray);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.modalidade:hover {
+    transform: translateY(-8px);
+}
+
+.modalidade img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+}
+
+.modalidade-info {
+    padding: 25px;
+}
+
+.modalidade h3 {
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-size: 22px;
+}
+
+.modalidade p {
+    color: #bbb;
+    line-height: 1.5;
+}
+
+/* DIFERENCIAIS */
+
+.diferenciais {
+    background: var(--primary);
+    color: #111;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    text-align: center;
+}
+
+.diferencial h3 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.diferencial p {
+    font-weight: bold;
+}
+
+/* PLANOS */
+
+.planos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    align-items: stretch;
+}
+
+.plano {
+    background: var(--gray);
+    padding: 35px 25px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: .3s;
+}
+
+.plano:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+}
+
+.plano.destaque {
+    border-color: var(--primary);
+    position: relative;
+    transform: scale(1.04);
+}
+
+.tag {
+    background: var(--primary);
+    color: #111;
+    padding: 7px 15px;
+    display: inline-block;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.plano h3 {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.preco {
+    font-size: 38px;
+    color: var(--primary);
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.preco small {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.plano ul {
+    list-style: none;
+    margin: 25px 0;
+    text-align: left;
+}
+
+.plano li {
+    padding: 12px 0;
+    border-bottom: 1px solid #444;
+    color: #ddd;
+}
+
+.plano li::before {
+    content: "✓ ";
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.plano button {
+    width: 100%;
+}
+
+/* TABELA */
+
+.tabela-container {
+    overflow-x: auto;
+    margin-top: 35px;
+}
+
+table {
+    width: 100%;
+    min-width: 550px;
+    border-collapse: collapse;
+    background: var(--gray);
+}
+
+th, td {
+    padding: 17px;
+    text-align: center;
+    border: 1px solid #444;
+}
+
+th {
+    background: var(--primary);
+    color: #111;
+}
+
+td:first-child {
+    text-align: left;
+    font-weight: bold;
+}
+
+.check {
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.no {
+    color: #777;
+}
+
+/* MATRÍCULA */
+
+.matricula {
+    background: linear-gradient(135deg, #202020, #080808);
+}
+
+.form-container {
+    max-width: 750px;
+    margin: auto;
+    background: #181818;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #444;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+.form-container > p {
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.plano-escolhido {
+    background: #303a16;
+    color: var(--primary);
+    padding: 18px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.campo {
+    margin-bottom: 20px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: #252525;
+    color: white;
+    outline: none;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: var(--primary);
+}
+
+.form-container button {
+    width: 100%;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.mensagem {
+    display: none;
+    background: #263510;
+    color: var(--primary);
+    padding: 18px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* RODAPÉ */
+
+footer {
+    padding: 35px 8%;
+    text-align: center;
+    background: #050505;
+    color: #888;
+}
+
+footer strong {
+    color: var(--primary);
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 850px) {
+    .modalidades,
+    .planos {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .diferenciais {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .plano.destaque {
+        transform: none;
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    nav {
+        gap: 13px;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 13px;
+    }
+
+    .hero {
+        padding: 80px 7%;
+    }
+
+    .modalidades,
+    .planos,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .diferenciais {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .form-container {
+        padding: 25px 18px;
+    }
+
+    section {
+        padding: 55px 6%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">FITZONE.</div>
+
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#modalidades">Modalidades</a>
+        <a href="#planos">Planos</a>
+        <a href="#matricula">Matrícula</a>
+    </nav>
+</header>
+
+<!-- APRESENTAÇÃO -->
+
+<section class="hero" id="inicio">
+    <div class="hero-content">
+        <h1>SEU CORPO.<br>
+        SEU LIMITE.<br>
+        <span>SUA EVOLUÇÃO.</span></h1>
+
+        <p>
+            Muito mais que uma academia. Um espaço completo
+            para transformar sua saúde, superar desafios e
+            conquistar seus objetivos.
+        </p>
+
+        <a href="#planos" class="btn">CONHEÇA NOSSOS PLANOS</a>
+    </div>
+</section>
+
+<!-- MODALIDADES -->
+
+<section id="modalidades">
+
+    <div class="section-title">
+        <h2>NOSSAS <span>MODALIDADES</span></h2>
+        <p>Encontre o treino ideal para transformar sua rotina.</p>
+    </div>
+
+    <div class="modalidades">
+
+        <article class="modalidade">
+            <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=700&q=80" alt="Pessoa treinando musculação">
+            <div class="modalidade-info">
+                <h3>Musculação</h3>
+                <p>
+                    Equipamentos modernos, acompanhamento
+                    profissional e treinos personalizados
+                    para desenvolver força e resistência.
+                </p>
+            </div>
+        </article>
+
+        <article class="modalidade">
+            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=80" alt="Aula de treinamento funcional">
+            <div class="modalidade-info">
+                <h3>Funcional</h3>
+                <p>
+                    Exercícios dinâmicos que melhoram
+                    equilíbrio, mobilidade, coordenação
+                    e condicionamento físico.
+                </p>
+            </div>
+        </article>
+
+        <article class="modalidade">
+            <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=700&q=80" alt="Piscina para natação">
+            <div class="modalidade-info">
+                <h3>Natação</h3>
+                <p>
+                    Atividades aquáticas para todas as idades,
+                    com foco em saúde, técnica e
+                    condicionamento cardiovascular.
+                </p>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<!-- DIFERENCIAIS -->
+
+<section class="diferenciais">
+    <div class="diferencial">
+        <h3>+20</h3>
+        <p>Profissionais</p>
+    </div>
+
+    <div class="diferencial">
+        <h3>+50</h3>
+        <p>Equipamentos</p>
+    </div>
+
+    <div class="diferencial">
+        <h3>3</h3>
+        <p>Modalidades</p>
+    </div>
+
+    <div class="diferencial">
+        <h3>100%</h3>
+        <p>Dedicação</p>
+    </div>
+</section>
+
+<!-- PLANOS -->
+
+<section id="planos">
+
+    <div class="section-title">
+        <h2>ESCOLHA SEU <span>PLANO</span></h2>
+        <p>Invista em você e comece sua transformação hoje.</p>
+    </div>
+
+    <div class="planos">
+
+        <article class="plano">
+            <h3>Mensal</h3>
+            <div class="preco">R$ 149<small>/mês</small></div>
+
+            <ul>
+                <li>Musculação</li>
+                <li>Treinamento funcional</li>
+                <li>Área de cardio</li>
+                <li>Avaliação física inicial</li>
+            </ul>
+
+            <button class="btn" onclick="selecionarPlano('Mensal')">
+                ESCOLHER PLANO
+            </button>
+        </article>
+
+        <article class="plano destaque">
+            <div class="tag">MAIS ESCOLHIDO</div>
+            <h3>Semestral</h3>
+            <div class="preco">R$ 119<small>/mês</small></div>
+
+            <ul>
+                <li>Musculação</li>
+                <li>Treinamento funcional</li>
+                <li>Natação</li>
+                <li>Avaliação física</li>
+                <li>Acompanhamento profissional</li>
+            </ul>
+
+            <button class="btn" onclick="selecionarPlano('Semestral')">
+                ESCOLHER PLANO
+            </button>
+        </article>
+
+        <article class="plano">
+            <h3>Anual</h3>
+            <div class="preco">R$ 99<small>/mês</small></div>
+
+            <ul>
+                <li>Musculação</li>
+                <li>Treinamento funcional</li>
+                <li>Natação</li>
+                <li>Avaliações periódicas</li>
+                <li>Acompanhamento profissional</li>
+                <li>Acesso completo às modalidades</li>
+            </ul>
+
+            <button class="btn" onclick="selecionarPlano('Anual')">
+                ESCOLHER PLANO
+            </button>
+        </article>
+
+    </div>
+
+    <!-- TABELA COMPARATIVA -->
+
+    <div class="section-title" style="margin-top:70px">
+        <h2>COMPARE OS <span>PLANOS</span></h2>
+        <p>Confira os benefícios de cada modalidade de assinatura.</p>
+    </div>
+
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Benefícios</th>
+                    <th>Mensal</th>
+                    <th>Semestral</th>
+                    <th>Anual</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Musculação</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                </tr>
+
+                <tr>
+                    <td>Funcional</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                </tr>
+
+                <tr>
+                    <td>Natação</td>
+                    <td class="no">—</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                </tr>
+
+                <tr>
+                    <td>Avaliação física</td>
+                    <td>Inicial</td>
+                    <td class="check">Periódica</td>
+                    <td class="check">Periódica</td>
+                </tr>
+
+                <tr>
+                    <td>Acompanhamento</td>
+                    <td class="no">—</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                </tr>
+
+                <tr>
+                    <td>Investimento mensal</td>
+                    <td>R$ 149</td>
+                    <td>R$ 119</td>
+                    <td>R$ 99</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<!-- FORMULÁRIO -->
+
+<section class="matricula" id="matricula">
+
+    <div class="form-container">
+
+        <h2>COMECE SUA <span style="color:#c6ff00">EVOLUÇÃO!</span></h2>
+
+        <p>Preencha seus dados e faça sua pré-inscrição.</p>
+
+        <div class="plano-escolhido" id="planoEscolhido">
+            Plano selecionado: Nenhum plano escolhido
+        </div>
+
+        <form id="formMatricula">
+
+            <div class="form-grid">
+
+                <div class="campo">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" placeholder="Seu nome" required>
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="campo">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+                </div>
+
+                <div class="campo">
+                    <label for="idade">Idade</label>
+                    <input type="number" id="idade" min="16" max="100" placeholder="Sua idade" required>
+                </div>
+
+                <div class="campo">
+                    <label for="modalidade">Modalidade de interesse</label>
+                    <select id="modalidade" required>
+                        <option value="">Selecione</option>
+                        <option>Musculação</option>
+                        <option>Funcional</option>
+                        <option>Natação</option>
+                        <option>Todas as modalidades</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="plano">Plano desejado</label>
+                    <select id="plano" required onchange="atualizarPlano()">
+                        <option value="">Selecione</option>
+                        <option value="Mensal">Mensal - R$ 149</option>
+                        <option value="Semestral">Semestral - R$ 119/mês</option>
+                        <option value="Anual">Anual - R$ 99/mês</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn">
+                SOLICITAR PRÉ-MATRÍCULA
+            </button>
+
+            <div class="mensagem" id="mensagem">
+                Pré-inscrição realizada com sucesso!
+                Nossa equipe entrará em contato.
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+<footer>
+    <div class="logo">FITZONE.</div>
+    <p>Transformando vidas através do movimento.</p>
+    <br>
+    <p>© 2026 FITZONE Academia. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+
+// Selecionar plano nos cartões
+function selecionarPlano(nomePlano) {
+
+    document.getElementById("plano").value = nomePlano;
+
+    atualizarPlano();
+
+    document.getElementById("matricula").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// Atualizar destaque do plano
+function atualizarPlano() {
+
+    const plano = document.getElementById("plano").value;
+
+    const destaque = document.getElementById("planoEscolhido");
+
+    if (plano) {
+        destaque.innerHTML = "Plano selecionado: " + plano;
+    } else {
+        destaque.innerHTML = "Plano selecionado: Nenhum plano escolhido";
+    }
+}
+
+// Máscara simples de telefone
+document.getElementById("telefone").addEventListener("input", function() {
+
+    let numero = this.value.replace(/\D/g, "").slice(0, 11);
+
+    if (numero.length > 10) {
+        numero = numero.replace(
+            /^(\d{2})(\d{5})(\d{4})$/,
+            "($1) $2-$3"
+        );
+    } else if (numero.length > 6) {
+        numero = numero.replace(
+            /^(\d{2})(\d{4})(\d{0,4})$/,
+            "($1) $2-$3"
+        );
+    } else if (numero.length > 2) {
+        numero = numero.replace(
+            /^(\d{2})(\d*)$/,
+            "($1) $2"
+        );
+    }
+
+    this.value = numero;
+});
+
+// Processar pré-inscrição
+document.getElementById("formMatricula")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const plano = document.getElementById("plano").value;
+
+    if (!plano) {
+        alert("Selecione um plano antes de continuar.");
+        return;
+    }
+
+    const idade = Number(document.getElementById("idade").value);
+
+    if (idade < 16 || idade > 100) {
+        alert("Informe uma idade válida (16 a 100 anos).");
+        return;
+    }
+
+    document.getElementById("mensagem").style.display = "block";
+
+    this.querySelector("button[type='submit']").disabled = true;
+    this.querySelector("button[type='submit']").textContent = "PRÉ-INSCRIÇÃO ENVIADA";
+
+    this.reset();
+
+    atualizarPlano();
+
+});
+
+</script>
+
+</body>
+</html>

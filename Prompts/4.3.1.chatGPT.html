@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urban Style | Loja de Roupas</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f8f8f8;
+    color: #222;
+}
+
+header {
+    background: #171717;
+    color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+header button {
+    background: #e9a23b;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.banner {
+    min-height: 350px;
+    background: linear-gradient(90deg, #222, #555);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 10%;
+}
+
+.banner h1 {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.banner p {
+    font-size: 18px;
+}
+
+.container {
+    padding: 50px 7%;
+}
+
+.container h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.filtros {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 35px;
+}
+
+.filtros button {
+    border: 1px solid #222;
+    background: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.filtros button:hover,
+.filtros button.ativo {
+    background: #222;
+    color: white;
+}
+
+.produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.produto {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px #00000012;
+    transition: transform .3s;
+}
+
+.produto:hover {
+    transform: translateY(-5px);
+}
+
+.produto img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+}
+
+.produto-info {
+    padding: 18px;
+}
+
+.produto-info h3 {
+    margin-bottom: 10px;
+}
+
+.preco {
+    color: #c27b1c;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.produto button {
+    width: 100%;
+    background: #222;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.produto button:hover {
+    background: #c27b1c;
+}
+
+/* Carrinho */
+
+.carrinho {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 380px;
+    max-width: 100%;
+    height: 100vh;
+    background: white;
+    z-index: 20;
+    padding: 25px;
+    box-shadow: -5px 0 20px #0003;
+    overflow-y: auto;
+}
+
+.carrinho.aberto {
+    display: block;
+}
+
+.carrinho-topo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.fechar {
+    background: #ddd;
+    border: none;
+    padding: 7px 12px;
+    cursor: pointer;
+}
+
+.item-carrinho {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.item-carrinho img {
+    width: 65px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.item-detalhes {
+    flex: 1;
+}
+
+.item-detalhes h4 {
+    margin-bottom: 7px;
+}
+
+.quantidade {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.quantidade button {
+    border: none;
+    padding: 4px 9px;
+    cursor: pointer;
+}
+
+.remover {
+    color: #d22;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 6px;
+}
+
+.total {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.finalizar {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background: #c27b1c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.vazio {
+    text-align: center;
+    color: #777;
+    margin-top: 50px;
+}
+
+footer {
+    background: #171717;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+@media(max-width: 600px) {
+    .banner h1 {
+        font-size: 32px;
+    }
+
+    .container {
+        padding: 35px 5%;
+    }
+
+    header {
+        padding: 18px 5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">URBAN STYLE</div>
+    <button onclick="abrirCarrinho()">
+        🛒 Carrinho (<span id="contador">0</span>)
+    </button>
+</header>
+
+<section class="banner">
+    <h1>Vista seu estilo.</h1>
+    <p>Moda, personalidade e atitude em cada detalhe.</p>
+</section>
+
+<main class="container">
+    <h2>Nossa Coleção</h2>
+
+    <div class="filtros">
+        <button class="ativo" onclick="filtrar('todos', this)">Todos</button>
+        <button onclick="filtrar('camisetas', this)">Camisetas</button>
+        <button onclick="filtrar('calcas', this)">Calças</button>
+        <button onclick="filtrar('acessorios', this)">Acessórios</button>
+    </div>
+
+    <div class="produtos" id="listaProdutos"></div>
+</main>
+
+<!-- Carrinho lateral -->
+
+<aside class="carrinho" id="carrinho">
+    <div class="carrinho-topo">
+        <h2>Meu Carrinho</h2>
+        <button class="fechar" onclick="fecharCarrinho()">✕</button>
+    </div>
+
+    <div id="itensCarrinho"></div>
+
+    <div class="total">
+        Total: R$ <span id="total">0,00</span>
+    </div>
+
+    <button class="finalizar" onclick="finalizarCompra()">
+        Finalizar compra
+    </button>
+</aside>
+
+<footer>
+    <p>© 2026 Urban Style - Todos os direitos reservados.</p>
+</footer>
+
+<script>
+const produtos = [
+    {
+        id: 1,
+        nome: "Camiseta Básica",
+        preco: 59.90,
+        categoria: "camisetas",
+        imagem: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"
+    },
+    {
+        id: 2,
+        nome: "Camiseta Premium",
+        preco: 89.90,
+        categoria: "camisetas",
+        imagem: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=500"
+    },
+    {
+        id: 3,
+        nome: "Calça Jeans",
+        preco: 149.90,
+        categoria: "calcas",
+        imagem: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500"
+    },
+    {
+        id: 4,
+        nome: "Calça Casual",
+        preco: 119.90,
+        categoria: "calcas",
+        imagem: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=500"
+    },
+    {
+        id: 5,
+        nome: "Boné Urban",
+        preco: 49.90,
+        categoria: "acessorios",
+        imagem: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500"
+    },
+    {
+        id: 6,
+        nome: "Mochila Moderna",
+        preco: 129.90,
+        categoria: "acessorios",
+        imagem: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500"
+    }
+];
+
+let carrinho = [];
+
+function exibirProdutos(lista = produtos) {
+    const container = document.getElementById("listaProdutos");
+
+    container.innerHTML = lista.map(p => `
+        <article class="produto">
+            <img src="${p.imagem}" alt="${p.nome}">
+            <div class="produto-info">
+                <h3>${p.nome}</h3>
+                <p class="preco">R$ ${p.preco.toFixed(2).replace(".", ",")}</p>
+                <button onclick="adicionarCarrinho(${p.id})">
+                    Adicionar ao carrinho
+                </button>
+            </div>
+        </article>
+    `).join("");
+}
+
+function filtrar(categoria, botao) {
+    document.querySelectorAll(".filtros button")
+        .forEach(b => b.classList.remove("ativo"));
+
+    botao.classList.add("ativo");
+
+    const lista = categoria === "todos"
+        ? produtos
+        : produtos.filter(p => p.categoria === categoria);
+
+    exibirProdutos(lista);
+}
+
+function adicionarCarrinho(id) {
+    const produto = produtos.find(p => p.id === id);
+    const item = carrinho.find(p => p.id === id);
+
+    if (item) {
+        item.quantidade++;
+    } else {
+        carrinho.push({...produto, quantidade: 1});
+    }
+
+    atualizarCarrinho();
+}
+
+function alterarQuantidade(id, valor) {
+    const item = carrinho.find(p => p.id === id);
+
+    if (!item) return;
+
+    item.quantidade += valor;
+
+    if (item.quantidade <= 0) {
+        carrinho = carrinho.filter(p => p.id !== id);
+    }
+
+    atualizarCarrinho();
+}
+
+function removerItem(id) {
+    carrinho = carrinho.filter(p => p.id !== id);
+    atualizarCarrinho();
+}
+
+function atualizarCarrinho() {
+    const container = document.getElementById("itensCarrinho");
+
+    const quantidade = carrinho.reduce(
+        (total, item) => total + item.quantidade, 0
+    );
+
+    document.getElementById("contador").textContent = quantidade;
+
+    if (carrinho.length === 0) {
+        container.innerHTML = `
+            <p class="vazio">Seu carrinho está vazio.</p>
+        `;
+    } else {
+        container.innerHTML = carrinho.map(item => `
+            <div class="item-carrinho">
+                <img src="${item.imagem}" alt="${item.nome}">
+
+                <div class="item-detalhes">
+                    <h4>${item.nome}</h4>
+                    <p>R$ ${item.preco.toFixed(2).replace(".", ",")}</p>
+
+                    <div class="quantidade">
+                        <button onclick="alterarQuantidade(${item.id}, -1)">−</button>
+                        <span>${item.quantidade}</span>
+                        <button onclick="alterarQuantidade(${item.id}, 1)">+</button>
+                    </div>
+
+                    <button class="remover"
+                        onclick="removerItem(${item.id})">
+                        Remover
+                    </button>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    const total = carrinho.reduce(
+        (soma, item) => soma + item.preco * item.quantidade, 0
+    );
+
+    document.getElementById("total").textContent =
+        total.toFixed(2).replace(".", ",");
+}
+
+function abrirCarrinho() {
+    document.getElementById("carrinho").classList.add("aberto");
+}
+
+function fecharCarrinho() {
+    document.getElementById("carrinho").classList.remove("aberto");
+}
+
+function finalizarCompra() {
+    if (carrinho.length === 0) {
+        alert("Adicione produtos ao carrinho antes de finalizar!");
+        return;
+    }
+
+    alert("Compra realizada com sucesso! Obrigado por comprar na Urban Style.");
+
+    carrinho = [];
+    atualizarCarrinho();
+    fecharCarrinho();
+}
+
+exibirProdutos();
+atualizarCarrinho();
+</script>
+
+</body>
+</html>

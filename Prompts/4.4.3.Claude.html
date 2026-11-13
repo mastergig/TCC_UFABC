@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maison Lumière — Cardápio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --creme: #f8f3ea;
+      --papel: #fffdf8;
+      --tinta: #2b2622;
+      --suave: #7a6f64;
+      --dourado: #b08d57;
+      --linha: #e4d9c6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--creme);
+      color: var(--tinta);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      padding: 48px 20px;
+    }
+
+    .cardapio {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--papel);
+      padding: 64px 72px;
+      border: 1px solid var(--linha);
+      outline: 1px solid var(--linha);
+      outline-offset: -14px;
+      box-shadow: 0 20px 50px rgba(60, 45, 30, 0.08);
+    }
+
+    /* ---------- Cabeçalho ---------- */
+    header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    header .selo {
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--dourado);
+    }
+
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 3.4rem;
+      letter-spacing: 0.04em;
+      margin: 8px 0 4px;
+    }
+
+    header p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--suave);
+      font-size: 1.15rem;
+    }
+
+    .ornamento {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 22px auto 0;
+      color: var(--dourado);
+      max-width: 260px;
+    }
+
+    .ornamento::before,
+    .ornamento::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--dourado);
+    }
+
+    /* ---------- Navegação ---------- */
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 28px;
+      margin-bottom: 56px;
+      padding: 14px 0;
+      border-top: 1px solid var(--linha);
+      border-bottom: 1px solid var(--linha);
+    }
+
+    nav a {
+      color: var(--suave);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--dourado); }
+
+    /* ---------- Seções ---------- */
+    section { margin-bottom: 60px; }
+    section:last-of-type { margin-bottom: 24px; }
+
+    section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 2.1rem;
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    section .descricao-secao {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--suave);
+      margin-bottom: 32px;
+    }
+
+    /* ---------- Itens (padrão do exemplo) ---------- */
+    section > div {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "titulo preco"
+        "texto  texto";
+      column-gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px dashed var(--linha);
+    }
+
+    section > div:last-child { border-bottom: none; }
+
+    section > div h3 {
+      grid-area: titulo;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    /* linha pontilhada entre nome e preço */
+    section > div h3::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px dotted var(--dourado);
+      transform: translateY(-4px);
+      opacity: 0.7;
+    }
+
+    section > div p {
+      grid-area: texto;
+      color: var(--suave);
+      font-size: 0.92rem;
+      margin-top: 4px;
+      max-width: 90%;
+    }
+
+    section > div span {
+      grid-area: preco;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dourado);
+      white-space: nowrap;
+      align-self: baseline;
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--suave);
+      letter-spacing: 0.05em;
+      border-top: 1px solid var(--linha);
+      padding-top: 24px;
+    }
+
+    footer strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--tinta);
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+
+    /* ---------- Responsivo ---------- */
+    @media (max-width: 640px) {
+      .cardapio { padding: 44px 26px; outline-offset: -8px; }
+      header h1 { font-size: 2.5rem; }
+      section > div p { max-width: 100%; }
+    }
+
+    /* ---------- Impressão ---------- */
+    @media print {
+      body { background: none; padding: 0; }
+      .cardapio { box-shadow: none; border: none; outline: none; }
+      nav { display: none; }
+      section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="cardapio">
+
+    <header>
+      <span class="selo">Desde 1998</span>
+      <h1>Maison Lumière</h1>
+      <p>Cozinha contemporânea com alma clássica</p>
+      <div class="ornamento">✦</div>
+    </header>
+
+    <nav>
+      <a href="#cafe">Café da Manhã</a>
+      <a href="#executivo">Executivo</a>
+      <a href="#alacarte">À la Carte</a>
+      <a href="#bebidas">Bebidas</a>
+    </nav>
+
+    <!-- ============ CAFÉ DA MANHÃ ============ -->
+    <section id="cafe">
+      <h2>Café da Manhã</h2>
+      <p class="descricao-secao">Servido das 7h às 11h</p>
+
+      <div>
+        <h3>Ovos Benedict</h3>
+        <p>Ovos poché sobre muffin inglês com molho holandês.</p>
+        <span>R$ 32,00</span>
+      </div>
+
+      <div>
+        <h3>Croissant de Manteiga</h3>
+        <p>Massa folhada artesanal servida com geleia de frutas vermelhas e manteiga francesa.</p>
+        <span>R$ 18,00</span>
+      </div>
+
+      <div>
+        <h3>Panquecas Americanas</h3>
+        <p>Três panquecas fofas com frutas frescas, mel e calda de bordo.</p>
+        <span>R$ 29,00</span>
+      </div>
+
+      <div>
+        <h3>Tostada de Avocado</h3>
+        <p>Pão de fermentação natural, avocado temperado, ovo pochê e sementes tostadas.</p>
+        <span>R$ 34,00</span>
+      </div>
+
+      <div>
+        <h3>Bowl de Açaí e Granola</h3>
+        <p>Açaí puro com granola da casa, banana, morangos e fio de mel.</p>
+        <span>R$ 26,00</span>
+      </div>
+    </section>
+
+    <!-- ============ EXECUTIVO ============ -->
+    <section id="executivo">
+      <h2>Executivo</h2>
+      <p class="descricao-secao">De segunda a sexta, das 12h às 15h — acompanha salada e sobremesa do dia</p>
+
+      <div>
+        <h3>Filé de Frango Grelhado</h3>
+        <p>Peito de frango ao limão-siciliano com arroz de ervas e legumes salteados.</p>
+        <span>R$ 45,00</span>
+      </div>
+
+      <div>
+        <h3>Escalope ao Madeira</h3>
+        <p>Medalhões de mignon ao molho madeira com cogumelos e purê de batata.</p>
+        <span>R$ 58,00</span>
+      </div>
+
+      <div>
+        <h3>Peixe do Dia</h3>
+        <p>Filé grelhado na manteiga de alcaparras com batatas ao murro e brócolis.</p>
+        <span>R$ 54,00</span>
+      </div>
+
+      <div>
+        <h3>Risoto de Abóbora</h3>
+        <p>Arroz arbóreo com abóbora cabotiá, parmesão e sálvia crocante. Opção vegetariana.</p>
+        <span>R$ 49,00</span>
+      </div>
+    </section>
+
+    <!-- ============ À LA CARTE ============ -->
+    <section id="alacarte">
+      <h2>À la Carte</h2>
+      <p class="descricao-secao">Pratos assinados pelo chef</p>
+
+      <div>
+        <h3>Carpaccio de Wagyu</h3>
+        <p>Lâminas finas de wagyu, rúcula selvagem, lascas de grana padano e azeite trufado.</p>
+        <span>R$ 72,00</span>
+      </div>
+
+      <div>
+        <h3>Polvo Grelhado</h3>
+        <p>Polvo na brasa com batatas confitadas, páprica defumada e azeite de ervas.</p>
+        <span>R$ 118,00</span>
+      </div>
+
+      <div>
+        <h3>Magret de Pato</h3>
+        <p>Peito de pato ao ponto, redução de laranja e cardamomo, purê de mandioquinha.</p>
+        <span>R$ 112,00</span>
+      </div>
+
+      <div>
+        <h3>Bife Ancho ao Chimichurri</h3>
+        <p>Corte de 350 g na grelha, servido com batatas rústicas e chimichurri da casa.</p>
+        <span>R$ 136,00</span>
+      </div>
+
+      <div>
+        <h3>Ravioli de Burrata</h3>
+        <p>Massa fresca recheada com burrata, molho de tomates San Marzano e manjericão.</p>
+        <span>R$ 89,00</span>
+      </div>
+
+      <div>
+        <h3>Petit Gâteau</h3>
+        <p>Bolo quente de chocolate belga com sorvete de baunilha de Madagascar.</p>
+        <span>R$ 38,00</span>
+      </div>
+    </section>
+
+    <!-- ============ BEBIDAS ============ -->
+    <section id="bebidas">
+      <h2>Bebidas</h2>
+      <p class="descricao-secao">Cafés, sucos, drinks e carta de vinhos</p>
+
+      <div>
+        <h3>Espresso</h3>
+        <p>Grãos especiais de torra média, origem Sul de Minas.</p>
+        <span>R$ 9,00</span>
+      </div>
+
+      <div>
+        <h3>Cappuccino Italiano</h3>
+        <p>Espresso, leite vaporizado e espuma cremosa com toque de cacau.</p>
+        <span>R$ 15,00</span>
+      </div>
+
+      <div>
+        <h3>Suco Natural</h3>
+        <p>Laranja, abacaxi com hortelã ou frutas vermelhas — 400 ml.</p>
+        <span>R$ 16,00</span>
+      </div>
+
+      <div>
+        <h3>Limonada Siciliana</h3>
+        <p>Limão-siciliano, água com gás e xarope de capim-santo.</p>
+        <span>R$ 18,00</span>
+      </div>
+
+      <div>
+        <h3>Negroni da Casa</h3>
+        <p>Gin, Campari e vermute rosso, finalizado com casca de laranja.</p>
+        <span>R$ 42,00</span>
+      </div>
+
+      <div>
+        <h3>Taça de Vinho</h3>
+        <p>Seleção do sommelier: tinto, branco ou rosé — 150 ml.</p>
+        <span>R$ 36,00</span>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Maison Lumière</strong>
+      Rua das Acácias, 120 — São Paulo · (11) 3000-0000<br>
+      Taxa de serviço de 10% não incluída. Consulte nossa equipe sobre alergênicos.
+    </footer>
+
+  </main>
+
+</body>
+</html>

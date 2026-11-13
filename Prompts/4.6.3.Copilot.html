@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineLocal - Filmes em Cartaz</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#111;
+    color:#fff;
+}
+
+header{
+    background:#000;
+    padding:20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+
+header h1{
+    color:#ffcc00;
+}
+
+.hero{
+    text-align:center;
+    padding:50px 20px;
+    background:linear-gradient(to right,#1b1b1b,#333);
+}
+
+.hero h2{
+    margin-bottom:10px;
+}
+
+.filmes{
+    max-width:1200px;
+    margin:auto;
+    padding:40px 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#1d1d1d;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 0 15px rgba(0,0,0,.3);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:380px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#ffcc00;
+}
+
+.card p{
+    margin-bottom:15px;
+    color:#ccc;
+}
+
+.horarios{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+}
+
+.horario{
+    padding:8px 15px;
+    background:#333;
+    border:none;
+    color:#fff;
+    border-radius:6px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.horario:hover{
+    background:#ffcc00;
+    color:#000;
+}
+
+footer{
+    background:#000;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+}
+
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.modal-content{
+    background:#fff;
+    color:#000;
+    width:90%;
+    max-width:500px;
+    padding:25px;
+    border-radius:12px;
+}
+
+.modal-content h2{
+    margin-bottom:20px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:5px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+.btn{
+    width:100%;
+    background:#ffcc00;
+    color:#000;
+    border:none;
+    padding:12px;
+    border-radius:6px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#ffdd33;
+}
+
+.fechar{
+    float:right;
+    cursor:pointer;
+    font-size:22px;
+    color:red;
+}
+
+.valor-total{
+    background:#f2f2f2;
+    padding:10px;
+    border-radius:6px;
+    margin-bottom:15px;
+    font-weight:bold;
+}
+
+.sucesso{
+    margin-top:15px;
+    color:green;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🎬 CineLocal</h1>
+</header>
+
+<section class="hero">
+    <h2>Filmes em Cartaz</h2>
+    <p>Escolha seu filme favorito e reserve seus ingressos.</p>
+</section>
+
+<section class="filmes">
+
+    <div class="card">
+        <img src="https://picsum.photos/400/600?random=1">
+        <div class="card-content">
+            <h3>Aventura Espacial</h3>
+            <p>Uma jornada épica através das galáxias.</p>
+
+            <div class="horarios">
+                <button class="horario" onclick="abrirModal('Aventura Espacial','14:00')">14:00</button>
+                <button class="horario" onclick="abrirModal('Aventura Espacial','18:00')">18:00</button>
+                <button class="horario" onclick="abrirModal('Aventura Espacial','21:00')">21:00</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="https://picsum.photos/400/600?random=2">
+        <div class="card-content">
+            <h3>Mistério Noturno</h3>
+            <p>Um suspense repleto de reviravoltas.</p>
+
+            <div class="horarios">
+                <button class="horario" onclick="abrirModal('Mistério Noturno','15:30')">15:30</button>
+                <button class="horario" onclick="abrirModal('Mistério Noturno','19:00')">19:00</button>
+                <button class="horario" onclick="abrirModal('Mistério Noturno','22:00')">22:00</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="https://picsum.photos/400/600?random=3">
+        <div class="card-content">
+            <h3>Heróis da Cidade</h3>
+            <p>Ação e aventura para toda a família.</p>
+
+            <div class="horarios">
+                <button class="horario" onclick="abrirModal('Heróis da Cidade','13:00')">13:00</button>
+                <button class="horario" onclick="abrirModal('Heróis da Cidade','17:00')">17:00</button>
+                <button class="horario" onclick="abrirModal('Heróis da Cidade','20:30')">20:30</button>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div class="modal" id="modalReserva">
+    <div class="modal-content">
+
+        <span class="fechar" onclick="fecharModal()">✖</span>
+
+        <h2>Agendar Ingresso</h2>
+
+        <form id="formReserva">
+
+            <div class="form-group">
+                <label>Filme</label>
+                <input type="text" id="filme" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Horário</label>
+                <input type="text" id="horario" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Quantidade de Ingressos</label>
+                <select id="quantidade">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="valor-total">
+                Total: R$ <span id="valor">25</span>,00
+            </div>
+
+            <button class="btn" type="submit">
+                Confirmar Reserva
+            </button>
+
+            <div class="sucesso" id="mensagem"></div>
+
+        </form>
+
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 CineLocal - Todos os direitos reservados.</p>
+</footer>
+
+<script>
+
+const precoIngresso = 25;
+
+function abrirModal(filme, horario){
+    document.getElementById("modalReserva").style.display = "flex";
+    document.getElementById("filme").value = filme;
+    document.getElementById("horario").value = horario;
+}
+
+function fecharModal(){
+    document.getElementById("modalReserva").style.display = "none";
+}
+
+document.getElementById("quantidade").addEventListener("change", function(){
+
+    const qtd = parseInt(this.value);
+    const total = qtd * precoIngresso;
+
+    document.getElementById("valor").textContent = total;
+});
+
+document.getElementById("formReserva").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const filme = document.getElementById("filme").value;
+    const horario = document.getElementById("horario").value;
+    const qtd = document.getElementById("quantidade").value;
+
+    document.getElementById("mensagem").innerHTML =
+        `✅ Reserva realizada com sucesso!<br>
+        Filme: ${filme}<br>
+        Sessão: ${horario}<br>
+        Ingressos: ${qtd}`;
+
+    setTimeout(() => {
+        fecharModal();
+        this.reset();
+        document.getElementById("mensagem").innerHTML = "";
+        document.getElementById("valor").textContent = "25";
+    }, 4000);
+
+});
+
+window.onclick = function(event){
+    const modal = document.getElementById("modalReserva");
+
+    if(event.target === modal){
+        fecharModal();
+    }
+}
+
+</script>
+
+</body>
+</html>

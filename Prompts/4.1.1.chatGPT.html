@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Estúdio Aurora — fotografia de casamentos, retratos e momentos especiais.">
+<title>Estúdio Aurora | Fotografia com sentimento</title>
+<style>
+:root{--ink:#24231f;--muted:#77736b;--paper:#f7f5f0;--cream:#e9e3d8;--accent:#a66f50;--white:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+header{position:absolute;z-index:2;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:26px 7%;color:white}
+.logo{font-family:Georgia,serif;font-size:1.45rem;letter-spacing:.08em}.logo span{color:#e5b99b}
+nav{display:flex;gap:28px}nav a{color:white;text-decoration:none;font-size:.88rem}nav a:hover{color:#e5b99b}
+.hero{min-height:690px;height:90vh;display:flex;align-items:center;padding:120px 10% 80px;color:white;background:linear-gradient(90deg,rgba(20,19,17,.72),rgba(20,19,17,.12)),linear-gradient(135deg,#51453d,#b39a82 55%,#d8c7b4)}
+.hero-content{max-width:650px}.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:.72rem;color:#e8c3a8}.hero h1{font:normal clamp(3.3rem,7vw,6.5rem)/1.02 Georgia,serif;margin:18px 0 22px}.hero p{font-size:1.08rem;max-width:490px;color:#f1ece5}.button{display:inline-block;margin-top:22px;padding:14px 25px;background:var(--accent);color:white;text-decoration:none;border:0;cursor:pointer;font-size:.85rem;letter-spacing:.06em}.button:hover{background:#87583f}
+section{padding:95px 9%}.section-heading{text-align:center;max-width:650px;margin:0 auto 48px}.section-heading h2{font:normal clamp(2.3rem,4vw,3.5rem) Georgia,serif;margin:8px 0 12px}.section-heading p{color:var(--muted)}
+.eyebrow-dark{color:var(--accent);text-transform:uppercase;letter-spacing:.2em;font-size:.7rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.work{min-height:360px;display:flex;align-items:end;padding:24px;color:white;background:linear-gradient(0deg,rgba(0,0,0,.58),transparent 65%),linear-gradient(135deg,#9b8774,#d8c9b7)}.work:nth-child(2){background:linear-gradient(0deg,rgba(0,0,0,.58),transparent 65%),linear-gradient(135deg,#6c625c,#c5a88f)}.work:nth-child(3){background:linear-gradient(0deg,rgba(0,0,0,.58),transparent 65%),linear-gradient(135deg,#7d8074,#d4c6ae)}.work h3{font:normal 1.8rem Georgia,serif;margin:0}
+.about{background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:8%;align-items:center}.about-art{min-height:420px;background:linear-gradient(145deg,#8b7868,#d8c4ad 55%,#74665b);position:relative}.about-art:after{content:"";position:absolute;inset:24px;border:1px solid rgba(255,255,255,.65)}.about h2{font:normal clamp(2.4rem,4vw,3.6rem)/1.1 Georgia,serif;margin:10px 0 20px}.about p{color:#625e57}
+.contact{background:#292824;color:white}.contact-wrap{max-width:1050px;margin:auto;display:grid;grid-template-columns:.9fr 1.1fr;gap:10%}.contact h2{font:normal clamp(2.5rem,4vw,3.7rem)/1.1 Georgia,serif;margin:10px 0 18px}.contact p{color:#c8c2b8}.contact-details{margin-top:32px;color:#e4b99b;font-size:.95rem}
+form{display:grid;gap:16px}label{font-size:.8rem;color:#e2dcd3}input,select,textarea{width:100%;padding:14px 13px;background:#383731;border:1px solid #59564e;color:white;font:inherit;border-radius:0}input:focus,select:focus,textarea:focus{outline:1px solid #d3a080}textarea{min-height:125px;resize:vertical}form .button{justify-self:start;margin-top:3px}small{color:#aaa69e;font-size:.75rem}
+footer{padding:25px 7%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:#77736b;font-size:.8rem}
+@media(max-width:760px){header{padding:20px 6%}nav{gap:13px}nav a{font-size:.75rem}.hero{min-height:620px;height:auto}.grid{grid-template-columns:1fr}.work{min-height:280px}.about,.contact-wrap{grid-template-columns:1fr}.about-art{min-height:300px}.contact-wrap{gap:35px}section{padding:70px 7%}}
+@media(max-width:430px){nav a:nth-child(2){display:none}.logo{font-size:1.2rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">AURORA<span>.</span></div>
+  <nav aria-label="Navegação principal"><a href="#portfolio">Portfólio</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">Estúdio de fotografia</div>
+      <h1>Histórias que merecem ser lembradas.</h1>
+      <p>Fotografamos pessoas, encontros e momentos reais. Imagens feitas com sensibilidade para guardar aquilo que o tempo não leva.</p>
+      <a class="button" href="#contato">VAMOS CONVERSAR</a>
+    </div>
+  </section>
+  <section id="portfolio">
+    <div class="section-heading"><div class="eyebrow-dark">Nosso olhar</div><h2>Fotografia com significado</h2><p>Cada história é única. Nosso trabalho é encontrar a beleza dos detalhes e transformar instantes em lembranças.</p></div>
+    <div class="grid">
+      <article class="work"><h3>Casamentos & celebrações</h3></article>
+      <article class="work"><h3>Retratos & família</h3></article>
+      <article class="work"><h3>Ensaios autorais</h3></article>
+    </div>
+  </section>
+  <section class="about" id="sobre">
+    <div class="about-art" role="img" aria-label="Composição abstrata em tons quentes que representa o olhar fotográfico"></div>
+    <div><div class="eyebrow-dark">Prazer, somos o Aurora</div><h2>Mais do que fotografias, memórias.</h2><p>Acreditamos na beleza da espontaneidade. Criamos um ambiente leve para que você se sinta à vontade, seja diante da câmera ou vivendo um dos dias mais importantes da sua vida.</p><p>Do primeiro contato à entrega final, cuidamos de cada detalhe para que sua experiência seja especial.</p><a class="button" href="#contato">CONHEÇA NOSSO TRABALHO</a></div>
+  </section>
+  <section class="contact" id="contato">
+    <div class="contact-wrap">
+      <div><div class="eyebrow">Entre em contato</div><h2>Vamos contar sua história?</h2><p>Conte um pouco sobre o que você imaginou. Será um prazer conversar sobre seu projeto e preparar uma experiência feita para você.</p><div class="contact-details">✉ contato@estudioaurora.com.br<br>São Paulo · Atendimento com hora marcada</div></div>
+      <div>
+        <form id="contactForm">
+          <div><label for="nome">Seu nome</label><input id="nome" name="nome" autocomplete="name" required placeholder="Como podemos chamar você?"></div>
+          <div><label for="email">Seu e-mail</label><input id="email" name="email" type="email" autocomplete="email" required placeholder="voce@exemplo.com"></div>
+          <div><label for="tipo">Que tipo de fotografia procura?</label><select id="tipo" name="tipo"><option>Selecione uma opção</option><option>Casamento ou evento</option><option>Ensaio individual ou casal</option><option>Fotografia de família</option><option>Fotografia profissional / corporativa</option><option>Outro projeto</option></select></div>
+          <div><label for="mensagem">Sua mensagem</label><textarea id="mensagem" name="mensagem" required placeholder="Conte um pouco sobre sua ideia, data ou ocasião..."></textarea></div>
+          <button class="button" type="submit">ENVIAR MENSAGEM</button>
+          <small>Ao enviar, seu aplicativo de e-mail será aberto com a mensagem pronta para envio.</small>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><span>© 2026 Estúdio Aurora. Todos os direitos reservados.</span><span>Fotografia feita com afeto.</span></footer>
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const data = new FormData(this);
+  const subject = encodeURIComponent('Contato pelo site — ' + data.get('nome'));
+  const body = encodeURIComponent(
+    'Nome: ' + data.get('nome') + '\n' +
+    'E-mail: ' + data.get('email') + '\n' +
+    'Tipo de fotografia: ' + data.get('tipo') + '\n\n' +
+    'Mensagem:\n' + data.get('mensagem')
+  );
+  window.location.href = 'mailto:contato@estudioaurora.com.br?subject=' + subject + '&body=' + body;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brasil Explorer | Descubra o Brasil</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --verde: #145c45;
+    --verde-claro: #e7f1eb;
+    --laranja: #ed9950;
+    --fundo: #f8f8f4;
+    --texto: #26352d;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    line-height: 1.6;
+}
+
+header {
+    background: white;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px #00000010;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--verde);
+}
+
+.logo span {
+    color: var(--laranja);
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--texto);
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: var(--laranja);
+}
+
+.hero {
+    min-height: 440px;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background:
+    linear-gradient(#0007, #0007),
+    url("https://images.unsplash.com/photo-1518638150340-f706e86654de?w=1800")
+    center/cover;
+}
+
+.hero h1 {
+    font-size: clamp(35px, 5vw, 58px);
+    max-width: 800px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 28px;
+}
+
+.search-box {
+    display: flex;
+    width: min(550px, 95%);
+    background: white;
+    padding: 7px;
+    border-radius: 10px;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    padding: 12px;
+    font-size: 15px;
+}
+
+.search-box button {
+    border: none;
+    background: var(--laranja);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1250px;
+    margin: auto;
+    padding: 55px 25px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section-heading h2 {
+    font-size: 32px;
+    color: var(--verde);
+}
+
+.section-heading p {
+    color: #777;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 35px;
+}
+
+.filter-btn {
+    border: 1px solid var(--verde);
+    background: white;
+    color: var(--verde);
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--verde);
+    color: white;
+}
+
+.articles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 13px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px #0000000d;
+    transition: transform .3s, box-shadow .3s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px #00000018;
+}
+
+.card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.card-content {
+    padding: 22px;
+}
+
+.tag {
+    display: inline-block;
+    background: var(--verde-claro);
+    color: var(--verde);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.card h3 {
+    font-size: 21px;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.card p {
+    color: #6c756e;
+    font-size: 14px;
+    min-height: 68px;
+}
+
+.read-btn {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 11px 20px;
+    background: var(--verde);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.read-btn:hover {
+    background: var(--laranja);
+}
+
+.no-results {
+    display: none;
+    text-align: center;
+    padding: 35px;
+    grid-column: 1 / -1;
+}
+
+.newsletter {
+    background: var(--verde);
+    color: white;
+    text-align: center;
+    padding: 55px 20px;
+}
+
+.newsletter h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.newsletter p {
+    margin-bottom: 20px;
+}
+
+.newsletter form {
+    display: flex;
+    max-width: 450px;
+    margin: auto;
+    gap: 8px;
+}
+
+.newsletter input {
+    flex: 1;
+    min-width: 0;
+    padding: 13px;
+    border: none;
+    border-radius: 6px;
+}
+
+.newsletter button {
+    background: var(--laranja);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+footer {
+    background: #103b30;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+footer p {
+    font-size: 13px;
+    color: #d1ded7;
+}
+
+@media(max-width: 900px) {
+    .articles {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    nav {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .articles {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        min-height: 380px;
+    }
+
+    .newsletter form {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Brasil<span>Explorer</span></div>
+
+    <nav>
+        <a href="#">Início</a>
+        <a href="#destinos">Destinos</a>
+        <a href="#newsletter">Newsletter</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>O Brasil tem muito para você descobrir!</h1>
+    <p>Explore destinos incríveis, culturas e paisagens brasileiras.</p>
+
+    <div class="search-box">
+        <input type="text" id="searchInput"
+        placeholder="Buscar destino ou região...">
+        <button onclick="searchArticles()">Buscar</button>
+    </div>
+</section>
+
+<main id="destinos">
+
+    <div class="section-heading">
+        <h2>Explore nossos destinos</h2>
+        <p>Encontre inspiração para sua próxima viagem pelo Brasil.</p>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active" data-region="Todos">Todos</button>
+        <button class="filter-btn" data-region="Nordeste">Nordeste</button>
+        <button class="filter-btn" data-region="Norte">Norte</button>
+        <button class="filter-btn" data-region="Sudeste">Sudeste</button>
+        <button class="filter-btn" data-region="Sul">Sul</button>
+        <button class="filter-btn" data-region="Centro-Oeste">Centro-Oeste</button>
+    </div>
+
+    <section class="articles" id="articles">
+
+        <article class="card" data-region="Nordeste">
+            <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=700"
+            alt="Dunas e lagoas dos Lençóis Maranhenses">
+
+            <div class="card-content">
+                <span class="tag">Nordeste</span>
+                <h3>Lençóis Maranhenses: um paraíso brasileiro</h3>
+                <p>Conheça as famosas dunas de areia branca e lagoas cristalinas que formam uma das paisagens mais impressionantes do Brasil.</p>
+                <a href="#" class="read-btn">Ler Guia →</a>
+            </div>
+        </article>
+
+        <article class="card" data-region="Sudeste">
+            <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=700"
+            alt="Paisagem de Paraty e litoral brasileiro">
+
+            <div class="card-content">
+                <span class="tag">Sudeste</span>
+                <h3>Paraty e Costa Verde: história e natureza</h3>
+                <p>Descubra praias paradisíacas, ilhas, cachoeiras e o charme histórico das ruas de Paraty, no litoral do Rio de Janeiro.</p>
+                <a href="#" class="read-btn">Ler Guia →</a>
+            </div>
+        </article>
+
+        <article class="card" data-region="Norte">
+            <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=700"
+            alt="Floresta amazônica">
+
+            <div class="card-content">
+                <span class="tag">Norte</span>
+                <h3>Amazônia: uma aventura pela floresta</h3>
+                <p>Explore rios, comunidades tradicionais e a biodiversidade de uma das maiores florestas tropicais do planeta.</p>
+                <a href="#" class="read-btn">Ler Guia →</a>
+            </div>
+        </article>
+
+        <article class="card" data-region="Centro-Oeste">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=700"
+            alt="Paisagem natural do Pantanal">
+
+            <div class="card-content">
+                <span class="tag">Centro-Oeste</span>
+                <h3>Pantanal: o espetáculo da vida selvagem</h3>
+                <p>Conheça um dos maiores ecossistemas alagáveis do mundo e observe animais em seu habitat natural.</p>
+                <a href="#" class="read-btn">Ler Guia →</a>
+            </div>
+        </article>
+
+        <article class="card" data-region="Sul">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=700"
+            alt="Montanhas e paisagem de inverno">
+
+            <div class="card-content">
+                <span class="tag">Sul</span>
+                <h3>Serra Gaúcha: charme e gastronomia</h3>
+                <p>Descubra Gramado, Canela e as paisagens de montanha, com arquitetura europeia e experiências gastronômicas.</p>
+                <a href="#" class="read-btn">Ler Guia →</a>
+            </div>
+        </article>
+
+        <article class="card" data-region="Nordeste">
+            <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=700"
+            alt="Praia tropical do Nordeste">
+
+            <div class="card-content">
+                <span class="tag">Nordeste</span>
+                <h3>Maragogi: o Caribe brasileiro</h3>
+                <p>Descubra piscinas naturais, águas transparentes e praias incríveis no litoral de Alagoas.</p>
+                <a href="#" class="read-btn">Ler Guia →</a>
+            </div>
+        </article>
+
+        <p class="no-results" id="noResults">
+            Nenhum destino encontrado. Tente outra pesquisa!
+        </p>
+
+    </section>
+</main>
+
+<section class="newsletter" id="newsletter">
+    <h2>Receba inspiração para viajar!</h2>
+    <p>Cadastre seu e-mail e receba novidades sobre destinos brasileiros.</p>
+
+    <form onsubmit="subscribe(event)">
+        <input type="email" placeholder="Seu melhor e-mail" required>
+        <button type="submit">Cadastrar</button>
+    </form>
+</section>
+
+<footer>
+    <div class="logo" style="color:white">
+        Brasil<span>Explorer</span>
+    </div>
+    <p>© 2026 Brasil Explorer - Descubra as maravilhas do Brasil.</p>
+    <p>Explore, descubra e viva novas experiências!</p>
+</footer>
+
+<script>
+const cards = document.querySelectorAll(".card");
+const filters = document.querySelectorAll(".filter-btn");
+const searchInput = document.getElementById("searchInput");
+const noResults = document.getElementById("noResults");
+
+let currentRegion = "Todos";
+
+function filterArticles() {
+    const search = searchInput.value.toLowerCase().trim();
+    let visible = 0;
+
+    cards.forEach(card => {
+        const region = card.dataset.region;
+        const content = card.innerText.toLowerCase();
+
+        const matchesRegion =
+            currentRegion === "Todos" || region === currentRegion;
+
+        const matchesSearch = content.includes(search);
+
+        if (matchesRegion && matchesSearch) {
+            card.style.display = "block";
+            visible++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    noResults.style.display = visible === 0 ? "block" : "none";
+}
+
+filters.forEach(button => {
+    button.addEventListener("click", () => {
+        filters.forEach(btn => btn.classList.remove("active"));
+
+        button.classList.add("active");
+        currentRegion = button.dataset.region;
+
+        filterArticles();
+    });
+});
+
+function searchArticles() {
+    filterArticles();
+    document.getElementById("destinos").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+searchInput.addEventListener("input", filterArticles);
+
+function subscribe(event) {
+    event.preventDefault();
+    alert("Obrigado! Seu cadastro foi recebido com sucesso.");
+    event.target.reset();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roteiros do Brasil — Guias e Destinos pelo Nosso País</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome para ícones elegantes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            areia: {
+              50: '#FAF9F6',
+              100: '#F4F1EA',
+              200: '#E8E2D5',
+            },
+            esmeralda: {
+              600: '#059669',
+              700: '#047857',
+              800: '#065F46',
+              900: '#064E3B',
+            },
+            oceano: {
+              600: '#0284C7',
+              700: '#0369A1',
+              900: '#0C4A6E',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-areia-50 text-slate-800 antialiased selection:bg-esmeralda-600 selection:text-white flex flex-col min-h-screen">
+
+  <!-- ==================== 1. HEADER ELEGANTE ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-areia-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between py-4 gap-4">
+        
+        <!-- Logotipo e Menu Mobile -->
+        <div class="flex items-center justify-between">
+          <a href="#" onclick="resetarFiltros(event)" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-esmeralda-600 to-oceano-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-compass text-lg"></i>
+            </div>
+            <div>
+              <span class="font-display font-extrabold text-xl tracking-tight text-slate-900 block leading-none">
+                Roteiros do <span class="text-esmeralda-700">Brasil</span>
+              </span>
+              <span class="text-[11px] font-medium text-slate-500 tracking-wider uppercase">Explorando nossas raízes</span>
+            </div>
+          </a>
+
+          <!-- Botão Menu Mobile -->
+          <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-600 hover:bg-areia-100 focus:outline-none" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
+        </div>
+
+        <!-- Links de Navegação (Desktop) -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+          <a href="#destinos" class="text-esmeralda-700 font-semibold hover:text-esmeralda-800 transition-colors">Destinos</a>
+          <a href="#destinos" onclick="filtrarPorRegiao('Nordeste')" class="hover:text-esmeralda-700 transition-colors">Roteiros</a>
+          <a href="#dicas" class="hover:text-esmeralda-700 transition-colors">Dicas de Viagem</a>
+          <a href="#sobre" class="hover:text-esmeralda-700 transition-colors">Sobre</a>
+        </nav>
+
+        <!-- Barra de Busca em Tempo Real -->
+        <div class="relative w-full md:w-72 lg:w-80">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+          </div>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="Buscar destino, estado ou dica..." 
+            class="w-full pl-10 pr-9 py-2.5 bg-areia-50 border border-areia-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-esmeralda-600/30 focus:border-esmeralda-600 transition-all"
+          >
+          <button 
+            id="clear-search-btn" 
+            type="button" 
+            onclick="limparBusca()" 
+            class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+            title="Limpar busca"
+          >
+            <i class="fa-solid fa-circle-xmark text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Menu Mobile Expansível -->
+      <nav id="mobile-menu" class="hidden md:hidden pb-4 pt-2 border-t border-areia-200 flex-col gap-2 text-sm font-medium text-slate-700">
+        <a href="#destinos" class="px-3 py-2 rounded-lg hover:bg-areia-100 text-esmeralda-700 font-semibold">Destinos</a>
+        <a href="#destinos" onclick="filtrarPorRegiao('Nordeste')" class="px-3 py-2 rounded-lg hover:bg-areia-100">Roteiros</a>
+        <a href="#dicas" class="px-3 py-2 rounded-lg hover:bg-areia-100">Dicas de Viagem</a>
+        <a href="#sobre" class="px-3 py-2 rounded-lg hover:bg-areia-100">Sobre</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== 2. HERO SECTION INSPIRADORA ==================== -->
+  <section class="relative overflow-hidden bg-slate-900 text-white">
+    <!-- Imagem de Fundo com Overlay -->
+    <div class="absolute inset-0">
+      <img 
+        src="https://images.unsplash.com/photo-1518639192441-8fce0a366e2e?auto=format&fit=crop&w=1920&q=80" 
+        onerror="this.src='https://placehold.co/1920x800/064E3B/FAF9F6?text=Paisagens+do+Brasil'"
+        alt="Paisagem exuberante do litoral e montanhas do Brasil" 
+        class="w-full h-full object-cover object-center opacity-45 scale-105"
+      >
+      <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-esmeralda-900/75 to-oceano-900/60"></div>
+    </div>
+
+    <!-- Conteúdo do Hero -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-emerald-200 text-xs font-semibold tracking-wide uppercase mb-6">
+          <i class="fa-solid fa-earth-americas"></i>
+          <span>Turismo Nacional &bull; 5 Regiões</span>
+        </div>
+        
+        <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight mb-5">
+          Descubra as maravilhas escondidas em cada canto do <span class="text-emerald-400">Brasil</span>.
+        </h1>
+        
+        <p class="text-base sm:text-lg text-slate-200 leading-relaxed mb-8">
+          Das dunas cristalinas dos Lençóis Maranhenses às águas verde-esmeralda de Paraty. Explore nossos guias completos, roteiros testados e dicas práticas para sua próxima jornada.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="#destinos" class="px-6 py-3.5 rounded-xl bg-esmeralda-600 hover:bg-esmeralda-700 text-white font-semibold text-sm shadow-lg shadow-esmeralda-900/40 transition-all inline-flex items-center gap-2">
+            <span>Explorar Guias</span>
+            <i class="fa-solid fa-arrow-down text-xs"></i>
+          </a>
+          <button type="button" onclick="abrirGuiaPorId('lencois-maranhenses')" class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/25 text-white font-semibold text-sm transition-all inline-flex items-center gap-2">
+            <i class="fa-solid fa-star text-amber-300"></i>
+            <span>Destaque: Lençóis Maranhenses</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+  <main id="destinos" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    
+    <!-- Cabeçalho da Seção e Barra de Filtros por Região -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-esmeralda-700 block mb-1">Curadoria de Destinos</span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-slate-900">Guias por Região do Brasil</h2>
+      </div>
+
+      <!-- 3. Barra de Filtros Interativos -->
+      <div id="region-filters" class="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filtrar destinos por região">
+        <button type="button" data-region="Todos" onclick="filtrarPorRegiao('Todos')" class="filter-btn active px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-esmeralda-700 text-white shadow-sm">
+          Todos
+        </button>
+        <button type="button" data-region="Norte" onclick="filtrarPorRegiao('Norte')" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-slate-600 border border-areia-200 hover:border-emerald-400 hover:text-emerald-800">
+          Norte
+        </button>
+        <button type="button" data-region="Nordeste" onclick="filtrarPorRegiao('Nordeste')" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-slate-600 border border-areia-200 hover:border-amber-400 hover:text-amber-800">
+          Nordeste
+        </button>
+        <button type="button" data-region="Centro-Oeste" onclick="filtrarPorRegiao('Centro-Oeste')" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-slate-600 border border-areia-200 hover:border-orange-400 hover:text-orange-800">
+          Centro-Oeste
+        </button>
+        <button type="button" data-region="Sudeste" onclick="filtrarPorRegiao('Sudeste')" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-slate-600 border border-areia-200 hover:border-sky-400 hover:text-sky-800">
+          Sudeste
+        </button>
+        <button type="button" data-region="Sul" onclick="filtrarPorRegiao('Sul')" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-slate-600 border border-areia-200 hover:border-indigo-400 hover:text-indigo-800">
+          Sul
+        </button>
+      </div>
+    </div>
+
+    <!-- Contador de Resultados -->
+    <div class="flex items-center justify-between mb-6 text-sm text-slate-500">
+      <p id="results-counter">Exibindo <strong class="text-slate-800">8</strong> guias turísticos</p>
+      <button id="reset-all-btn" type="button" onclick="resetarFiltros()" class="hidden text-esmeralda-700 hover:text-esmeralda-800 font-semibold underline underline-offset-4">
+        Limpar filtros
+      </button>
+    </div>
+
+    <!-- 4. GRID DE CARTÕES (CARDS) DE ARTIGOS -->
+    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Os cartões são renderizados dinamicamente via JavaScript mantendo a estrutura exata -->
+    </div>
+
+    <!-- Estado Vazio (caso a busca não encontre nada) -->
+    <div id="empty-state" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-areia-200 shadow-sm">
+      <div class="w-16 h-16 rounded-2xl bg-areia-100 text-slate-400 flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i class="fa-solid fa-map-location-dot"></i>
+      </div>
+      <h3 class="font-display font-bold text-xl text-slate-800 mb-2">Nenhum destino encontrado</h3>
+      <p class="text-slate-500 max-w-md mx-auto mb-6">Não encontramos nenhum artigo correspondente à sua busca ou filtro atual. Tente buscar por outro estado ou limpar os filtros.</p>
+      <button type="button" onclick="resetarFiltros()" class="px-5 py-2.5 rounded-xl bg-esmeralda-700 hover:bg-esmeralda-800 text-white font-semibold text-sm transition-colors">
+        Mostrar todos os destinos
+      </button>
+    </div>
+
+    <!-- Seção Complementar: Dicas Rápidas de Viagem -->
+    <section id="dicas" class="mt-20 bg-gradient-to-br from-esmeralda-900 to-oceano-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <div class="lg:col-span-1">
+          <span class="inline-block px-3 py-1 rounded-full bg-white/15 text-emerald-200 text-xs font-semibold uppercase tracking-wider mb-3">Planejamento</span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl mb-3">Viaje pelo Brasil com tranquilidade</h2>
+          <p class="text-slate-200 text-sm leading-relaxed">
+            Nosso país tem dimensões continentais. Antes de arrumar as malas, confira três pilares essenciais para aproveitar cada bioma.
+          </p>
+        </div>
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-cloud-sun-rain"></i>
+            </div>
+            <h3 class="font-display font-bold text-base mb-1.5">Estações Invertidas</h3>
+            <p class="text-xs text-slate-200 leading-relaxed">Enquanto o verão traz chuvas no Sudeste e Norte, o litoral nordestino brilha com sol intenso.</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-300 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <h3 class="font-display font-bold text-base mb-1.5">Turismo Consciente</h3>
+            <p class="text-xs text-slate-200 leading-relaxed">Em parques nacionais como Jalapão e Veadeiros, contrate guias locais credenciados e respeite as trilhas.</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-suitcase-rolling"></i>
+            </div>
+            <h3 class="font-display font-bold text-base mb-1.5">Bagagem Inteligente</h3>
+            <p class="text-xs text-slate-200 leading-relaxed">Protetor solar biodegradável, repelente e calçados aderentes são indispensáveis em qualquer região.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 7. RODAPÉ COMPLETO ==================== -->
+  <footer id="sobre" class="bg-white border-t border-areia-200 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+        
+        <!-- Coluna Sobre o Blog -->
+        <div class="lg:col-span-4">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-esmeralda-600 to-oceano-600 flex items-center justify-center text-white">
+              <i class="fa-solid fa-compass"></i>
+            </div>
+            <span class="font-display font-extrabold text-xl text-slate-900">
+              Roteiros do <span class="text-esmeralda-700">Brasil</span>
+            </span>
+          </div>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Somos um portal editorial dedicado a valorizar a biodiversidade, a cultura e a hospitalidade brasileira. Guias autorais escritos por viajantes apaixonados pelo nosso território.
+          </p>
+          <!-- Redes Sociais -->
+          <div class="flex items-center gap-3">
+            <a href="#sobre" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-areia-100 hover:bg-esmeralda-700 text-slate-700 hover:text-white flex items-center justify-center transition-colors">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="#sobre" aria-label="YouTube" class="w-10 h-10 rounded-xl bg-areia-100 hover:bg-esmeralda-700 text-slate-700 hover:text-white flex items-center justify-center transition-colors">
+              <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="#sobre" aria-label="Pinterest" class="w-10 h-10 rounded-xl bg-areia-100 hover:bg-esmeralda-700 text-slate-700 hover:text-white flex items-center justify-center transition-colors">
+              <i class="fa-brands fa-pinterest-p"></i>
+            </a>
+            <a href="#sobre" aria-label="TikTok" class="w-10 h-10 rounded-xl bg-areia-100 hover:bg-esmeralda-700 text-slate-700 hover:text-white flex items-center justify-center transition-colors">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Coluna Links Rápidos -->
+        <div class="lg:col-span-2">
+          <h3 class="font-display font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">Regiões</h3>
+          <ul class="space-y-2.5 text-sm text-slate-600">
+            <li><a href="#destinos" onclick="filtrarPorRegiao('Norte')" class="hover:text-esmeralda-700 transition-colors">Região Norte</a></li>
+            <li><a href="#destinos" onclick="filtrarPorRegiao('Nordeste')" class="hover:text-esmeralda-700 transition-colors">Região Nordeste</a></li>
+            <li><a href="#destinos" onclick="filtrarPorRegiao('Centro-Oeste')" class="hover:text-esmeralda-700 transition-colors">Centro-Oeste</a></li>
+            <li><a href="#destinos" onclick="filtrarPorRegiao('Sudeste')" class="hover:text-esmeralda-700 transition-colors">Região Sudeste</a></li>
+            <li><a href="#destinos" onclick="filtrarPorRegiao('Sul')" class="hover:text-esmeralda-700 transition-colors">Região Sul</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna Institucional -->
+        <div class="lg:col-span-2">
+          <h3 class="font-display font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">Navegação</h3>
+          <ul class="space-y-2.5 text-sm text-slate-600">
+            <li><a href="#destinos" class="hover:text-esmeralda-700 transition-colors">Todos os Guias</a></li>
+            <li><a href="#dicas" class="hover:text-esmeralda-700 transition-colors">Dicas de Viagem</a></li>
+            <li><a href="#sobre" class="hover:text-esmeralda-700 transition-colors">Quem Somos</a></li>
+            <li><a href="#sobre" class="hover:text-esmeralda-700 transition-colors">Turismo Sustentável</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna Newsletter -->
+        <div class="lg:col-span-4">
+          <h3 class="font-display font-bold text-sm uppercase tracking-wider text-slate-900 mb-3">Receba Roteiros Inéditos</h3>
+          <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+            Assine nossa newsletter semanal e receba planilhas de custos, mapas offline e dicas secretas direto no seu e-mail.
+          </p>
+          <form id="newsletter-form" onsubmit="inscreverNewsletter(event)" class="flex flex-col sm:flex-row gap-2.5">
+            <input 
+              type="email" 
+              id="newsletter-email" 
+              required 
+              placeholder="Seu melhor e-mail" 
+              class="flex-grow px-4 py-2.5 bg-areia-50 border border-areia-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-esmeralda-600/30 focus:border-esmeralda-600"
+            >
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-esmeralda-700 hover:bg-esmeralda-800 text-white font-semibold text-sm transition-colors whitespace-nowrap shadow-sm">
+              Assinar
+            </button>
+          </form>
+          <!-- Feedback visual da Newsletter (substituindo alert) -->
+          <div id="newsletter-feedback" class="hidden mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Inscrição confirmada! Prepare as malas para os próximos roteiros.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright -->
+      <div class="mt-12 pt-8 border-t border-areia-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p>&copy; 2026 Roteiros do Brasil. Todos os direitos reservados.</p>
+        <p class="flex items-center gap-1.5">
+          Feito com <i class="fa-solid fa-heart text-esmeralda-600"></i> para quem ama viajar pelo Brasil.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 6. MODAL DE LEITURA DO GUIA ==================== -->
+  <div id="guide-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Backdrop escuro com desfoque -->
+    <div id="modal-backdrop" onclick="fecharModal()" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Container Centralizado -->
+    <div class="flex min-h-full items-center justify-center p-4 sm:p-6">
+      <div class="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-areia-200 overflow-hidden transform transition-all my-8">
+        
+        <!-- Botão Fechar Superior -->
+        <button 
+          type="button" 
+          onclick="fecharModal()" 
+          class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white backdrop-blur-md flex items-center justify-center transition-colors shadow-md"
+          aria-label="Fechar guia"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+
+        <!-- Imagem de Capa do Modal -->
+        <div class="relative h-64 sm:h-80 w-full bg-slate-200">
+          <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
+          
+          <div class="absolute bottom-5 left-6 right-6">
+            <span id="modal-tag" class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2.5 shadow-sm">
+              Região
+            </span>
+            <h2 id="modal-title" class="font-display font-extrabold text-2xl sm:text-3xl text-white leading-tight">
+              Título do Destino
+            </h2>
+            <p id="modal-location" class="text-slate-200 text-xs sm:text-sm mt-1 flex items-center gap-1.5">
+              <i class="fa-solid fa-location-dot text-emerald-400"></i>
+              <span>Estado, Brasil</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Corpo do Guia Completo -->
+        <div class="p-6 sm:p-8 space-y-6">
+          
+          <!-- Introdução / Resumo Expandido -->
+          <p id="modal-intro" class="text-slate-700 text-base leading-relaxed font-medium border-l-4 border-esmeralda-600 pl-4 bg-areia-50 py-3 pr-3 rounded-r-xl">
+            Introdução do destino...
+          </p>
+
+          <!-- Grid de Informações Rápidas (Melhor Época e Duração Ideal) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-100">
+              <div class="flex items-center gap-2 text-esmeralda-800 font-display font-bold text-sm mb-1">
+                <i class="fa-regular fa-calendar-check text-esmeralda-600"></i>
+                <span>Melhor Época para Visitar</span>
+              </div>
+              <p id="modal-best-time" class="text-sm text-slate-700 leading-relaxed">
+                Junho a Setembro
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-100">
+              <div class="flex items-center gap-2 text-oceano-900 font-display font-bold text-sm mb-1">
+                <i class="fa-regular fa-clock text-oceano-600"></i>
+                <span>Tempo Recomendado</span>
+              </div>
+              <p id="modal-duration" class="text-sm text-slate-700 leading-relaxed">
+                4 a 5 dias completos
+              </p>
+            </div>
+          </div>
+
+          <!-- O que fazer -->
+          <div>
+            <h3 class="font-display font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-map-pin text-esmeralda-600"></i>
+              <span>O que fazer por lá</span>
+            </h3>
+            <ul id="modal-activities" class="space-y-2.5 text-sm text-slate-700">
+              <!-- Lista preenchida via JS -->
+            </ul>
+          </div>
+
+          <!-- Dicas Práticas -->
+          <div class="p-5 rounded-2xl bg-areia-100 border border-areia-200">
+            <h3 class="font-display font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-amber-500"></i>
+              <span>Dicas Práticas do Viajante</span>
+            </h3>
+            <p id="modal-tips" class="text-sm text-slate-700 leading-relaxed">
+              Dicas práticas...
+            </p>
+          </div>
+
+          <!-- Rodapé do Modal com Botão Voltar -->
+          <div class="pt-4 border-t border-areia-200 flex items-center justify-between gap-4">
+            <button 
+              type="button" 
+              onclick="copiarLinkGuia()" 
+              id="copy-link-btn"
+              class="px-4 py-2.5 rounded-xl bg-areia-100 hover:bg-areia-200 text-slate-700 font-semibold text-sm transition-colors inline-flex items-center gap-2"
+            >
+              <i class="fa-solid fa-share-nodes"></i>
+              <span>Compartilhar Guia</span>
+            </button>
+
+            <button 
+              type="button" 
+              onclick="fecharModal()" 
+              class="px-6 py-2.5 rounded-xl bg-esmeralda-700 hover:bg-esmeralda-800 text-white font-semibold text-sm shadow-sm transition-colors inline-flex items-center gap-2"
+            >
+              <i class="fa-solid fa-arrow-left"></i>
+              <span>Voltar aos Destinos</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS DE DADOS E INTERATIVIDADE ==================== -->
+  <script>
+    // Banco de dados dos artigos (incluindo obrigatoriamente os Exemplos 1 e 2 e representantes de todas as 5 regiões)
+    const artigosTuristicos = [
+      {
+        id: 'lencois-maranhenses',
+        regiao: 'Nordeste',
+        estado: 'Maranhão (Barreirinhas, Santo Amaro e Atins)',
+        titulo: 'Lençóis Maranhenses: O Oásis de Dunas e Lagoas Cristalinas',
+        resumo: 'Explore o maior campo de dunas da América do Sul, onde as águas das chuvas formam milhares de lagoas de tons azul-turquesa e verde-esmeralda em pleno deserto brasileiro.',
+        imagem: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/D97706/FFFFFF?text=Lencois+Maranhenses+-+Nordeste',
+        melhorEpoca: 'De junho a setembro, logo após o período de chuvas, quando as lagoas estão cheias e o sol brilha intensamente.',
+        duracao: '4 a 6 dias para conhecer as bases de Barreirinhas, Atins e Santo Amaro.',
+        atividades: [
+          'Banho ao pôr do sol na icônica Lagoa Azul e na Lagoa Bonita em Barreirinhas.',
+          'Passeio de lancha voadeira pelo Rio Preguiças até Vassouras, Mandacaru e Caburé.',
+          'Vivenciar a tranquilidade rústica de Atins e saborear o famoso camarão grelhado.',
+          'Explorar as lagoas quase intocadas da Lagoa da Gaivota em Santo Amaro.'
+        ],
+        dicas: 'Leve chinelos ou sandálias fáceis de tirar (a maioria dos passeios exige caminhar descalço na areia), óculos escuros, muito protetor solar e dinheiro em espécie para vilarejos menores como Atins.'
+      },
+      {
+        id: 'paraty-costa-verde',
+        regiao: 'Sudeste',
+        estado: 'Rio de Janeiro (Paraty e Trindade)',
+        titulo: 'Paraty e Costa Verde: História Colonial Entre o Mar e a Mata Atlântica',
+        resumo: 'Caminhe pelas ruas de pedra pé-de-moleque preservadas desde o século XVII e navegue por enseadas de águas calmas e esverdeadas cercadas pela Serra do Mar.',
+        imagem: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/0284C7/FFFFFF?text=Paraty+e+Costa+Verde+-+Sudeste',
+        melhorEpoca: 'De abril a outubro, quando o clima é mais seco, ameno e com excelente visibilidade para mergulho.',
+        duracao: '3 a 5 dias para combinar o Centro Histórico, passeios de barco e Trindade.',
+        atividades: [
+          'Passeio de escuna ou lancha privativa pelas ilhas da Baía de Paraty (Ilha Comprida e Lagoa Azul).',
+          'Caminhada guiada pelo Centro Histórico com seus casarões brancos e igrejas barrocas.',
+          'Trilha até a Piscina Natural do Caixa d’Aço e Praia do Cepilho na vila de Trindade.',
+          'Degustação nos alambiques artesanais de cachaça e banho na Cachoeira do Tobogã.'
+        ],
+        dicas: 'Use calçados baixos e antiderrapantes no Centro Histórico por conta do calçamento irregular de pedras. Fique atento à tábua das marés, pois a água do mar invade algumas ruas no fim da tarde!'
+      },
+      {
+        id: 'jalapao-tocantins',
+        regiao: 'Norte',
+        estado: 'Tocantins (Mateiros, São Félix e Ponte Alta)',
+        titulo: 'Jalapão: Fervedouros Mágicos e Dunas Douradas no Coração do Tocantins',
+        resumo: 'Uma expedição inesquecível pelo cerrado preservado, famoso por seus fervedouros onde é impossível afundar, cachoeiras de água cristalina e artesanato em capim-dourado.',
+        imagem: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/047857/FFFFFF?text=Jalapao+-+Norte',
+        melhorEpoca: 'De maio a setembro (estação seca), garantindo estradas de terra mais firmes e céu azul sem chuvas.',
+        duracao: '5 a 6 dias em expedição 4x4.',
+        atividades: [
+          'Flutuar sem esforço nas nascentes de areia branca dos Fervedouros do Ceiça e Bela Vista.',
+          'Contemplar o pôr do sol alaranjado no alto das Dunas do Jalapão.',
+          'Refrescar-se na imponente Cachoeira da Velha e na Cachoeira do Formiga.',
+          'Conhecer a Comunidade Quilombola Mumbuca, berço do artesanato em capim-dourado.'
+        ],
+        dicas: 'As estradas são de terra e areia fofa; por isso, contrate expedições em veículos 4x4 com guias experientes da região. Não use protetor solar nem repelente antes de entrar nos fervedouros para preservar as nascentes.'
+      },
+      {
+        id: 'bonito-mato-grosso-do-sul',
+        regiao: 'Centro-Oeste',
+        estado: 'Mato Grosso do Sul (Serra da Bodoquena)',
+        titulo: 'Bonito: O Paraíso Mundial do Ecoturismo e Rios Transparentes',
+        resumo: 'Flutue em rios de águas tão cristalinas que parecem aquários naturais repletos de peixes coloridos, explore grutas milenares e cachoeiras calcárias.',
+        imagem: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/EA580C/FFFFFF?text=Bonito+MS+-+Centro-Oeste',
+        melhorEpoca: 'O ano todo! De dezembro a março as cachoeiras estão mais cheias; de maio a agosto a visibilidade dos rios atinge o ápice.',
+        duracao: '4 a 5 dias.',
+        atividades: [
+          'Flutuação nas nascentes do Rio Sucuri e do Recanto Ecológico Rio da Prata.',
+          'Contemplação dos raios de sol azulados na Gruta do Lago Azul.',
+          'Trilha pelas diversas quedas d’água da Estância Mimosa ou Parque das Cachoeiras.',
+          'Observação de araras-vermelhas no Buraco das Araras.'
+        ],
+        dicas: 'Todos os passeios em Bonito possuem limite diário de visitantes e preço tabelado. Reserve seus ingressos com antecedência através de agências locais credenciadas.'
+      },
+      {
+        id: 'serra-gaucha-gramado-canela',
+        regiao: 'Sul',
+        estado: 'Rio Grande do Sul (Gramado, Canela e Cambará do Sul)',
+        titulo: 'Serra Gaúcha: Charme Europeu, Vinhedos e Cânions Monumentais',
+        resumo: 'Saboreie a gastronomia acolhedora, explore parques floridos, conheça vinícolas premiadas e admire os paredões verticais dos cânions do sul do Brasil.',
+        imagem: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/4F46E5/FFFFFF?text=Serra+Gaucha+-+Sul',
+        melhorEpoca: 'De maio a agosto para curtir o frio e a gastronomia de inverno; de outubro a janeiro para as hortênsias floridas e o Natal Luz.',
+        duracao: '4 a 6 dias.',
+        atividades: [
+          'Caminhada matinal ao redor do Lago Negro cercado por araucárias e hortênsias.',
+          'Vista panorâmica da Cascata do Caracol nos bondinhos aéreos em Canela.',
+          'Trilha pela borda do Cânion Itaimbezinho em Cambará do Sul.',
+          'Degustação de vinhos e espumantes no Vale dos Vinhedos em Bento Gonçalves.'
+        ],
+        dicas: 'O clima na serra muda rapidamente mesmo no verão. Leve sempre um casaco corta-vento e reserve jantares de sequência de fondue com antecedência nos fins de semana.'
+      },
+      {
+        id: 'chapada-diamantina',
+        regiao: 'Nordeste',
+        estado: 'Bahia (Lençóis, Vale do Capão e Mucugê)',
+        titulo: 'Chapada Diamantina: Cachoeiras Gigantes e Grutas Encantadas',
+        resumo: 'Um santuário ecológico no coração da Bahia com platôs imponentes, trilhas desafiadoras, poços de água azul-cobalto e vilarejos históricos cheios de energia.',
+        imagem: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/D97706/FFFFFF?text=Chapada+Diamantina+-+Nordeste',
+        melhorEpoca: 'De abril a outubro para trilhas secas; de novembro a março para ver as cachoeiras com volume máximo de água.',
+        duracao: '5 a 7 dias.',
+        atividades: [
+          'Subida ao Morro do Pai Inácio para assistir ao pôr do sol mais famoso da Bahia.',
+          'Trilha até o topo da Cachoeira da Fumaça, com quase 380 metros de queda livre.',
+          'Contemplar o feixe de luz solar iluminando o Poço Encantado e o Poço Azul.',
+          'Provar o pastel de palmito de jaca na vila alternativa do Vale do Capão.'
+        ],
+        dicas: 'Use botas de trilha já amaciadas e leve mochila de ataque com garrafa de água reutilizável e lanches leves para as caminhadas mais longas.'
+      },
+      {
+        id: 'ouro-preto-minas-gerais',
+        regiao: 'Sudeste',
+        estado: 'Minas Gerais (Ouro Preto e Mariana)',
+        titulo: 'Ouro Preto: A Joia do Barroco Brasileiro e da Culinária Mineira',
+        resumo: 'Mergulhe na história do ciclo do ouro entre ladeiras históricas, obras-primas de Aleijadinho, museus fascinantes e o sabor inconfundível da cozinha mineira.',
+        imagem: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/0284C7/FFFFFF?text=Ouro+Preto+-+Sudeste',
+        melhorEpoca: 'De abril a setembro, período seco com dias ensolarados e noites frescas perfeitas para caminhar pelas ladeiras.',
+        duracao: '3 a 4 dias.',
+        atividades: [
+          'Visitar a Igreja de São Francisco de Assis, obra-prima projetada por Aleijadinho.',
+          'Explorar o Museu da Inconfidência na Praça Tiradentes.',
+          'Descer às galerias subterrâneas da Mina da Passagem entre Ouro Preto e Mariana.',
+          'Almoçar um autêntico feijão tropeiro com doce de leite artesanal.'
+        ],
+        dicas: 'Prepare as pernas para as ladeiras íngremes e leve um agasalho leve para o entardecer, pois a cidade fica em região serrana.'
+      },
+      {
+        id: 'chapada-dos-veadeiros',
+        regiao: 'Centro-Oeste',
+        estado: 'Goiás (Alto Paraíso, São Jorge e Cavalcante)',
+        titulo: 'Chapada dos Veadeiros: Trilhas Místicas e Águas Esmeralda no Cerrado',
+        resumo: 'Descubra formações rochosas bilionárias de quartzo, cânions esculpidos pelas águas e cachoeiras monumentais como Santa Bárbara e Almécegas.',
+        imagem: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80',
+        fallback: 'https://placehold.co/900x600/EA580C/FFFFFF?text=Chapada+dos+Veadeiros+-+Centro-Oeste',
+        melhorEpoca: 'De maio a setembro (seca), quando as águas ficam ainda mais cristalinas e o risco de trombas d’água é mínimo.',
+        duracao: '4 a 6 dias.',
+        atividades: [
+          'Mergulhar nas águas azul-turquesa da Cachoeira Santa Bárbara, em Cavalcante.',
+          'Caminhar pelas formações rochosas lunares do Vale da Lua.',
+          'Fazer a Trilha dos Saltos dentro do Parque Nacional da Chapada dos Veadeiros.',
+          'Curta a atmosfera acolhedora e gastronômica da Vila de São Jorge à noite.'
+        ],
+        dicas: 'Alugar um carro facilita muito o deslocamento entre Alto Paraíso, São Jorge e Cavalcante. Lembre-se de chegar cedo (antes das 8h) na Cachoeira Santa Bárbara.'
+      }
+    ];
+
+    // Mapeamento de cores das tags por região para identidade visual clara e harmônica
+    const coresRegioes = {
+      'Norte': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      'Nordeste': 'bg-amber-100 text-amber-800 border-amber-200',
+      'Centro-Oeste': 'bg-orange-100 text-orange-800 border-orange-200',
+      'Sudeste': 'bg-sky-100 text-sky-800 border-sky-200',
+      'Sul': 'bg-indigo-100 text-indigo-800 border-indigo-200'
+    };
+
+    const coresRegioesModal = {
+      'Norte': 'bg-emerald-600 text-white',
+      'Nordeste': 'bg-amber-500 text-slate-950',
+      'Centro-Oeste': 'bg-orange-600 text-white',
+      'Sudeste': 'bg-sky-600 text-white',
+      'Sul': 'bg-indigo-600 text-white'
+    };
+
+    // Estado atual dos filtros
+    let regiaoSelecionada = 'Todos';
+    let termoBusca = '';
+    let guiaAtualAberto = null;
+
+    // Elementos do DOM
+    const gridEl = document.getElementById('articles-grid');
+    const emptyStateEl = document.getElementById('empty-state');
+    const counterEl = document.getElementById('results-counter');
+    const resetAllBtn = document.getElementById('reset-all-btn');
+    const searchInput = document.getElementById('search-input');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+
+    // Renderiza os cartões seguindo exatamente a estrutura solicitada:
+    // Foto + Tag da Região + Título + Resumo + Botão "Ler Guia"
+    function renderizarCartoes() {
+      const filtrados = artigosTuristicos.filter(artigo => {
+        const bateRegiao = regiaoSelecionada === 'Todos' || artigo.regiao === regiaoSelecionada;
+        const textoBusca = termoBusca.toLowerCase().trim();
+        const bateBusca = !textoBusca || 
+          artigo.titulo.toLowerCase().includes(textoBusca) ||
+          artigo.resumo.toLowerCase().includes(textoBusca) ||
+          artigo.regiao.toLowerCase().includes(textoBusca) ||
+          artigo.estado.toLowerCase().includes(textoBusca);
+        
+        return bateRegiao && bateBusca;
+      });
+
+      // Atualiza contador e botão de limpar
+      if (filtrados.length === 1) {
+        counterEl.innerHTML = `Exibindo <strong class="text-slate-800">1</strong> guia turístico`;
+      } else {
+        counterEl.innerHTML = `Exibindo <strong class="text-slate-800">${filtrados.length}</strong> guias turísticos`;
+      }
+
+      if (regiaoSelecionada !== 'Todos' || termoBusca.trim() !== '') {
+        resetAllBtn.classList.remove('hidden');
+      } else {
+        resetAllBtn.classList.add('hidden');
+      }
+
+      // Exibe estado vazio se não houver resultados
+      if (filtrados.length === 0) {
+        gridEl.innerHTML = '';
+        gridEl.classList.add('hidden');
+        emptyStateEl.classList.remove('hidden');
+        return;
+      }
+
+      gridEl.classList.remove('hidden');
+      emptyStateEl.classList.add('hidden');
+
+      // Constrói o HTML de cada cartão
+      gridEl.innerHTML = filtrados.map(artigo => {
+        const tagClass = coresRegioes[artigo.regiao] || 'bg-slate-100 text-slate-800 border-slate-200';
+        
+        return `
+          <article class="group bg-white rounded-2xl border border-areia-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            <!-- Foto do Destino -->
+            <div class="relative h-56 overflow-hidden bg-areia-100">
+              <img 
+                src="${artigo.imagem}" 
+                onerror="this.onerror=null; this.src='${artigo.fallback}';"
+                alt="${artigo.titulo}" 
+                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              >
+              <!-- Tag Colorida da Região -->
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border shadow-sm backdrop-blur-md ${tagClass}">
+                  <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                  ${artigo.regiao}
+                </span>
+              </div>
+            </div>
+
+            <!-- Conteúdo do Cartão -->
+            <div class="p-6 flex flex-col flex-grow">
+              <!-- Localização sutil -->
+              <span class="text-xs font-medium text-slate-400 mb-2 flex items-center gap-1.5">
+                <i class="fa-solid fa-location-dot text-esmeralda-600"></i>
+                ${artigo.estado}
+              </span>
+
+              <!-- Título do Artigo -->
+              <h3 class="font-display font-bold text-xl text-slate-900 group-hover:text-esmeralda-700 transition-colors leading-snug mb-3">
+                ${artigo.titulo}
+              </h3>
+
+              <!-- Resumo Atraente -->
+              <p class="text-sm text-slate-600 leading-relaxed mb-6 flex-grow">
+                ${artigo.resumo}
+              </p>
+
+              <!-- Botão "Ler Guia" -->
+              <div class="pt-4 border-t border-areia-100">
+                <button 
+                  type="button" 
+                  onclick="abrirGuiaPorId('${artigo.id}')" 
+                  class="w-full py-3 px-4 rounded-xl bg-esmeralda-700 hover:bg-esmeralda-800 active:scale-[0.99] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <span>Ler Guia</span>
+                  <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Filtra por região e atualiza o visual dos botões
+    function filtrarPorRegiao(regiao) {
+      regiaoSelecionada = regiao;
+      
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.region === regiao) {
+          btn.className = 'filter-btn active px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-esmeralda-700 text-white shadow-sm';
+        } else {
+          btn.className = 'filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-slate-600 border border-areia-200 hover:border-esmeralda-400 hover:text-esmeralda-800';
+        }
+      });
+
+      renderizarCartoes();
+    }
+
+    // Eventos da barra de busca em tempo real
+    searchInput.addEventListener('input', (e) => {
+      termoBusca = e.target.value;
+      if (termoBusca.length > 0) {
+        clearSearchBtn.classList.remove('hidden');
+      } else {
+        clearSearchBtn.classList.add('hidden');
+      }
+      renderizarCartoes();
+    });
+
+    function limparBusca() {
+      termoBusca = '';
+      searchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      searchInput.focus();
+      renderizarCartoes();
+    }
+
+    function resetarFiltros(event) {
+      if (event) event.preventDefault();
+      termoBusca = '';
+      searchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      filtrarPorRegiao('Todos');
+    }
+
+    // Controle do Modal de Leitura do Guia
+    const modalEl = document.getElementById('guide-modal');
+
+    function abrirGuiaPorId(id) {
+      const artigo = artigosTuristicos.find(item => item.id === id);
+      if (!artigo) return;
+
+      guiaAtualAberto = artigo;
+
+      // Preenche os dados no modal
+      const imgEl = document.getElementById('modal-image');
+      imgEl.src = artigo.imagem;
+      imgEl.alt = artigo.titulo;
+      imgEl.onerror = function() { this.onerror = null; this.src = artigo.fallback; };
+
+      const tagEl = document.getElementById('modal-tag');
+      tagEl.textContent = artigo.regiao;
+      tagEl.className = `inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2.5 shadow-sm ${coresRegioesModal[artigo.regiao] || 'bg-esmeralda-600 text-white'}`;
+
+      document.getElementById('modal-title').textContent = artigo.titulo;
+      document.getElementById('modal-location').innerHTML = `<i class="fa-solid fa-location-dot text-emerald-400"></i> <span>${artigo.estado}</span>`;
+      document.getElementById('modal-intro').textContent = artigo.resumo;
+      document.getElementById('modal-best-time').textContent = artigo.melhorEpoca;
+      document.getElementById('modal-duration').textContent = artigo.duracao;
+      document.getElementById('modal-tips').textContent = artigo.dicas;
+
+      // Preenche lista de atividades
+      const activitiesEl = document.getElementById('modal-activities');
+      activitiesEl.innerHTML = artigo.atividades.map(atividade => `
+        <li class="flex items-start gap-2.5">
+          <i class="fa-solid fa-circle-check text-esmeralda-600 mt-1 flex-shrink-0"></i>
+          <span>${atividade}</span>
+        </li>
+      `).join('');
+
+      // Reseta botão de compartilhar
+      const copyBtn = document.getElementById('copy-link-btn');
+      copyBtn.innerHTML = `<i class="fa-solid fa-share-nodes"></i> <span>Compartilhar Guia</span>`;
+
+      // Exibe modal e trava scroll do fundo
+      modalEl.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModal() {
+      modalEl.classList.add('hidden');
+      document.body.style.overflow = '';
+      guiaAtualAberto = null;
+    }
+
+    // Fechar modal com tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modalEl.classList.contains('hidden')) {
+        fecharModal();
+      }
+    });
+
+    // Compartilhar resumo do guia usando execCommand (compatível com iFrames)
+    function copiarLinkGuia() {
+      if (!guiaAtualAberto) return;
+      const textoCompartilhar = `Confira o guia "${guiaAtualAberto.titulo}" (${guiaAtualAberto.regiao}) no blog Roteiros do Brasil!`;
+      
+      const tempInput = document.createElement('textarea');
+      tempInput.value = textoCompartilhar;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        const copyBtn = document.getElementById('copy-link-btn');
+        copyBtn.innerHTML = `<i class="fa-solid fa-check text-esmeralda-700"></i> <span class="text-esmeralda-800">Resumo Copiado!</span>`;
+      } catch (err) {
+        console.error('Erro ao copiar texto:', err);
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    // Newsletter sem alert()
+    function inscreverNewsletter(event) {
+      event.preventDefault();
+      const emailInput = document.getElementById('newsletter-email');
+      const feedbackEl = document.getElementById('newsletter-feedback');
+      
+      if (emailInput.value.trim()) {
+        emailInput.value = '';
+        feedbackEl.classList.remove('hidden');
+        setTimeout(() => {
+          feedbackEl.classList.add('hidden');
+        }, 5000);
+      }
+    }
+
+    // Menu Mobile Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('flex');
+    });
+
+    // Inicialização na carga da página
+    window.addEventListener('DOMContentLoaded', () => {
+      renderizarCartoes();
+    });
+  </script>
+</body>
+</html>

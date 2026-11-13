@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineCenter - Agendamento de Sessões</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#111;
+    color:#fff;
+}
+
+header{
+    background:#c62828;
+    padding:20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+header h1{
+    font-size:2rem;
+}
+
+.hero{
+    text-align:center;
+    padding:50px 20px;
+    background:linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.8)),
+    url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1400&q=80');
+    background-size:cover;
+    background-position:center;
+}
+
+.hero h2{
+    font-size:2.5rem;
+    margin-bottom:15px;
+}
+
+.hero p{
+    max-width:700px;
+    margin:auto;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding:40px 0;
+}
+
+.movies{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.movie-card{
+    background:#1f1f1f;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 0 10px rgba(0,0,0,.5);
+}
+
+.movie-card img{
+    width:100%;
+    height:350px;
+    object-fit:cover;
+}
+
+.movie-content{
+    padding:20px;
+}
+
+.movie-content h3{
+    color:#ff5252;
+    margin-bottom:10px;
+}
+
+.horarios{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+}
+
+.horario{
+    background:#333;
+    padding:8px 14px;
+    border-radius:20px;
+}
+
+.form-section{
+    margin-top:60px;
+    background:#1f1f1f;
+    padding:30px;
+    border-radius:15px;
+}
+
+.form-section h2{
+    margin-bottom:20px;
+    text-align:center;
+    color:#ff5252;
+}
+
+form{
+    display:grid;
+    gap:15px;
+}
+
+input, select{
+    padding:12px;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    background:#c62828;
+    color:#fff;
+    border:none;
+    padding:14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:1rem;
+}
+
+button:hover{
+    background:#e53935;
+}
+
+#mensagem{
+    margin-top:20px;
+    text-align:center;
+    font-size:1.1rem;
+    color:#4caf50;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    margin-top:40px;
+    background:#000;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🎬 CineCenter</h1>
+</header>
+
+<section class="hero">
+    <h2>Escolha seu filme favorito</h2>
+    <p>Confira os horários disponíveis e faça sua reserva online de forma rápida e prática.</p>
+</section>
+
+<div class="container">
+
+    <section class="movies">
+
+        <div class="movie-card">
+            <img src="https://picsum.photos/500/700?random=1" alt="Filme">
+            <div class="movie-content">
+                <h3>Aventura Espacial</h3>
+                <p>Ação e ficção científica para toda a família.</p>
+                <div class="horarios">
+                    <span class="horario">14:00</span>
+                    <span class="horario">16:30</span>
+                    <span class="horario">20:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <img src="https://picsum.photos/500/700?random=2" alt="Filme">
+            <div class="movie-content">
+                <h3>Mistério na Cidade</h3>
+                <p>Suspense repleto de reviravoltas.</p>
+                <div class="horarios">
+                    <span class="horario">15:00</span>
+                    <span class="horario">18:00</span>
+                    <span class="horario">21:30</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <img src="https://picsum.photos/500/700?random=3" alt="Filme">
+            <div class="movie-content">
+                <h3>Comédia Total</h3>
+                <p>Uma história divertida para todas as idades.</p>
+                <div class="horarios">
+                    <span class="horario">13:00</span>
+                    <span class="horario">17:00</span>
+                    <span class="horario">19:30</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="form-section">
+        <h2>Agendar Sessão</h2>
+
+        <form id="agendamentoForm">
+
+            <input type="text" id="nome" placeholder="Seu nome" required>
+
+            <input type="email" id="email" placeholder="Seu e-mail" required>
+
+            <select id="filme" required>
+                <option value="">Selecione um filme</option>
+                <option>Aventura Espacial</option>
+                <option>Mistério na Cidade</option>
+                <option>Comédia Total</option>
+            </select>
+
+            <select id="horario" required>
+                <option value="">Selecione um horário</option>
+                <option>13:00</option>
+                <option>14:00</option>
+                <option>15:00</option>
+                <option>16:30</option>
+                <option>17:00</option>
+                <option>18:00</option>
+                <option>19:30</option>
+                <option>20:00</option>
+                <option>21:30</option>
+            </select>
+
+            <input type="number" id="ingressos" min="1" max="10" placeholder="Quantidade de ingressos" required>
+
+            <button type="submit">Reservar Sessão</button>
+
+        </form>
+
+        <div id="mensagem"></div>
+    </section>
+
+</div>
+
+<footer>
+    <p>© 2026 CineCenter - Todos os direitos reservados.</p>
+</footer>
+
+<script>
+document.getElementById("agendamentoForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const nome = document.getElementById("nome").value;
+    const filme = document.getElementById("filme").value;
+    const horario = document.getElementById("horario").value;
+    const ingressos = document.getElementById("ingressos").value;
+
+    document.getElementById("mensagem").innerHTML =
+        `✅ Reserva confirmada para <strong>${nome}</strong>! 
+        <br>Filme: <strong>${filme}</strong>
+        <br>Horário: <strong>${horario}</strong>
+        <br>Ingressos: <strong>${ingressos}</strong>`;
+
+    this.reset();
+});
+</script>
+
+</body>
+</html>

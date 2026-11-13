@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horizonte Viagens — Voos e Hotéis</title>
+<style>
+  :root{
+    --bg:#f4f7fb; --card:#fff; --ink:#14213d; --muted:#667085; --line:#e4e9f2;
+    --brand:#0b6bcb; --brand-d:#084f96; --accent:#ff7a1a; --ok:#12805c;
+    --radius:14px; --shadow:0 2px 10px rgba(20,33,61,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  header{background:linear-gradient(135deg,#0b3d91,#0b6bcb 60%,#2aa1e6);color:#fff;padding:28px 20px 90px}
+  .wrap{max-width:1020px;margin:0 auto}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+  .logo{font-weight:800;font-size:1.3rem;letter-spacing:.3px}
+  .logo span{color:#ffc27a}
+  header h1{font-size:clamp(1.5rem,4vw,2.3rem);font-weight:750}
+  header p{opacity:.9;margin-top:6px}
+
+  .panel{background:var(--card);border-radius:var(--radius);box-shadow:0 8px 30px rgba(20,33,61,.15);margin:-62px auto 24px;max-width:1020px;padding:18px;position:relative}
+  .tabs{display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+  .tab{background:none;border:none;padding:10px 18px;font:inherit;font-weight:650;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+  .tab[aria-selected="true"]{color:var(--brand);border-color:var(--brand)}
+  form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:end}
+  label{display:flex;flex-direction:column;font-size:.78rem;font-weight:650;color:var(--muted);gap:4px}
+  input,select{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+  input:focus,select:focus{outline:2px solid var(--brand);outline-offset:0}
+  .btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer;transition:.15s}
+  .btn:hover{background:var(--brand-d)}
+  .btn.accent{background:var(--accent)}
+  .btn.accent:hover{background:#e0650b}
+  .btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--brand)}
+
+  main{padding:0 20px 50px}
+  .results-head{display:flex;justify-content:space-between;align-items:center;margin:8px 0 14px;flex-wrap:wrap;gap:8px}
+  .results-head h2{font-size:1.1rem}
+  .count{color:var(--muted);font-size:.9rem}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:12px;display:grid;gap:14px;align-items:center}
+  .card.flight{grid-template-columns:1.1fr 2.2fr 1fr}
+  .card.hotel{grid-template-columns:150px 2.2fr 1fr}
+  @media(max-width:720px){.card.flight,.card.hotel{grid-template-columns:1fr}}
+
+  .airline{display:flex;align-items:center;gap:10px;font-weight:700}
+  .dot{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.8rem}
+  .times{display:flex;align-items:center;gap:14px;justify-content:center}
+  .times .t{font-size:1.35rem;font-weight:750;text-align:center}
+  .times .t small{display:block;font-size:.75rem;font-weight:600;color:var(--muted)}
+  .line{flex:1;min-width:70px;text-align:center;font-size:.75rem;color:var(--muted)}
+  .line i{display:block;height:2px;background:var(--line);margin:5px 0;position:relative}
+  .line i::after{content:"✈";position:absolute;right:-2px;top:-9px;font-size:.8rem;color:var(--brand);font-style:normal}
+  .tag{display:inline-block;background:#e8f3ff;color:var(--brand-d);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px}
+  .tag.ok{background:#e4f6ef;color:var(--ok)}
+  .buy{text-align:right}
+  .price{font-size:1.5rem;font-weight:800}
+  .price small{display:block;font-size:.72rem;color:var(--muted);font-weight:500}
+  .buy .btn{margin-top:8px;width:100%}
+
+  .thumb{height:110px;border-radius:12px;display:grid;place-items:center;font-size:2.2rem;color:#fff}
+  .hotel h3{font-size:1.1rem}
+  .stars{color:#f5a623;letter-spacing:2px}
+  .meta{color:var(--muted);font-size:.85rem;margin:2px 0 6px}
+  .amen{display:flex;gap:6px;flex-wrap:wrap}
+
+  .empty{text-align:center;color:var(--muted);padding:40px 10px;background:#fff;border:1px dashed var(--line);border-radius:var(--radius)}
+  .promo{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:6px}
+  .promo button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;font:inherit;cursor:pointer;box-shadow:var(--shadow)}
+  .promo button:hover{border-color:var(--brand)}
+  .promo b{display:block}
+
+  /* resumo / carrinho */
+  #cart{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;border-radius:14px;padding:12px 16px;max-width:320px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:none;z-index:5}
+  #cart h4{font-size:.9rem;margin-bottom:6px}
+  #cart li{font-size:.82rem;margin-left:16px;margin-bottom:3px}
+  #cart .tot{margin-top:8px;font-weight:800;display:flex;justify-content:space-between;border-top:1px solid #ffffff33;padding-top:8px}
+  #cart button{margin-top:8px;width:100%}
+  #toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 18px;border-radius:99px;font-weight:650;display:none;z-index:6}
+  footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top"><div class="logo">Horizonte<span>Viagens</span></div><div>Atendimento 24h</div></div>
+    <h1>Sua próxima viagem começa aqui</h1>
+    <p>Compare voos e hotéis em um só lugar.</p>
+  </div>
+</header>
+
+<section class="panel" aria-label="Busca">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-voos" aria-selected="true" data-tab="voos">✈ Voos</button>
+    <button class="tab" role="tab" id="tab-hoteis" aria-selected="false" data-tab="hoteis">🏨 Hotéis</button>
+  </div>
+
+  <form id="form-voos">
+    <label>Origem <select id="origem"></select></label>
+    <label>Destino <select id="destino"></select></label>
+    <label>Data de ida <input type="date" id="ida"></label>
+    <label>Passageiros <select id="pax"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+    <button class="btn" type="submit">Buscar voos</button>
+  </form>
+
+  <form id="form-hoteis" hidden>
+    <label>Cidade <select id="cidade"></select></label>
+    <label>Check-in <input type="date" id="checkin"></label>
+    <label>Check-out <input type="date" id="checkout"></label>
+    <label>Classificação mínima
+      <select id="minstars"><option value="0">Qualquer</option><option value="3">3★ ou mais</option><option value="4">4★ ou mais</option><option value="5">5★</option></select>
+    </label>
+    <button class="btn" type="submit">Buscar hotéis</button>
+  </form>
+</section>
+
+<main class="wrap">
+  <div id="results"></div>
+</main>
+
+<aside id="cart" aria-live="polite">
+  <h4>Sua viagem</h4>
+  <ul id="cart-items"></ul>
+  <div class="tot"><span>Total</span><span id="cart-total"></span></div>
+  <button class="btn accent" id="checkout-btn">Finalizar reserva</button>
+</aside>
+<div id="toast"></div>
+<footer>© Horizonte Viagens — portal de demonstração com dados fictícios.</footer>
+
+<script>
+/* ===================== DADOS (simulados) ===================== */
+const CIDADES = ["São Paulo","Rio de Janeiro","Salvador","Recife","Brasília","Belo Horizonte","Porto Alegre","Florianópolis"];
+const AIRLINES = [
+  {nome:"Azul",cor:"#0b4fb3",sig:"AD"},
+  {nome:"LATAM",cor:"#c4122f",sig:"LA"},
+  {nome:"GOL",cor:"#f07d00",sig:"G3"}
+];
+const HOTEIS = [
+  {nome:"Hotel Atlântico Palace",cidade:"Salvador",estrelas:5,preco:620,bairro:"Barra",amen:["Wi‑Fi","Piscina","Café da manhã"],cor:"#0b6bcb",emoji:"🏖"},
+  {nome:"Pousada Pelourinho Colonial",cidade:"Salvador",estrelas:3,preco:240,bairro:"Pelourinho",amen:["Wi‑Fi","Café da manhã"],cor:"#c4561f",emoji:"🏛"},
+  {nome:"Resort Costa do Sauípe Plaza",cidade:"Salvador",estrelas:5,preco:980,bairro:"Litoral Norte",amen:["All inclusive","Spa","Piscina"],cor:"#0a8f8f",emoji:"🌴"},
+  {nome:"Ibis Rio Copacabana",cidade:"Rio de Janeiro",estrelas:3,preco:310,bairro:"Copacabana",amen:["Wi‑Fi","Ar‑condicionado"],cor:"#e0a100",emoji:"🌆"},
+  {nome:"Copacabana Grand Hotel",cidade:"Rio de Janeiro",estrelas:5,preco:1150,bairro:"Copacabana",amen:["Vista para o mar","Spa","Piscina"],cor:"#7b3fe4",emoji:"🌊"},
+  {nome:"Santa Teresa Boutique",cidade:"Rio de Janeiro",estrelas:4,preco:480,bairro:"Santa Teresa",amen:["Wi‑Fi","Café da manhã","Bar"],cor:"#b03a6e",emoji:"🚋"},
+  {nome:"Paulista Business Hotel",cidade:"São Paulo",estrelas:4,preco:430,bairro:"Av. Paulista",amen:["Wi‑Fi","Academia","Café da manhã"],cor:"#1f2a44",emoji:"🏙"},
+  {nome:"Jardins Residence",cidade:"São Paulo",estrelas:5,preco:890,bairro:"Jardins",amen:["Spa","Restaurante","Piscina"],cor:"#2f7d4f",emoji:"🌳"},
+  {nome:"Boa Viagem Beach Inn",cidade:"Recife",estrelas:4,preco:390,bairro:"Boa Viagem",amen:["Piscina","Café da manhã"],cor:"#0f9bb5",emoji:"🌅"},
+  {nome:"Brasília Executive",cidade:"Brasília",estrelas:4,preco:420,bairro:"Asa Sul",amen:["Wi‑Fi","Academia"],cor:"#555d75",emoji:"🏢"},
+  {nome:"Savassi Charme Hotel",cidade:"Belo Horizonte",estrelas:4,preco:350,bairro:"Savassi",amen:["Wi‑Fi","Café da manhã"],cor:"#8a5a2b",emoji:"☕"},
+  {nome:"Guaíba Park Hotel",cidade:"Porto Alegre",estrelas:3,preco:260,bairro:"Centro Histórico",amen:["Wi‑Fi","Estacionamento"],cor:"#3d6b2a",emoji:"🌇"},
+  {nome:"Jurerê Ocean Resort",cidade:"Florianópolis",estrelas:5,preco:1050,bairro:"Jurerê",amen:["Praia privativa","Spa","Piscina"],cor:"#0a76a8",emoji:"🏝"},
+  {nome:"Lagoa da Conceição Pousada",cidade:"Florianópolis",estrelas:3,preco:280,bairro:"Lagoa",amen:["Wi‑Fi","Café da manhã"],cor:"#6a7f2e",emoji:"⛵"}
+];
+
+/* Gera voos de forma determinística para qualquer rota */
+function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+function pad(n){return String(n).padStart(2,"0")}
+function fmt(min){return `${pad(Math.floor(min/60)%24)}:${pad(min%60)}`}
+function gerarVoos(o,d){
+  const base = 70 + (hash(o+d)%120);          // duração (min)
+  const preco0 = 180 + (hash(d+o)%520);
+  return AIRLINES.flatMap((a,i)=>[0,1].map(k=>{
+    const saida = 360 + ((hash(o+d+a.nome)+k*337)%900);
+    const dur = base + i*5 + k*10;
+    const paradas = (hash(o+d+a.nome+k)%7===0) ? 1 : 0;
+    return {
+      cia:a, num:`${a.sig} ${1000+hash(o+d+a.sig+k)%8999}`, saida, chegada:saida+dur+(paradas?55:0),
+      dur:dur+(paradas?55:0), paradas,
+      preco: Math.round((preco0 + i*35 + k*60 - (paradas?70:0))/5)*5
+    };
+  })).sort((x,y)=>x.saida-y.saida);
+}
+
+/* ===================== UI ===================== */
+const $ = s=>document.querySelector(s);
+const BRL = v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const hoje = new Date();
+const iso = d=>d.toISOString().slice(0,10);
+const addDias=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+
+CIDADES.forEach(c=>{
+  $("#origem").add(new Option(c,c)); $("#destino").add(new Option(c,c)); $("#cidade").add(new Option(c,c));
+});
+$("#origem").value="São Paulo"; $("#destino").value="Rio de Janeiro"; $("#cidade").value="Salvador";
+$("#ida").value=iso(addDias(hoje,14)); $("#checkin").value=iso(addDias(hoje,14)); $("#checkout").value=iso(addDias(hoje,17));
+
+const cart=[];
+const dataBR = v=>v?v.split("-").reverse().join("/"):"";
+
+function cartaoVoo(v,o,d,data,pax){
+  const total = v.preco*pax;
+  const idx = `${v.num}|${o}|${d}`;
+  return `
+  <article class="card flight">
+    <div class="airline"><div class="dot" style="background:${v.cia.cor}">${v.cia.sig}</div>
+      <div>${v.cia.nome}<div class="meta" style="margin:0;font-weight:500">Voo ${v.num}</div></div></div>
+    <div class="times">
+      <div class="t">${fmt(v.saida)}<small>${o}</small></div>
+      <div class="line">${Math.floor(v.dur/60)}h${pad(v.dur%60)}<i></i>
+        ${v.paradas? '<span class="tag">1 parada</span>':'<span class="tag ok">Direto</span>'}</div>
+      <div class="t">${fmt(v.chegada)}<small>${d}</small></div>
+    </div>
+    <div class="buy">
+      <div class="price">${BRL(v.preco)}<small>por passageiro${pax>1?` · total ${BRL(total)}`:""}</small></div>
+      <button class="btn" data-add="voo" data-label="${v.cia.nome} ${v.num}: ${o} → ${d} (${dataBR(data)}, ${pax} pax)" data-valor="${total}" data-id="${idx}">Selecionar Voo</button>
+    </div>
+  </article>`;
+}
+
+function cartaoHotel(h,noites){
+  const total=h.preco*noites;
+  return `
+  <article class="card hotel">
+    <div class="thumb" style="background:linear-gradient(135deg,${h.cor},#00000055)" aria-hidden="true">${h.emoji}</div>
+    <div>
+      <h3>${h.nome}</h3>
+      <div class="stars" aria-label="${h.estrelas} estrelas">${"★".repeat(h.estrelas)}<span style="color:#d0d5dd">${"★".repeat(5-h.estrelas)}</span></div>
+      <div class="meta">${h.bairro} · ${h.cidade}</div>
+      <div class="amen">${h.amen.map(a=>`<span class="tag">${a}</span>`).join("")}</div>
+    </div>
+    <div class="buy">
+      <div class="price">${BRL(h.preco)}<small>por diária${noites>1?` · ${noites} noites: ${BRL(total)}`:""}</small></div>
+      <button class="btn accent" data-add="hotel" data-label="${h.nome} (${noites} noite${noites>1?"s":""})" data-valor="${total}" data-id="${h.nome}">Reservar Quarto</button>
+    </div>
+  </article>`;
+}
+
+function render(html,titulo,n){
+  $("#results").innerHTML = `<div class="results-head"><h2>${titulo}</h2><span class="count">${n} resultado${n!==1?"s":""}</span></div>${html}`;
+  $("#results").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+$("#form-voos").addEventListener("submit",e=>{
+  e.preventDefault();
+  const o=$("#origem").value,d=$("#destino").value,data=$("#ida").value,pax=+$("#pax").value;
+  if(o===d){ $("#results").innerHTML=`<div class="empty">Origem e destino precisam ser diferentes.</div>`; return; }
+  if(!data){ $("#results").innerHTML=`<div class="empty">Escolha a data de ida.</div>`; return; }
+  const voos=gerarVoos(o,d);
+  render(voos.map(v=>cartaoVoo(v,o,d,data,pax)).join(""),`Voos de ${o} para ${d} · ${dataBR(data)}`,voos.length);
+});
+
+$("#form-hoteis").addEventListener("submit",e=>{
+  e.preventDefault();
+  const c=$("#cidade").value, min=+$("#minstars").value;
+  const ci=$("#checkin").value, co=$("#checkout").value;
+  const noites=Math.round((new Date(co)-new Date(ci))/864e5);
+  if(!ci||!co||noites<1){ $("#results").innerHTML=`<div class="empty">O check-out deve ser depois do check-in.</div>`; return; }
+  const lista=HOTEIS.filter(h=>h.cidade===c&&h.estrelas>=min).sort((a,b)=>b.estrelas-a.estrelas||a.preco-b.preco);
+  if(!lista.length){ $("#results").innerHTML=`<div class="empty">Nenhum hotel encontrado em ${c} com esses filtros.</div>`; return; }
+  render(lista.map(h=>cartaoHotel(h,noites)).join(""),`Hotéis em ${c} · ${dataBR(ci)} a ${dataBR(co)}`,lista.length);
+});
+
+/* abas */
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  const alvo=t.dataset.tab;
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  $("#form-voos").hidden = alvo!=="voos";
+  $("#form-hoteis").hidden = alvo!=="hoteis";
+  $("#results").innerHTML=""; showPromo();
+}));
+
+/* carrinho */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-add]"); if(!b) return;
+  if(cart.some(i=>i.id===b.dataset.id)){ toast("Item já está na sua viagem"); return; }
+  cart.push({id:b.dataset.id,label:b.dataset.label,valor:+b.dataset.valor});
+  b.textContent = b.dataset.add==="voo" ? "✓ Voo selecionado" : "✓ Quarto reservado";
+  b.classList.add("ghost"); updateCart();
+});
+function updateCart(){
+  $("#cart").style.display = cart.length?"block":"none";
+  $("#cart-items").innerHTML = cart.map(i=>`<li>${i.label} — <b>${BRL(i.valor)}</b></li>`).join("");
+  $("#cart-total").textContent = BRL(cart.reduce((s,i)=>s+i.valor,0));
+}
+$("#checkout-btn").addEventListener("click",()=>{
+  toast("Reserva simulada confirmada! ✔ (nenhum pagamento real)");
+  cart.length=0; updateCart();
+  document.querySelectorAll("[data-add]").forEach(b=>{b.classList.remove("ghost");b.textContent=b.dataset.add==="voo"?"Selecionar Voo":"Reservar Quarto"});
+});
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(t._t);t._t=setTimeout(()=>t.style.display="none",2600)}
+
+/* sugestões iniciais */
+function showPromo(){
+  const voos = $("#form-voos").hidden===false;
+  $("#results").innerHTML = voos ? `
+    <div class="results-head"><h2>Rotas populares</h2></div>
+    <div class="promo">
+      ${[["São Paulo","Rio de Janeiro"],["São Paulo","Salvador"],["Brasília","Recife"],["Belo Horizonte","Florianópolis"]]
+        .map(([o,d])=>`<button data-rota="${o}|${d}"><b>${o} → ${d}</b><span class="meta">Ver voos disponíveis</span></button>`).join("")}
+    </div>` : `
+    <div class="results-head"><h2>Destinos em alta</h2></div>
+    <div class="promo">
+      ${["Salvador","Rio de Janeiro","Florianópolis","Recife"].map(c=>`<button data-cidade="${c}"><b>${c}</b><span class="meta">Ver hotéis disponíveis</span></button>`).join("")}
+    </div>`;
+}
+document.addEventListener("click",e=>{
+  const r=e.target.closest("[data-rota]"), c=e.target.closest("[data-cidade]");
+  if(r){const [o,d]=r.dataset.rota.split("|");$("#origem").value=o;$("#destino").value=d;$("#form-voos").requestSubmit()}
+  if(c){$("#cidade").value=c.dataset.cidade;$("#form-hoteis").requestSubmit()}
+});
+showPromo();
+</script>
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contato | Fotografia para Pequenas Empresas</title>
+<meta name="description" content="Fotografia profissional para pequenas empresas. Peça seu orçamento em minutos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05070f;
+    --bg-2: #0a1020;
+    --surface: rgba(15, 25, 50, 0.55);
+    --border: rgba(80, 140, 255, 0.25);
+    --blue: #2f7bff;
+    --cyan: #00e5ff;
+    --violet: #8a5cff;
+    --text: #e8eeff;
+    --muted: #8da0c8;
+    --glow: 0 0 20px rgba(0, 229, 255, 0.45);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Fundo dinâmico */
+  .bg-glow {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(600px circle at 15% 20%, rgba(47, 123, 255, 0.22), transparent 60%),
+      radial-gradient(500px circle at 85% 80%, rgba(138, 92, 255, 0.18), transparent 60%),
+      radial-gradient(400px circle at 70% 10%, rgba(0, 229, 255, 0.12), transparent 60%);
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(80, 140, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(80, 140, 255, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(-20px, 15px, 0) scale(1.08); }
+  }
+
+  /* Navegação */
+  header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 6vw;
+  }
+
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .logo-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--cyan) 0 35%, transparent 38%), var(--blue);
+    box-shadow: var(--glow);
+  }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    margin-left: 28px;
+    font-size: 0.95rem;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    box-shadow: var(--glow);
+    transition: width 0.3s ease;
+  }
+
+  nav a:hover { color: var(--cyan); }
+  nav a:hover::after { width: 100%; }
+
+  /* Layout principal */
+  main {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 5vw;
+    align-items: center;
+    padding: 4vh 6vw 8vh;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.06);
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.9rem);
+    line-height: 1.08;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--blue), var(--cyan), var(--violet));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 6s linear infinite;
+  }
+
+  @keyframes shine { to { background-position: 200% center; } }
+
+  .lead {
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 34px;
+  }
+
+  .benefits { list-style: none; display: grid; gap: 14px; margin-bottom: 36px; }
+
+  .benefits li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--text);
+    font-size: 0.98rem;
+  }
+
+  .benefits .icon {
+    flex: 0 0 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    background: rgba(47, 123, 255, 0.12);
+    color: var(--cyan);
+    font-size: 0.95rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .benefits li:hover .icon {
+    transform: translateY(-3px) rotate(-6deg);
+    box-shadow: var(--glow);
+  }
+
+  .stats { display: flex; gap: 36px; flex-wrap: wrap; }
+
+  .stat strong {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.9rem;
+    color: var(--cyan);
+    text-shadow: 0 0 14px rgba(0, 229, 255, 0.5);
+  }
+
+  .stat small { color: var(--muted); font-size: 0.85rem; }
+
+  /* Cartão do formulário */
+  .card {
+    position: relative;
+    padding: 38px 34px;
+    border-radius: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--cyan), transparent 35%, transparent 65%, var(--violet));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .card h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .card p.sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 26px; }
+
+  .field { position: relative; margin-bottom: 18px; }
+
+  .field label {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font: inherit;
+    color: var(--text);
+    background: rgba(5, 10, 25, 0.7);
+    border: 1px solid rgba(80, 140, 255, 0.22);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+
+  .field textarea { resize: vertical; min-height: 96px; }
+
+  .field select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+
+  .field.select::after {
+    content: "▾";
+    position: absolute;
+    right: 16px;
+    bottom: 14px;
+    color: var(--cyan);
+    pointer-events: none;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder { color: #5a6b94; }
+
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover { border-color: rgba(0, 229, 255, 0.5); }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--cyan);
+    background: rgba(8, 16, 38, 0.9);
+    box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15), var(--glow);
+  }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* Botões */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 28px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #041018;
+    background: linear-gradient(90deg, var(--cyan), var(--blue));
+    background-size: 200% auto;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+    box-shadow: 0 8px 24px rgba(47, 123, 255, 0.4);
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -120%;
+    width: 60%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+  }
+
+  .btn:hover {
+    background-position: right center;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.7), 0 12px 32px rgba(47, 123, 255, 0.55);
+  }
+
+  .btn:hover::before { left: 140%; }
+  .btn:active { transform: translateY(0) scale(0.98); }
+  .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  .btn .arrow { transition: transform 0.3s ease; }
+  .btn:hover .arrow { transform: translateX(6px); }
+
+  .btn-ghost {
+    display: inline-block;
+    width: auto;
+    padding: 12px 24px;
+    color: var(--cyan);
+    background: transparent;
+    border: 1px solid var(--cyan);
+    box-shadow: none;
+    text-decoration: none;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-ghost:hover {
+    background: var(--cyan);
+    color: #041018;
+    box-shadow: var(--glow);
+    transform: translateY(-2px);
+  }
+
+  .privacy {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .hidden-field { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; }
+
+  .success {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .success.show { display: block; animation: pop 0.5s ease; }
+
+  .success .check {
+    width: 70px; height: 70px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    color: var(--cyan);
+    border: 2px solid var(--cyan);
+    box-shadow: var(--glow);
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 28px 6vw 40px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(80, 140, 255, 0.12);
+  }
+
+  footer a { color: var(--cyan); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* Responsivo */
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; }
+    nav { display: none; }
+  }
+
+  @media (max-width: 520px) {
+    .row { grid-template-columns: 1fr; }
+    .card { padding: 28px 22px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+
+  <header>
+    <a href="#" class="logo"><span class="logo-dot"></span>LUMINA FOTO</a>
+    <nav>
+      <a href="#">Serviços</a>
+      <a href="#">Portfólio</a>
+      <a href="#">Planos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <main id="contato">
+    <section>
+      <span class="tag">Fotografia para negócios</span>
+      <h1>Sua marca em <span>alta definição</span>.</h1>
+      <p class="lead">
+        Imagens profissionais que fazem sua pequena empresa se destacar, gerar confiança e vender mais.
+        Conte o que você precisa e receba um orçamento personalizado.
+      </p>
+
+      <ul class="benefits">
+        <li><span class="icon">✦</span> Fotos de produtos, equipe e ambiente</li>
+        <li><span class="icon">⚡</span> Entrega rápida com edição profissional</li>
+        <li><span class="icon">◎</span> Pacotes sob medida para o seu orçamento</li>
+      </ul>
+
+      <div class="stats">
+        <div class="stat"><strong>+350</strong><small>Empresas atendidas</small></div>
+        <div class="stat"><strong>48h</strong><small>Resposta ao contato</small></div>
+        <div class="stat"><strong>4.9★</strong><small>Avaliação dos clientes</small></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <form id="contactForm" action="https://formspree.io/f/SEU_ID_AQUI" method="POST" novalidate>
+        <h2>Peça seu orçamento</h2>
+        <p class="sub">Preencha em menos de 1 minuto. Respondemos em até 48h úteis.</p>
+
+        <div class="field">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required autocomplete="name">
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="voce@empresa.com" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="telefone">WhatsApp</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(11) 90000-0000" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="field select">
+          <label for="servico">Serviço de interesse</label>
+          <select id="servico" name="servico" required>
+            <option value="" disabled selected>Selecione uma opção</option>
+            <option>Fotos de produtos</option>
+            <option>Retratos corporativos</option>
+            <option>Ambiente e fachada</option>
+            <option>Conteúdo para redes sociais</option>
+            <option>Pacote completo</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" placeholder="Conte brevemente sobre o seu projeto..."></textarea>
+        </div>
+
+        <!-- Campo anti-spam (honeypot) -->
+        <input type="text" name="_gotcha" class="hidden-field" tabindex="-1" autocomplete="off">
+
+        <button type="submit" class="btn">Enviar mensagem <span class="arrow">→</span></button>
+        <p class="privacy">🔒 Seus dados estão seguros e não serão compartilhados.</p>
+      </form>
+
+      <div class="success" id="successMsg">
+        <div class="check">✓</div>
+        <h2>Mensagem enviada!</h2>
+        <p class="sub">Obrigado pelo contato. Retornaremos em breve no e-mail informado.</p>
+        <a href="#" class="btn-ghost" id="newMsg">Enviar outra mensagem</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Lumina Foto · Fotografia profissional para pequenas empresas ·
+    <a href="mailto:contato@suaempresa.com.br">contato@suaempresa.com.br</a>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('contactForm');
+      var success = document.getElementById('successMsg');
+      var newMsg = document.getElementById('newMsg');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var nome = form.nome.value.trim();
+        var email = form.email.value.trim();
+        var servico = form.servico.value;
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        if (!nome || !emailOk || !servico) {
+          alert('Por favor, preencha nome, e-mail válido e serviço de interesse.');
+          return;
+        }
+
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        }).then(function (res) {
+          if (res.ok) {
+            form.style.display = 'none';
+            success.classList.add('show');
+            form.reset();
+          } else {
+            alert('Não foi possível enviar agora. Tente novamente em instantes.');
+          }
+        }).catch(function () {
+          alert('Erro de conexão. Verifique sua internet e tente novamente.');
+        });
+      });
+
+      newMsg.addEventListener('click', function (e) {
+        e.preventDefault();
+        success.classList.remove('show');
+        form.style.display = 'block';
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMax - Cinema Local</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #111;
+            color: white;
+        }
+
+        header {
+            background: #c62828;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        nav {
+            background: #222;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #ff5252;
+        }
+
+        .filmes {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit, minmax(230px, 1fr)
+            );
+            gap: 25px;
+        }
+
+        .filme {
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            padding-bottom: 20px;
+        }
+
+        .filme img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .filme h3,
+        .filme p {
+            margin: 12px;
+        }
+
+        .classificacao {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        .horarios {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 12px;
+        }
+
+        .horarios button {
+            background: #444;
+            color: white;
+            border: 1px solid #ff5252;
+            padding: 9px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .horarios button:hover,
+        .horarios button.selecionado {
+            background: #c62828;
+        }
+
+        .agendar {
+            display: block;
+            margin: 15px 12px;
+            width: calc(100% - 24px);
+            padding: 12px;
+            background: #c62828;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .agendar:hover {
+            background: #ff5252;
+        }
+
+        /* Formulário */
+
+        .formulario {
+            display: none;
+            background: #222;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 35px;
+        }
+
+        .formulario.ativo {
+            display: block;
+        }
+
+        .formulario input,
+        .formulario select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 18px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .formulario label {
+            font-weight: bold;
+        }
+
+        .formulario button {
+            width: 100%;
+            padding: 14px;
+            background: #c62828;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .formulario button:hover {
+            background: #ff5252;
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #222;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 25px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎬 CineMax</h1>
+        <p>O melhor do cinema pertinho de você!</p>
+    </header>
+
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#filmes">Filmes</a>
+        <a href="#agendamento">Agendar Ingresso</a>
+    </nav>
+
+    <main class="container" id="inicio">
+
+        <section id="filmes">
+            <h2>🎥 Filmes em Cartaz</h2>
+
+            <div class="filmes">
+
+                <!-- Filme 1 -->
+                <article class="filme">
+                    <img src="https://placehold.co/400x500/263238/ffffff?text=O+Ultimo+Desafio"
+                         alt="Cartaz ilustrativo do filme O Último Desafio">
+
+                    <h3>O Último Desafio</h3>
+
+                    <p>
+                        Um grupo de heróis precisa salvar o mundo
+                        de uma ameaça inesperada.
+                    </p>
+
+                    <p class="classificacao">
+                        Classificação: 12 anos
+                    </p>
+
+                    <p>Duração: 120 minutos</p>
+
+                    <div class="horarios">
+                        <button onclick="selecionarHorario(this, '14:00', 'O Último Desafio')">14:00</button>
+                        <button onclick="selecionarHorario(this, '17:00', 'O Último Desafio')">17:00</button>
+                        <button onclick="selecionarHorario(this, '20:00', 'O Último Desafio')">20:00</button>
+                    </div>
+
+                    <button class="agendar"
+                        onclick="abrirFormulario('O Último Desafio')">
+                        Agendar Ingresso
+                    </button>
+                </article>
+
+                <!-- Filme 2 -->
+                <article class="filme">
+                    <img src="https://placehold.co/400x500/4a148c/ffffff?text=Viagem+Magica"
+                         alt="Cartaz ilustrativo do filme Viagem Mágica">
+
+                    <h3>Viagem Mágica</h3>
+
+                    <p>
+                        Uma aventura fantástica em um mundo
+                        cheio de criaturas extraordinárias.
+                    </p>
+
+                    <p class="classificacao">
+                        Classificação: Livre
+                    </p>
+
+                    <p>Duração: 95 minutos</p>
+
+                    <div class="horarios">
+                        <button onclick="selecionarHorario(this, '13:00', 'Viagem Mágica')">13:00</button>
+                        <button onclick="selecionarHorario(this, '16:00', 'Viagem Mágica')">16:00</button>
+                        <button onclick="selecionarHorario(this, '19:00', 'Viagem Mágica')">19:00</button>
+                    </div>
+
+                    <button class="agendar"
+                        onclick="abrirFormulario('Viagem Mágica')">
+                        Agendar Ingresso
+                    </button>
+                </article>
+
+                <!-- Filme 3 -->
+                <article class="filme">
+                    <img src="https://placehold.co/400x500/b71c1c/ffffff?text=Noite+de+Terror"
+                         alt="Cartaz ilustrativo do filme Noite de Terror">
+
+                    <h3>Noite de Terror</h3>
+
+                    <p>
+                        Uma família descobre que sua nova casa
+                        esconde um segredo assustador.
+                    </p>
+
+                    <p class="classificacao">
+                        Classificação: 16 anos
+                    </p>
+
+                    <p>Duração: 110 minutos</p>
+
+                    <div class="horarios">
+                        <button onclick="selecionarHorario(this, '18:00', 'Noite de Terror')">18:00</button>
+                        <button onclick="selecionarHorario(this, '20:00', 'Noite de Terror')">20:00</button>
+                        <button onclick="selecionarHorario(this, '22:00', 'Noite de Terror')">22:00</button>
+                    </div>
+
+                    <button class="agendar"
+                        onclick="abrirFormulario('Noite de Terror')">
+                        Agendar Ingresso
+                    </button>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Formulário de agendamento -->
+        <section class="formulario" id="agendamento">
+
+            <h2>🎟️ Agendar Ingresso</h2>
+
+            <form id="formAgendamento">
+
+                <label for="nome">Nome completo:</label>
+                <input type="text" id="nome"
+                       placeholder="Digite seu nome" required>
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email"
+                       placeholder="Digite seu e-mail" required>
+
+                <label for="filmeEscolhido">Filme:</label>
+                <input type="text" id="filmeEscolhido" readonly>
+
+                <label for="horarioEscolhido">Horário:</label>
+                <input type="text" id="horarioEscolhido"
+                       placeholder="Selecione um horário nos filmes"
+                       readonly required>
+
+                <label for="data">Data da sessão:</label>
+                <input type="date" id="data" required>
+
+                <label for="quantidade">Quantidade de ingressos:</label>
+                <select id="quantidade" required>
+                    <option value="1">1 ingresso</option>
+                    <option value="2">2 ingressos</option>
+                    <option value="3">3 ingressos</option>
+                    <option value="4">4 ingressos</option>
+                    <option value="5">5 ingressos</option>
+                </select>
+
+                <button type="submit">
+                    Confirmar Agendamento
+                </button>
+
+            </form>
+
+            <p id="mensagem" aria-live="polite"></p>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 CineMax - Todos os direitos reservados.</p>
+        <p>Rua do Cinema, 100 - Centro</p>
+    </footer>
+
+    <script>
+
+        // Armazena o horário selecionado
+        let horarioSelecionado = "";
+
+        // Seleciona o horário da sessão
+        function selecionarHorario(botao, horario, filme) {
+
+            const card = botao.closest(".filme");
+
+            // Remove a seleção anterior do mesmo filme
+            card.querySelectorAll(".horarios button")
+                .forEach(btn => btn.classList.remove("selecionado"));
+
+            // Marca o horário escolhido
+            botao.classList.add("selecionado");
+
+            horarioSelecionado = horario;
+
+            document.getElementById("filmeEscolhido").value = filme;
+
+            document.getElementById("horarioEscolhido").value = horario;
+        }
+
+        // Abre o formulário de agendamento
+        function abrirFormulario(filme) {
+
+            document.getElementById("agendamento")
+                .classList.add("ativo");
+
+            document.getElementById("filmeEscolhido").value = filme;
+
+            // Limpa o horário caso o usuário troque de filme
+            horarioSelecionado = "";
+            document.getElementById("horarioEscolhido").value = "";
+
+            document.getElementById("mensagem").textContent = "";
+
+            document.getElementById("agendamento")
+                .scrollIntoView({ behavior: "smooth" });
+        }
+
+        // Processa o formulário
+        document.getElementById("formAgendamento")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                const nome = document.getElementById("nome").value;
+                const filme = document.getElementById("filmeEscolhido").value;
+                const horario = document.getElementById("horarioEscolhido").value;
+                const data = document.getElementById("data").value;
+                const quantidade = document.getElementById("quantidade").value;
+
+                if (!filme || !horario) {
+                    alert("Selecione um horário antes de confirmar!");
+                    return;
+                }
+
+                // Exibe confirmação
+                document.getElementById("mensagem").textContent =
+                    `Agendamento realizado com sucesso, ${nome}! 
+                    Filme: ${filme} | Horário: ${horario} | 
+                    Data: ${data} | Ingressos: ${quantidade}`;
+
+                // Limpa os campos
+                this.reset();
+
+                horarioSelecionado = "";
+            });
+
+        // Impede datas anteriores ao dia atual
+        const campoData = document.getElementById("data");
+
+        const hoje = new Date();
+        const ano = hoje.getFullYear();
+        const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+        const dia = String(hoje.getDate()).padStart(2, "0");
+
+        campoData.min = `${ano}-${mes}-${dia}`;
+
+    </script>
+
+</body>
+</html>

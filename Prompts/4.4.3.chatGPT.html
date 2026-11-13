@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | Bistrô Elegance</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f8f5ef;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #26382e;
+            color: #fff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            font-size: 38px;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #d8c9a7;
+            font-style: italic;
+        }
+
+        nav {
+            background-color: #354b3d;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 18px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #d8b979;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .categoria {
+            margin-bottom: 55px;
+        }
+
+        .categoria h2 {
+            color: #26382e;
+            font-size: 28px;
+            border-bottom: 2px solid #c6a66b;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        .menu-item {
+            background-color: #fff;
+            padding: 22px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #c6a66b;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .menu-item h3 {
+            color: #354b3d;
+            font-size: 21px;
+            margin-bottom: 5px;
+        }
+
+        .menu-item p {
+            color: #777;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .preco {
+            color: #a17c3c;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        footer {
+            background-color: #26382e;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            color: #d8c9a7;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 29px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 6px 8px;
+                font-size: 14px;
+            }
+
+            .categoria h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>BISTRÔ ELEGANCE</h1>
+        <p>Uma experiência especial em cada refeição</p>
+    </header>
+
+    <nav>
+        <a href="#cafe">Café da Manhã</a>
+        <a href="#executivo">Executivo</a>
+        <a href="#alacarte">À la Carte</a>
+        <a href="#bebidas">Bebidas</a>
+    </nav>
+
+    <main>
+
+        <!-- CAFÉ DA MANHÃ -->
+        <section class="categoria" id="cafe">
+            <h2>☕ Café da Manhã</h2>
+
+            <div class="menu-item">
+                <h3>Ovos Benedict</h3>
+                <p>Ovos poché sobre muffin inglês com molho holandês.</p>
+                <span class="preco">R$ 32,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Panquecas Americanas</h3>
+                <p>Panquecas fofinhas acompanhadas de mel e frutas frescas.</p>
+                <span class="preco">R$ 28,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Toast de Abacate</h3>
+                <p>Pão artesanal com abacate temperado e ovos mexidos.</p>
+                <span class="preco">R$ 26,00</span>
+            </div>
+        </section>
+
+        <!-- EXECUTIVO -->
+        <section class="categoria" id="executivo">
+            <h2>🍽️ Menu Executivo</h2>
+
+            <div class="menu-item">
+                <h3>Filé de Frango Grelhado</h3>
+                <p>Filé de frango, arroz branco, feijão e legumes salteados.</p>
+                <span class="preco">R$ 35,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Parmegiana de Carne</h3>
+                <p>Carne empanada com molho de tomate, queijo e batatas fritas.</p>
+                <span class="preco">R$ 42,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Strogonoff de Frango</h3>
+                <p>Frango ao molho cremoso acompanhado de arroz e batata palha.</p>
+                <span class="preco">R$ 36,00</span>
+            </div>
+        </section>
+
+        <!-- À LA CARTE -->
+        <section class="categoria" id="alacarte">
+            <h2>🥩 À la Carte</h2>
+
+            <div class="menu-item">
+                <h3>Risoto de Camarão</h3>
+                <p>Arroz arbóreo cremoso com camarões selecionados e parmesão.</p>
+                <span class="preco">R$ 68,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Filé Mignon ao Molho Madeira</h3>
+                <p>Filé mignon grelhado com molho madeira e batatas rústicas.</p>
+                <span class="preco">R$ 75,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Salada Mediterrânea</h3>
+                <p>Mix de folhas, tomate cereja, azeitonas, queijo e azeite especial.</p>
+                <span class="preco">R$ 39,00</span>
+            </div>
+        </section>
+
+        <!-- BEBIDAS -->
+        <section class="categoria" id="bebidas">
+            <h2>🥤 Bebidas</h2>
+
+            <div class="menu-item">
+                <h3>Suco Natural de Laranja</h3>
+                <p>Suco natural preparado na hora, sem conservantes.</p>
+                <span class="preco">R$ 12,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Café Espresso</h3>
+                <p>Café especial com grãos selecionados e torra artesanal.</p>
+                <span class="preco">R$ 8,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Água Mineral</h3>
+                <p>Água mineral natural com ou sem gás.</p>
+                <span class="preco">R$ 6,00</span>
+            </div>
+
+            <div class="menu-item">
+                <h3>Limonada Suíça</h3>
+                <p>Limonada cremosa preparada com limões frescos.</p>
+                <span class="preco">R$ 14,00</span>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Bistrô Elegance - Todos os direitos reservados.</p>
+        <p>Rua das Flores, 123 - São Paulo/SP</p>
+    </footer>
+
+</body>
+</html>

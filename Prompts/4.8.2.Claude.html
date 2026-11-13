@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horizonte Viagens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: topo escuro com a busca sobreposta; abaixo, resultados (flex 1) ao lado da viagem montada (coluna fixa). Tudo em Flexbox. */
+:root {
+  --bg: #eef2f5;
+  --surface: #ffffff;
+  --ink: #10202e;
+  --muted: #55677a;
+  --line: #d3dce4;
+  --brand: #0b5f73;
+  --brand-ink: #ffffff;
+  --hero: #0a3a48;
+  --hero-ink: #eaf5f8;
+  --accent: #f0a030;
+  --accent-ink: #1d1400;
+  --good: #1b7a4b;
+  --danger: #b3261e;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --radius: 12px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c141b; --surface: #14202a; --ink: #e8eff4; --muted: #9bacba; --line: #263745;
+    --brand: #5cc3d6; --brand-ink: #062029; --hero: #08242d; --hero-ink: #e4f2f6;
+    --accent: #f2b04a; --accent-ink: #1d1400; --good: #58c78f; --danger: #ff8a80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c141b; --surface: #14202a; --ink: #e8eff4; --muted: #9bacba; --line: #263745;
+  --brand: #5cc3d6; --brand-ink: #062029; --hero: #08242d; --hero-ink: #e4f2f6;
+  --accent: #f2b04a; --accent-ink: #1d1400; --good: #58c78f; --danger: #ff8a80;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.5 var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0; text-wrap: balance; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Cabeçalho */
+.top { background: var(--hero); color: var(--hero-ink); }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 16px 0; }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 1.25rem var(--font-display); letter-spacing: .01em; }
+.brand svg { flex: none; }
+.nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav-links a { color: inherit; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: .95rem; opacity: .9; }
+.nav-links a:hover { background: rgb(255 255 255 / .12); opacity: 1; }
+.hero { display: flex; flex-direction: column; gap: 14px; padding: 20px 0 84px; max-width: 680px; }
+.hero h1 { font-size: clamp(1.9rem, 4.6vw, 3rem); font-weight: 700; }
+.hero p { margin: 0; font-size: 1.1rem; opacity: .88; max-width: 56ch; }
+.profile { display: inline-flex; align-self: flex-start; padding: 4px; border-radius: 999px; background: rgb(255 255 255 / .12); gap: 4px; }
+.profile button { border: 0; background: transparent; color: inherit; padding: 8px 16px; border-radius: 999px; font-weight: 600; }
+.profile button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+/* Busca */
+.search { margin-top: -64px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 32px rgb(10 30 45 / .16); position: relative; z-index: 5; }
+.tabs { display: flex; gap: 4px; padding: 10px 12px 0; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tab { display: flex; align-items: center; gap: 8px; border: 0; background: transparent; padding: 12px 18px; font-weight: 700; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+.panel { padding: 18px 16px 16px; display: flex; flex-direction: column; gap: 14px; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.field { display: flex; flex-direction: column; gap: 4px; flex: 1 1 170px; min-width: 0; position: relative; }
+.field.wide { flex: 2 1 230px; }
+.field label, .field .lbl { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.input { width: 100%; height: 48px; padding: 0 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); text-align: left; display: flex; align-items: center; }
+.input:hover { border-color: var(--muted); }
+.input:focus-within, .input:focus { border-color: var(--brand); }
+input.input[type="date"] { font-variant-numeric: tabular-nums; }
+.swap { flex: 0 0 44px; height: 44px; margin-bottom: 2px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--brand); display: flex; align-items: center; justify-content: center; }
+.swap:hover { background: var(--bg); }
+.trip-type { display: flex; gap: 16px; flex-wrap: wrap; }
+.trip-type label { display: flex; align-items: center; gap: 6px; font-weight: 600; cursor: pointer; }
+.go { flex: 0 0 auto; height: 48px; padding: 0 28px; border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font: 700 1rem var(--font-body); display: flex; align-items: center; justify-content: center; gap: 8px; }
+.go:hover { filter: brightness(1.06); }
+.msg { min-height: 1.4em; font-weight: 600; color: var(--danger); font-size: .92rem; }
+
+/* Passageiros */
+.pax-btn { justify-content: space-between; gap: 8px; cursor: pointer; }
+.pax-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pop { position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 280px; z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 14px 34px rgb(10 30 45 / .22); padding: 8px 14px 14px; display: flex; flex-direction: column; }
+.pax-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.pax-row small { display: block; color: var(--muted); }
+.stepper { display: flex; align-items: center; gap: 10px; }
+.stepper button { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--brand); background: transparent; color: var(--brand); font-size: 1.2rem; line-height: 1; }
+.stepper button:disabled { opacity: .35; cursor: not-allowed; }
+.stepper output { min-width: 1.5ch; text-align: center; font-weight: 700; }
+.pop select { height: 40px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--bg); padding: 0 8px; width: 100%; }
+.pop .done { margin-top: 12px; align-self: flex-end; border: 0; background: var(--brand); color: var(--brand-ink); font-weight: 700; padding: 8px 18px; border-radius: 8px; }
+
+/* Conteúdo */
+.content { display: flex; flex-wrap: wrap; gap: 24px; padding: 32px 0 56px; align-items: flex-start; }
+.results { flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.results-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+.results-head h2 { font-size: 1.4rem; }
+.results-head .sub { color: var(--muted); font-size: .95rem; }
+.sort { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--muted); }
+.sort select { height: 38px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface); padding: 0 8px; }
+.card { display: flex; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.card-main { flex: 1 1 340px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.card-side { flex: 0 0 190px; margin-left: auto; padding: 16px 18px; border-left: 1px dashed var(--line); display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 6px; text-align: right; }
+.price { font: 700 1.5rem var(--font-display); font-variant-numeric: tabular-nums; }
+.price-note { font-size: .82rem; color: var(--muted); }
+.add { border: 1.5px solid var(--brand); background: var(--brand); color: var(--brand-ink); font-weight: 700; padding: 10px 16px; border-radius: 10px; width: 100%; }
+.add[aria-pressed="true"] { background: transparent; color: var(--brand); }
+.leg { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.leg .t { font: 700 1.3rem var(--font-display); font-variant-numeric: tabular-nums; }
+.leg .code { display: block; font-size: .8rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; }
+.line { flex: 1 1 90px; min-width: 70px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .8rem; color: var(--muted); }
+.line i { display: block; width: 100%; height: 2px; background: linear-gradient(90deg, var(--line), var(--brand), var(--line)); border-radius: 2px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--muted); font-size: .9rem; }
+.chip { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); font-size: .78rem; font-weight: 700; color: var(--ink); }
+.chip.good { color: var(--good); border-color: currentColor; background: transparent; }
+.card h3 { font-size: 1.15rem; }
+.rating { display: inline-flex; align-items: center; justify-content: center; min-width: 38px; padding: 2px 8px; border-radius: 8px 8px 8px 2px; background: var(--brand); color: var(--brand-ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.empty { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius); padding: 28px 20px; color: var(--muted); }
+
+/* Viagem montada */
+.trip { flex: 1 1 300px; max-width: 360px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; position: sticky; top: 12px; }
+.trip h2 { font-size: 1.2rem; }
+.trip ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.trip li { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.trip li b { display: block; }
+.trip li small { color: var(--muted); }
+.trip .rm { align-self: flex-start; border: 0; background: transparent; color: var(--danger); font-weight: 600; padding: 0; font-size: .85rem; }
+.total { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; }
+.total strong { font: 700 1.5rem var(--font-display); font-variant-numeric: tabular-nums; }
+.checkout { display: flex; flex-direction: column; gap: 10px; }
+.checkout .input { background: var(--bg); }
+.ghost { border: 1.5px solid var(--line); background: transparent; padding: 10px 16px; border-radius: 10px; font-weight: 600; }
+.ok { border: 1.5px solid var(--good); border-radius: 12px; padding: 14px; color: var(--ink); display: flex; flex-direction: column; gap: 6px; }
+.ok strong { font: 700 1.4rem var(--font-display); letter-spacing: .06em; color: var(--good); }
+.fine { font-size: .82rem; color: var(--muted); margin: 0; }
+
+/* Ofertas */
+.offers { display: flex; flex-direction: column; gap: 16px; padding-bottom: 56px; }
+.offers h2 { font-size: 1.5rem; }
+.offer-list { display: flex; flex-wrap: wrap; gap: 14px; }
+.offer { flex: 1 1 230px; display: flex; flex-direction: column; gap: 6px; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0; overflow: hidden; }
+.offer:hover { border-color: var(--brand); }
+.offer .art { height: 96px; display: flex; align-items: flex-end; padding: 10px 14px; color: #fff; font: 700 1.5rem var(--font-display); }
+.offer .body { padding: 6px 14px 14px; display: flex; flex-direction: column; gap: 2px; }
+.offer .body span { color: var(--muted); font-size: .9rem; }
+.offer .body b { font: 700 1.1rem var(--font-display); font-variant-numeric: tabular-nums; }
+
+.foot { background: var(--hero); color: var(--hero-ink); padding: 24px 0; font-size: .9rem; }
+.foot .wrap { display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; }
+
+@media (max-width: 560px) {
+  .card-side { flex: 1 1 100%; border-left: 0; border-top: 1px dashed var(--line); align-items: stretch; text-align: left; }
+  .go { flex: 1 1 100%; }
+  .trip { max-width: none; position: static; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card { animation: rise .28s ease-out; }
+  @keyframes rise { from { transform: translateY(6px); opacity: .4; } to { transform: none; opacity: 1; } }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <nav class="nav" aria-label="Principal">
+      <div class="brand">
+        <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 20h26" stroke="currentColor" stroke-width="2"/><path d="M8 20a8 8 0 0 1 16 0" fill="#f0a030"/></svg>
+        Horizonte Viagens
+      </div>
+      <div class="nav-links">
+        <a href="#busca" data-go="flights">Voos</a>
+        <a href="#busca" data-go="hotels">Hotéis</a>
+        <a href="#busca" data-go="packages">Pacotes</a>
+        <a href="#ofertas">Ofertas</a>
+      </div>
+    </nav>
+    <div class="hero">
+      <div class="profile" role="group" aria-label="Tipo de viagem">
+        <button type="button" data-profile="leisure" aria-pressed="true">Lazer</button>
+        <button type="button" data-profile="corporate" aria-pressed="false">Corporativo</button>
+      </div>
+      <h1 id="hero-title">Voo e hospedagem na mesma reserva.</h1>
+      <p id="hero-sub">Busque, compare e feche a viagem inteira em um só lugar, com preço final já somado.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="search" id="busca" aria-label="Busca de viagens">
+    <div class="tabs" role="tablist" aria-label="O que você quer reservar">
+      <button class="tab" role="tab" id="tab-flights" aria-controls="panel-flights" aria-selected="true" data-tab="flights">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>Voos</button>
+      <button class="tab" role="tab" id="tab-hotels" aria-controls="panel-hotels" aria-selected="false" tabindex="-1" data-tab="hotels">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20V6h2v8h7V8h7a2 2 0 0 1 2 2v10h-2v-3H5v3zm5-8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>Hotéis</button>
+      <button class="tab" role="tab" id="tab-packages" aria-controls="panel-packages" aria-selected="false" tabindex="-1" data-tab="packages">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 7h-4V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM10 5h4v2h-4z"/></svg>Pacotes</button>
+    </div>
+
+    <!-- VOOS -->
+    <form class="panel" id="panel-flights" role="tabpanel" aria-labelledby="tab-flights" data-kind="flights" novalidate>
+      <div class="trip-type" role="radiogroup" aria-label="Tipo de passagem">
+        <label><input type="radio" name="f-trip" value="round" checked> Ida e volta</label>
+        <label><input type="radio" name="f-trip" value="one"> Somente ida</label>
+      </div>
+      <div class="row">
+        <div class="field wide"><label for="f-origin">Origem</label><input class="input" id="f-origin" list="cities" autocomplete="off" placeholder="Cidade ou aeroporto" value="São Paulo (GRU)"></div>
+        <button class="swap" type="button" data-swap="f" aria-label="Inverter origem e destino"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h11l-3-3 1.4-1.4L22 8l-5.6 5.4L15 12l3-3H7zm10 10H6l3 3-1.4 1.4L2 16l5.6-5.4L9 12l-3 3h11z"/></svg></button>
+        <div class="field wide"><label for="f-dest">Destino</label><input class="input" id="f-dest" list="cities" autocomplete="off" placeholder="Cidade ou aeroporto" value="Lisboa (LIS)"></div>
+        <div class="field"><label for="f-depart">Ida</label><input class="input" id="f-depart" type="date"></div>
+        <div class="field" id="f-return-field"><label for="f-return">Volta</label><input class="input" id="f-return" type="date"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><span class="lbl" id="f-pax-l">Passageiros e classe</span><button type="button" class="input pax-btn" data-pax="flights" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="f-pax-l f-pax-v"><span id="f-pax-v"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button></div>
+        <div class="field corp-only" hidden><label for="f-cc">Centro de custo</label><input class="input" id="f-cc" placeholder="Ex.: 4521-TI" autocomplete="off"></div>
+        <button class="go" type="submit">Buscar voos</button>
+      </div>
+      <div class="msg" role="alert"></div>
+    </form>
+
+    <!-- HOTÉIS -->
+    <form class="panel" id="panel-hotels" role="tabpanel" aria-labelledby="tab-hotels" data-kind="hotels" hidden novalidate>
+      <div class="row">
+        <div class="field wide"><label for="h-dest">Destino</label><input class="input" id="h-dest" list="cities" autocomplete="off" placeholder="Cidade" value="Rio de Janeiro (GIG)"></div>
+        <div class="field"><label for="h-in">Check-in</label><input class="input" id="h-in" type="date"></div>
+        <div class="field"><label for="h-out">Check-out</label><input class="input" id="h-out" type="date"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><span class="lbl" id="h-pax-l">Hóspedes e quartos</span><button type="button" class="input pax-btn" data-pax="hotels" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="h-pax-l h-pax-v"><span id="h-pax-v"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button></div>
+        <div class="field corp-only" hidden><label for="h-cc">Centro de custo</label><input class="input" id="h-cc" placeholder="Ex.: 4521-TI" autocomplete="off"></div>
+        <button class="go" type="submit">Buscar hotéis</button>
+      </div>
+      <div class="msg" role="alert"></div>
+    </form>
+
+    <!-- PACOTES -->
+    <form class="panel" id="panel-packages" role="tabpanel" aria-labelledby="tab-packages" data-kind="packages" hidden novalidate>
+      <div class="row">
+        <div class="field wide"><label for="p-origin">Saindo de</label><input class="input" id="p-origin" list="cities" autocomplete="off" placeholder="Cidade ou aeroporto" value="São Paulo (GRU)"></div>
+        <button class="swap" type="button" data-swap="p" aria-label="Inverter origem e destino"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h11l-3-3 1.4-1.4L22 8l-5.6 5.4L15 12l3-3H7zm10 10H6l3 3-1.4 1.4L2 16l5.6-5.4L9 12l-3 3h11z"/></svg></button>
+        <div class="field wide"><label for="p-dest">Indo para</label><input class="input" id="p-dest" list="cities" autocomplete="off" placeholder="Cidade" value="Salvador (SSA)"></div>
+        <div class="field"><label for="p-depart">Saída</label><input class="input" id="p-depart" type="date"></div>
+        <div class="field"><label for="p-return">Retorno</label><input class="input" id="p-return" type="date"></div>
+      </div>
+      <div class="row">
+        <div class="field wide"><span class="lbl" id="p-pax-l">Viajantes e quartos</span><button type="button" class="input pax-btn" data-pax="packages" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="p-pax-l p-pax-v"><span id="p-pax-v"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button></div>
+        <div class="field corp-only" hidden><label for="p-cc">Centro de custo</label><input class="input" id="p-cc" placeholder="Ex.: 4521-TI" autocomplete="off"></div>
+        <button class="go" type="submit">Buscar pacotes</button>
+      </div>
+      <div class="msg" role="alert"></div>
+    </form>
+
+    <datalist id="cities"></datalist>
+  </section>
+
+  <div class="content">
+    <section class="results" id="results" aria-live="polite" aria-label="Resultados">
+      <div class="empty">Escolha origem, destino e datas e toque em buscar. Os resultados aparecem aqui e você monta a viagem ao lado.</div>
+    </section>
+
+    <aside class="trip" aria-label="Sua viagem">
+      <h2>Sua viagem</h2>
+      <ul id="trip-list"></ul>
+      <p class="fine" id="trip-empty">Nenhum item ainda. Adicione um voo, um hotel ou um pacote.</p>
+      <div class="total"><span>Total</span><strong id="trip-total">R$ 0</strong></div>
+      <button class="go" type="button" id="checkout-open" disabled>Finalizar reserva</button>
+      <form class="checkout" id="checkout" hidden novalidate>
+        <div class="field"><label for="c-name">Viajante principal</label><input class="input" id="c-name" autocomplete="name" placeholder="Nome completo"></div>
+        <div class="field"><label for="c-mail">E-mail</label><input class="input" id="c-mail" type="email" autocomplete="email" placeholder="voce@exemplo.com"></div>
+        <div class="msg" id="c-msg" role="alert"></div>
+        <button class="go" type="submit">Confirmar reserva</button>
+        <button class="ghost" type="button" id="checkout-cancel">Voltar</button>
+      </form>
+      <div class="ok" id="confirmed" hidden>
+        <span>Reserva confirmada para <b id="ok-name"></b></span>
+        <strong id="ok-code"></strong>
+        <span class="fine">Esta é uma demonstração. Nenhuma cobrança ou emissão real foi feita.</span>
+      </div>
+    </aside>
+  </div>
+
+  <section class="offers" id="ofertas" aria-labelledby="offers-title">
+    <h2 id="offers-title">Pacotes saindo de São Paulo</h2>
+    <div class="offer-list" id="offer-list"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Horizonte Viagens · Lazer e viagens corporativas</span>
+    <span>Preços ilustrativos em reais, por viagem completa.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Dados ---------- */
+  var CITIES = [
+    { n: 'São Paulo', c: 'GRU', lat: -23.43, lon: -46.47, br: 1 },
+    { n: 'Rio de Janeiro', c: 'GIG', lat: -22.81, lon: -43.25, br: 1 },
+    { n: 'Brasília', c: 'BSB', lat: -15.87, lon: -47.92, br: 1 },
+    { n: 'Salvador', c: 'SSA', lat: -12.91, lon: -38.33, br: 1 },
+    { n: 'Recife', c: 'REC', lat: -8.13, lon: -34.92, br: 1 },
+    { n: 'Florianópolis', c: 'FLN', lat: -27.67, lon: -48.55, br: 1 },
+    { n: 'Lisboa', c: 'LIS', lat: 38.77, lon: -9.13 },
+    { n: 'Madri', c: 'MAD', lat: 40.47, lon: -3.56 },
+    { n: 'Paris', c: 'CDG', lat: 49.0, lon: 2.55 },
+    { n: 'Buenos Aires', c: 'EZE', lat: -34.82, lon: -58.54 },
+    { n: 'Santiago', c: 'SCL', lat: -33.39, lon: -70.79 },
+    { n: 'La Paz', c: 'LPB', lat: -16.51, lon: -68.19 },
+    { n: 'Santa Cruz de la Sierra', c: 'VVI', lat: -17.64, lon: -63.14 },
+    { n: 'Miami', c: 'MIA', lat: 25.79, lon: -80.29 },
+    { n: 'Nova York', c: 'JFK', lat: 40.64, lon: -73.78 },
+    { n: 'Cancún', c: 'CUN', lat: 21.04, lon: -86.87 }
+  ];
+  var AIRLINES = ['LATAM', 'GOL', 'Azul', 'TAP Air Portugal', 'Air France', 'Iberia', 'Copa Airlines', 'Aerolíneas Argentinas'];
+  var HOTEL_KINDS = ['Palace Hotel', 'Vila Boutique', 'Business Suites', 'Centro Plaza', 'Resort & Spa', 'Praça Hotel'];
+  var CLASSES = ['Econômica', 'Premium Economy', 'Executiva'];
+  var CLASS_MULT = { 'Econômica': 1, 'Premium Economy': 1.6, 'Executiva': 2.8 };
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+
+  var state = {
+    tab: 'flights',
+    profile: 'leisure',
+    pax: {
+      flights: { adt: 1, chd: 0, inf: 0, cls: 'Econômica' },
+      hotels: { adt: 2, chd: 0, rooms: 1 },
+      packages: { adt: 2, chd: 0, rooms: 1 }
+    },
+    results: [],
+    sort: 'price',
+    kind: null,
+    basket: []
+  };
+
+  /* ---------- Utilidades ---------- */
+  function norm(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim(); }
+  function label(c) { return c.n + ' (' + c.c + ')'; }
+  function findCity(v) {
+    var t = norm(v);
+    if (!t) return null;
+    for (var i = 0; i < CITIES.length; i++) {
+      var c = CITIES[i];
+      if (norm(label(c)) === t || norm(c.n) === t || c.c.toLowerCase() === t) return c;
+    }
+    return null;
+  }
+  function km(a, b) {
+    var R = 6371, rad = Math.PI / 180;
+    var dLat = (b.lat - a.lat) * rad, dLon = (b.lon - a.lon) * rad;
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  function seeded(str) {
+    var h = 1779033703 ^ str.length;
+    for (var i = 0; i < str.length; i++) { h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+    var a = h >>> 0;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function iso(d) {
+    var m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function parse(s) { return new Date(s + 'T12:00:00'); }
+  function nightsBetween(a, b) { return Math.round((parse(b) - parse(a)) / 86400000); }
+  function fmtDate(s) { return parse(s).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', ''); }
+  function fmtDur(min) { return Math.floor(min / 60) + 'h ' + String(min % 60).padStart(2, '0') + 'min'; }
+  function fmtClock(min) { var m = ((min % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); }
+  function plural(n, s, p) { return n + ' ' + (n === 1 ? s : p); }
+  function paxTotalFactor(p) { return p.adt + (p.chd || 0) * 0.75 + (p.inf || 0) * 0.1; }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  /* ---------- Cidades e datas ---------- */
+  $('#cities').innerHTML = CITIES.map(function (c) { return '<option value="' + esc(label(c)) + '"></option>'; }).join('');
+  var today = new Date();
+  var defaults = {
+    'f-depart': iso(addDays(today, 30)), 'f-return': iso(addDays(today, 40)),
+    'h-in': iso(addDays(today, 21)), 'h-out': iso(addDays(today, 25)),
+    'p-depart': iso(addDays(today, 45)), 'p-return': iso(addDays(today, 52))
+  };
+  Object.keys(defaults).forEach(function (id) { var el = document.getElementById(id); el.value = defaults[id]; el.min = iso(today); });
+
+  /* ---------- Abas ---------- */
+  var TABS = ['flights', 'hotels', 'packages'];
+  function selectTab(name, focus) {
+    state.tab = name;
+    TABS.forEach(function (t) {
+      var on = t === name;
+      var tab = document.getElementById('tab-' + t);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
+      document.getElementById('panel-' + t).hidden = !on;
+      if (on && focus) tab.focus();
+    });
+    closePops();
+  }
+  $$('.tab').forEach(function (tab) {
+    tab.addEventListener('click', function () { selectTab(tab.dataset.tab); });
+    tab.addEventListener('keydown', function (e) {
+      var i = TABS.indexOf(state.tab), n = null;
+      if (e.key === 'ArrowRight') n = TABS[(i + 1) % 3];
+      else if (e.key === 'ArrowLeft') n = TABS[(i + 2) % 3];
+      else if (e.key === 'Home') n = TABS[0];
+      else if (e.key === 'End') n = TABS[2];
+      if (n) { e.preventDefault(); selectTab(n, true); }
+    });
+  });
+  $$('[data-go]').forEach(function (a) {
+    a.addEventListener('click', function () { selectTab(a.dataset.go); });
+  });
+
+  /* ---------- Perfil: lazer / corporativo ---------- */
+  function setProfile(p) {
+    state.profile = p;
+    $$('[data-profile]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.profile === p ? 'true' : 'false'); });
+    $$('.corp-only').forEach(function (el) { el.hidden = p !== 'corporate'; });
+    $('#hero-title').textContent = p === 'corporate' ? 'Viagem a trabalho sem retrabalho.' : 'Voo e hospedagem na mesma reserva.';
+    $('#hero-sub').textContent = p === 'corporate'
+      ? 'Tarifas flexíveis, centro de custo em cada reserva e a viagem inteira fechada de uma vez.'
+      : 'Busque, compare e feche a viagem inteira em um só lugar, com preço final já somado.';
+  }
+  $$('[data-profile]').forEach(function (b) { b.addEventListener('click', function () { setProfile(b.dataset.profile); }); });
+
+  /* ---------- Troca origem/destino e tipo de passagem ---------- */
+  $$('[data-swap]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = b.dataset.swap, o = document.getElementById(p + '-origin'), d = document.getElementById(p + '-dest');
+      var t = o.value; o.value = d.value; d.value = t;
+    });
+  });
+  $$('input[name="f-trip"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      var one = $('input[name="f-trip"]:checked').value === 'one';
+      $('#f-return-field').hidden = one;
+    });
+  });
+  $('#f-depart').addEventListener('change', function () {
+    var r = $('#f-return'); r.min = this.value;
+    if (r.value && r.value < this.value) r.value = this.value;
+  });
+  $('#h-in').addEventListener('change', function () { var o = $('#h-out'); o.min = this.value; if (o.value <= this.value) o.value = iso(addDays(parse(this.value), 1)); });
+  $('#p-depart').addEventListener('change', function () { var r = $('#p-return'); r.min = this.value; if (r.value < this.value) r.value = this.value; });
+
+  /* ---------- Seletor de passageiros ---------- */
+  var PAX_CFG = {
+    flights: [
+      { k: 'adt', t: 'Adultos', h: '12 anos ou mais', min: 1, max: 9 },
+      { k: 'chd', t: 'Crianças', h: '2 a 11 anos', min: 0, max: 8 },
+      { k: 'inf', t: 'Bebês', h: 'Até 2 anos, no colo', min: 0, max: 'adt' }
+    ],
+    hotels: [
+      { k: 'adt', t: 'Adultos', h: 'Por reserva', min: 1, max: 12 },
+      { k: 'chd', t: 'Crianças', h: 'Até 17 anos', min: 0, max: 8 },
+      { k: 'rooms', t: 'Quartos', h: '', min: 1, max: 6 }
+    ],
+    packages: [
+      { k: 'adt', t: 'Adultos', h: '12 anos ou mais', min: 1, max: 12 },
+      { k: 'chd', t: 'Crianças', h: 'Até 11 anos', min: 0, max: 8 },
+      { k: 'rooms', t: 'Quartos', h: '', min: 1, max: 6 }
+    ]
+  };
+  var PREFIX = { flights: 'f', hotels: 'h', packages: 'p' };
+
+  function paxSummary(kind) {
+    var p = state.pax[kind], parts = [plural(p.adt, 'adulto', 'adultos')];
+    if (p.chd) parts.push(plural(p.chd, 'criança', 'crianças'));
+    if (kind === 'flights') { if (p.inf) parts.push(plural(p.inf, 'bebê', 'bebês')); parts.push(p.cls); }
+    else parts.push(plural(p.rooms, 'quarto', 'quartos'));
+    return parts.join(' · ');
+  }
+  function refreshPax(kind) { document.getElementById(PREFIX[kind] + '-pax-v').textContent = paxSummary(kind); }
+
+  function buildPop(btn) {
+    var kind = btn.dataset.pax, field = btn.parentNode;
+    var pop = document.createElement('div');
+    pop.className = 'pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Passageiros');
+    var html = PAX_CFG[kind].map(function (r) {
+      return '<div class="pax-row"><div><b>' + r.t + '</b>' + (r.h ? '<small>' + r.h + '</small>' : '') + '</div>' +
+        '<div class="stepper"><button type="button" data-k="' + r.k + '" data-d="-1" aria-label="Menos ' + r.t.toLowerCase() + '">−</button>' +
+        '<output id="out-' + kind + '-' + r.k + '"></output>' +
+        '<button type="button" data-k="' + r.k + '" data-d="1" aria-label="Mais ' + r.t.toLowerCase() + '">+</button></div></div>';
+    }).join('');
+    if (kind === 'flights') {
+      html += '<div class="pax-row" style="flex-direction:column;align-items:stretch"><label for="cls-sel"><b>Classe</b></label><select id="cls-sel">' +
+        CLASSES.map(function (c) { return '<option>' + c + '</option>'; }).join('') + '</select></div>';
+    }
+    html += '<button type="button" class="done">Concluir</button>';
+    pop.innerHTML = html;
+    field.appendChild(pop);
+
+    function sync() {
+      var p = state.pax[kind];
+      PAX_CFG[kind].forEach(function (r) {
+        var max = r.max === 'adt' ? p.adt : r.max;
+        document.getElementById('out-' + kind + '-' + r.k).textContent = p[r.k];
+        $('[data-k="' + r.k + '"][data-d="-1"]', pop).disabled = p[r.k] <= r.min;
+        $('[data-k="' + r.k + '"][data-d="1"]', pop).disabled = p[r.k] >= max;
+      });
+      refreshPax(kind);
+    }
+    pop.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      if (b.classList.contains('done')) { closePops(); btn.focus(); return; }
+      var k = b.dataset.k; if (!k) return;
+      var p = state.pax[kind];
+      p[k] = Math.max(0, p[k] + Number(b.dataset.d));
+      if (kind === 'flights' && p.inf > p.adt) p.inf = p.adt;
+      sync();
+    });
+    if (kind === 'flights') {
+      var sel = $('#cls-sel', pop); sel.value = state.pax.flights.cls;
+      sel.addEventListener('change', function () { state.pax.flights.cls = sel.value; refreshPax('flights'); });
+    }
+    sync();
+    return pop;
+  }
+  function closePops() {
+    $$('.pop').forEach(function (p) { p.remove(); });
+    $$('.pax-btn').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+  }
+  $$('.pax-btn').forEach(function (btn) {
+    refreshPax(btn.dataset.pax);
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      closePops();
+      if (!open) { buildPop(btn); btn.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.pop')) closePops(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePops(); });
+
+  /* ---------- Geração de resultados (simulada, determinística) ---------- */
+  function genFlights(o, d, dep, ret, p, round, corp, tag) {
+    var dist = km(o, d), out = [], base = 160 + dist * 0.16, mult = CLASS_MULT[p.cls];
+    var rng = seeded(['F', o.c, d.c, dep, ret, p.cls].join('|'));
+    for (var i = 0; i < 6; i++) {
+      var stops = dist > 4000 ? (rng() < 0.5 ? 1 : 0) : (rng() < 0.2 ? 1 : 0);
+      var dur = Math.round(dist / 820 * 60 + 35 + stops * 75);
+      var dh = 5 + Math.floor(rng() * 16), dm = Math.floor(rng() * 12) * 5, start = dh * 60 + dm;
+      var pp = base * (0.85 + rng() * 0.55) * mult * (round ? 1.85 : 1) * (corp ? 1.12 : 1);
+      var rh = 6 + Math.floor(rng() * 14), rm = Math.floor(rng() * 12) * 5;
+      var air = AIRLINES[Math.floor(rng() * AIRLINES.length)];
+      var total = Math.round(pp * paxTotalFactor(p) / 10) * 10;
+      out.push({
+        id: tag + '-f' + i, type: 'flight', price: total, dur: dur, rating: 0,
+        title: o.c + ' → ' + d.c + (round ? ' e volta' : ''),
+        detail: air + ' · ' + fmtDate(dep) + (round ? ' / ' + fmtDate(ret) : ''),
+        o: o, d: d, air: air, stops: stops, start: start, arrive: start + dur,
+        back: round ? { start: rh * 60 + rm, dur: dur + (rng() < 0.5 ? 10 : -5) } : null,
+        flex: corp, per: Math.round(total / paxTotalFactor(p) / 10) * 10, dep: dep, ret: ret, cls: p.cls
+      });
+    }
+    return out;
+  }
+  function genHotels(d, inn, outd, p, corp, tag, count, minStars) {
+    var rng = seeded(['H', d.c, inn, outd].join('|')), res = [], nights = nightsBetween(inn, outd);
+    for (var i = 0; i < count; i++) {
+      var stars = Math.min(5, (minStars || 3) + Math.floor(rng() * 3));
+      var perNight = (150 + stars * 75 + rng() * 190) * (d.br ? 1 : 1.25);
+      var total = Math.round(perNight * nights * p.rooms / 10) * 10;
+      var rating = Math.round((7.4 + stars * 0.28 + rng() * 0.7) * 10) / 10;
+      var kind = HOTEL_KINDS[(i + Math.floor(rng() * 3)) % HOTEL_KINDS.length];
+      var perks = ['Wi-Fi grátis'];
+      if (corp || rng() < 0.6) perks.push('Café da manhã');
+      if (corp) perks.push('Sala de reuniões');
+      if (stars >= 4) perks.push('Piscina');
+      if (rng() < 0.4) perks.push('Cancelamento grátis');
+      res.push({
+        id: tag + '-h' + i, type: 'hotel', price: total, rating: Math.min(9.8, rating), stars: stars,
+        title: d.n + ' ' + kind, detail: plural(nights, 'noite', 'noites') + ' · ' + plural(p.rooms, 'quarto', 'quartos') + ' · ' + fmtDate(inn) + ' a ' + fmtDate(outd),
+        perks: perks, nights: nights, perNight: Math.round(total / nights / p.rooms / 10) * 10
+      });
+    }
+    return res;
+  }
+  function genPackages(o, d, dep, ret, p, corp, tag) {
+    var fl = genFlights(o, d, dep, ret, { adt: p.adt, chd: p.chd, inf: 0, cls: 'Econômica' }, true, corp, tag + 'x');
+    fl.sort(function (a, b) { return a.price - b.price; });
+    var hs = genHotels(d, dep, ret, p, corp, tag + 'y', 3, 3);
+    hs.sort(function (a, b) { return a.stars - b.stars; });
+    var res = [];
+    for (var i = 0; i < 3; i++) {
+      var f = fl[Math.min(i * 2, fl.length - 1)], h = hs[i];
+      var sum = f.price + h.price, price = Math.round(sum * 0.9 / 10) * 10;
+      res.push({
+        id: tag + '-p' + i, type: 'package', price: price, saving: sum - price, rating: h.rating, dur: f.dur,
+        title: d.n + ' · ' + h.title.replace(d.n + ' ', ''), detail: o.c + ' → ' + d.c + ' · ' + plural(h.nights, 'noite', 'noites') + ' · ' + fmtDate(dep) + ' a ' + fmtDate(ret),
+        f: f, h: h
+      });
+    }
+    return res;
+  }
+
+  /* ---------- Renderização ---------- */
+  function stars(n) { return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n); }
+  function inBasket(id) { return state.basket.some(function (b) { return b.id === id; }); }
+
+  function flightBlock(f) {
+    return '<div class="leg"><div><span class="t">' + fmtClock(f.start) + '</span><span class="code">' + f.o.c + '</span></div>' +
+      '<div class="line"><span>' + fmtDur(f.dur) + '</span><i></i><span>' + (f.stops ? '1 parada' : 'Direto') + '</span></div>' +
+      '<div><span class="t">' + fmtClock(f.arrive) + (f.arrive >= 1440 ? '<sup style="font-size:.6em"> +1</sup>' : '') + '</span><span class="code">' + f.d.c + '</span></div></div>';
+  }
+  function hotelBlock(h) {
+    return '<h3>' + esc(h.title) + '</h3><div class="meta"><span aria-label="' + h.stars + ' estrelas" style="color:var(--accent)">' + stars(h.stars) + '</span><span class="rating">' + h.rating.toFixed(1).replace('.', ',') + '</span></div>' +
+      '<div class="meta">' + h.perks.map(function (x) { return '<span class="chip' + (x === 'Cancelamento grátis' ? ' good' : '') + '">' + x + '</span>'; }).join('') + '</div>';
+  }
+  function card(r) {
+    var main = '', note = '';
+    if (r.type === 'flight') {
+      main = '<div class="meta"><b style="color:var(--ink)">' + r.air + '</b><span>· ' + fmtDate(r.dep) + '</span><span class="chip">' + r.cls + '</span>' + (r.flex ? '<span class="chip good">Tarifa flexível</span>' : '') + '</div>' +
+        flightBlock(r) +
+        (r.back ? '<div class="meta">Volta ' + fmtDate(r.ret) + ' · ' + fmtClock(r.back.start) + ' → ' + fmtClock(r.back.start + r.back.dur) + ' · ' + fmtDur(r.back.dur) + '</div>' : '');
+      note = 'R$ ' + r.per.toLocaleString('pt-BR') + ' por adulto';
+    } else if (r.type === 'hotel') {
+      main = hotelBlock(r) + '<div class="meta">' + esc(r.detail) + '</div>';
+      note = BRL.format(r.perNight) + ' por noite, por quarto';
+    } else {
+      main = '<div class="meta"><span class="chip good">Voo + hotel · economia de ' + BRL.format(r.saving) + '</span></div>' + flightBlock(r.f) + hotelBlock(r.h) + '<div class="meta">' + esc(r.detail) + '</div>';
+      note = 'Voo ida e volta + ' + plural(r.h.nights, 'noite', 'noites');
+    }
+    var on = inBasket(r.id);
+    return '<article class="card"><div class="card-main">' + main + '</div><div class="card-side"><span class="price">' + BRL.format(r.price) + '</span><span class="price-note">' + note + '</span>' +
+      '<button type="button" class="add" data-add="' + r.id + '" aria-pressed="' + on + '">' + (on ? 'Adicionado' : 'Adicionar à viagem') + '</button></div></article>';
+  }
+  function sorted() {
+    var list = state.results.slice();
+    if (state.sort === 'price') list.sort(function (a, b) { return a.price - b.price; });
+    else if (state.sort === 'dur') list.sort(function (a, b) { return a.dur - b.dur || a.price - b.price; });
+    else list.sort(function (a, b) { return b.rating - a.rating; });
+    return list;
+  }
+  function renderResults() {
+    var box = $('#results'), k = state.kind;
+    var sortOpts = k === 'flights'
+      ? '<option value="price">Menor preço</option><option value="dur">Menor duração</option>'
+      : '<option value="price">Menor preço</option><option value="rating">Melhor avaliação</option>';
+    var titles = { flights: 'Voos encontrados', hotels: 'Hospedagens encontradas', packages: 'Pacotes encontrados' };
+    box.innerHTML = '<div class="results-head"><div><h2>' + titles[k] + '</h2><div class="sub">' + esc(state.summary) + '</div></div>' +
+      '<label class="sort">Ordenar por <select id="sort-sel">' + sortOpts + '</select></label></div>' + sorted().map(card).join('');
+    var sel = $('#sort-sel'); sel.value = state.sort; sel.addEventListener('change', function () { state.sort = sel.value; renderResults(); });
+  }
+
+  /* ---------- Busca ---------- */
+  var searchCount = 0;
+  function runSearch(kind, v) {
+    var corp = state.profile === 'corporate', tag = 's' + (++searchCount);
+    state.kind = kind; state.sort = 'price';
+    if (kind === 'flights') {
+      state.results = genFlights(v.o, v.d, v.dep, v.ret, state.pax.flights, v.round, corp, tag);
+      state.summary = label(v.o) + ' para ' + label(v.d) + ' · ' + fmtDate(v.dep) + (v.round ? ' a ' + fmtDate(v.ret) : '') + ' · ' + paxSummary('flights');
+    } else if (kind === 'hotels') {
+      state.results = genHotels(v.d, v.dep, v.ret, state.pax.hotels, corp, tag, 6, 3);
+      state.summary = label(v.d) + ' · ' + fmtDate(v.dep) + ' a ' + fmtDate(v.ret) + ' · ' + paxSummary('hotels');
+    } else {
+      state.results = genPackages(v.o, v.d, v.dep, v.ret, state.pax.packages, corp, tag);
+      state.summary = label(v.o) + ' para ' + label(v.d) + ' · ' + fmtDate(v.dep) + ' a ' + fmtDate(v.ret) + ' · ' + paxSummary('packages');
+    }
+    renderResults();
+    $('#results').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  function validate(kind) {
+    var p = PREFIX[kind], todayIso = iso(new Date());
+    var v = {};
+    if (kind !== 'hotels') {
+      v.o = findCity($('#' + p + '-origin').value);
+      if (!v.o) return { err: 'Escolha uma origem da lista de sugestões.', field: p + '-origin' };
+    }
+    v.d = findCity($('#' + p + '-dest').value);
+    if (!v.d) return { err: 'Escolha um destino da lista de sugestões.', field: p + '-dest' };
+    if (v.o && v.o.c === v.d.c) return { err: 'Origem e destino precisam ser diferentes.', field: p + '-dest' };
+    var dId = kind === 'hotels' ? 'h-in' : p + '-depart', rId = kind === 'hotels' ? 'h-out' : p + '-return';
+    v.dep = $('#' + dId).value; v.ret = $('#' + rId).value;
+    v.round = kind !== 'flights' || $('input[name="f-trip"]:checked').value === 'round';
+    if (!v.dep) return { err: 'Informe a data de ' + (kind === 'hotels' ? 'check-in.' : 'ida.'), field: dId };
+    if (v.dep < todayIso) return { err: 'A data de ida não pode estar no passado.', field: dId };
+    if (v.round) {
+      if (!v.ret) return { err: 'Informe a data de ' + (kind === 'hotels' ? 'check-out.' : 'volta.'), field: rId };
+      if (kind === 'flights' ? v.ret < v.dep : v.ret <= v.dep) return { err: kind === 'hotels' ? 'O check-out precisa ser depois do check-in.' : 'A volta não pode ser antes da ida.', field: rId };
+      if (kind !== 'flights' && nightsBetween(v.dep, v.ret) > 30) return { err: 'Reserve no máximo 30 noites por busca.', field: rId };
+    }
+    return { v: v };
+  }
+  $$('.panel').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var kind = form.dataset.kind, msg = $('.msg', form), r = validate(kind);
+      if (r.err) { msg.textContent = r.err; document.getElementById(r.field).focus(); return; }
+      msg.textContent = '';
+      runSearch(kind, r.v);
+    });
+  });
+
+  /* ---------- Viagem montada ---------- */
+  function renderTrip() {
+    var ul = $('#trip-list'), total = 0;
+    ul.innerHTML = state.basket.map(function (b) {
+      total += b.price;
+      var tag = { flight: 'Voo', hotel: 'Hotel', package: 'Pacote' }[b.type];
+      return '<li><div><small>' + tag + '</small><b>' + esc(b.title) + '</b><small>' + esc(b.detail) + '</small><button type="button" class="rm" data-rm="' + b.id + '">Remover</button></div><b class="num">' + BRL.format(b.price) + '</b></li>';
+    }).join('');
+    $('#trip-empty').hidden = state.basket.length > 0;
+    $('#trip-total').textContent = BRL.format(total);
+    $('#checkout-open').disabled = state.basket.length === 0;
+    if (!state.basket.length) { $('#checkout').hidden = true; }
+  }
+  $('#results').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-add]'); if (!b) return;
+    var id = b.dataset.add, i = state.basket.findIndex(function (x) { return x.id === id; });
+    if (i >= 0) state.basket.splice(i, 1);
+    else {
+      var r = state.results.find(function (x) { return x.id === id; });
+      if (r) state.basket.push({ id: r.id, type: r.type, title: r.title, detail: r.detail, price: r.price });
+    }
+    $('#confirmed').hidden = true;
+    renderTrip(); renderResults();
+    var again = document.querySelector('[data-add="' + id + '"]'); if (again) again.focus();
+  });
+  $('#trip-list').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-rm]'); if (!b) return;
+    state.basket = state.basket.filter(function (x) { return x.id !== b.dataset.rm; });
+    renderTrip(); if (state.kind) renderResults();
+  });
+  $('#checkout-open').addEventListener('click', function () { $('#checkout').hidden = false; $('#confirmed').hidden = true; $('#c-name').focus(); });
+  $('#checkout-cancel').addEventListener('click', function () { $('#checkout').hidden = true; });
+  $('#checkout').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('#c-name').value.trim(), mail = $('#c-mail').value.trim(), msg = $('#c-msg');
+    if (name.length < 3) { msg.textContent = 'Informe o nome completo do viajante.'; $('#c-name').focus(); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { msg.textContent = 'Informe um e-mail válido, como nome@empresa.com.'; $('#c-mail').focus(); return; }
+    msg.textContent = '';
+    var code = 'HZ-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+    $('#ok-name').textContent = name; $('#ok-code').textContent = code;
+    $('#confirmed').hidden = false; $('#checkout').hidden = true;
+    state.basket = []; renderTrip(); if (state.kind) renderResults();
+    $('#c-name').value = ''; $('#c-mail').value = '';
+  });
+
+  /* ---------- Ofertas ---------- */
+  var OFFERS = [
+    { c: 'SSA', bg: 'linear-gradient(135deg,#e07a1f,#b3261e)', nights: 6 },
+    { c: 'FLN', bg: 'linear-gradient(135deg,#1f8a70,#0b5f73)', nights: 5 },
+    { c: 'LIS', bg: 'linear-gradient(135deg,#2c5aa0,#0a3a48)', nights: 8 },
+    { c: 'CUN', bg: 'linear-gradient(135deg,#17a2b8,#3b6fb6)', nights: 7 }
+  ];
+  var origin = CITIES[0];
+  $('#offer-list').innerHTML = OFFERS.map(function (o, i) {
+    var d = CITIES.find(function (c) { return c.c === o.c; });
+    var dep = iso(addDays(today, 45)), ret = iso(addDays(today, 45 + o.nights));
+    var best = Math.min.apply(null, genPackages(origin, d, dep, ret, { adt: 2, chd: 0, rooms: 1 }, false, 'o' + i).map(function (r) { return r.price; }));
+    return '<button type="button" class="offer" data-offer="' + i + '"><span class="art" style="background:' + o.bg + '">' + esc(d.n) + '</span><span class="body"><span>' + o.nights + ' noites · 2 adultos · voo + hotel</span><b>a partir de ' + BRL.format(best) + '</b></span></button>';
+  }).join('');
+  $('#offer-list').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-offer]'); if (!b) return;
+    var o = OFFERS[Number(b.dataset.offer)], d = CITIES.find(function (c) { return c.c === o.c; });
+    selectTab('packages');
+    $('#p-origin').value = label(origin); $('#p-dest').value = label(d);
+    $('#p-depart').value = iso(addDays(today, 45)); $('#p-return').value = iso(addDays(today, 45 + o.nights));
+    state.pax.packages = { adt: 2, chd: 0, rooms: 1 }; refreshPax('packages');
+    $('#panel-packages').requestSubmit ? $('#panel-packages').requestSubmit() : $('#panel-packages').dispatchEvent(new Event('submit', { cancelable: true }));
+  });
+
+  setProfile('leisure');
+  renderTrip();
+})();
+</script>
+</body>
+</html>

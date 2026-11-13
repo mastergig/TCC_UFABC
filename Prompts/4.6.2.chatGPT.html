@@ -1,0 +1,558 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineMax | Seu cinema favorito</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #101018;
+    color: #fff;
+}
+
+header {
+    background: #191923;
+    padding: 22px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #30303b;
+}
+
+.logo {
+    color: #ffca28;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 25px;
+}
+
+header nav a:hover {
+    color: #ffca28;
+}
+
+.hero {
+    padding: 65px 8%;
+    background: linear-gradient(90deg, #191923, #282039);
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #ccc;
+    font-size: 17px;
+}
+
+section {
+    padding: 45px 8%;
+}
+
+.section-title {
+    font-size: 27px;
+    margin-bottom: 30px;
+    border-left: 5px solid #ffca28;
+    padding-left: 12px;
+}
+
+.movies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.movie-card {
+    background: #1c1c28;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform .3s;
+    border: 1px solid #30303b;
+}
+
+.movie-card:hover {
+    transform: translateY(-6px);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 290px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 18px;
+}
+
+.movie-info h3 {
+    margin-bottom: 10px;
+    font-size: 19px;
+}
+
+.movie-info p {
+    color: #bbb;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.rating {
+    display: inline-block;
+    background: #ffca28;
+    color: #171717;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: .2s;
+}
+
+.reserve-btn {
+    width: 100%;
+    padding: 12px;
+    background: #ffca28;
+    color: #171717;
+}
+
+.reserve-btn:hover {
+    background: #e5ae00;
+}
+
+.schedule {
+    background: #191923;
+}
+
+.schedule-container {
+    max-width: 650px;
+    margin: auto;
+    background: #242432;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+form label {
+    display: block;
+    margin: 15px 0 8px;
+    font-weight: bold;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 12px;
+    background: #15151e;
+    border: 1px solid #454554;
+    border-radius: 6px;
+    color: white;
+    font-size: 15px;
+}
+
+form input:focus, form select:focus {
+    outline: 2px solid #ffca28;
+}
+
+.times {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.time-btn {
+    flex: 1;
+    min-width: 80px;
+    padding: 12px;
+    background: #393947;
+    color: white;
+    border: 1px solid #555;
+}
+
+.time-btn:hover, .time-btn.selected {
+    background: #ffca28;
+    color: #171717;
+    border-color: #ffca28;
+}
+
+.total {
+    margin: 22px 0;
+    font-size: 19px;
+    color: #ffca28;
+    font-weight: bold;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #ffca28;
+    font-size: 16px;
+    color: #171717;
+}
+
+.submit-btn:hover {
+    background: #e5ae00;
+}
+
+/* Modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.8);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.modal-content {
+    background: #242432;
+    padding: 35px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    border: 1px solid #ffca28;
+}
+
+.modal-content h2 {
+    color: #ffca28;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    line-height: 1.7;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    padding: 12px 25px;
+    background: #ffca28;
+    color: #171717;
+}
+
+footer {
+    background: #191923;
+    padding: 25px;
+    text-align: center;
+    color: #aaa;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    header nav a {
+        margin: 0 7px;
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    section {
+        padding: 35px 5%;
+    }
+
+    .schedule-container {
+        padding: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🎬 CineMax</div>
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#filmes">Filmes</a>
+        <a href="#reservas">Reservas</a>
+    </nav>
+</header>
+
+<div class="hero" id="inicio">
+    <h1>O melhor do cinema está aqui!</h1>
+    <p>Confira os filmes em cartaz e garanta seu lugar na próxima sessão.</p>
+</div>
+
+<section id="filmes">
+    <h2 class="section-title">🎥 Filmes em Cartaz</h2>
+
+    <div class="movies">
+
+        <div class="movie-card">
+            <img src="https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg"
+                 alt="Pôster de ficção científica">
+            <div class="movie-info">
+                <span class="rating">14 ANOS</span>
+                <h3>Interestelar</h3>
+                <p>Uma equipe de exploradores viaja pelo espaço em busca de um novo lar para a humanidade.</p>
+                <button class="reserve-btn" onclick="selectMovie('Interestelar')">
+                    Reservar ingresso
+                </button>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"
+                 alt="Pôster de Oppenheimer">
+            <div class="movie-info">
+                <span class="rating">16 ANOS</span>
+                <h3>Oppenheimer</h3>
+                <p>A história do físico responsável pelo desenvolvimento da primeira bomba atômica.</p>
+                <button class="reserve-btn" onclick="selectMovie('Oppenheimer')">
+                    Reservar ingresso
+                </button>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <img src="https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg"
+                 alt="Pôster de Barbie">
+            <div class="movie-info">
+                <span class="rating">12 ANOS</span>
+                <h3>Barbie</h3>
+                <p>Barbie embarca em uma aventura no mundo real e descobre novas possibilidades.</p>
+                <button class="reserve-btn" onclick="selectMovie('Barbie')">
+                    Reservar ingresso
+                </button>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <img src="https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg"
+                 alt="Pôster de animação">
+            <div class="movie-info">
+                <span class="rating">LIVRE</span>
+                <h3>Viva – A Vida é uma Festa</h3>
+                <p>Um jovem músico embarca em uma jornada emocionante pelo mundo dos seus antepassados.</p>
+                <button class="reserve-btn" onclick="selectMovie('Viva – A Vida é uma Festa')">
+                    Reservar ingresso
+                </button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="schedule" id="reservas">
+    <h2 class="section-title">🎟️ Reserve seu ingresso</h2>
+
+    <div class="schedule-container">
+        <form id="reservationForm">
+
+            <label for="customer">Nome completo:</label>
+            <input type="text" id="customer" placeholder="Digite seu nome" required>
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" placeholder="seu@email.com" required>
+
+            <label for="movie">Filme:</label>
+            <select id="movie" required>
+                <option value="">Selecione um filme</option>
+                <option>Interestelar</option>
+                <option>Oppenheimer</option>
+                <option>Barbie</option>
+                <option>Viva – A Vida é uma Festa</option>
+            </select>
+
+            <label for="date">Data da sessão:</label>
+            <input type="date" id="date" required>
+
+            <label>Horários disponíveis:</label>
+            <div class="times">
+                <button type="button" class="time-btn" data-time="15:00">15h</button>
+                <button type="button" class="time-btn" data-time="18:00">18h</button>
+                <button type="button" class="time-btn" data-time="21:00">21h</button>
+            </div>
+
+            <label for="quantity">Quantidade de ingressos:</label>
+            <select id="quantity">
+                <option value="1">1 ingresso</option>
+                <option value="2">2 ingressos</option>
+                <option value="3">3 ingressos</option>
+                <option value="4">4 ingressos</option>
+                <option value="5">5 ingressos</option>
+            </select>
+
+            <div class="total">
+                Total: R$ <span id="total">30,00</span>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Confirmar reserva
+            </button>
+
+        </form>
+    </div>
+</section>
+
+<!-- Janela modal -->
+
+<div class="modal" id="confirmationModal"
+     role="dialog" aria-modal="true"
+     aria-labelledby="modalTitle">
+    <div class="modal-content">
+        <h2 id="modalTitle">✅ Reserva confirmada!</h2>
+        <p id="confirmationText"></p>
+        <button class="close-btn" onclick="closeModal()">
+            Fechar
+        </button>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 CineMax - Cinema de Bairro</p>
+    <p>Rua do Entretenimento, 100 - Sua Cidade</p>
+</footer>
+
+<script>
+const form = document.getElementById("reservationForm");
+const movie = document.getElementById("movie");
+const quantity = document.getElementById("quantity");
+const total = document.getElementById("total");
+const modal = document.getElementById("confirmationModal");
+
+let selectedTime = "";
+
+const ticketPrice = 30;
+
+// Data mínima: hoje
+const dateInput = document.getElementById("date");
+const today = new Date();
+const localToday = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+).toISOString().split("T")[0];
+
+dateInput.min = localToday;
+
+// Seleção de horário
+document.querySelectorAll(".time-btn").forEach(button => {
+    button.addEventListener("click", () => {
+
+        document.querySelectorAll(".time-btn")
+            .forEach(btn => btn.classList.remove("selected"));
+
+        button.classList.add("selected");
+
+        selectedTime = button.dataset.time;
+    });
+});
+
+// Atualização do preço
+function updateTotal() {
+    const amount = Number(quantity.value);
+    total.textContent = (amount * ticketPrice)
+        .toFixed(2).replace(".", ",");
+}
+
+quantity.addEventListener("change", updateTotal);
+
+// Seleção de filme pelo cartão
+function selectMovie(name) {
+    movie.value = name;
+    document.getElementById("reservas").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// Envio do formulário
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!selectedTime) {
+        alert("Por favor, selecione um horário!");
+        return;
+    }
+
+    const customer = document.getElementById("customer").value;
+    const email = document.getElementById("email").value;
+    const selectedDate = dateInput.value;
+    const amount = Number(quantity.value);
+    const selectedMovie = movie.value;
+
+    if (!selectedMovie) {
+        alert("Selecione um filme!");
+        return;
+    }
+
+    const formattedDate = new Date(
+        selectedDate + "T12:00:00"
+    ).toLocaleDateString("pt-BR");
+
+    const finalPrice = (amount * ticketPrice)
+        .toFixed(2).replace(".", ",");
+
+    document.getElementById("confirmationText").innerHTML = `
+        Olá, <strong>${escapeHTML(customer)}</strong>!<br><br>
+        Sua reserva foi registrada com os seguintes dados:<br><br>
+        🎬 Filme: ${escapeHTML(selectedMovie)}<br>
+        📅 Data: ${formattedDate}<br>
+        🕒 Horário: ${selectedTime}<br>
+        🎟️ Ingressos: ${amount}<br>
+        💰 Total: R$ ${finalPrice}<br><br>
+        Enviaremos os detalhes para:<br>
+        ${escapeHTML(email)}
+    `;
+
+    modal.style.display = "flex";
+});
+
+function escapeHTML(value) {
+    return value.replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+// Fechar modal
+function closeModal() {
+    modal.style.display = "none";
+    form.reset();
+    selectedTime = "";
+
+    document.querySelectorAll(".time-btn")
+        .forEach(btn => btn.classList.remove("selected"));
+
+    updateTotal();
+}
+
+modal.addEventListener("click", function(event) {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+</script>
+
+</body>
+</html>

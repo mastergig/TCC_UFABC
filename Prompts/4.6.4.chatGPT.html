@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineMax | Cinema</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #10131c;
+    color: #fff;
+}
+
+header {
+    background: #191e2b;
+    padding: 22px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #303849;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    color: #ff424f;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 25px;
+}
+
+.hero {
+    padding: 55px 8%;
+    background: linear-gradient(90deg, #171c29, #29233b);
+}
+
+.hero h1 {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #c0c4d0;
+}
+
+main {
+    padding: 40px 8%;
+}
+
+.section-title {
+    margin-bottom: 25px;
+    font-size: 25px;
+}
+
+.movies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.movie {
+    background: #1c2230;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #303849;
+    transition: .3s;
+}
+
+.movie:hover {
+    transform: translateY(-5px);
+}
+
+.poster {
+    width: 100%;
+    height: 330px;
+    object-fit: cover;
+    display: block;
+}
+
+.movie-info {
+    padding: 20px;
+}
+
+.movie-info h3 {
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.movie-info p {
+    color: #aeb5c5;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.classification {
+    display: inline-block;
+    background: #333d50;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 5px 0 15px;
+}
+
+.room {
+    margin-top: 15px;
+}
+
+.room h4 {
+    font-size: 14px;
+    color: #ff6973;
+    margin-bottom: 10px;
+}
+
+.times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.time-btn {
+    background: #30394b;
+    color: white;
+    border: 1px solid #48536a;
+    padding: 9px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.time-btn:hover {
+    background: #ff424f;
+    border-color: #ff424f;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #9ba3b4;
+    background: #191e2b;
+    margin-top: 50px;
+}
+
+/* MODAIS */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.8);
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    z-index: 10;
+}
+
+.modal-content {
+    background: #202737;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 12px;
+    border: 1px solid #414b60;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #ff5965;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 25px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.modal-content label {
+    display: block;
+    margin: 15px 0 7px;
+    color: #ddd;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 12px;
+    background: #111722;
+    color: white;
+    border: 1px solid #45516a;
+    border-radius: 6px;
+    outline: none;
+}
+
+.modal-content input:focus {
+    border-color: #ff5965;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 13px;
+    background: #ff424f;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.modal-content button:hover {
+    background: #df2938;
+}
+
+.summary {
+    background: #151c29;
+    padding: 15px;
+    border-radius: 8px;
+    line-height: 1.8;
+    color: #d5d9e2;
+}
+
+.price {
+    font-size: 21px;
+    color: #5de0a1;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.success {
+    text-align: center;
+    padding: 15px 0;
+}
+
+.success span {
+    font-size: 55px;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 0 8px;
+        font-size: 14px;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+    }
+
+    main {
+        padding: 30px 5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🎬 CineMax</div>
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#filmes">Filmes</a>
+        <a href="#contato">Contato</a>
+    </nav>
+</header>
+
+<section class="hero" id="inicio">
+    <h1>Seu próximo filme começa aqui!</h1>
+    <p>Confira nossa programação e reserve seu ingresso.</p>
+</section>
+
+<main id="filmes">
+
+    <h2 class="section-title">🍿 Filmes em Cartaz</h2>
+
+    <div class="movies">
+
+        <!-- FILME 1 -->
+        <article class="movie">
+            <img class="poster"
+            src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600"
+            alt="Cena cinematográfica de ficção científica">
+
+            <div class="movie-info">
+                <h3>Além das Estrelas</h3>
+                <p>Ficção Científica • 125 min</p>
+                <span class="classification">12 anos</span>
+
+                <div class="room">
+                    <h4>Sala 01 - 2D</h4>
+                    <div class="times">
+                        <button class="time-btn"
+                        onclick="selecionarSessao('Além das Estrelas','Sala 01','14:00')">14:00</button>
+
+                        <button class="time-btn"
+                        onclick="selecionarSessao('Além das Estrelas','Sala 01','17:00')">17:00</button>
+
+                        <button class="time-btn"
+                        onclick="selecionarSessao('Além das Estrelas','Sala 01','20:00')">20:00</button>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- FILME 2 -->
+        <article class="movie">
+            <img class="poster"
+            src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=600"
+            alt="Cena de filme de suspense">
+
+            <div class="movie-info">
+                <h3>O Último Mistério</h3>
+                <p>Suspense • 110 min</p>
+                <span class="classification">16 anos</span>
+
+                <div class="room">
+                    <h4>Sala 02 - 2D</h4>
+                    <div class="times">
+                        <button class="time-btn"
+                        onclick="selecionarSessao('O Último Mistério','Sala 02','15:00')">15:00</button>
+
+                        <button class="time-btn"
+                        onclick="selecionarSessao('O Último Mistério','Sala 02','18:00')">18:00</button>
+
+                        <button class="time-btn"
+                        onclick="selecionarSessao('O Último Mistério','Sala 02','21:00')">21:00</button>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- FILME 3 -->
+        <article class="movie">
+            <img class="poster"
+            src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600"
+            alt="Cinema com tela de projeção">
+
+            <div class="movie-info">
+                <h3>Aventura no Tempo</h3>
+                <p>Aventura • 105 min</p>
+                <span class="classification">Livre</span>
+
+                <div class="room">
+                    <h4>Sala 03 - 3D</h4>
+                    <div class="times">
+                        <button class="time-btn"
+                        onclick="selecionarSessao('Aventura no Tempo','Sala 03','13:30')">13:30</button>
+
+                        <button class="time-btn"
+                        onclick="selecionarSessao('Aventura no Tempo','Sala 03','16:30')">16:30</button>
+
+                        <button class="time-btn"
+                        onclick="selecionarSessao('Aventura no Tempo','Sala 03','19:30')">19:30</button>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</main>
+
+<!-- MODAL DE QUANTIDADE -->
+<div class="modal" id="modalIngressos">
+    <div class="modal-content">
+
+        <span class="close"
+        onclick="fecharModal('modalIngressos')">&times;</span>
+
+        <h2>🎟️ Escolha seus ingressos</h2>
+
+        <div class="summary" id="resumoSessao"></div>
+
+        <label for="quantidade">Quantidade de ingressos:</label>
+
+        <select id="quantidade" onchange="atualizarPreco()">
+            <option value="1">1 ingresso</option>
+            <option value="2">2 ingressos</option>
+            <option value="3">3 ingressos</option>
+            <option value="4">4 ingressos</option>
+            <option value="5">5 ingressos</option>
+        </select>
+
+        <div class="price" id="precoTotal">Total: R$ 30,00</div>
+
+        <button onclick="abrirConfirmacao()">
+            Continuar reserva
+        </button>
+
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO -->
+<div class="modal" id="modalConfirmacao">
+    <div class="modal-content">
+
+        <span class="close"
+        onclick="fecharModal('modalConfirmacao')">&times;</span>
+
+        <h2>📋 Confirmar agendamento</h2>
+
+        <div class="summary" id="resumoPedido"></div>
+
+        <form id="formReserva">
+            <label for="nome">Nome completo:</label>
+            <input type="text" id="nome"
+            placeholder="Digite seu nome" required>
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email"
+            placeholder="Digite seu e-mail" required>
+
+            <button type="submit">
+                Confirmar reserva
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<!-- MODAL DE SUCESSO -->
+<div class="modal" id="modalSucesso">
+    <div class="modal-content success">
+
+        <span>✅</span>
+        <h2>Reserva realizada!</h2>
+
+        <p id="mensagemSucesso"></p>
+
+        <button onclick="finalizar()">
+            Concluir
+        </button>
+
+    </div>
+</div>
+
+<footer id="contato">
+    <p>© 2026 CineMax - Todos os direitos reservados.</p>
+    <p>Rua do Cinema, 100 - Sua Cidade</p>
+</footer>
+
+<script>
+
+// Dados da sessão selecionada
+let sessao = {
+    filme: "",
+    sala: "",
+    horario: "",
+    quantidade: 1,
+    preco: 30
+};
+
+// Abre a seleção de ingressos
+function selecionarSessao(filme, sala, horario) {
+
+    sessao.filme = filme;
+    sessao.sala = sala;
+    sessao.horario = horario;
+
+    document.getElementById("resumoSessao").innerHTML = `
+        <strong>Filme:</strong> ${sessao.filme}<br>
+        <strong>Sala:</strong> ${sessao.sala}<br>
+        <strong>Horário:</strong> ${sessao.horario}
+    `;
+
+    document.getElementById("quantidade").value = 1;
+
+    atualizarPreco();
+
+    document.getElementById("modalIngressos").style.display = "flex";
+}
+
+// Atualiza o valor total
+function atualizarPreco() {
+
+    sessao.quantidade = Number(
+        document.getElementById("quantidade").value
+    );
+
+    let total = sessao.quantidade * sessao.preco;
+
+    document.getElementById("precoTotal").innerText =
+        "Total: R$ " + total.toFixed(2).replace(".", ",");
+}
+
+// Abre a confirmação
+function abrirConfirmacao() {
+
+    let total = sessao.quantidade * sessao.preco;
+
+    document.getElementById("resumoPedido").innerHTML = `
+        <strong>Filme:</strong> ${sessao.filme}<br>
+        <strong>Sala:</strong> ${sessao.sala}<br>
+        <strong>Horário:</strong> ${sessao.horario}<br>
+        <strong>Ingressos:</strong> ${sessao.quantidade}<br>
+        <strong>Valor unitário:</strong> R$ ${sessao.preco.toFixed(2).replace(".", ",")}<br>
+        <hr>
+        <strong>Total: R$ ${total.toFixed(2).replace(".", ",")}</strong>
+    `;
+
+    fecharModal("modalIngressos");
+
+    document.getElementById("modalConfirmacao").style.display = "flex";
+}
+
+// Processa o formulário
+document.getElementById("formReserva").addEventListener(
+    "submit", function(event) {
+
+        event.preventDefault();
+
+        let nome = document.getElementById("nome").value;
+
+        document.getElementById("mensagemSucesso").innerText =
+            "Obrigado, " + nome +
+            "! Sua solicitação de reserva foi registrada.";
+
+        fecharModal("modalConfirmacao");
+
+        document.getElementById("modalSucesso").style.display = "flex";
+    }
+);
+
+// Fecha uma modal
+function fecharModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+// Finaliza o processo
+function finalizar() {
+    fecharModal("modalSucesso");
+    document.getElementById("formReserva").reset();
+}
+
+// Fecha ao clicar fora da janela
+window.addEventListener("click", function(event) {
+
+    if (event.target.classList.contains("modal")) {
+        event.target.style.display = "none";
+    }
+
+});
+
+</script>
+
+</body>
+</html>

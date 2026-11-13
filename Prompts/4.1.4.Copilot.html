@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estúdio de Fotografia</title>
+    <link rel="stylesheet" href="4.1.4.Copilot.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <h1>Studio Photo</h1>
+        </div>
+
+        <nav class="nav">
+            <a href="#produtos">Produtos</a>
+            <a href="#contato">Contato</a>
+            <a href="#" class="cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span>3</span>
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="produtos" class="products">
+            <h2>Produtos em Destaque</h2>
+
+            <div class="product-grid">
+                <article class="product-card">
+                    <img src="https://via.placeholder.com/400x250" alt="Ensaio Fotográfico">
+                    <h3>Ensaio Individual</h3>
+                    <p>Fotos profissionais em estúdio.</p>
+                    <strong>R$ 299,00</strong>
+                </article>
+
+                <article class="product-card">
+                    <img src="https://via.placeholder.com/400x250" alt="Ensaio Casal">
+                    <h3>Ensaio Casal</h3>
+                    <p>Momentos especiais registrados.</p>
+                    <strong>R$ 499,00</strong>
+                </article>
+
+                <article class="product-card">
+                    <img src="https://via.placeholder.com/400x250" alt="Fotografia Evento">
+                    <h3>Cobertura de Eventos</h3>
+                    <p>Registros completos e profissionais.</p>
+                    <strong>R$ 1.299,00</strong>
+                </article>
+
+                <article class="product-card">
+                    <img src="https://via.placeholder.com/400x250" alt="Book Fotográfico">
+                    <h3>Book Fotográfico</h3>
+                    <p>Portfólio personalizado.</p>
+                    <strong>R$ 799,00</strong>
+                </article>
+            </div>
+        </section>
+
+        <section id="contato" class="contact">
+            <h2>Entre em Contato</h2>
+
+            <form action="mailto:contato@studiophoto.com" method="post" enctype="text/plain">
+                <input type="text" name="nome" placeholder="Seu nome" required>
+
+                <input type="email" name="email" placeholder="Seu e-mail" required>
+
+                <textarea name="mensagem" rows="5" placeholder="Sua mensagem" required></textarea>
+
+                <button type="submit">Enviar E-mail</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Studio Photo. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>

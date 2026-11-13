@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cine Aurora — Em cartaz</title>
+<style>
+  :root {
+    --bg: #0f0f14;
+    --panel: #181822;
+    --panel-2: #22222e;
+    --border: #2a2a38;
+    --text: #f3f3f7;
+    --muted: #9a9ab0;
+    --accent: #e50914;
+    --accent-hover: #c50812;
+    --accent-2: #ff6b6b;
+    --ok: #22c55e;
+    --radius: 14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .wrap { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 2px;
+  }
+
+  /* Cabeçalho */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(15, 15, 20, 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; gap: 16px; flex-wrap: wrap; }
+  .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.5px; }
+  .logo span { color: var(--accent); }
+  nav a { color: var(--muted); text-decoration: none; margin-left: 20px; font-size: 0.95rem; }
+  nav a:hover { color: var(--text); }
+
+  /* Hero e datas */
+  .hero { padding: 48px 0 16px; text-align: center; }
+  .hero h1 { font-size: 2.2rem; margin-bottom: 8px; }
+  .hero p { color: var(--muted); }
+  .dates { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+  .date-btn {
+    background: var(--panel);
+    border: 1px solid #2e2e3e;
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    min-width: 110px;
+    text-align: center;
+    font: inherit;
+    text-transform: capitalize;
+  }
+  .date-btn small { display: block; color: var(--muted); font-size: 0.75rem; text-transform: capitalize; }
+  .date-btn.active { background: var(--accent); border-color: var(--accent); }
+  .date-btn.active small { color: #ffe5e5; }
+
+  /* Cartões dos filmes */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 22px;
+    padding: 24px 0 48px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .poster {
+    position: relative;
+    height: 200px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+  }
+  .poster::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.25), transparent 50%);
+  }
+  .poster h2 { position: relative; z-index: 1; font-size: 1.4rem; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
+  .badge {
+    position: absolute; top: 12px; right: 12px; z-index: 1;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .info { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .meta { color: var(--muted); font-size: 0.85rem; }
+  .synopsis { font-size: 0.9rem; color: #c9c9d6; }
+  .sessions-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: auto;
+  }
+  .sessions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .time-btn {
+    background: transparent;
+    border: 1px solid var(--ok);
+    color: var(--ok);
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+  }
+  .time-btn:hover:not(:disabled) { background: var(--ok); color: #052e16; }
+  .time-btn:disabled { border-color: #555; color: #777; cursor: not-allowed; }
+
+  /* Reservas */
+  .bookings-section { padding: 0 0 60px; }
+  .bookings-section h2 { font-size: 1.2rem; margin-bottom: 12px; }
+  .bookings { list-style: none; display: grid; gap: 8px; }
+  .bookings li {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+  .muted { color: var(--muted); }
+
+  /* Diálogo de reserva */
+  dialog {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid #33334a;
+    border-radius: var(--radius);
+    padding: 0;
+    width: min(480px, 92vw);
+  }
+  dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
+  .dlg-head {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .dlg-head strong { font-size: 1.1rem; }
+  form { padding: 20px; display: grid; gap: 12px; }
+  label { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; color: var(--muted); }
+  input, select {
+    background: var(--panel-2);
+    border: 1px solid #3a3a4e;
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font: inherit;
+  }
+  input.invalid { border-color: var(--accent); }
+  .err { color: var(--accent-2); font-size: 0.8rem; min-height: 1em; margin-top: -8px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .summary {
+    background: var(--panel-2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    display: grid;
+    gap: 4px;
+  }
+  .total { font-size: 1.1rem; font-weight: 700; color: var(--ok); }
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: 0;
+    padding: 12px;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid #3a3a4e;
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+  }
+  .ticket { text-align: center; padding: 28px 20px; display: grid; gap: 12px; justify-items: center; }
+  .ticket h3 { font-size: 1.3rem; color: var(--ok); }
+  .code { font-family: ui-monospace, monospace; font-size: 1.6rem; letter-spacing: 3px; font-weight: 700; }
+
+  footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.7rem; }
+    nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap topbar">
+    <div class="logo">Cine <span>Aurora</span></div>
+    <nav>
+      <a href="#em-cartaz">Em cartaz</a>
+      <a href="#reservas">Minhas reservas</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" id="em-cartaz">
+    <h1>Em cartaz</h1>
+    <p>Escolha o dia, o filme e o horário e reserve seu ingresso.</p>
+    <div class="dates" id="dates" role="group" aria-label="Escolha o dia"></div>
+  </section>
+
+  <section class="grid" id="movies" aria-live="polite"></section>
+
+  <section class="bookings-section" id="reservas">
+    <h2>Reservas feitas nesta página</h2>
+    <ul class="bookings" id="bookings"></ul>
+  </section>
+</main>
+
+<footer id="contato">
+  Cine Aurora · Rua das Flores, 100 — Centro · Sessões todos os dias · (00) 0000-0000
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <div class="dlg-head">
+    <strong id="dlg-title">Reservar ingresso</strong>
+    <button type="button" class="btn-ghost" id="dlg-close" aria-label="Fechar">✕</button>
+  </div>
+
+  <form id="booking-form" novalidate>
+    <div class="summary" id="summary"></div>
+
+    <label>Nome completo
+      <input name="nome" id="nome" autocomplete="name" required>
+    </label>
+    <div class="err" data-for="nome"></div>
+
+    <label>E-mail
+      <input name="email" id="email" type="email" autocomplete="email" required>
+    </label>
+    <div class="err" data-for="email"></div>
+
+    <label>Telefone (opcional)
+      <input name="telefone" id="telefone" type="tel" autocomplete="tel" placeholder="(11) 90000-0000">
+    </label>
+    <div class="err" data-for="telefone"></div>
+
+    <div class="row">
+      <label>Tipo de ingresso
+        <select name="tipo" id="tipo">
+          <option value="inteira">Inteira — R$ 30,00</option>
+          <option value="meia">Meia-entrada — R$ 15,00</option>
+        </select>
+      </label>
+      <label>Quantidade
+        <input name="quantidade" id="quantidade" type="number" min="1" value="1" inputmode="numeric">
+      </label>
+    </div>
+    <div class="err" data-for="quantidade"></div>
+
+    <div class="summary">
+      <div>Total: <span class="total" id="total">R$ 30,00</span></div>
+    </div>
+
+    <button class="btn" type="submit">Confirmar reserva</button>
+  </form>
+
+  <div class="ticket" id="ticket" hidden>
+    <h3>Reserva confirmada!</h3>
+    <p id="ticket-info"></p>
+    <div class="code" id="ticket-code"></div>
+    <p class="muted">Apresente este código na bilheteria.</p>
+    <button type="button" class="btn" id="ticket-done">Fechar</button>
+  </div>
+</dialog>
+
+<script>
+  /* ============ Dados ============ */
+  const CAPACITY = 30;        // lugares por sessão
+  const MAX_TICKETS = 8;      // máximo de ingressos por reserva
+  const PRICES = { inteira: 30, meia: 15 };
+  const TIPO_LABEL = { inteira: 'inteira', meia: 'meia-entrada' };
+
+  const MOVIES = [
+    {
+      id: 1, titulo: 'Horizonte Estelar', genero: 'Ficção científica', duracao: 132,
+      classificacao: '12 anos', sala: 'Sala 1', colors: ['#1d4ed8', '#7c3aed'],
+      horarios: ['14:00', '16:30', '19:00', '21:40'],
+      sinopse: 'Uma equipe de exploradores é enviada para investigar um sinal misterioso vindo dos confins do sistema solar.'
+    },
+    {
+      id: 2, titulo: 'A Casa à Beira-Mar', genero: 'Drama', duracao: 108,
+      classificacao: '14 anos', sala: 'Sala 2', colors: ['#0f766e', '#065f46'],
+      horarios: ['15:00', '18:20', '21:00'],
+      sinopse: 'Após a morte do pai, uma professora volta à casa da infância na costa e precisa decidir o destino do lugar.'
+    },
+    {
+      id: 3, titulo: 'Pé na Estrada', genero: 'Comédia', duracao: 95,
+      classificacao: 'Livre', sala: 'Sala 3', colors: ['#f59e0b', '#ea580c'],
+      horarios: ['13:30', '16:00', '20:30'],
+      sinopse: 'Dois irmãos que não se falam há anos embarcam numa viagem de carro para cumprir o último desejo da avó.'
+    },
+    {
+      id: 4, titulo: 'Sombras do Porto', genero: 'Suspense', duracao: 118,
+      classificacao: '16 anos', sala: 'Sala 1', colors: ['#374151', '#111827'],
+      horarios: ['17:10', '19:45', '22:20'],
+      sinopse: 'Um detetive aposentado reabre um caso antigo quando uma nova vítima aparece com a mesma assinatura.'
+    }
+  ];
+
+  /* ============ Estado ============ */
+  const state = { dates: [], date: null, bookings: [], current: null };
+
+  /* ============ Referências ============ */
+  const $ = sel => document.querySelector(sel);
+  const dlg = $('#dlg');
+  const form = $('#booking-form');
+  const nome = $('#nome');
+  const email = $('#email');
+  const telefone = $('#telefone');
+  const tipo = $('#tipo');
+  const quantidade = $('#quantidade');
+  const ticket = $('#ticket');
+
+  /* ============ Utilidades ============ */
+  const fmtBRL = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const isoDate = d => [
+    d.getFullYear(),
+    String(d.getMonth() + 1).padStart(2, '0'),
+    String(d.getDate()).padStart(2, '0')
+  ].join('-');
+  const dateLabel = d => d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+  const genCode = () => Math.random().toString(36).slice(2, 8).toUpperCase().padEnd(6, 'X');
+  const lineEl = text => {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div;
+  };
+
+  function buildDates(total = 4) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Array.from({ length: total }, (_, i) => {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      return d;
+    });
+  }
+
+  function sessionKey(movieId, date, time) {
+    return `${movieId}|${isoDate(date)}|${time}`;
+  }
+
+  function soldFor(key) {
+    return state.bookings
+      .filter(b => b.key === key)
+      .reduce((sum, b) => sum + b.qty, 0);
+  }
+
+  function isPast(date, time) {
+    const [h, m] = time.split(':').map(Number);
+    const dt = new Date(date);
+    dt.setHours(h, m, 0, 0);
+    return dt < new Date();
+  }
+
+  /* ============ Renderização ============ */
+  function renderDates() {
+    $('#dates').replaceChildren(...state.dates.map((d, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'date-btn';
+      const active = d === state.date;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', String(active));
+
+      const small = document.createElement('small');
+      small.textContent = i === 0 ? 'Hoje' : d.toLocaleDateString('pt-BR', { weekday: 'short' });
+      btn.append(small, d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
+
+      btn.addEventListener('click', () => {
+        state.date = d;
+        renderDates();
+        renderMovies();
+      });
+      return btn;
+    }));
+  }
+
+  function renderMovies() {
+    $('#movies').replaceChildren(...MOVIES.map(renderCard));
+  }
+
+  function renderCard(movie) {
+    const card = document.createElement('article');
+    card.className = 'card';
+
+    const poster = document.createElement('div');
+    poster.className = 'poster';
+    poster.style.setProperty('--c1', movie.colors[0]);
+    poster.style.setProperty('--c2', movie.colors[1]);
+
+    const badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.textContent = movie.classificacao;
+
+    const title = document.createElement('h2');
+    title.textContent = movie.titulo;
+    poster.append(badge, title);
+
+    const info = document.createElement('div');
+    info.className = 'info';
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.textContent = `${movie.genero} · ${movie.duracao} min · ${movie.sala}`;
+
+    const synopsis = document.createElement('p');
+    synopsis.className = 'synopsis';
+    synopsis.textContent = movie.sinopse;
+
+    const label = document.createElement('div');
+    label.className = 'sessions-label';
+    label.textContent = 'Horários do dia selecionado';
+
+    const sessions = document.createElement('div');
+    sessions.className = 'sessions';
+    movie.horarios.forEach(time => sessions.append(renderSessionButton(movie, time)));
+
+    info.append(meta, synopsis, label, sessions);
+    card.append(poster, info);
+    return card;
+  }
+
+  function renderSessionButton(movie, time) {
+    const key = sessionKey(movie.id, state.date, time);
+    const left = CAPACITY - soldFor(key);
+    const past = isPast(state.date, time);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'time-btn';
+
+    if (past) {
+      btn.disabled = true;
+      btn.textContent = `${time} · encerrada`;
+    } else if (left <= 0) {
+      btn.disabled = true;
+      btn.textContent = `${time} · esgotado`;
+    } else {
+      btn.textContent = left <= 5 ? `${time} · ${left} restantes` : time;
+      btn.addEventListener('click', () => openBooking(movie, time));
+    }
+    return btn;
+  }
+
+  function renderBookings() {
+    const list = $('#bookings');
+    if (!state.bookings.length) {
+      const li = document.createElement('li');
+      li.className = 'muted';
+      li.textContent = 'Nenhuma reserva feita nesta página ainda.';
+      list.replaceChildren(li);
+      return;
+    }
+    list.replaceChildren(...state.bookings.map(b => {
+      const li = document.createElement('li');
+      li.textContent = `${b.code} — ${b.titulo}, ${b.data} às ${b.horario} (${b.sala}) · ${b.qty}x ${TIPO_LABEL[b.tipo]} · ${b.nome}`;
+      return li;
+    }));
+  }
+
+  /* ============ Formulário ============ */
+  function openBooking(movie, time) {
+    const key = sessionKey(movie.id, state.date, time);
+    const left = CAPACITY - soldFor(key);
+    state.current = { movie, time, key, date: state.date, sala: movie.sala };
+
+    $('#dlg-title').textContent = movie.titulo;
+    $('#summary').replaceChildren(
+      lineEl(`📅 ${dateLabel(state.date)} às ${time}`),
+      lineEl(`🎬 ${movie.sala} · ${movie.classificacao}`),
+      lineEl(`🎟️ ${left} lugares disponíveis`)
+    );
+
+    form.reset();
+    form.hidden = false;
+    ticket.hidden = true;
+    clearErrors();
+    updateTotal();
+    dlg.showModal();
+    nome.focus();
+  }
+
+  function maxTickets() {
+    if (!state.current) return 0;
+    const left = CAPACITY - soldFor(state.current.key);
+    return Math.max(0, Math.min(MAX_TICKETS, left));
+  }
+
+  const RULES = {
+    nome: v => v.trim().length >= 3 ? '' : 'Informe seu nome completo (mínimo de 3 letras).',
+    email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Informe um e-mail válido.',
+    telefone: v => !v.trim() || /^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/.test(v.trim())
+      ? '' : 'Use o formato (11) 90000-0000.',
+    quantidade: v => {
+      const n = Number(v);
+      const max = maxTickets();
+      return Number.isInteger(n) && n >= 1 && n <= max
+        ? '' : `Escolha entre 1 e ${max} ingresso(s).`;
+    }
+  };
+
+  function setError(name, msg) {
+    const input = form.elements[name];
+    input.classList.toggle('invalid', Boolean(msg));
+    input.setAttribute('aria-invalid', String(Boolean(msg)));
+    document.querySelector(`[data-for="${name}"]`).textContent = msg;
+  }
+
+  function clearErrors() {
+    Object.keys(RULES).forEach(name => setError(name, ''));
+  }
+
+  function validate() {
+    let ok = true;
+    let first = null;
+    for (const [name, rule] of Object.entries(RULES)) {
+      const input = form.elements[name];
+      const msg = rule(input.value);
+      setError(name, msg);
+      if (msg) {
+        ok = false;
+        first ??= input;
+      }
+    }
+    first?.focus();
+    return ok;
+  }
+
+  function updateTotal() {
+    const qty = Math.max(0, Number(quantidade.value) || 0);
+    $('#total').textContent = fmtBRL(qty * PRICES[tipo.value]);
+  }
+
+  function showTicket(b) {
+    form.hidden = true;
+    ticket.hidden = false;
+    $('#ticket-info').textContent =
+      `${b.titulo} · ${b.data} às ${b.horario} · ${b.sala} · ${b.qty}x ${TIPO_LABEL[b.tipo]} (${fmtBRL(b.total)})`;
+    $('#ticket-code').textContent = b.code;
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const cur = state.current;
+    const qty = Number(quantidade.value);
+    const booking = {
+      code: genCode(),
+      key: cur.key,
+      titulo: cur.movie.titulo,
+      data: dateLabel(cur.date),
+      horario: cur.time,
+      sala: cur.sala,
+      nome: nome.value.trim(),
+      tipo: tipo.value,
+      qty,
+      total: qty * PRICES[tipo.value]
+    };
+
+    state.bookings.push(booking);
+    showTicket(booking);
+    renderMovies();     // atualiza lugares restantes
+    renderBookings();
+  });
+
+  form.addEventListener('input', e => {
+    const name = e.target.name;
+    // Só revalida enquanto o campo ainda estiver com erro
+    if (RULES[name] && e.target.classList.contains('invalid')) {
+      setError(name, RULES[name](e.target.value));
+    }
+    if (e.target === quantidade || e.target === tipo) updateTotal();
+  });
+  tipo.addEventListener('change', updateTotal);
+
+  $('#dlg-close').addEventListener('click', () => dlg.close());
+  $('#ticket-done').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+
+  /* ============ Inicialização ============ */
+  state.dates = buildDates(4);
+  state.date = state.dates[0];
+  renderDates();
+  renderMovies();
+  renderBookings();
+
+  // Atualiza horários encerrados e disponibilidade a cada minuto
+  setInterval(renderMovies, 60 * 1000);
+</script>
+</body>
+</html>

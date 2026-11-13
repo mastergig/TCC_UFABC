@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATELIER URBANO — Moda Contemporânea &amp; Minimalista</title>
+  <!-- Carregamento do Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fonte Inter do Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#18181b',
+              stone: '#f5f5f4',
+              accent: '#b45309',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-stone-50 text-zinc-900 font-sans antialiased selection:bg-zinc-900 selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- PASSO 1: CABEÇALHO FIXO E VITRINE DE PRODUTOS                         -->
+  <!-- ===================================================================== -->
+
+  <!-- Cabeçalho fixo no topo -->
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-zinc-200/80 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <!-- Logo / Nome da Loja -->
+      <a href="#" class="flex items-center gap-2.5 group focus:outline-none">
+        <span class="w-9 h-9 rounded-xl bg-zinc-900 text-white flex items-center justify-center font-bold tracking-tighter text-sm group-hover:bg-amber-800 transition-colors">
+          AU
+        </span>
+        <div class="flex flex-col">
+          <span class="text-base sm:text-lg font-bold tracking-widest uppercase text-zinc-900 leading-none">
+            Atelier Urbano
+          </span>
+          <span class="text-[10px] tracking-[0.2em] uppercase text-zinc-400 mt-1 hidden sm:block">
+            Essenciais Contemporâneos
+          </span>
+        </div>
+      </a>
+
+      <!-- Navegação rápida (Desktop) -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600">
+        <button onclick="filterProducts('Todos')" class="filter-nav-btn text-zinc-900 font-semibold transition-colors hover:text-zinc-900" data-cat="Todos">Coleção</button>
+        <button onclick="filterProducts('Superiores')" class="filter-nav-btn transition-colors hover:text-zinc-900" data-cat="Superiores">Superiores</button>
+        <button onclick="filterProducts('Inferiores')" class="filter-nav-btn transition-colors hover:text-zinc-900" data-cat="Inferiores">Inferiores</button>
+        <button onclick="filterProducts('Calçados')" class="filter-nav-btn transition-colors hover:text-zinc-900" data-cat="Calçados">Calçados</button>
+      </nav>
+
+      <!-- Botão do Carrinho de Compras com Contador Dinâmico -->
+      <button
+        id="open-cart-btn"
+        aria-label="Abrir carrinho de compras"
+        class="relative inline-flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200/80 active:scale-95 text-zinc-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-zinc-900/20"
+      >
+        <!-- Ícone SVG de Sacola/Carrinho -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-zinc-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <span class="text-sm font-medium hidden sm:inline">Sacola</span>
+        <!-- Badge Contador -->
+        <span
+          id="cart-badge"
+          class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 text-xs font-bold text-white bg-zinc-900 rounded-full transition-transform duration-200"
+        >
+          0
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Banner / Hero Minimalista da Coleção -->
+  <section class="bg-white border-b border-zinc-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="max-w-2xl">
+        <span class="inline-block px-3 py-1 rounded-full bg-stone-100 text-zinc-600 text-xs font-semibold tracking-wider uppercase mb-3">
+          Nova Temporada • Outono / Inverno
+        </span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 leading-tight">
+          Silhuetas atemporais para o ritmo da cidade.
+        </h1>
+        <p class="mt-3 text-sm sm:text-base text-zinc-500 leading-relaxed">
+          Peças confeccionadas em algodão orgânico pesado, sarja estruturada e tecidos de alta durabilidade com acabamento minimalista.
+        </p>
+      </div>
+
+      <!-- Filtros Mobile / Pills de Categoria -->
+      <div class="flex flex-wrap gap-2" id="category-pills">
+        <button onclick="filterProducts('Todos')" data-cat="Todos" class="pill-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-zinc-900 text-white shadow-sm transition-all">
+          Todos (8)
+        </button>
+        <button onclick="filterProducts('Superiores')" data-cat="Superiores" class="pill-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-stone-100 text-zinc-700 hover:bg-stone-200 transition-all">
+          Superiores
+        </button>
+        <button onclick="filterProducts('Inferiores')" data-cat="Inferiores" class="pill-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-stone-100 text-zinc-700 hover:bg-stone-200 transition-all">
+          Inferiores
+        </button>
+        <button onclick="filterProducts('Calçados')" data-cat="Calçados" class="pill-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-stone-100 text-zinc-700 hover:bg-stone-200 transition-all">
+          Calçados
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grade Principal de Produtos -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+    <div class="flex items-center justify-between mb-6">
+      <h2 id="grid-heading" class="text-lg sm:text-xl font-semibold text-zinc-900">
+        Todos os Produtos
+      </h2>
+      <span id="product-count-label" class="text-xs sm:text-sm text-zinc-500">
+        Exibindo 8 peças
+      </span>
+    </div>
+
+    <!-- Container CSS Grid Responsivo -->
+    <div
+      id="products-grid"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"
+    >
+      <!-- Os cards de produtos serão renderizados dinamicamente via JavaScript -->
+    </div>
+  </main>
+
+  <!-- Rodapé Minimalista -->
+  <footer class="bg-white border-t border-zinc-200 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-zinc-500">
+      <p>© 2026 ATELIER URBANO. Todos os direitos reservados.</p>
+      <p>Frete grátis para compras acima de R$ 399,00 • Troca fácil em 30 dias</p>
+    </div>
+  </footer>
+
+  <!-- Toast de Notificação Discreto (Feedback ao adicionar item) -->
+  <div
+    id="toast-notification"
+    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 pointer-events-none opacity-0 translate-y-4 transition-all duration-300"
+  >
+    <div class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-zinc-900 text-white shadow-xl text-sm font-medium">
+      <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </span>
+      <span id="toast-message">Peça adicionada à sacola!</span>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- PASSO 3: BARRA LATERAL DESLIZANTE (CART DRAWER) + OVERLAY             -->
+  <!-- ===================================================================== -->
+
+  <!-- Backdrop / Fundo Escuro Clicável -->
+  <div
+    id="cart-overlay"
+    class="fixed inset-0 z-40 bg-zinc-950/50 backdrop-blur-xs opacity-0 pointer-events-none transition-opacity duration-300"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Painel Lateral Deslizante (Drawer) -->
+  <aside
+    id="cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="drawer-title"
+    class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-out"
+  >
+    <!-- Cabeçalho do Drawer -->
+    <div class="px-6 py-5 border-b border-zinc-200 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <h2 id="drawer-title" class="text-lg font-bold text-zinc-900">Sua Sacola</h2>
+        <span
+          id="drawer-count-pill"
+          class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-stone-100 text-zinc-700"
+        >
+          0 itens
+        </span>
+      </div>
+      <button
+        id="close-cart-btn"
+        aria-label="Fechar sacola"
+        class="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors focus:outline-none"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Barra de Progresso de Frete Grátis -->
+    <div class="px-6 py-3 bg-stone-50 border-b border-zinc-200/70">
+      <p id="shipping-status-text" class="text-xs text-zinc-600 font-medium mb-1.5">
+        Faltam <span class="font-bold text-zinc-900">R$ 399,00</span> para ganhar Frete Grátis
+      </p>
+      <div class="w-full h-1.5 bg-zinc-200 rounded-full overflow-hidden">
+        <div id="shipping-progress-bar" class="h-full bg-zinc-900 rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Corpo do Drawer: Lista de Itens ou Estado Vazio -->
+    <div id="cart-items-container" class="flex-1 overflow-y-auto px-6 py-4 divide-y divide-zinc-100">
+      <!-- Renderizado dinamicamente via JavaScript -->
+    </div>
+
+    <!-- Rodapé do Drawer: Subtotal, Total e Botão Finalizar Compra -->
+    <div id="cart-footer" class="p-6 border-t border-zinc-200 bg-stone-50/70 space-y-4">
+      <!-- Mensagem de Confirmação de Compra Simulada (Oculta por padrão) -->
+      <div id="checkout-confirmation" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm space-y-1">
+        <div class="flex items-center gap-2 font-semibold text-emerald-800">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          <span>Pedido realizado com sucesso!</span>
+        </div>
+        <p class="text-xs text-emerald-700 leading-relaxed">
+          Obrigado por comprar no <strong>Atelier Urbano</strong>. Enviamos os detalhes do rastreamento para o seu e-mail.
+        </p>
+      </div>
+
+      <div id="cart-summary-block" class="space-y-2.5">
+        <div class="flex items-center justify-between text-sm text-zinc-500">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="font-medium text-zinc-800">R$ 0,00</span>
+        </div>
+        <div class="flex items-center justify-between text-sm text-zinc-500">
+          <span>Entrega estimada</span>
+          <span id="cart-shipping" class="font-medium text-zinc-800">R$ 24,90</span>
+        </div>
+        <div class="pt-2.5 border-t border-zinc-200 flex items-center justify-between">
+          <span class="text-base font-bold text-zinc-900">Total</span>
+          <span id="cart-total" class="text-xl font-bold text-zinc-900">R$ 0,00</span>
+        </div>
+
+        <button
+          id="checkout-btn"
+          onclick="handleCheckout()"
+          class="w-full mt-2 py-3.5 px-6 rounded-xl bg-zinc-900 hover:bg-zinc-800 active:scale-[0.99] disabled:bg-zinc-300 disabled:cursor-not-allowed text-white font-semibold text-sm tracking-wide shadow-sm transition-all duration-200 flex items-center justify-center gap-2"
+        >
+          <span>Finalizar Compra</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===================================================================== -->
+  <!-- PASSO 2: LÓGICA JAVASCRIPT (CATÁLOGO, ESTADO DO CARRINHO E DRAWER)    -->
+  <!-- ===================================================================== -->
+  <script>
+    /**
+     * 1. CATÁLOGO DE PRODUTOS (8 Peças de Vestuário com Ilustrações SVG Estilizadas)
+     * Cada produto possui um identificador único, título, categoria, descrição,
+     * preço numérico, cor de fundo editorial e uma ilustração vetorial limpa.
+     */
+    const PRODUCTS = [
+      {
+        id: 'prod-1',
+        name: 'Camiseta Oversized Heavyweight',
+        category: 'Superiores',
+        description: 'Algodão 100% 280gsm com gola canelada estruturada • Off-White',
+        price: 149.90,
+        badge: 'Mais Vendido',
+        bgAccent: 'bg-stone-100',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M68 35C76 47 124 47 132 35L176 58L160 96L138 86V188H62V86L40 96L24 58L68 35Z" fill="#FAFAF9" stroke="#27272A" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M68 35C82 54 118 54 132 35" stroke="#27272A" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M62 178H138" stroke="#D6D3D1" stroke-width="1.5" stroke-dasharray="3 3"/>
+          </svg>
+        `
+      },
+      {
+        id: 'prod-2',
+        name: 'Jaqueta Jeans Selvedge Raw',
+        category: 'Superiores',
+        description: 'Denim índigo 14oz não lavado com botões metálicos foscos',
+        price: 389.90,
+        badge: 'Edição Limitada',
+        bgAccent: 'bg-slate-100',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M65 34L85 46H115L135 34L175 56L164 148L142 145L140 84V186H60V84L58 145L36 148L25 56L65 34Z" fill="#334155" stroke="#0F172A" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M100 46V186" stroke="#0F172A" stroke-width="2.5"/>
+            <rect x="70" y="76" width="22" height="26" rx="2" stroke="#94A3B8" stroke-width="1.8"/>
+            <rect x="108" y="76" width="22" height="26" rx="2" stroke="#94A3B8" stroke-width="1.8"/>
+            <circle cx="100" cy="68" r="2.2" fill="#E2E8F0"/>
+            <circle cx="100" cy="98" r="2.2" fill="#E2E8F0"/>
+            <circle cx="100" cy="128" r="2.2" fill="#E2E8F0"/>
+            <circle cx="100" cy="158" r="2.2" fill="#E2E8F0"/>
+          </svg>
+        `
+      },
+      {
+        id: 'prod-3',
+        name: 'Calça Cargo Utilitária Sarja',
+        category: 'Inferiores',
+        description: 'Modelagem reta ampla com bolsos laterais • Verde Oliva',
+        price: 279.90,
+        badge: null,
+        bgAccent: 'bg-stone-100',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M62 28H138L148 192H112L100 92L88 192H52L62 28Z" fill="#4D5D53" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M62 42H138" stroke="#1C1917" stroke-width="2"/>
+            <rect x="49" y="96" width="16" height="34" rx="2" fill="#3F4D44" stroke="#1C1917" stroke-width="2"/>
+            <rect x="135" y="96" width="16" height="34" rx="2" fill="#3F4D44" stroke="#1C1917" stroke-width="2"/>
+          </svg>
+        `
+      },
+      {
+        id: 'prod-4',
+        name: 'Moletom Canguru Minimalista',
+        category: 'Superiores',
+        description: 'Felpa macia penteada 400gsm sem estampa • Carvão',
+        price: 259.90,
+        badge: 'Novo',
+        bgAccent: 'bg-zinc-100',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M66 42C66 24 134 24 134 42L174 62L162 146L142 143L138 86V186H62V86L58 143L38 146L26 62L66 42Z" fill="#27272A" stroke="#09090B" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M74 44C84 62 116 62 126 44" stroke="#52525B" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M76 132H124L130 174H70L76 132Z" stroke="#52525B" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="92" y1="56" x2="92" y2="82" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round"/>
+            <line x1="108" y1="56" x2="108" y2="82" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        `
+      },
+      {
+        id: 'prod-5',
+        name: 'Vestido Midi Linho Puro',
+        category: 'Superiores',
+        description: 'Caimento fluido com alças reguláveis e fenda lateral • Areia',
+        price: 319.90,
+        badge: 'Destaque',
+        bgAccent: 'bg-amber-50/70',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M76 26V54M124 26V54" stroke="#78350F" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M68 54C82 64 118 64 132 54L148 194H52L68 54Z" fill="#E7D7C1" stroke="#451A03" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M64 96H136" stroke="#B45309" stroke-width="1.5" stroke-opacity="0.4"/>
+          </svg>
+        `
+      },
+      {
+        id: 'prod-6',
+        name: 'Calça Alfaiataria Plissada',
+        category: 'Inferiores',
+        description: 'Corte wide-leg com pregas frontais e cintura média • Preto',
+        price: 299.90,
+        badge: null,
+        bgAccent: 'bg-zinc-100',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M64 28H136L146 192H108L100 88L92 192H54L64 28Z" fill="#18181B" stroke="#09090B" stroke-width="2.5" stroke-linejoin="round"/>
+            <line x1="82" y1="42" x2="76" y2="175" stroke="#3F3F46" stroke-width="1.8"/>
+            <line x1="118" y1="42" x2="124" y2="175" stroke="#3F3F46" stroke-width="1.8"/>
+          </svg>
+        `
+      },
+      {
+        id: 'prod-7',
+        name: 'Tênis Casual Couro Low-Top',
+        category: 'Calçados',
+        description: 'Couro legítimo macio com solado caixa vulcanizado • Branco/Goma',
+        price: 429.90,
+        badge: 'Frete Grátis',
+        bgAccent: 'bg-stone-100',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M28 134C28 122 44 114 74 108L98 84C106 94 122 96 134 88L164 114C172 120 174 128 174 138H28V134Z" fill="#FFFFFF" stroke="#27272A" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M26 138H176V152C176 155 173 158 170 158H32C29 158 26 155 26 152V138Z" fill="#D6B892" stroke="#27272A" stroke-width="2.5"/>
+            <line x1="86" y1="98" x2="96" y2="106" stroke="#27272A" stroke-width="2" stroke-linecap="round"/>
+            <line x1="76" y1="106" x2="86" y2="114" stroke="#27272A" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        `
+      },
+      {
+        id: 'prod-8',
+        name: 'Bota Chelsea Camurça',
+        category: 'Calçados',
+        description: 'Camurça hidrofugada com elástico lateral e sola tratorada • Café',
+        price: 489.90,
+        badge: null,
+        bgAccent: 'bg-amber-50/60',
+        svgIcon: `
+          <svg viewBox="0 0 200 220" class="w-40 h-44 drop-shadow-sm transition-transform duration-500 group-hover:scale-105" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M78 58H126L132 114C154 118 172 126 172 142H68V58H78Z" fill="#5C4033" stroke="#291D18" stroke-width="2.5" stroke-linejoin="round"/>
+            <rect x="88" y="68" width="22" height="44" rx="8" fill="#3E2A21" stroke="#291D18" stroke-width="2"/>
+            <path d="M66 142H174V156H66V142Z" fill="#1C1917" stroke="#09090B" stroke-width="2.5"/>
+          </svg>
+        `
+      }
+    ];
+
+    /**
+     * 2. ESTADO REATIVO DO CARRINHO EM MEMÓRIA (com persistência em localStorage)
+     */
+    const STORAGE_KEY = 'atelier_urbano_cart_v1';
+    const FREE_SHIPPING_THRESHOLD = 399.00;
+    const STANDARD_SHIPPING_FEE = 24.90;
+
+    let cart = loadCartFromStorage();
+    let currentFilter = 'Todos';
+    let toastTimeout = null;
+
+    function loadCartFromStorage() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCartToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+      } catch (e) {
+        // Ignora erro caso localStorage esteja indisponível em modo privado
+      }
+    }
+
+    /**
+     * Utilitário para formatação monetária em Real Brasileiro (R$)
+     */
+    function formatBRL(value) {
+      return value.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    /**
+     * 3. RENDERIZAÇÃO DA VITRINE DE PRODUTOS
+     */
+    function renderProducts(category = 'Todos') {
+      const grid = document.getElementById('products-grid');
+      const heading = document.getElementById('grid-heading');
+      const countLabel = document.getElementById('product-count-label');
+
+      const filtered = category === 'Todos'
+        ? PRODUCTS
+        : PRODUCTS.filter(p => p.category === category);
+
+      heading.textContent = category === 'Todos' ? 'Todos os Produtos' : `Categoria: ${category}`;
+      countLabel.textContent = `Exibindo ${filtered.length} ${filtered.length === 1 ? 'peça' : 'peças'}`;
+
+      grid.innerHTML = filtered.map(product => `
+        <article class="group bg-white rounded-2xl border border-zinc-200/80 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl hover:border-zinc-300 transition-all duration-300">
+          <div>
+            <!-- Área da Imagem Fictícia Estilizada -->
+            <div class="relative aspect-[4/4] ${product.bgAccent} flex items-center justify-center p-6 overflow-hidden">
+              ${product.badge ? `
+                <span class="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur-xs text-[11px] font-semibold tracking-wide text-zinc-800 shadow-xs">
+                  ${product.badge}
+                </span>
+              ` : ''}
+              <span class="absolute top-3.5 right-3.5 text-[11px] font-medium text-zinc-400">
+                ${product.category}
+              </span>
+              ${product.svgIcon}
+            </div>
+
+            <!-- Informações do Produto -->
+            <div class="p-5 pb-3">
+              <h3 class="text-base font-semibold text-zinc-900 group-hover:text-amber-900 transition-colors line-clamp-1">
+                ${product.name}
+              </h3>
+              <p class="mt-1 text-xs text-zinc-500 leading-relaxed line-clamp-2 min-h-[2.5rem]">
+                ${product.description}
+              </p>
+            </div>
+          </div>
+
+          <!-- Preço e Botão de Ação -->
+          <div class="px-5 pb-5 pt-2 flex flex-col gap-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-lg font-bold text-zinc-900">
+                ${formatBRL(product.price)}
+              </span>
+              <span class="text-[11px] text-zinc-400">
+                em até 3x sem juros
+              </span>
+            </div>
+
+            <button
+              id="add-btn-${product.id}"
+              onclick="addToCart('${product.id}', this)"
+              class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 active:scale-[0.98] text-white text-xs sm:text-sm font-semibold tracking-wide transition-all duration-200 flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <span>Adicionar ao Carrinho</span>
+            </button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    /**
+     * Filtro de categorias com atualização visual dos botões ativos
+     */
+    function filterProducts(category) {
+      currentFilter = category;
+      renderProducts(category);
+
+      // Atualiza estilo das pills
+      document.querySelectorAll('.pill-btn').forEach(btn => {
+        if (btn.dataset.cat === category) {
+          btn.className = 'pill-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-zinc-900 text-white shadow-sm transition-all';
+        } else {
+          btn.className = 'pill-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-stone-100 text-zinc-700 hover:bg-stone-200 transition-all';
+        }
+      });
+
+      // Atualiza links do menu superior
+      document.querySelectorAll('.filter-nav-btn').forEach(btn => {
+        if (btn.dataset.cat === category) {
+          btn.classList.add('text-zinc-900', 'font-semibold');
+        } else {
+          btn.classList.remove('text-zinc-900', 'font-semibold');
+        }
+      });
+    }
+
+    /**
+     * 4. FUNÇÕES DE GERENCIAMENTO DO ESTADO DO CARRINHO
+     */
+
+    // Adicionar item ao carrinho (incrementando quantidade se já existir)
+    function addToCart(productId, buttonEl = null) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      // Oculta mensagem de pedido finalizado caso o usuário volte a comprar
+      document.getElementById('checkout-confirmation').classList.add('hidden');
+      document.getElementById('cart-summary-block').classList.remove('hidden');
+
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          bgAccent: product.bgAccent,
+          svgIcon: product.svgIcon,
+          quantity: 1
+        });
+      }
+
+      saveCartToStorage();
+      updateCartUI();
+      animateBadge();
+      showToast(`"${product.name}" adicionado à sacola`);
+
+      // Feedback visual imediato no botão clicado
+      if (buttonEl) {
+        const originalHTML = buttonEl.innerHTML;
+        buttonEl.classList.remove('bg-zinc-900', 'hover:bg-zinc-800');
+        buttonEl.classList.add('bg-emerald-700');
+        buttonEl.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+          <span>Adicionado!</span>
+        `;
+        setTimeout(() => {
+          buttonEl.classList.remove('bg-emerald-700');
+          buttonEl.classList.add('bg-zinc-900', 'hover:bg-zinc-800');
+          buttonEl.innerHTML = originalHTML;
+        }, 900);
+      }
+    }
+
+    // Alterar quantidade (+1 ou -1)
+    function updateQuantity(productId, delta) {
+      const itemIndex = cart.findIndex(item => item.id === productId);
+      if (itemIndex === -1) return;
+
+      cart[itemIndex].quantity += delta;
+
+      if (cart[itemIndex].quantity <= 0) {
+        cart.splice(itemIndex, 1);
+      }
+
+      saveCartToStorage();
+      updateCartUI();
+    }
+
+    // Remover item diretamente
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      saveCartToStorage();
+      updateCartUI();
+    }
+
+    // Calcular totais e atualizar toda a interface do carrinho (Badge + Drawer)
+    function updateCartUI() {
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      // Atualiza badge do cabeçalho
+      const badge = document.getElementById('cart-badge');
+      badge.textContent = totalItems;
+
+      // Atualiza contador no cabeçalho do drawer
+      const drawerCountPill = document.getElementById('drawer-count-pill');
+      drawerCountPill.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'itens'}`;
+
+      // Atualiza barra de frete grátis
+      const shippingStatusText = document.getElementById('shipping-status-text');
+      const shippingProgressBar = document.getElementById('shipping-progress-bar');
+      const progressPct = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+      shippingProgressBar.style.width = `${progressPct}%`;
+
+      let shippingFee = 0;
+      if (subtotal === 0) {
+        shippingStatusText.innerHTML = `Frete grátis nas compras acima de <span class="font-bold text-zinc-900">${formatBRL(FREE_SHIPPING_THRESHOLD)}</span>`;
+        shippingFee = 0;
+      } else if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+        shippingStatusText.innerHTML = `<span class="text-emerald-700 font-semibold">Parabéns! Você ganhou Frete Grátis.</span>`;
+        shippingFee = 0;
+      } else {
+        const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
+        shippingStatusText.innerHTML = `Faltam <span class="font-bold text-zinc-900">${formatBRL(remaining)}</span> para ganhar Frete Grátis`;
+        shippingFee = STANDARD_SHIPPING_FEE;
+      }
+
+      // Renderiza lista de itens ou estado vazio dentro do Drawer
+      const container = document.getElementById('cart-items-container');
+      const checkoutBtn = document.getElementById('checkout-btn');
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="h-full min-h-[280px] flex flex-col items-center justify-center text-center py-12 px-4">
+            <div class="w-16 h-16 rounded-2xl bg-stone-100 text-zinc-400 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+            </div>
+            <h3 class="text-base font-semibold text-zinc-900">Sua sacola está vazia</h3>
+            <p class="mt-1.5 text-xs sm:text-sm text-zinc-500 max-w-xs leading-relaxed">
+              Explore nossa coleção de essenciais contemporâneos e adicione suas peças favoritas.
+            </p>
+            <button
+              onclick="closeCartDrawer()"
+              class="mt-6 px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold tracking-wide transition-colors"
+            >
+              Continuar Explorando
+            </button>
+          </div>
+        `;
+        checkoutBtn.disabled = true;
+      } else {
+        container.innerHTML = cart.map(item => `
+          <div class="py-4 flex gap-4 items-center">
+            <!-- Miniatura Estilizada -->
+            <div class="w-20 h-20 rounded-xl ${item.bgAccent} border border-zinc-200/70 flex items-center justify-center p-2 shrink-0 overflow-hidden">
+              <div class="scale-50 flex items-center justify-center">
+                ${item.svgIcon}
+              </div>
+            </div>
+
+            <!-- Detalhes e Controles -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <h4 class="text-sm font-semibold text-zinc-900 truncate" title="${item.name}">
+                  ${item.name}
+                </h4>
+                <button
+                  onclick="removeFromCart('${item.id}')"
+                  aria-label="Remover ${item.name}"
+                  class="text-zinc-400 hover:text-red-600 transition-colors p-1 -mr-1 rounded-lg"
+                  title="Remover item"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+
+              <p class="text-xs text-zinc-500 mt-0.5">
+                Unitário: ${formatBRL(item.price)}
+              </p>
+
+              <div class="mt-3 flex items-center justify-between">
+                <!-- Seletor de Quantidade (- / +) -->
+                <div class="inline-flex items-center rounded-lg border border-zinc-200 bg-stone-50">
+                  <button
+                    onclick="updateQuantity('${item.id}', -1)"
+                    aria-label="Diminuir quantidade"
+                    class="w-7 h-7 flex items-center justify-center text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60 rounded-l-lg transition-colors font-medium"
+                  >
+                    −
+                  </button>
+                  <span class="w-8 text-center text-xs font-semibold text-zinc-900 select-none">
+                    ${item.quantity}
+                  </span>
+                  <button
+                    onclick="updateQuantity('${item.id}', 1)"
+                    aria-label="Aumentar quantidade"
+                    class="w-7 h-7 flex items-center justify-center text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60 rounded-r-lg transition-colors font-medium"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <!-- Subtotal do Item -->
+                <span class="text-sm font-bold text-zinc-900">
+                  ${formatBRL(item.price * item.quantity)}
+                </span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+        checkoutBtn.disabled = false;
+      }
+
+      // Atualiza valores financeiros no rodapé do Drawer
+      const total = subtotal + shippingFee;
+      document.getElementById('cart-subtotal').textContent = formatBRL(subtotal);
+      document.getElementById('cart-shipping').textContent = subtotal === 0
+        ? '—'
+        : (shippingFee === 0 ? 'Grátis' : formatBRL(shippingFee));
+      document.getElementById('cart-total').textContent = formatBRL(total);
+    }
+
+    /**
+     * 5. CONTROLE DE ABERTURA E FECHAMENTO DO DRAWER LATERAL
+     */
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const openCartBtn = document.getElementById('open-cart-btn');
+    const closeCartBtn = document.getElementById('close-cart-btn');
+
+    function openCartDrawer() {
+      cartOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      cartOverlay.classList.add('opacity-100', 'pointer-events-auto');
+      cartDrawer.classList.remove('translate-x-full');
+      cartDrawer.classList.add('translate-x-0');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCartDrawer() {
+      cartOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+      cartOverlay.classList.add('opacity-0', 'pointer-events-none');
+      cartDrawer.classList.remove('translate-x-0');
+      cartDrawer.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    }
+
+    openCartBtn.addEventListener('click', openCartDrawer);
+    closeCartBtn.addEventListener('click', closeCartDrawer);
+    cartOverlay.addEventListener('click', closeCartDrawer);
+
+    // Fechar drawer ao pressionar a tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && cartDrawer.classList.contains('translate-x-0')) {
+        closeCartDrawer();
+      }
+    });
+
+    /**
+     * Simulação de Finalização de Compra
+     */
+    function handleCheckout() {
+      if (cart.length === 0) return;
+
+      cart = [];
+      saveCartToStorage();
+      updateCartUI();
+
+      // Exibe mensagem elegante de confirmação dentro do drawer
+      document.getElementById('checkout-confirmation').classList.remove('hidden');
+    }
+
+    /**
+     * Micro-interações visuais (Pulse no badge e Toast)
+     */
+    function animateBadge() {
+      const badge = document.getElementById('cart-badge');
+      badge.classList.add('scale-125', 'bg-amber-700');
+      setTimeout(() => {
+        badge.classList.remove('scale-125', 'bg-amber-700');
+      }, 250);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast-notification');
+      const toastMsg = document.getElementById('toast-message');
+      toastMsg.textContent = message;
+
+      toast.classList.remove('opacity-0', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-4');
+      }, 2400);
+    }
+
+    // Inicialização ao carregar a página
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProducts('Todos');
+      updateCartUI();
+    });
+  </script>
+</body>
+</html>

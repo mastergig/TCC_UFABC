@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>URBANO — Moda Urbana</title>
+<style>
+  :root{
+    --bg:#0e0e0e; --surface:#181818; --surface2:#222; --text:#f2f2f2;
+    --muted:#9a9a9a; --accent:#c6ff3d; --danger:#ff5c5c; --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+  button{font:inherit;cursor:pointer;border:none;color:inherit}
+  img{max-width:100%;display:block}
+
+  header{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;
+    padding:14px 5vw;background:rgba(14,14,14,.92);backdrop-filter:blur(8px);border-bottom:1px solid #2a2a2a}
+  .logo{font-weight:900;letter-spacing:.25em;font-size:1.2rem}
+  .logo span{color:var(--accent)}
+  .cart-btn{position:relative;background:var(--surface2);padding:10px 16px;border-radius:999px;font-weight:600}
+  .cart-btn:hover{background:#2c2c2c}
+  .badge{position:absolute;top:-6px;right:-6px;background:var(--accent);color:#000;font-size:.75rem;font-weight:800;
+    min-width:22px;height:22px;border-radius:999px;display:grid;place-items:center;padding:0 5px}
+
+  .hero{padding:70px 5vw 40px;max-width:1200px;margin:auto}
+  .hero h1{font-size:clamp(2.2rem,7vw,4.5rem);line-height:1;font-weight:900;text-transform:uppercase}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p{color:var(--muted);margin-top:14px;max-width:480px}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;padding:0 5vw 24px;max-width:1200px;margin:auto}
+  .filter{background:var(--surface);padding:8px 16px;border-radius:999px;border:1px solid #2e2e2e;color:var(--muted)}
+  .filter.active,.filter:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;padding:0 5vw 80px;max-width:1200px;margin:auto}
+  .card{background:var(--surface);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s}
+  .card:hover{transform:translateY(-4px)}
+  .thumb{aspect-ratio:1/1;display:grid;place-items:center;font-size:4.5rem}
+  .card-body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .cat{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+  .name{font-weight:700}
+  .price{font-size:1.1rem;color:var(--accent);font-weight:700}
+  .sizes{display:flex;gap:6px;margin:6px 0}
+  .size{width:34px;height:34px;border-radius:8px;background:var(--surface2);border:1px solid #333;font-size:.8rem;font-weight:600}
+  .size.active{background:var(--text);color:#000;border-color:var(--text)}
+  .add{margin-top:auto;background:var(--accent);color:#000;padding:11px;border-radius:8px;font-weight:700}
+  .add:hover{filter:brightness(1.08)}
+
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:.25s;z-index:30}
+  .overlay.open{opacity:1;pointer-events:auto}
+  aside{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--surface);z-index:40;
+    transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column}
+  aside.open{transform:none}
+  .cart-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid #2a2a2a}
+  .cart-head h2{font-size:1.1rem;text-transform:uppercase;letter-spacing:.1em}
+  .close{background:none;font-size:1.5rem;color:var(--muted)}
+  .items{flex:1;overflow-y:auto;padding:12px 20px}
+  .empty{color:var(--muted);text-align:center;margin-top:60px}
+  .item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid #262626;align-items:center}
+  .item .ico{width:64px;height:64px;border-radius:8px;display:grid;place-items:center;font-size:2rem}
+  .item-name{font-weight:600;font-size:.95rem}
+  .item-meta{font-size:.8rem;color:var(--muted)}
+  .qty{display:inline-flex;align-items:center;gap:10px;margin-top:6px;background:var(--surface2);border-radius:8px;padding:2px}
+  .qty button{width:28px;height:28px;background:none;font-size:1.1rem;border-radius:6px}
+  .qty button:hover{background:#333}
+  .item-right{text-align:right;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .remove{background:none;color:var(--danger);font-size:.8rem;text-decoration:underline}
+  .cart-foot{padding:20px;border-top:1px solid #2a2a2a}
+  .total{display:flex;justify-content:space-between;font-size:1.25rem;font-weight:800;margin-bottom:14px}
+  .checkout{width:100%;background:var(--accent);color:#000;padding:14px;border-radius:10px;font-weight:800}
+  .checkout:disabled{opacity:.35;cursor:not-allowed}
+  .clear{width:100%;background:none;color:var(--muted);margin-top:10px;font-size:.85rem}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,80px);background:var(--text);color:#000;
+    padding:12px 20px;border-radius:999px;font-weight:600;transition:transform .3s;z-index:50}
+  .toast.show{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">URBAN<span>O</span></div>
+  <button class="cart-btn" id="openCart" aria-label="Abrir carrinho">
+    🛒 Carrinho <span class="badge" id="badge">0</span>
+  </button>
+</header>
+
+<section class="hero">
+  <h1>Rua é o seu<br><em>estilo.</em></h1>
+  <p>Coleção streetwear com cortes oversized, tecidos pesados e atitude. Escolha o tamanho e monte seu look.</p>
+</section>
+
+<div class="filters" id="filters"></div>
+<main class="grid" id="grid"></main>
+
+<div class="overlay" id="overlay"></div>
+<aside id="cart" aria-label="Carrinho de compras">
+  <div class="cart-head"><h2>Seu carrinho</h2><button class="close" id="closeCart" aria-label="Fechar">✕</button></div>
+  <div class="items" id="items"></div>
+  <div class="cart-foot">
+    <div class="total"><span>Total</span><span id="total">R$ 0,00</span></div>
+    <button class="checkout" id="checkout">Finalizar compra</button>
+    <button class="clear" id="clear">Esvaziar carrinho</button>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  // ---------- Dados ----------
+  const PRODUCTS = [
+    {id:1, name:"Moletom Oversized Noir",  cat:"Moletons",  price:289.90, icon:"🧥", bg:"#2b2b35"},
+    {id:2, name:"Camiseta Boxy Graffiti",  cat:"Camisetas", price:129.90, icon:"👕", bg:"#33291f"},
+    {id:3, name:"Calça Cargo Utility",     cat:"Calças",    price:259.90, icon:"👖", bg:"#1f3326"},
+    {id:4, name:"Jaqueta Corta-Vento",     cat:"Jaquetas",  price:349.90, icon:"🧥", bg:"#1f2c33"},
+    {id:5, name:"Boné Dad Hat Preto",      cat:"Acessórios",price:89.90,  icon:"🧢", bg:"#331f2b"},
+    {id:6, name:"Camiseta Basic Heavy",    cat:"Camisetas", price:99.90,  icon:"👕", bg:"#2b331f"},
+    {id:7, name:"Calça Jogger Street",     cat:"Calças",    price:219.90, icon:"👖", bg:"#2f2b3a"},
+    {id:8, name:"Moletom Zip Concrete",    cat:"Moletons",  price:319.90, icon:"🧥", bg:"#3a2f2b"}
+  ];
+  const SIZES = ["P","M","G","GG"];
+
+  // ---------- Estado ----------
+  let cart = [];                 // {key, id, size, qty}
+  let activeCat = "Todos";
+  const selectedSize = {};       // id -> tamanho escolhido no card
+
+  // ---------- Utilidades ----------
+  const $ = id => document.getElementById(id);
+  const brl = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+  const find = id => PRODUCTS.find(p => p.id === id);
+
+  let toastTimer;
+  function toast(msg){
+    const t = $("toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
+  }
+
+  // ---------- Vitrine ----------
+  function renderFilters(){
+    const cats = ["Todos", ...new Set(PRODUCTS.map(p => p.cat))];
+    $("filters").innerHTML = cats.map(c =>
+      `<button class="filter ${c===activeCat?"active":""}" data-cat="${c}">${c}</button>`).join("");
+  }
+
+  function renderProducts(){
+    const list = activeCat==="Todos" ? PRODUCTS : PRODUCTS.filter(p => p.cat===activeCat);
+    $("grid").innerHTML = list.map(p => {
+      const sel = selectedSize[p.id] || "M";
+      const sizes = p.cat==="Acessórios" ? "" :
+        `<div class="sizes">${SIZES.map(s =>
+          `<button class="size ${s===sel?"active":""}" data-id="${p.id}" data-size="${s}">${s}</button>`).join("")}</div>`;
+      return `
+        <article class="card">
+          <div class="thumb" style="background:${p.bg}">${p.icon}</div>
+          <div class="card-body">
+            <span class="cat">${p.cat}</span>
+            <h3 class="name">${p.name}</h3>
+            <span class="price">${brl(p.price)}</span>
+            ${sizes}
+            <button class="add" data-id="${p.id}">Adicionar ao carrinho</button>
+          </div>
+        </article>`;
+    }).join("");
+  }
+
+  // ---------- Carrinho ----------
+  function addToCart(id){
+    const p = find(id);
+    const size = p.cat==="Acessórios" ? "Único" : (selectedSize[id] || "M");
+    const key = `${id}-${size}`;
+    const existing = cart.find(i => i.key === key);
+    existing ? existing.qty++ : cart.push({key, id, size, qty:1});
+    renderCart();
+    toast(`${p.name} (${size}) adicionado`);
+  }
+
+  function changeQty(key, delta){
+    const item = cart.find(i => i.key === key);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty <= 0) removeItem(key); else renderCart();
+  }
+
+  function removeItem(key){
+    cart = cart.filter(i => i.key !== key);
+    renderCart();
+  }
+
+  function renderCart(){
+    const box = $("items");
+    if(!cart.length){
+      box.innerHTML = `<p class="empty">Seu carrinho está vazio.<br>Adicione peças para começar.</p>`;
+    } else {
+      box.innerHTML = cart.map(i => {
+        const p = find(i.id);
+        return `
+          <div class="item">
+            <div class="ico" style="background:${p.bg}">${p.icon}</div>
+            <div>
+              <div class="item-name">${p.name}</div>
+              <div class="item-meta">Tam: ${i.size} · ${brl(p.price)}</div>
+              <div class="qty">
+                <button data-act="dec" data-key="${i.key}" aria-label="Diminuir">−</button>
+                <span>${i.qty}</span>
+                <button data-act="inc" data-key="${i.key}" aria-label="Aumentar">+</button>
+              </div>
+            </div>
+            <div class="item-right">
+              <strong>${brl(p.price * i.qty)}</strong>
+              <button class="remove" data-act="rm" data-key="${i.key}">Remover</button>
+            </div>
+          </div>`;
+      }).join("");
+    }
+    const total = cart.reduce((s,i) => s + find(i.id).price * i.qty, 0);
+    const count = cart.reduce((s,i) => s + i.qty, 0);
+    $("total").textContent = brl(total);
+    $("badge").textContent = count;
+    $("checkout").disabled = !cart.length;
+    $("clear").style.display = cart.length ? "block" : "none";
+  }
+
+  function toggleCart(open){
+    $("cart").classList.toggle("open", open);
+    $("overlay").classList.toggle("open", open);
+  }
+
+  // ---------- Eventos ----------
+  $("filters").addEventListener("click", e => {
+    const b = e.target.closest(".filter"); if(!b) return;
+    activeCat = b.dataset.cat; renderFilters(); renderProducts();
+  });
+
+  $("grid").addEventListener("click", e => {
+    const sz = e.target.closest(".size");
+    if(sz){
+      selectedSize[sz.dataset.id] = sz.dataset.size;
+      sz.parentElement.querySelectorAll(".size").forEach(b => b.classList.toggle("active", b===sz));
+      return;
+    }
+    const add = e.target.closest(".add");
+    if(add) addToCart(Number(add.dataset.id));
+  });
+
+  $("items").addEventListener("click", e => {
+    const b = e.target.closest("button[data-act]"); if(!b) return;
+    const {act, key} = b.dataset;
+    if(act==="inc") changeQty(key, 1);
+    else if(act==="dec") changeQty(key, -1);
+    else removeItem(key);
+  });
+
+  $("openCart").addEventListener("click", () => toggleCart(true));
+  $("closeCart").addEventListener("click", () => toggleCart(false));
+  $("overlay").addEventListener("click", () => toggleCart(false));
+  document.addEventListener("keydown", e => { if(e.key==="Escape") toggleCart(false); });
+
+  $("clear").addEventListener("click", () => { cart = []; renderCart(); });
+  $("checkout").addEventListener("click", () => {
+    const total = $("total").textContent;
+    cart = []; renderCart(); toggleCart(false);
+    toast(`Pedido de ${total} confirmado! 🎉`);
+  });
+
+  // ---------- Init ----------
+  renderFilters(); renderProducts(); renderCart();
+})();
+</script>
+</body>
+</html>

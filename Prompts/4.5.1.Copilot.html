@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog de Viagens pelo Brasil</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#333;
+}
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#0d6efd;
+    color:white;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+.navbar{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+}
+
+.logo{
+    font-size:1.5rem;
+    font-weight:bold;
+}
+
+.nav-links{
+    display:flex;
+    gap:20px;
+    list-style:none;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+}
+
+.hero{
+    height:80vh;
+    background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+    url("https://images.unsplash.com/photo-1483721310020-03333e577078");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    padding:20px;
+}
+
+.hero-content h1{
+    font-size:3rem;
+}
+
+.hero-content p{
+    margin-top:15px;
+    font-size:1.2rem;
+}
+
+.search-section{
+    max-width:1200px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+}
+
+.search-box input{
+    flex:1;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.search-box button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.section-title{
+    text-align:center;
+    margin:50px 0 30px;
+}
+
+.destinations{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card-content h3{
+    margin-bottom:10px;
+}
+
+.card-content p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.btn{
+    display:inline-block;
+    background:#0d6efd;
+    color:white;
+    padding:10px 18px;
+    text-decoration:none;
+    border-radius:6px;
+}
+
+.categories{
+    background:white;
+    padding:60px 20px;
+    margin-top:50px;
+}
+
+.category-list{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-top:30px;
+}
+
+.category{
+    background:#0d6efd;
+    color:white;
+    padding:12px 22px;
+    border-radius:25px;
+}
+
+footer{
+    margin-top:50px;
+    padding:30px;
+    text-align:center;
+    background:#0d6efd;
+    color:white;
+}
+
+@media(max-width:768px){
+
+.navbar{
+    flex-direction:column;
+    gap:10px;
+}
+
+.hero-content h1{
+    font-size:2rem;
+}
+
+.search-box{
+    flex-direction:column;
+}
+}
+</style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">🌎 Brasil Travel Blog</div>
+
+        <ul class="nav-links">
+            <li><a href="#destinos">Destinos</a></li>
+            <li><a href="#categorias">Categorias</a></li>
+            <li><a href="#artigos">Artigos</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Descubra o Brasil</h1>
+        <p>Os melhores destinos turísticos, praias e aventuras do país.</p>
+    </div>
+</section>
+
+<section class="search-section">
+    <div class="search-box">
+        <input type="text" id="pesquisa" placeholder="Pesquisar destino...">
+        <button onclick="buscarDestino()">Pesquisar</button>
+    </div>
+</section>
+
+<h2 class="section-title" id="destinos">
+Destinos Imperdíveis
+</h2>
+
+<section class="destinations" id="cards">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1483721310020-03333e577078">
+<div class="card-content">
+<h3>Rio de Janeiro</h3>
+<p>Cristo Redentor, Copacabana e Pão de Açúcar.</p>
+<a href="#" class="btn">Ler Artigo</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f">
+<div class="card-content">
+<h3>Foz do Iguaçu</h3>
+<p>As belas Cataratas do Iguaçu e o Parque Nacional.</p>
+<a href="#" class="btn">Ler Artigo</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1519046904884-53103b34b206">
+<div class="card-content">
+<h3>Fernando de Noronha</h3>
+<p>Praias paradisíacas e mergulho inesquecível.</p>
+<a href="#" class="btn">Ler Artigo</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2">
+<div class="card-content">
+<h3>Gramado</h3>
+<p>Arquitetura europeia e clima da Serra Gaúcha.</p>
+<a href="#" class="btn">Ler Artigo</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
+<div class="card-content">
+<h3>Salvador</h3>
+<p>História, cultura afro-brasileira e praias.</p>
+<a href="#" class="btn">Ler Artigo</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e">
+<div class="card-content">
+<h3>Lençóis Maranhenses</h3>
+<p>Dunas brancas e lagoas cristalinas.</p>
+<a href="#" class="btn">Ler Artigo</a>
+</div>
+</div>
+
+</section>
+
+<section class="categories" id="categorias">
+
+<h2 class="section-title">Categorias</h2>
+
+<div class="category-list">
+<div class="category">Praias</div>
+<div class="category">Ecoturismo</div>
+<div class="category">Turismo Cultural</div>
+<div class="category">Aventura</div>
+<div class="category">História</div>
+<div class="category">Gastronomia</div>
+</div>
+
+</section>
+
+<section id="artigos">
+<h2 class="section-title">Artigos em Destaque</h2>
+
+<div class="destinations">
+
+<div class="card">
+<div class="card-content">
+<h3>Rio de Janeiro: Guia Completo</h3>
+<p>Conheça todas as atrações da Cidade Maravilhosa.</p>
+</div>
+</div>
+
+<div class="card">
+<div class="card-content">
+<h3>Fernando de Noronha</h3>
+<p>As praias mais bonitas do Brasil.</p>
+</div>
+</div>
+
+<div class="card">
+<div class="card-content">
+<h3>Bonito (MS)</h3>
+<p>Ecoturismo e mergulhos em águas cristalinas.</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<footer>
+    <h3>Blog de Viagens pelo Brasil</h3>
+    <p>Explore os melhores destinos brasileiros.</p>
+</footer>
+
+<script>
+function buscarDestino() {
+
+    let termo = document
+    .getElementById('pesquisa')
+    .value
+    .toLowerCase();
+
+    let cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+
+        let texto = card.innerText.toLowerCase();
+
+        if(texto.includes(termo)){
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+
+    });
+}
+</script>
+
+</body>
+</html>

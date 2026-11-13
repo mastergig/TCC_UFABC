@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Restaurante Sabor & Arte</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f8f5f0;
+    color:#333;
+    line-height:1.6;
+}
+
+header{
+    background:#2c1810;
+    color:white;
+    text-align:center;
+    padding:40px 20px;
+}
+
+header h1{
+    font-size:3rem;
+    margin-bottom:10px;
+}
+
+header p{
+    color:#d4b483;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:40px auto;
+}
+
+.section-title{
+    font-size:2rem;
+    color:#2c1810;
+    margin:40px 0 20px;
+    padding-bottom:10px;
+    border-bottom:3px solid #c89b63;
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.menu-item{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.menu-item:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.12);
+}
+
+.menu-item h3{
+    color:#2c1810;
+    margin-bottom:10px;
+}
+
+.menu-item p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.menu-item span{
+    font-size:1.2rem;
+    font-weight:bold;
+    color:#c27a2c;
+}
+
+footer{
+    margin-top:50px;
+    background:#2c1810;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+    <h1>Restaurante Sabor & Arte</h1>
+    <p>Experiência gastronômica para todos os momentos do dia</p>
+</header>
+
+<div class="container">
+
+    <!-- Café da Manhã -->
+    <h2 class="section-title">☕ Café da Manhã</h2>
+
+    <div class="menu-grid">
+
+        <div class="menu-item">
+            <h3>Ovos Benedict</h3>
+            <p>Ovos poché sobre muffin inglês com molho holandês.</p>
+            <span>R$ 32,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Tapioca Especial</h3>
+            <p>Recheada com queijo minas, peito de peru e tomate.</p>
+            <span>R$ 24,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Panquecas Americanas</h3>
+            <p>Servidas com mel, frutas vermelhas e manteiga.</p>
+            <span>R$ 28,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Croissant Artesanal</h3>
+            <p>Massa folhada recheada com presunto e queijo.</p>
+            <span>R$ 18,00</span>
+        </div>
+
+    </div>
+
+    <!-- Executivo -->
+    <h2 class="section-title">🍽 Executivo</h2>
+
+    <div class="menu-grid">
+
+        <div class="menu-item">
+            <h3>Filé de Frango Grelhado</h3>
+            <p>Acompanha arroz, feijão, legumes e salada.</p>
+            <span>R$ 39,90</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Contra Filé Executivo</h3>
+            <p>Servido com batatas rústicas e arroz branco.</p>
+            <span>R$ 49,90</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Salmão ao Limão</h3>
+            <p>Risoto de ervas finas e legumes salteados.</p>
+            <span>R$ 59,90</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Vegetariano Gourmet</h3>
+            <p>Mix de legumes grelhados e arroz integral.</p>
+            <span>R$ 36,90</span>
+        </div>
+
+    </div>
+
+    <!-- À la Carte -->
+    <h2 class="section-title">🥩 À la Carte</h2>
+
+    <div class="menu-grid">
+
+        <div class="menu-item">
+            <h3>Fettuccine ao Molho Funghi</h3>
+            <p>Massa fresca com molho cremoso de cogumelos.</p>
+            <span>R$ 58,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Risoto de Camarão</h3>
+            <p>Arroz arbóreo finalizado com parmesão e camarões.</p>
+            <span>R$ 74,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Picanha Premium</h3>
+            <p>Servida com farofa especial, arroz e vinagrete.</p>
+            <span>R$ 89,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Costela Assada</h3>
+            <p>Preparada lentamente com ervas e batatas.</p>
+            <span>R$ 79,00</span>
+        </div>
+
+    </div>
+
+    <!-- Bebidas -->
+    <h2 class="section-title">🥤 Bebidas</h2>
+
+    <div class="menu-grid">
+
+        <div class="menu-item">
+            <h3>Suco Natural</h3>
+            <p>Laranja, abacaxi, morango ou maracujá.</p>
+            <span>R$ 12,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Refrigerante</h3>
+            <p>Lata 350ml tradicional ou zero açúcar.</p>
+            <span>R$ 8,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Café Espresso</h3>
+            <p>Café premium preparado na hora.</p>
+            <span>R$ 7,00</span>
+        </div>
+
+        <div class="menu-item">
+            <h3>Taça de Vinho</h3>
+            <p>Vinho tinto ou branco selecionado.</p>
+            <span>R$ 24,00</span>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 Restaurante Sabor & Arte • Menu Digital</p>
+</footer>
+
+</body>
+</html>

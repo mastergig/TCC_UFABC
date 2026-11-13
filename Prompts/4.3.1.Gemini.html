@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER NORD — Coleção Essencial 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond (Editorial) & Inter (UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        stone: {
+                            50: '#FAF9F6',
+                            100: '#F3F1EC',
+                            200: '#E5E1D8',
+                            300: '#D1CBBF',
+                            800: '#292724',
+                            900: '#181715',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-stone-50 text-stone-900 font-sans antialiased selection:bg-stone-900 selection:text-stone-50">
+
+    <!-- Barra de Anúncios Superior -->
+    <div class="bg-stone-900 text-stone-100 text-xs tracking-widest uppercase py-2.5 px-4 text-center">
+        Frete grátis para todo o Brasil em compras acima de R$ 499,00
+    </div>
+
+    <!-- Cabeçalho Fixo (Header) -->
+    <header class="sticky top-0 z-30 bg-stone-50/90 backdrop-blur-md border-b border-stone-200 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Menu Mobile (Hambúrguer) -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" type="button" class="p-2 -ml-2 text-stone-800 hover:text-stone-500 focus:outline-none" aria-label="Abrir menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Logo da Marca -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" onclick="filterProducts('Todos')" class="font-serif text-2xl sm:text-3xl tracking-[0.2em] font-medium text-stone-900 uppercase">
+                        ATELIER NORD
+                    </a>
+                </div>
+
+                <!-- Links de Navegação Desktop -->
+                <nav class="hidden md:flex space-x-8 items-center" id="desktop-nav">
+                    <button onclick="filterProducts('Todos')" data-category="Todos" class="nav-link text-xs uppercase tracking-[0.15em] font-medium text-stone-900 border-b border-stone-900 pb-1 transition-colors">
+                        Todos
+                    </button>
+                    <button onclick="filterProducts('Feminino')" data-category="Feminino" class="nav-link text-xs uppercase tracking-[0.15em] font-normal text-stone-500 hover:text-stone-900 pb-1 border-b border-transparent transition-colors">
+                        Feminino
+                    </button>
+                    <button onclick="filterProducts('Masculino')" data-category="Masculino" class="nav-link text-xs uppercase tracking-[0.15em] font-normal text-stone-500 hover:text-stone-900 pb-1 border-b border-transparent transition-colors">
+                        Masculino
+                    </button>
+                    <button onclick="filterProducts('Acessórios')" data-category="Acessórios" class="nav-link text-xs uppercase tracking-[0.15em] font-normal text-stone-500 hover:text-stone-900 pb-1 border-b border-transparent transition-colors">
+                        Acessórios
+                    </button>
+                </nav>
+
+                <!-- Ações do Cabeçalho (Busca & Carrinho) -->
+                <div class="flex items-center space-x-4">
+                    <button id="open-cart-btn" type="button" class="relative p-2 text-stone-900 hover:text-stone-600 transition-colors flex items-center gap-2 group" aria-label="Abrir carrinho">
+                        <span class="hidden sm:inline text-xs uppercase tracking-widest font-medium">Sacola</span>
+                        <div class="relative">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            </svg>
+                            <span id="cart-badge" class="absolute -top-1.5 -right-2 bg-stone-900 text-stone-50 text-[10px] font-medium w-4 h-4 rounded-full flex items-center justify-center transition-transform duration-200">
+                                0
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Dropdown Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-stone-50 border-b border-stone-200 px-4 pt-2 pb-6 space-y-3">
+            <button onclick="filterProducts('Todos'); toggleMobileMenu();" class="block w-full text-left py-2 text-xs uppercase tracking-[0.15em] font-medium text-stone-900">Todos</button>
+            <button onclick="filterProducts('Feminino'); toggleMobileMenu();" class="block w-full text-left py-2 text-xs uppercase tracking-[0.15em] text-stone-600">Feminino</button>
+            <button onclick="filterProducts('Masculino'); toggleMobileMenu();" class="block w-full text-left py-2 text-xs uppercase tracking-[0.15em] text-stone-600">Masculino</button>
+            <button onclick="filterProducts('Acessórios'); toggleMobileMenu();" class="block w-full text-left py-2 text-xs uppercase tracking-[0.15em] text-stone-600">Acessórios</button>
+        </div>
+    </header>
+
+    <!-- Seção Principal (Hero Banner) -->
+    <section class="relative bg-stone-900 text-stone-50 overflow-hidden">
+        <div class="absolute inset-0">
+            <img 
+                src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1920&q=80" 
+                onerror="this.src='https://placehold.co/1920x1080/292724/FAF9F6?text=ATELIER+NORD'"
+                alt="Editorial Coleção Outono Inverno" 
+                class="w-full h-full object-cover object-center opacity-60 scale-105 transition-transform duration-1000"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-900/30 to-transparent"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 sm:py-36 lg:py-44 flex flex-col justify-end min-h-[75vh]">
+            <div class="max-w-2xl">
+                <p class="text-xs sm:text-sm uppercase tracking-[0.25em] text-stone-300 mb-4">
+                    Coleção Cápsula • 2026
+                </p>
+                <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-tight leading-[1.1] mb-6">
+                    Formas puras, tecidos nobres e elegância atemporal.
+                </h1>
+                <p class="text-stone-200 text-sm sm:text-base font-light max-w-lg mb-10 leading-relaxed">
+                    Peças desenhadas com alfaiataria contemporânea, linho orgânico e lã merino para acompanhar o ritmo urbano com sofisticação natural.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#catalogo" class="inline-flex items-center justify-center px-8 py-4 bg-stone-50 text-stone-900 text-xs uppercase tracking-[0.2em] font-medium rounded-sm hover:bg-stone-200 transition-colors">
+                        Explorar Coleção
+                    </a>
+                    <button onclick="filterProducts('Feminino'); document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'});" class="inline-flex items-center justify-center px-8 py-4 border border-stone-50/40 text-stone-50 text-xs uppercase tracking-[0.2em] font-medium rounded-sm hover:bg-stone-50/10 transition-colors">
+                        Ver Editorial
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Catálogo de Produtos -->
+    <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        
+        <!-- Cabeçalho da Seção e Filtros Rápidos -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-stone-200 gap-6">
+            <div>
+                <span class="text-xs uppercase tracking-[0.2em] text-stone-500 block mb-2">Curadoria</span>
+                <h2 id="catalog-title" class="font-serif text-3xl sm:text-4xl text-stone-900">Todas as Peças</h2>
+            </div>
+
+            <!-- Pílulas de Filtro (Responsivas) -->
+            <div class="flex flex-wrap gap-2" id="filter-pills">
+                <button onclick="filterProducts('Todos')" data-category="Todos" class="pill-btn px-4 py-2 text-xs uppercase tracking-widest rounded-full bg-stone-900 text-stone-50 transition-all">
+                    Todos
+                </button>
+                <button onclick="filterProducts('Feminino')" data-category="Feminino" class="pill-btn px-4 py-2 text-xs uppercase tracking-widest rounded-full bg-stone-200/70 text-stone-700 hover:bg-stone-300/70 transition-all">
+                    Feminino
+                </button>
+                <button onclick="filterProducts('Masculino')" data-category="Masculino" class="pill-btn px-4 py-2 text-xs uppercase tracking-widest rounded-full bg-stone-200/70 text-stone-700 hover:bg-stone-300/70 transition-all">
+                    Masculino
+                </button>
+                <button onclick="filterProducts('Acessórios')" data-category="Acessórios" class="pill-btn px-4 py-2 text-xs uppercase tracking-widest rounded-full bg-stone-200/70 text-stone-700 hover:bg-stone-300/70 transition-all">
+                    Acessórios
+                </button>
+            </div>
+        </div>
+
+        <!-- Grade de Produtos -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+            <!-- Os cards serão renderizados dinamicamente via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Banner Editorial Secundário -->
+    <section class="bg-stone-100 border-y border-stone-200 py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="aspect-[4/3] overflow-hidden rounded-sm bg-stone-200">
+                <img 
+                    src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1000&q=80" 
+                    onerror="this.src='https://placehold.co/800x600/E5E1D8/292724?text=Sustentabilidade'"
+                    alt="Processo artesanal de costura" 
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                >
+            </div>
+            <div class="lg:pl-8">
+                <span class="text-xs uppercase tracking-[0.2em] text-stone-500 block mb-3">Manifesto</span>
+                <h3 class="font-serif text-3xl sm:text-4xl text-stone-900 mb-6 leading-tight">
+                    Menos excesso, mais permanência no guarda-roupa.
+                </h3>
+                <p class="text-stone-600 text-sm sm:text-base leading-relaxed mb-8 font-light">
+                    Trabalhamos exclusivamente com matérias-primas certificadas e produção em pequena escala no Brasil. Cada costura é pensada para durar décadas, desafiando a sazonalidade efêmera da moda tradicional.
+                </p>
+                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-stone-200">
+                    <div>
+                        <span class="font-serif text-2xl text-stone-900 block">100%</span>
+                        <span class="text-xs text-stone-500 uppercase tracking-wider">Fibras Naturais</span>
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl text-stone-900 block">Local</span>
+                        <span class="text-xs text-stone-500 uppercase tracking-wider">Ateliê Próprio</span>
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl text-stone-900 block">Zero</span>
+                        <span class="text-xs text-stone-500 uppercase tracking-wider">Plástico no Envio</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé (Footer) -->
+    <footer class="bg-stone-900 text-stone-400 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-stone-800">
+            <div class="col-span-1 md:col-span-2">
+                <span class="font-serif text-2xl tracking-[0.2em] text-stone-50 uppercase block mb-4">ATELIER NORD</span>
+                <p class="text-sm text-stone-400 max-w-sm leading-relaxed font-light">
+                    Vestuário contemporâneo de estética minimalista e construção impecável. São Paulo — Brasil.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-[0.15em] text-stone-50 font-medium mb-4">Navegação</h4>
+                <ul class="space-y-2.5 text-sm font-light">
+                    <li><button onclick="filterProducts('Todos'); window.scrollTo({top: 0, behavior: 'smooth'});" class="hover:text-stone-50 transition-colors">Coleção Completa</button></li>
+                    <li><button onclick="filterProducts('Feminino'); document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'});" class="hover:text-stone-50 transition-colors">Feminino</button></li>
+                    <li><button onclick="filterProducts('Masculino'); document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'});" class="hover:text-stone-50 transition-colors">Masculino</button></li>
+                    <li><button onclick="filterProducts('Acessórios'); document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'});" class="hover:text-stone-50 transition-colors">Acessórios</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-[0.15em] text-stone-50 font-medium mb-4">Atendimento</h4>
+                <ul class="space-y-2.5 text-sm font-light">
+                    <li>Seg a Sex, 9h às 18h</li>
+                    <li>contato@ateliernord.com.br</li>
+                    <li>Trocas e Devoluções em até 30 dias</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500">
+            <p>&copy; 2026 ATELIER NORD. Todos os direitos reservados.</p>
+            <p class="mt-2 sm:mt-0">Design Editorial & Experiência de Compra</p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- GAVETA LATERAL DO CARRINHO (SLIDE-OVER)    -->
+    <!-- ========================================== -->
+    <div id="cart-drawer-backdrop" class="fixed inset-0 bg-stone-950/50 backdrop-blur-xs z-40 hidden opacity-0 transition-opacity duration-300" aria-hidden="true"></div>
+    
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-stone-50 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col" aria-label="Carrinho de compras">
+        
+        <!-- Cabeçalho da Gaveta -->
+        <div class="px-6 py-5 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+            <div class="flex items-center gap-2">
+                <h2 class="font-serif text-2xl text-stone-900">Sua Sacola</h2>
+                <span id="drawer-count" class="text-xs text-stone-500 font-normal">(0 itens)</span>
+            </div>
+            <button id="close-cart-btn" type="button" class="p-2 -mr-2 text-stone-500 hover:text-stone-900 transition-colors rounded-full" aria-label="Fechar carrinho">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Barra de Progresso de Frete Grátis -->
+        <div class="bg-stone-100 px-6 py-3 border-b border-stone-200">
+            <p id="shipping-message" class="text-xs text-stone-700 mb-2 text-center">
+                Faltam <span class="font-semibold">R$ 499,00</span> para você ganhar <span class="font-medium">Frete Grátis</span>.
+            </p>
+            <div class="w-full bg-stone-200 h-1 rounded-full overflow-hidden">
+                <div id="shipping-progress" class="bg-stone-900 h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Lista de Itens do Carrinho -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+            <!-- Estado Vazio (será substituído via JS quando houver itens) -->
+        </div>
+
+        <!-- Rodapé da Gaveta (Resumo e Checkout) -->
+        <div id="cart-footer" class="border-t border-stone-200 px-6 py-6 bg-stone-50 hidden">
+            <div class="space-y-2.5 text-sm mb-6">
+                <div class="flex justify-between text-stone-600">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between text-stone-600">
+                    <span>Frete estimado</span>
+                    <span id="cart-shipping">R$ 29,90</span>
+                </div>
+                <div class="flex justify-between text-base font-medium text-stone-900 pt-3 border-t border-stone-200">
+                    <span>Total</span>
+                    <span id="cart-total">R$ 0,00</span>
+                </div>
+            </div>
+            <button id="checkout-btn" type="button" class="w-full py-4 px-6 bg-stone-900 text-stone-50 text-xs uppercase tracking-[0.2em] font-medium rounded-sm hover:bg-stone-800 active:scale-[0.99] transition-all cursor-pointer">
+                Finalizar Compra
+            </button>
+        </div>
+    </aside>
+
+    <!-- ========================================== -->
+    <!-- MODAL DE CONFIRMAÇÃO DE PEDIDO             -->
+    <!-- ========================================== -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-stone-950/60 backdrop-blur-xs">
+        <div class="bg-stone-50 border border-stone-200 rounded-sm max-w-md w-full p-8 text-center shadow-2xl transform transition-all">
+            <div class="w-14 h-14 bg-stone-900 text-stone-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <span class="text-xs uppercase tracking-[0.2em] text-stone-500 block mb-2">Pedido Confirmado</span>
+            <h3 class="font-serif text-3xl text-stone-900 mb-3">Obrigado pela sua compra!</h3>
+            <p class="text-sm text-stone-600 leading-relaxed mb-6">
+                Seu pedido <span id="order-number" class="font-medium text-stone-900">#AN-8492</span> foi recebido com sucesso. Enviamos os detalhes de rastreamento para o seu e-mail.
+            </p>
+            <div class="bg-stone-100 p-4 rounded-sm mb-6 text-xs text-stone-600 flex justify-between">
+                <span>Previsão de entrega:</span>
+                <span class="font-medium text-stone-900">3 a 5 dias úteis</span>
+            </div>
+            <button id="close-modal-btn" type="button" class="w-full py-3.5 px-6 bg-stone-900 text-stone-50 text-xs uppercase tracking-[0.2em] font-medium rounded-sm hover:bg-stone-800 transition-colors">
+                Continuar Explorando
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- NOTIFICAÇÃO TOAST FLUTUANTE                -->
+    <!-- ========================================== -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ========================================== -->
+    <!-- LÓGICA JAVASCRIPT DA LOJA E CARRINHO       -->
+    <!-- ========================================== -->
+    <script>
+        // Catálogo de Produtos (Dados realistas com imagens curadas do Unsplash)
+        const products = [
+            {
+                id: 1,
+                name: "Sobretudo Lã Merino Estruturado",
+                category: "Feminino",
+                price: 890.00,
+                image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=800&q=80",
+                sizes: ["P", "M", "G", "GG"],
+                tag: "Destaque"
+            },
+            {
+                id: 2,
+                name: "Camisa Linho Puro Relaxed",
+                category: "Masculino",
+                price: 340.00,
+                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80",
+                sizes: ["P", "M", "G", "GG"],
+                tag: "Novo"
+            },
+            {
+                id: 3,
+                name: "Blazer Alfaiataria Areia",
+                category: "Feminino",
+                price: 620.00,
+                image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80",
+                sizes: ["P", "M", "G", "GG"],
+                tag: null
+            },
+            {
+                id: 4,
+                name: "Calça Chino Algodão Egípcio",
+                category: "Masculino",
+                price: 410.00,
+                image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80",
+                sizes: ["P", "M", "G", "GG"],
+                tag: null
+            },
+            {
+                id: 5,
+                name: "Bolsa Tote Couro Minimal",
+                category: "Acessórios",
+                price: 540.00,
+                image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80",
+                sizes: ["Único"],
+                tag: "Essencial"
+            },
+            {
+                id: 6,
+                name: "Tricô Gola Alta Cashmere Blend",
+                category: "Feminino",
+                price: 450.00,
+                image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=80",
+                sizes: ["P", "M", "G", "GG"],
+                tag: null
+            },
+            {
+                id: 7,
+                name: "Jaqueta Overshirt Sarja Pesada",
+                category: "Masculino",
+                price: 520.00,
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80",
+                sizes: ["P", "M", "G", "GG"],
+                tag: "Novo"
+            },
+            {
+                id: 8,
+                name: "Óculos de Sol Acetato Tartaruga",
+                category: "Acessórios",
+                price: 380.00,
+                image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
+                sizes: ["Único"],
+                tag: null
+            }
+        ];
+
+        // Estado da Aplicação
+        let cart = [];
+        let selectedSizes = {}; // Armazena o tamanho escolhido por produto (ex: { 1: 'M' })
+        let currentCategory = 'Todos';
+        const FREE_SHIPPING_THRESHOLD = 499.00;
+        const STANDARD_SHIPPING_COST = 29.90;
+
+        // Inicializa tamanho padrão ('M' ou 'Único') para cada produto
+        products.forEach(p => {
+            selectedSizes[p.id] = p.sizes.includes('M') ? 'M' : p.sizes[0];
+        });
+
+        // Formatador de Moeda (Real Brasileiro)
+        function formatBRL(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Renderiza a Grade de Produtos
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const filtered = currentCategory === 'Todos' 
+                ? products 
+                : products.filter(p => p.category === currentCategory);
+
+            grid.innerHTML = filtered.map(product => {
+                const currentSize = selectedSizes[product.id];
+                
+                return `
+                <article class="group flex flex-col">
+                    <!-- Imagem com Proporção Editorial -->
+                    <div class="relative aspect-[3/4] w-full overflow-hidden bg-stone-200 rounded-sm mb-4">
+                        <img 
+                            src="${product.image}" 
+                            onerror="this.src='https://placehold.co/600x800/E5E1D8/292724?text=${encodeURIComponent(product.name)}'"
+                            alt="${product.name}" 
+                            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                            loading="lazy"
+                        >
+                        ${product.tag ? `
+                            <span class="absolute top-3 left-3 bg-stone-50/90 backdrop-blur-xs text-stone-900 text-[10px] uppercase tracking-[0.15em] px-2.5 py-1 rounded-sm font-medium">
+                                ${product.tag}
+                            </span>
+                        ` : ''}
+                    </div>
+
+                    <!-- Informações do Produto -->
+                    <div class="flex flex-col flex-1 justify-between">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-1">
+                                <span class="text-[11px] uppercase tracking-widest text-stone-500">${product.category}</span>
+                                <span class="text-sm font-medium text-stone-900">${formatBRL(product.price)}</span>
+                            </div>
+                            <h3 class="text-base font-normal text-stone-900 mb-3 group-hover:text-stone-600 transition-colors">
+                                ${product.name}
+                            </h3>
+                        </div>
+
+                        <!-- Seletor de Tamanhos & Botão Adicionar -->
+                        <div class="pt-2">
+                            <div class="flex items-center gap-1.5 mb-3" role="group" aria-label="Selecionar tamanho">
+                                ${product.sizes.map(size => {
+                                    const isSelected = currentSize === size;
+                                    return `
+                                        <button 
+                                            type="button"
+                                            onclick="selectSize(${product.id}, '${size}')"
+                                            class="min-w-[34px] h-8 px-2 text-xs rounded-sm border transition-all cursor-pointer ${
+                                                isSelected 
+                                                ? 'border-stone-900 bg-stone-900 text-stone-50 font-medium' 
+                                                : 'border-stone-300 text-stone-600 hover:border-stone-900'
+                                            }"
+                                        >
+                                            ${size}
+                                        </button>
+                                    `;
+                                }).join('')}
+                            </div>
+
+                            <button 
+                                type="button"
+                                onclick="addToCart(${product.id})"
+                                class="w-full py-3 px-4 border border-stone-900 text-stone-900 text-xs uppercase tracking-[0.15em] font-medium rounded-sm hover:bg-stone-900 hover:text-stone-50 active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2"
+                            >
+                                <span>Adicionar à Sacola</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                `;
+            }).join('');
+        }
+
+        // Seleciona o Tamanho de um Produto
+        function selectSize(productId, size) {
+            selectedSizes[productId] = size;
+            renderProducts();
+        }
+
+        // Filtra Produtos por Categoria e Atualiza Estado Visual dos Links
+        function filterProducts(category) {
+            currentCategory = category;
+            
+            // Atualiza título da seção
+            const titles = {
+                'Todos': 'Todas as Peças',
+                'Feminino': 'Coleção Feminina',
+                'Masculino': 'Coleção Masculina',
+                'Acessórios': 'Acessórios & Couro'
+            };
+            document.getElementById('catalog-title').textContent = titles[category] || category;
+
+            // Atualiza links do cabeçalho desktop
+            document.querySelectorAll('.nav-link').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.remove('text-stone-500', 'border-transparent', 'font-normal');
+                    btn.classList.add('text-stone-900', 'border-stone-900', 'font-medium');
+                } else {
+                    btn.classList.add('text-stone-500', 'border-transparent', 'font-normal');
+                    btn.classList.remove('text-stone-900', 'border-stone-900', 'font-medium');
+                }
+            });
+
+            // Atualiza pílulas de filtro do catálogo
+            document.querySelectorAll('.pill-btn').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.remove('bg-stone-200/70', 'text-stone-700');
+                    btn.classList.add('bg-stone-900', 'text-stone-50');
+                } else {
+                    btn.classList.add('bg-stone-200/70', 'text-stone-700');
+                    btn.classList.remove('bg-stone-900', 'text-stone-50');
+                }
+            });
+
+            renderProducts();
+        }
+
+        // Adiciona Item ao Carrinho
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const size = selectedSizes[productId];
+            
+            // Verifica se já existe o mesmo produto com o mesmo tamanho
+            const existingIndex = cart.findIndex(item => item.id === productId && item.size === size);
+            
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    size: size,
+                    quantity: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`${product.name} (${size}) adicionado à sacola.`);
+            
+            // Efeito visual sutil no contador do carrinho
+            const badge = document.getElementById('cart-badge');
+            badge.classList.add('scale-125');
+            setTimeout(() => badge.classList.remove('scale-125'), 200);
+        }
+
+        // Altera Quantidade de um Item no Carrinho
+        function updateQuantity(index, delta) {
+            if (cart[index]) {
+                cart[index].quantity += delta;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+                updateCartUI();
+            }
+        }
+
+        // Remove Item do Carrinho
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        // Atualiza Toda a Interface do Carrinho (Itens, Totais, Barra de Frete e Contador)
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const footer = document.getElementById('cart-footer');
+            const badge = document.getElementById('cart-badge');
+            const drawerCount = document.getElementById('drawer-count');
+            
+            // Total de unidades
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            badge.textContent = totalItems;
+            drawerCount.textContent = `(${totalItems} ${totalItems === 1 ? 'item' : 'itens'})`;
+
+            // Subtotal em R$
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+            // Cálculo de Frete Grátis
+            const shippingMsg = document.getElementById('shipping-message');
+            const shippingProgress = document.getElementById('shipping-progress');
+            
+            if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+                shippingMsg.innerHTML = `Parabéns! Você ganhou <span class="font-semibold text-stone-900">Frete Grátis</span>.`;
+                shippingProgress.style.width = '100%';
+            } else {
+                const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
+                const percentage = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+                shippingMsg.innerHTML = `Faltam <span class="font-semibold">${formatBRL(remaining)}</span> para ganhar <span class="font-medium">Frete Grátis</span>.`;
+                shippingProgress.style.width = `${percentage}%`;
+            }
+
+            // Estado Vazio vs Lista Preenchida
+            if (cart.length === 0) {
+                footer.classList.add('hidden');
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center py-12">
+                        <svg class="w-12 h-12 text-stone-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <p class="font-serif text-xl text-stone-900 mb-2">Sua sacola está vazia</p>
+                        <p class="text-xs text-stone-500 max-w-xs mb-6 leading-relaxed">
+                            Explore nossa coleção de alfaiataria e peças essenciais para encontrar sua próxima escolha.
+                        </p>
+                        <button onclick="closeCart()" class="px-6 py-3 bg-stone-900 text-stone-50 text-xs uppercase tracking-[0.15em] rounded-sm hover:bg-stone-800 transition-colors">
+                            Explorar Peças
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Mostra rodapé e renderiza itens
+            footer.classList.remove('hidden');
+            container.innerHTML = cart.map((item, index) => `
+                <div class="flex gap-4 pb-6 border-b border-stone-200 last:border-none">
+                    <img 
+                        src="${item.image}" 
+                        onerror="this.src='https://placehold.co/160x200/E5E1D8/292724?text=Item'"
+                        alt="${item.name}" 
+                        class="w-20 h-26 object-cover rounded-sm bg-stone-200 flex-shrink-0"
+                    >
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start gap-2">
+                                <h4 class="text-sm font-medium text-stone-900 leading-snug">${item.name}</h4>
+                                <button onclick="removeItem(${index})" class="text-stone-400 hover:text-stone-900 p-1 -mr-1 transition-colors" title="Remover item">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="text-xs text-stone-500 mt-1">Tamanho: <span class="text-stone-800 font-medium">${item.size}</span></p>
+                        </div>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <!-- Controles de Quantidade -->
+                            <div class="inline-flex items-center border border-stone-300 rounded-sm bg-stone-50">
+                                <button onclick="updateQuantity(${index}, -1)" class="w-7 h-7 flex items-center justify-center text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors" aria-label="Diminuir quantidade">
+                                    &minus;
+                                </button>
+                                <span class="w-8 text-center text-xs font-medium text-stone-900">${item.quantity}</span>
+                                <button onclick="updateQuantity(${index}, 1)" class="w-7 h-7 flex items-center justify-center text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors" aria-label="Aumentar quantidade">
+                                    &plus;
+                                </button>
+                            </div>
+
+                            <span class="text-sm font-medium text-stone-900">
+                                ${formatBRL(item.price * item.quantity)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Atualiza Valores Finais
+            const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_COST;
+            const total = subtotal + shippingCost;
+
+            document.getElementById('cart-subtotal').textContent = formatBRL(subtotal);
+            document.getElementById('cart-shipping').textContent = shippingCost === 0 ? 'Grátis' : formatBRL(shippingCost);
+            document.getElementById('cart-total').textContent = formatBRL(total);
+        }
+
+        // Controles de Abertura e Fechamento da Gaveta do Carrinho
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartBackdrop = document.getElementById('cart-drawer-backdrop');
+
+        function openCart() {
+            cartBackdrop.classList.remove('hidden');
+            // Pequeno delay para permitir a transição suave de opacidade
+            setTimeout(() => {
+                cartBackdrop.classList.remove('opacity-0');
+                cartDrawer.classList.remove('translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            cartBackdrop.classList.add('opacity-0');
+            cartDrawer.classList.add('translate-x-full');
+            setTimeout(() => {
+                cartBackdrop.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('open-cart-btn').addEventListener('click', openCart);
+        document.getElementById('close-cart-btn').addEventListener('click', closeCart);
+        cartBackdrop.addEventListener('click', closeCart);
+
+        // Menu Mobile Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // Finalizar Compra (Checkout Modal)
+        const checkoutModal = document.getElementById('checkout-modal');
+        
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (cart.length === 0) return;
+            
+            // Gera número de pedido aleatório
+            const randomOrder = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('order-number').textContent = `#AN-${randomOrder}`;
+            
+            closeCart();
+            
+            // Exibe modal de confirmação
+            setTimeout(() => {
+                checkoutModal.classList.remove('hidden');
+                checkoutModal.classList.add('flex');
+                
+                // Limpa o carrinho
+                cart = [];
+                updateCartUI();
+            }, 300);
+        });
+
+        document.getElementById('close-modal-btn').addEventListener('click', () => {
+            checkoutModal.classList.add('hidden');
+            checkoutModal.classList.remove('flex');
+        });
+
+        // Notificação Toast Discreta e Elegante
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            toast.className = 'bg-stone-900 text-stone-50 px-5 py-3.5 rounded-sm shadow-xl flex items-center gap-3 text-xs tracking-wide transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto border border-stone-700';
+            toast.innerHTML = `
+                <svg class="w-4 h-4 text-stone-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Anima entrada
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            });
+            
+            // Remove após 3 segundos
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Inicialização ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>

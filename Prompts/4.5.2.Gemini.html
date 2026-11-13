@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roteiro Brasil — Revista Editorial de Viagens & Turismo Nacional</title>
+  <meta name="description" content="Explore os destinos mais fascinantes do Brasil: Nordeste, Amazônia, Sudeste e Sul em reportagens fotográficas e guias exclusivos.">
+
+  <!-- Google Fonts: Playfair Display (Editorial Serif) & Plus Jakarta Sans (Clean UI/Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Configuração de Design Tokens da Revista -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: {
+              950: '#0D2118',
+              900: '#143326',
+              800: '#1C4735',
+              700: '#275E47',
+              100: '#E5EFEA',
+              50:  '#F3F8F5',
+            },
+            sand: {
+              50:  '#FAF8F5',
+              100: '#F3EFE8',
+              200: '#E6DFD3',
+              300: '#D4C8B4',
+            },
+            terracotta: {
+              600: '#B85432',
+              500: '#C86441',
+              100: '#F9EAE4',
+            },
+            ochre: {
+              500: '#D49B38',
+              400: '#E5B254',
+            },
+            ink: {
+              900: '#1A1C1A',
+              700: '#3D423E',
+              500: '#646B65',
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            'editorial': '0 10px 30px -10px rgba(20, 51, 38, 0.08)',
+            'editorial-hover': '0 20px 40px -12px rgba(20, 51, 38, 0.16)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-sand-50 text-ink-900 font-sans antialiased selection:bg-forest-900 selection:text-sand-50">
+
+  <!-- =====================================================================
+       1. CABEÇALHO EDITORIAL (HEADER)
+       ===================================================================== -->
+  <header class="sticky top-0 z-40 bg-sand-50/95 backdrop-blur-md border-b border-sand-200 transition-all">
+    <!-- Barra Superior Institucional -->
+    <div class="bg-forest-900 text-sand-100 text-xs py-2 px-4">
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+        <p class="tracking-wide uppercase font-medium text-[11px] text-sand-200">
+          Edição Especial • Expedições pelo Território Brasileiro
+        </p>
+        <div class="hidden sm:flex items-center gap-5 text-sand-200">
+          <a href="#destinos-populares" class="hover:text-ochre-400 transition-colors">Ranking 2026</a>
+          <span class="text-forest-700">|</span>
+          <a href="#newsletter" class="hover:text-ochre-400 transition-colors">Assinar Edição Impressa & Digital</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navegação Principal e Marca -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Identidade Visual -->
+        <a href="#" id="brand-reset" class="flex items-center gap-3 group focus:outline-none">
+          <div class="w-10 h-10 rounded-xl bg-forest-900 text-sand-50 flex items-center justify-center shadow-sm group-hover:bg-terracotta-600 transition-colors">
+            <!-- Ícone Bússola SVG -->
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" />
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" fill-opacity="0.2" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-serif text-2xl sm:text-[26px] font-bold tracking-tight text-forest-900 block leading-none">
+              Roteiro <span class="italic font-normal text-terracotta-600">Brasil</span>
+            </span>
+            <span class="text-[10px] uppercase tracking-[0.22em] text-ink-500 font-semibold block mt-1">
+              Geografia, Cultura & Destinos
+            </span>
+          </div>
+        </a>
+
+        <!-- Menu de Regiões (Desktop) -->
+        <nav aria-label="Navegação por Regiões" class="hidden md:flex items-center gap-1 lg:gap-2">
+          <button type="button" data-region-nav="Todos" class="region-nav-btn px-4 py-2 rounded-full text-sm font-semibold bg-forest-900 text-sand-50 transition-all">
+            Todas as Regiões
+          </button>
+          <button type="button" data-region-nav="Nordeste" class="region-nav-btn px-4 py-2 rounded-full text-sm font-medium text-ink-700 hover:bg-sand-200/70 transition-all">
+            Nordeste
+          </button>
+          <button type="button" data-region-nav="Amazônia" class="region-nav-btn px-4 py-2 rounded-full text-sm font-medium text-ink-700 hover:bg-sand-200/70 transition-all">
+            Amazônia
+          </button>
+          <button type="button" data-region-nav="Sudeste" class="region-nav-btn px-4 py-2 rounded-full text-sm font-medium text-ink-700 hover:bg-sand-200/70 transition-all">
+            Sudeste
+          </button>
+          <button type="button" data-region-nav="Sul" class="region-nav-btn px-4 py-2 rounded-full text-sm font-medium text-ink-700 hover:bg-sand-200/70 transition-all">
+            Sul
+          </button>
+        </nav>
+
+        <!-- Botão de Busca Rápida / Menu Mobile -->
+        <div class="flex items-center gap-2">
+          <a href="#barra-busca" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-sand-100 hover:bg-sand-200 text-forest-900 text-sm font-semibold border border-sand-200 transition-colors">
+            <svg class="w-4 h-4 text-terracotta-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <span class="hidden sm:inline">Explorar</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu de Regiões (Mobile Scrollable) -->
+      <nav aria-label="Regiões Mobile" class="flex md:hidden items-center gap-2 pb-3 overflow-x-auto no-scrollbar">
+        <button type="button" data-region-nav="Todos" class="region-nav-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-forest-900 text-sand-50">
+          Todos
+        </button>
+        <button type="button" data-region-nav="Nordeste" class="region-nav-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-sand-100 text-ink-700">
+          Nordeste
+        </button>
+        <button type="button" data-region-nav="Amazônia" class="region-nav-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-sand-100 text-ink-700">
+          Amazônia
+        </button>
+        <button type="button" data-region-nav="Sudeste" class="region-nav-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-sand-100 text-ink-700">
+          Sudeste
+        </button>
+        <button type="button" data-region-nav="Sul" class="region-nav-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-sand-100 text-ink-700">
+          Sul
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       2. SEÇÃO DE DESTAQUE (HERO EDITORIAL) + BARRA DE BUSCA
+       ===================================================================== -->
+  <section aria-label="Reportagem de Capa" class="pt-6 sm:pt-10 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <!-- Card Hero Editorial -->
+    <article class="relative rounded-3xl overflow-hidden bg-forest-950 shadow-editorial group">
+      <!-- Imagem de Fundo com Overlay Gradiente -->
+      <div class="relative h-[500px] sm:h-[560px] lg:h-[600px] w-full overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1800&q=85"
+          onerror="this.src='https://placehold.co/1600x900/143326/FAF8F5?text=Lencois+Maranhenses+-+Brasil'"
+          alt="Dunas douradas e lagoas cristalinas nos Lençóis Maranhenses, Maranhão"
+          class="w-full h-full object-cover object-center opacity-85 group-hover:scale-105 transition-transform duration-1000 ease-out"
+        >
+        <div class="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/55 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-forest-950/80 via-transparent to-transparent"></div>
+      </div>
+
+      <!-- Conteúdo Editorial Sobreposto -->
+      <div class="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 lg:p-14">
+        <div class="max-w-3xl">
+          <!-- Badges de Capa -->
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <span class="px-3.5 py-1 rounded-full bg-terracotta-600 text-white text-xs font-bold uppercase tracking-wider shadow-sm">
+              Reportagem de Capa
+            </span>
+            <span class="px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-md text-sand-50 text-xs font-semibold tracking-wide border border-white/20">
+              Maranhão • Nordeste
+            </span>
+          </div>
+
+          <!-- Título Serifado de Impacto -->
+          <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.15] mb-4">
+            Entre Dunas de Seda e Lagoas de Água Doce: A Travessia Íntima pelos Lençóis Maranhenses
+          </h1>
+
+          <!-- Resumo Editorial -->
+          <p class="text-sand-100/90 text-base sm:text-lg leading-relaxed mb-6 line-clamp-3">
+            Caminhamos por três dias entre Santo Amaro e Atins para revelar como o ciclo das chuvas transforma o maior campo de dunas da América do Sul em um oásis efêmero de águas azul-turquesa e comunidades tradicionais acolhedoras.
+          </p>
+
+          <!-- Metadados e Ação -->
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/15">
+            <div class="flex items-center gap-3.5">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                onerror="this.src='https://placehold.co/100x100/C86441/FFFFFF?text=CM'"
+                alt="Retrato de Camila Montalvão"
+                class="w-11 h-11 rounded-full object-cover border-2 border-ochre-400"
+              >
+              <div>
+                <p class="text-sm font-semibold text-white">Por Camila Montalvão</p>
+                <div class="flex items-center gap-3 text-xs text-sand-200 mt-0.5">
+                  <span>Enviada especial</span>
+                  <span>•</span>
+                  <span class="inline-flex items-center gap-1 text-ochre-400 font-medium">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    9 min de leitura
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onclick="openArticleModal('hero')"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-sand-50 hover:bg-ochre-400 text-forest-950 font-bold text-sm transition-all shadow-lg cursor-pointer"
+            >
+              <span>Ler reportagem completa</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ===================================================================
+         BARRA DE BUSCA POR ESTADO/REGIÃO E PALAVRA-CHAVE
+         =================================================================== -->
+    <div id="barra-busca" class="mt-8 bg-white rounded-2xl p-4 sm:p-6 shadow-editorial border border-sand-200">
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-4">
+        <!-- Campo de Palavra-Chave -->
+        <div class="flex-1 relative">
+          <label for="search-input" class="block text-[11px] font-bold uppercase tracking-wider text-ink-500 mb-1.5">
+            Buscar destino, bioma ou experiência
+          </label>
+          <div class="relative flex items-center">
+            <svg class="w-5 h-5 text-ink-500 absolute left-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Ex: Cataratas, Alter do Chão, gastronomia, trilhas..."
+              class="w-full pl-11 pr-4 py-3 rounded-xl bg-sand-50 border border-sand-200 text-sm text-ink-900 placeholder-ink-500 focus:outline-none focus:border-forest-800 focus:bg-white transition-colors"
+            >
+          </div>
+        </div>
+
+        <!-- Seletor por Região -->
+        <div class="w-full lg:w-56">
+          <label for="region-select" class="block text-[11px] font-bold uppercase tracking-wider text-ink-500 mb-1.5">
+            Região do Brasil
+          </label>
+          <select
+            id="region-select"
+            class="w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-200 text-sm font-medium text-ink-900 focus:outline-none focus:border-forest-800 focus:bg-white transition-colors cursor-pointer"
+          >
+            <option value="Todos">Todas as regiões</option>
+            <option value="Nordeste">Nordeste</option>
+            <option value="Amazônia">Amazônia</option>
+            <option value="Sudeste">Sudeste</option>
+            <option value="Sul">Sul</option>
+          </select>
+        </div>
+
+        <!-- Seletor por Estado -->
+        <div class="w-full lg:w-56">
+          <label for="state-select" class="block text-[11px] font-bold uppercase tracking-wider text-ink-500 mb-1.5">
+            Estado (UF)
+          </label>
+          <select
+            id="state-select"
+            class="w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-200 text-sm font-medium text-ink-900 focus:outline-none focus:border-forest-800 focus:bg-white transition-colors cursor-pointer"
+          >
+            <option value="Todos">Todos os estados</option>
+            <option value="Amazonas">Amazonas (AM)</option>
+            <option value="Bahia">Bahia (BA)</option>
+            <option value="Maranhão">Maranhão (MA)</option>
+            <option value="Minas Gerais">Minas Gerais (MG)</option>
+            <option value="Pará">Pará (PA)</option>
+            <option value="Paraná">Paraná (PR)</option>
+            <option value="Pernambuco">Pernambuco (PE)</option>
+            <option value="Rio de Janeiro">Rio de Janeiro (RJ)</option>
+            <option value="Rio Grande do Sul">Rio Grande do Sul (RS)</option>
+          </select>
+        </div>
+
+        <!-- Botão Limpar Filtros -->
+        <div class="flex items-end">
+          <button
+            type="button"
+            id="reset-filters-btn"
+            class="w-full lg:w-auto px-5 py-3 rounded-xl bg-forest-900 hover:bg-terracotta-600 text-white text-sm font-semibold transition-colors cursor-pointer whitespace-nowrap"
+          >
+            Limpar Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. ÁREA PRINCIPAL (MAIN) EM GRID DE 2 COLUNAS (CONTEÚDO + SIDEBAR)
+       ===================================================================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+      <!-- =================================================================
+           COLUNA ESQUERDA: FEED EDITORIAL DE ARTIGOS (8 COLUNAS NO DESKTOP)
+           ================================================================= -->
+      <section aria-label="Artigos e Roteiros por Região" class="lg:col-span-8">
+        <!-- Cabeçalho da Seção com Contador Dinâmico -->
+        <div class="flex flex-wrap items-end justify-between gap-4 pb-6 mb-8 border-b border-sand-200">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-terracotta-600 block mb-1">
+              Crônicas & Guias Práticos
+            </span>
+            <h2 id="feed-heading" class="font-serif text-2xl sm:text-3xl font-bold text-forest-950">
+              Roteiros em Destaque pelo Brasil
+            </h2>
+          </div>
+          <p id="results-counter" class="text-sm font-medium text-ink-500 bg-sand-100 px-3.5 py-1.5 rounded-full">
+            Mostrando 6 reportagens
+          </p>
+        </div>
+
+        <!-- Grid Responsivo de Cartões de Artigos -->
+        <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Os cartões são renderizados dinamicamente via JavaScript mantendo HTML5 semântico -->
+        </div>
+
+        <!-- Estado Vazio (caso a busca não encontre resultados) -->
+        <div id="empty-state" class="hidden bg-white rounded-3xl p-12 text-center border border-sand-200 shadow-editorial">
+          <div class="w-16 h-16 rounded-full bg-sand-100 text-terracotta-600 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl font-bold text-forest-950 mb-2">Nenhum roteiro encontrado</h3>
+          <p class="text-ink-500 max-w-md mx-auto mb-6">
+            Não encontramos reportagens com os critérios selecionados. Experimente buscar por outra região, estado ou palavra-chave.
+          </p>
+          <button
+            type="button"
+            onclick="resetAllFilters()"
+            class="px-6 py-3 rounded-full bg-forest-900 text-white text-sm font-semibold hover:bg-terracotta-600 transition-colors cursor-pointer"
+          >
+            Ver todos os destinos do Brasil
+          </button>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           COLUNA DIREITA: SIDEBAR EDITORIAL (4 COLUNAS NO DESKTOP)
+           ================================================================= -->
+      <aside aria-label="Destaques e Navegação Complementar" class="lg:col-span-4 space-y-8 lg:sticky lg:top-28">
+
+        <!-- WIDGET 1: DESTINOS MAIS VISITADOS (RANKING 1 A 5) -->
+        <div id="destinos-populares" class="bg-white rounded-3xl p-6 sm:p-7 shadow-editorial border border-sand-200">
+          <div class="flex items-center justify-between pb-4 mb-5 border-b border-sand-200">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-terracotta-600 block">
+                Curadoria dos Leitores
+              </span>
+              <h3 class="font-serif text-xl font-bold text-forest-950 mt-0.5">
+                Destinos Mais Visitados
+              </h3>
+            </div>
+            <span class="w-8 h-8 rounded-full bg-forest-50 text-forest-900 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+              </svg>
+            </span>
+          </div>
+
+          <ol class="space-y-4">
+            <!-- Item 1 -->
+            <li>
+              <button type="button" onclick="quickFilterDestination('Fernando de Noronha')" class="w-full flex items-center gap-3.5 group text-left p-1.5 -mx-1.5 rounded-2xl hover:bg-sand-50 transition-colors cursor-pointer">
+                <div class="relative shrink-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=200&q=80"
+                    onerror="this.src='https://placehold.co/120x120/143326/FAF8F5?text=01'"
+                    alt="Fernando de Noronha, Pernambuco"
+                    class="w-16 h-16 rounded-2xl object-cover"
+                  >
+                  <span class="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-forest-900 text-ochre-400 font-serif font-bold text-xs flex items-center justify-center shadow">
+                    1
+                  </span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h4 class="font-serif font-bold text-base text-ink-900 group-hover:text-terracotta-600 transition-colors truncate">
+                    Fernando de Noronha
+                  </h4>
+                  <p class="text-xs text-ink-500 font-medium">Pernambuco • Nordeste</p>
+                  <div class="flex items-center gap-2 mt-1 text-[11px] font-semibold text-forest-800">
+                    <span>★ 4.9</span>
+                    <span class="text-sand-300">•</span>
+                    <span>142 roteiros</span>
+                  </div>
+                </div>
+              </button>
+            </li>
+
+            <!-- Item 2 -->
+            <li>
+              <button type="button" onclick="quickFilterDestination('Amazônia')" class="w-full flex items-center gap-3.5 group text-left p-1.5 -mx-1.5 rounded-2xl hover:bg-sand-50 transition-colors cursor-pointer">
+                <div class="relative shrink-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=200&q=80"
+                    onerror="this.src='https://placehold.co/120x120/143326/FAF8F5?text=02'"
+                    alt="Floresta Amazônica e Rio Negro"
+                    class="w-16 h-16 rounded-2xl object-cover"
+                  >
+                  <span class="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-forest-900 text-sand-50 font-serif font-bold text-xs flex items-center justify-center shadow">
+                    2
+                  </span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h4 class="font-serif font-bold text-base text-ink-900 group-hover:text-terracotta-600 transition-colors truncate">
+                    Arquipélago de Anavilhanas
+                  </h4>
+                  <p class="text-xs text-ink-500 font-medium">Amazonas • Amazônia</p>
+                  <div class="flex items-center gap-2 mt-1 text-[11px] font-semibold text-forest-800">
+                    <span>★ 4.9</span>
+                    <span class="text-sand-300">•</span>
+                    <span>98 roteiros</span>
+                  </div>
+                </div>
+              </button>
+            </li>
+
+            <!-- Item 3 -->
+            <li>
+              <button type="button" onclick="quickFilterDestination('Rio de Janeiro')" class="w-full flex items-center gap-3.5 group text-left p-1.5 -mx-1.5 rounded-2xl hover:bg-sand-50 transition-colors cursor-pointer">
+                <div class="relative shrink-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=200&q=80"
+                    onerror="this.src='https://placehold.co/120x120/143326/FAF8F5?text=03'"
+                    alt="Baía de Guanabara e Pão de Açúcar, Rio de Janeiro"
+                    class="w-16 h-16 rounded-2xl object-cover"
+                  >
+                  <span class="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-forest-900 text-sand-50 font-serif font-bold text-xs flex items-center justify-center shadow">
+                    3
+                  </span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h4 class="font-serif font-bold text-base text-ink-900 group-hover:text-terracotta-600 transition-colors truncate">
+                    Paraty & Costa Verde
+                  </h4>
+                  <p class="text-xs text-ink-500 font-medium">Rio de Janeiro • Sudeste</p>
+                  <div class="flex items-center gap-2 mt-1 text-[11px] font-semibold text-forest-800">
+                    <span>★ 4.8</span>
+                    <span class="text-sand-300">•</span>
+                    <span>118 roteiros</span>
+                  </div>
+                </div>
+              </button>
+            </li>
+
+            <!-- Item 4 -->
+            <li>
+              <button type="button" onclick="quickFilterDestination('Cataratas do Iguaçu')" class="w-full flex items-center gap-3.5 group text-left p-1.5 -mx-1.5 rounded-2xl hover:bg-sand-50 transition-colors cursor-pointer">
+                <div class="relative shrink-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1583255448430-17c5eda08e5c?auto=format&fit=crop&w=200&q=80"
+                    onerror="this.src='https://placehold.co/120x120/143326/FAF8F5?text=04'"
+                    alt="Cataratas do Iguaçu, Paraná"
+                    class="w-16 h-16 rounded-2xl object-cover"
+                  >
+                  <span class="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-forest-900 text-sand-50 font-serif font-bold text-xs flex items-center justify-center shadow">
+                    4
+                  </span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h4 class="font-serif font-bold text-base text-ink-900 group-hover:text-terracotta-600 transition-colors truncate">
+                    Cataratas do Iguaçu
+                  </h4>
+                  <p class="text-xs text-ink-500 font-medium">Paraná • Sul</p>
+                  <div class="flex items-center gap-2 mt-1 text-[11px] font-semibold text-forest-800">
+                    <span>★ 4.9</span>
+                    <span class="text-sand-300">•</span>
+                    <span>109 roteiros</span>
+                  </div>
+                </div>
+              </button>
+            </li>
+
+            <!-- Item 5 -->
+            <li>
+              <button type="button" onclick="quickFilterDestination('Ouro Preto')" class="w-full flex items-center gap-3.5 group text-left p-1.5 -mx-1.5 rounded-2xl hover:bg-sand-50 transition-colors cursor-pointer">
+                <div class="relative shrink-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=200&q=80"
+                    onerror="this.src='https://placehold.co/120x120/143326/FAF8F5?text=05'"
+                    alt="Arquitetura colonial histórica em Minas Gerais"
+                    class="w-16 h-16 rounded-2xl object-cover"
+                  >
+                  <span class="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-forest-900 text-sand-50 font-serif font-bold text-xs flex items-center justify-center shadow">
+                    5
+                  </span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h4 class="font-serif font-bold text-base text-ink-900 group-hover:text-terracotta-600 transition-colors truncate">
+                    Ouro Preto & Estrada Real
+                  </h4>
+                  <p class="text-xs text-ink-500 font-medium">Minas Gerais • Sudeste</p>
+                  <div class="flex items-center gap-2 mt-1 text-[11px] font-semibold text-forest-800">
+                    <span>★ 4.8</span>
+                    <span class="text-sand-300">•</span>
+                    <span>87 roteiros</span>
+                  </div>
+                </div>
+              </button>
+            </li>
+          </ol>
+        </div>
+
+        <!-- WIDGET 2: EXPLORAR POR REGIÃO -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-editorial border border-sand-200">
+          <h3 class="font-serif text-xl font-bold text-forest-950 mb-4">
+            Explorar por Região
+          </h3>
+          <div class="space-y-2.5">
+            <button type="button" data-region-nav="Nordeste" class="region-sidebar-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-sand-50 hover:bg-forest-900 hover:text-white text-ink-900 font-medium text-sm transition-all cursor-pointer group">
+              <span class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-terracotta-500"></span>
+                Nordeste
+              </span>
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white text-forest-900 group-hover:bg-forest-800 group-hover:text-sand-50">
+                24 guias
+              </span>
+            </button>
+
+            <button type="button" data-region-nav="Amazônia" class="region-sidebar-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-sand-50 hover:bg-forest-900 hover:text-white text-ink-900 font-medium text-sm transition-all cursor-pointer group">
+              <span class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-forest-700"></span>
+                Amazônia
+              </span>
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white text-forest-900 group-hover:bg-forest-800 group-hover:text-sand-50">
+                18 guias
+              </span>
+            </button>
+
+            <button type="button" data-region-nav="Sudeste" class="region-sidebar-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-sand-50 hover:bg-forest-900 hover:text-white text-ink-900 font-medium text-sm transition-all cursor-pointer group">
+              <span class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-ochre-500"></span>
+                Sudeste
+              </span>
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white text-forest-900 group-hover:bg-forest-800 group-hover:text-sand-50">
+                21 guias
+              </span>
+            </button>
+
+            <button type="button" data-region-nav="Sul" class="region-sidebar-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-sand-50 hover:bg-forest-900 hover:text-white text-ink-900 font-medium text-sm transition-all cursor-pointer group">
+              <span class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-forest-900"></span>
+                Sul
+              </span>
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white text-forest-900 group-hover:bg-forest-800 group-hover:text-sand-50">
+                16 guias
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- WIDGET 3: NEWSLETTER EDITORIAL -->
+        <div id="newsletter" class="relative overflow-hidden rounded-3xl bg-forest-900 text-sand-50 p-7 shadow-editorial">
+          <div class="relative z-10">
+            <span class="inline-block px-3 py-1 rounded-full bg-ochre-500/20 text-ochre-400 text-[11px] font-bold uppercase tracking-wider mb-3">
+              Carta Semanal
+            </span>
+            <h3 class="font-serif text-2xl font-bold leading-snug mb-2">
+              Receba roteiros exclusivos do Brasil
+            </h3>
+            <p class="text-sand-200 text-sm leading-relaxed mb-5">
+              Mapas comentados, pousadas de charme, épocas ideais de viagem e crônicas inéditas direto na sua caixa de entrada.
+            </p>
+
+            <form id="newsletter-form" class="space-y-3">
+              <div>
+                <label for="newsletter-email" class="sr-only">Seu melhor e-mail</label>
+                <input
+                  type="email"
+                  id="newsletter-email"
+                  required
+                  placeholder="seuemail@exemplo.com.br"
+                  class="w-full px-4 py-3 rounded-xl bg-forest-950/70 border border-forest-700 text-sm text-white placeholder-sand-300 focus:outline-none focus:border-ochre-400"
+                >
+              </div>
+              <button
+                type="submit"
+                class="w-full py-3 px-5 rounded-xl bg-terracotta-600 hover:bg-terracotta-500 text-white font-bold text-sm transition-colors cursor-pointer shadow-md"
+              >
+                Assinar gratuitamente
+              </button>
+            </form>
+
+            <!-- Feedback de Inscrição -->
+            <div id="newsletter-feedback" class="hidden mt-4 p-3 rounded-xl bg-forest-800 border border-forest-700 text-xs text-sand-50">
+              Inscrição confirmada! Bem-vindo à comunidade <strong>Roteiro Brasil</strong>.
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       4. RODAPÉ EDITORIAL (FOOTER)
+       ===================================================================== -->
+  <footer class="bg-forest-950 text-sand-200 mt-16 border-t border-forest-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-forest-800">
+        <!-- Coluna Marca -->
+        <div class="lg:col-span-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-terracotta-600 text-white flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" />
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+              </svg>
+            </div>
+            <span class="font-serif text-2xl font-bold text-white">
+              Roteiro <span class="italic font-normal text-ochre-400">Brasil</span>
+            </span>
+          </div>
+          <p class="text-sm text-sand-200/80 leading-relaxed max-w-md mb-5">
+            Plataforma editorial dedicada ao turismo sustentável, à valorização dos biomas brasileiros e às narrativas autênticas de viagem do Oiapoque ao Chuí.
+          </p>
+          <p class="text-xs text-sand-300/70">
+            Turismo consciente • Apoio às comunidades locais e unidades de conservação.
+          </p>
+        </div>
+
+        <!-- Links Regiões -->
+        <div class="lg:col-span-3">
+          <h4 class="font-serif text-base font-bold text-white mb-4">Regiões em Foco</h4>
+          <ul class="space-y-2.5 text-sm">
+            <li><button type="button" data-region-nav="Nordeste" class="hover:text-ochre-400 transition-colors cursor-pointer">Litoral & Sertão do Nordeste</button></li>
+            <li><button type="button" data-region-nav="Amazônia" class="hover:text-ochre-400 transition-colors cursor-pointer">Rios & Florestas da Amazônia</button></li>
+            <li><button type="button" data-region-nav="Sudeste" class="hover:text-ochre-400 transition-colors cursor-pointer">Serras & História do Sudeste</button></li>
+            <li><button type="button" data-region-nav="Sul" class="hover:text-ochre-400 transition-colors cursor-pointer">Cânions & Vinhedos do Sul</button></li>
+          </ul>
+        </div>
+
+        <!-- Links Institucionais -->
+        <div class="lg:col-span-4">
+          <h4 class="font-serif text-base font-bold text-white mb-4">Expediente Editorial</h4>
+          <ul class="space-y-2.5 text-sm text-sand-200/85">
+            <li>Direção Editorial: <span class="text-white font-medium">Helena Vasconcelos</span></li>
+            <li>Curadoria Fotográfica: <span class="text-white font-medium">Rafael Tupinambá</span></li>
+            <li>Parcerias & Roteiros: <span class="text-ochre-400">redacao@roteirobrasil.com.br</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-sand-300/70">
+        <p>© 2026 Roteiro Brasil — Revista Digital de Turismo Nacional. Todos os direitos reservados.</p>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-white transition-colors">Política Editorial</a>
+          <a href="#" class="hover:text-white transition-colors">Privacidade</a>
+          <a href="#" class="hover:text-white transition-colors">Anuncie</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       MODAL DE LEITURA RÁPIDA (EXPERIÊNCIA DE REVISTA)
+       ===================================================================== -->
+  <div id="article-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="fixed inset-0 z-50 hidden overflow-y-auto bg-forest-950/80 backdrop-blur-sm p-4 sm:p-6">
+    <div class="min-h-full flex items-center justify-center">
+      <div class="relative w-full max-w-3xl bg-sand-50 rounded-3xl overflow-hidden shadow-2xl border border-sand-200 my-8">
+        <!-- Botão Fechar -->
+        <button
+          type="button"
+          onclick="closeArticleModal()"
+          aria-label="Fechar artigo"
+          class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-forest-950/75 hover:bg-terracotta-600 text-white flex items-center justify-center backdrop-blur-md transition-colors cursor-pointer"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+
+        <!-- Imagem de Capa do Modal -->
+        <div class="h-64 sm:h-80 w-full relative bg-forest-900">
+          <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-forest-950/80 via-transparent to-transparent"></div>
+          <span id="modal-badge" class="absolute bottom-4 left-6 px-3.5 py-1 rounded-full bg-terracotta-600 text-white text-xs font-bold uppercase tracking-wider"></span>
+        </div>
+
+        <!-- Corpo da Reportagem -->
+        <div class="p-6 sm:p-10">
+          <h2 id="modal-title" class="font-serif text-2xl sm:text-3xl font-bold text-forest-950 leading-tight mb-4"></h2>
+
+          <div class="flex flex-wrap items-center gap-4 pb-6 mb-6 border-b border-sand-200 text-xs text-ink-500">
+            <div class="flex items-center gap-2.5">
+              <img id="modal-author-avatar" src="" alt="" class="w-9 h-9 rounded-full object-cover">
+              <span id="modal-author" class="font-bold text-ink-900 text-sm"></span>
+            </div>
+            <span>•</span>
+            <span id="modal-read-time" class="font-semibold text-forest-800"></span>
+            <span>•</span>
+            <span id="modal-best-season" class="font-medium text-terracotta-600"></span>
+          </div>
+
+          <div id="modal-content" class="space-y-4 text-ink-700 text-base leading-relaxed"></div>
+
+          <div class="mt-8 pt-6 border-t border-sand-200 flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-ink-500">Roteiro Brasil • Arquivo Editorial</span>
+            <button
+              type="button"
+              onclick="closeArticleModal()"
+              class="px-5 py-2.5 rounded-full bg-forest-900 hover:bg-terracotta-600 text-white text-sm font-semibold transition-colors cursor-pointer"
+            >
+              Voltar aos artigos
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT EDITORIAL: DADOS, FILTROS DINÂMICOS E LEITURA RÁPIDA
+       ===================================================================== -->
+  <script>
+    // Banco de Artigos Editoriais das 4 Regiões do Brasil
+    const ARTICLES = [
+      {
+        id: 'noronha-nordeste',
+        region: 'Nordeste',
+        state: 'Pernambuco',
+        title: 'Fernando de Noronha Além dos Cartões-Postais: Trilhas Vulcânicas e Mergulho Livre',
+        excerpt: 'Um guia de imersão sustentável pelo arquipélago pernambucano, explorando enseadas preservadas, projetos de conservação marinha e o pôr do sol no Forte do Boldró.',
+        image: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1000&q=80',
+        author: 'Lucas Andrade',
+        authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+        readTime: '7 min de leitura',
+        bestSeason: 'Melhor época: Agosto a Dezembro',
+        fullText: [
+          'A cerca de 545 quilômetros da costa de Pernambuco, Fernando de Noronha revela uma geografia esculpida por antigas atividades vulcânicas e protegida por rigorosas políticas de preservação ambiental.',
+          'Para além da icônica Baía do Sancho, o viajante que se dedica às trilhas guiadas pelo Parque Nacional Marinho descobre piscinas naturais esculpidas na rocha basáltica, onde tartarugas-verdes e golfinhos-rotadores compartilham as águas transparentes.',
+          'Dica editorial: reserve ao menos cinco dias inteiros e priorize pousadas familiares na Vila dos Remédios para vivenciar a hospitalidade autêntica dos ilhéus.'
+        ]
+      },
+      {
+        id: 'amazonia-anavilhanas',
+        region: 'Amazônia',
+        state: 'Amazonas',
+        title: 'Navegando pelo Rio Negro: Expedição ao Arquipélago de Anavilhanas',
+        excerpt: 'A bordo de embarcações regionais, adentramos um dos maiores arquipélagos fluviais do mundo para ouvir as histórias dos ribeirinhos e observar a floresta inundada.',
+        image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1000&q=80',
+        author: 'Mariana Tapajós',
+        authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
+        readTime: '8 min de leitura',
+        bestSeason: 'Melhor época: Junho a Novembro',
+        fullText: [
+          'Quando as águas escuras e espelhadas do Rio Negro sobem entre abril e agosto, o Arquipélago de Anavilhanas transforma-se em um labirinto silencioso de ilhas submersas, onde as copas das árvores tocam o reflexo do céu amazônico.',
+          'Saindo de Novo Airão, a apenas duas horas de Manaus, expedições de baixo impacto conduzem os visitantes por igapós estreitos ao amanhecer, momento em que araras-vermelhas e preguiças despertam sob a neblina matinal.',
+          'O encontro com artesãos locais que trabalham com madeira certificada e fibras naturais completa uma jornada transformadora pelo coração da Amazônia.'
+        ]
+      },
+      {
+        id: 'paraty-sudeste',
+        region: 'Sudeste',
+        state: 'Rio de Janeiro',
+        title: 'Entre o Mar e a Mata Atlântica: Os Sabores e Calçamentos Históricos de Paraty',
+        excerpt: 'Do casario colonial invadido pela maré às cachoeiras escondidas na Serra da Bocaina, um roteiro gastronômico e cultural pela Costa Verde fluminense.',
+        image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1000&q=80',
+        author: 'Henrique Valença',
+        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+        readTime: '6 min de leitura',
+        bestSeason: 'Melhor época: Abril a Outubro',
+        fullText: [
+          'Protegida pelo maciço verde da Serra da Bocaina e banhada pelas águas calmas da Baía da Ilha Grande, Paraty equilibra como poucos destinos brasileiros o patrimônio arquitetônico e a exuberância natural.',
+          'Caminhar pelas ruas de pedras pé-de-moleque revela ateliês de cerâmica, alambiques centenários de cachaça artesanal e restaurantes que valorizam ingredientes caiçaras como a banana-da-terra, o camarão fresco e a taioba.',
+          'No segundo dia, embarque em um barco de madeira rumo ao Saco do Mamanguá, único fiorde tropical da costa brasileira.'
+        ]
+      },
+      {
+        id: 'iguacu-sul',
+        region: 'Sul',
+        state: 'Paraná',
+        title: 'A Sinfonia das Águas: Imersão Sensorial no Parque Nacional do Iguaçu',
+        excerpt: 'Muito além da Garganta do Diabo: trilhas suspensas na floresta subtropical, observação de aves e o espetáculo das 275 quedas d’água na fronteira sul.',
+        image: 'https://images.unsplash.com/photo-1583255448430-17c5eda08e5c?auto=format&fit=crop&w=1000&q=80',
+        author: 'Beatriz Fontana',
+        authorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80',
+        readTime: '5 min de leitura',
+        bestSeason: 'Melhor época: Março a Maio e Agosto a Outubro',
+        fullText: [
+          'O estrondo contínuo das águas do Rio Iguaçu despencando por cânions basálticos anuncia um dos maiores espetáculos naturais do planeta, cercado por uma das últimas grandes reservas de Mata Atlântica de interior.',
+          'As passarelas panorâmicas do lado brasileiro oferecem uma visão ampla e cinematográfica do conjunto das quedas, especialmente nas primeiras horas da manhã, quando arco-íris duplos se formam sobre a névoa.',
+          'Reserve uma tarde para percorrer a Trilha do Poço Preto de bicicleta, avistando tucanos-toco, quatis e borboletas multicolores.'
+        ]
+      },
+      {
+        id: 'ouro-preto-sudeste',
+        region: 'Sudeste',
+        state: 'Minas Gerais',
+        title: 'Ouro Preto e a Estrada Real: Arte Barroca, Neblina nas Montanhas e Cozinha de Fogão a Lenha',
+        excerpt: 'Uma viagem pelas ladeiras históricas de Minas Gerais, desvendando as obras-primas de Aleijadinho e as fazendas centenárias que preservam a alma mineira.',
+        image: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1000&q=80',
+        author: 'Henrique Valença',
+        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+        readTime: '7 min de leitura',
+        bestSeason: 'Melhor época: Maio a Setembro',
+        fullText: [
+          'Envolta pela neblina matinal da Serra do Espinhaço, Ouro Preto mantém intacto o traçado urbano do século XVIII, onde torres de igrejas barrocas despontam entre telhados coloniais e montanhas ricas em minério.',
+          'Visitar a Igreja de São Francisco de Assis e o Museu da Inconfidência é mergulhar no auge da escultura em pedra-sabão e na história intelectual do Brasil.',
+          'À mesa, o ritual mineiro se completa com queijos artesanais da Serra da Canastra, café coado na hora e receitas tradicionais preparadas lentamente.'
+        ]
+      },
+      {
+        id: 'alter-do-chao-amazonia',
+        region: 'Amazônia',
+        state: 'Pará',
+        title: 'Alter do Chão e o Rio Tapajós: Praias de Areia Branca no Coração do Pará',
+        excerpt: 'Na estação seca amazônica, bancos de areia surgem nas águas cristalinas do Tapajós, criando cenários paradisíacos cercados pela Floresta Nacional.',
+        image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1000&q=80',
+        author: 'Mariana Tapajós',
+        authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
+        readTime: '6 min de leitura',
+        bestSeason: 'Melhor época: Agosto a Dezembro',
+        fullText: [
+          'Diferente das águas escuras do Rio Negro, o Rio Tapajós exibe tons verde-esmeralda e azul-profundo que contrastam com as extensas faixas de areia branca de Alter do Chão, a 35 quilômetros de Santarém.',
+          'A travessia de catraia até a Ilha do Amor é apenas o ponto de partida: passeios de voadeira levam à Ponta do Cururu, ao Lago Verde e às comunidades da Floresta Nacional do Tapajós, onde trilhas revelam sumaúmas centenárias.',
+          'Ao entardecer, o ritmo do carimbó toma conta da praça central da vila, celebrando a cultura viva do oeste paraense.'
+        ]
+      },
+      {
+        id: 'chapada-diamantina-nordeste',
+        region: 'Nordeste',
+        state: 'Bahia',
+        title: 'Chapada Diamantina: Cavernas Cristalinas, Cachoeiras Gigantes e o Vale do Pati',
+        excerpt: 'No coração da Bahia, platôs monumentais e poços de água azul-cobalto convidam a jornadas de contemplação e ecoturismo de altitude.',
+        image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=80',
+        author: 'Camila Montalvão',
+        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+        readTime: '8 min de leitura',
+        bestSeason: 'Melhor época: Abril a Outubro',
+        fullText: [
+          'A Chapada Diamantina revela um Nordeste serrano surpreendente, onde antigas vilas garimpeiras como Lençóis e Mucugê servem de base para explorar cânions monumentais e cachoeiras de quase 400 metros de queda.',
+          'O espetáculo do feixe de luz solar atravessando as águas cristalinas do Poço Encantado e do Poço Azul cria um fenômeno óptico inesquecível entre abril e setembro.',
+          'Para os amantes de trekking, a travessia do Vale do Pati oferece hospedagem na casa de moradores locais sob o céu mais estrelado do sertão baiano.'
+        ]
+      },
+      {
+        id: 'serra-gaucha-sul',
+        region: 'Sul',
+        state: 'Rio Grande do Sul',
+        title: 'Cânions de Cambará do Sul e Vale dos Vinhedos: O Inverno Acolhedor da Serra Gaúcha',
+        excerpt: 'Dos paredões verticais do Itaimbezinho às vinícolas familiares de Bento Gonçalves, um roteiro que une natureza monumental e enogastronomia.',
+        image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=80',
+        author: 'Beatriz Fontana',
+        authorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80',
+        readTime: '6 min de leitura',
+        bestSeason: 'Melhor época: Maio a Setembro',
+        fullText: [
+          'Nos Campos de Cima da Serra, na divisa entre o Rio Grande do Sul e Santa Catarina, os cânions Itaimbezinho e Fortaleza rasgam o planalto com paredões de até 900 metros de altura cobertos por matas de araucárias.',
+          'Após explorar as trilhas nas bordas dos abismos, a viagem segue rumo ao Vale dos Vinhedos, onde pequenas propriedades familiares produzem espumantes premiados e servem mesas fartas de herança italiana.',
+          'Um roteiro ideal para desacelerar junto à lareira com vistas panorâmicas para os parreirais.'
+        ]
+      }
+    ];
+
+    // Artigo Hero para o Modal
+    const HERO_ARTICLE = {
+      id: 'hero',
+      region: 'Nordeste',
+      state: 'Maranhão',
+      title: 'Entre Dunas de Seda e Lagoas de Água Doce: A Travessia Íntima pelos Lençóis Maranhenses',
+      image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1400&q=85',
+      author: 'Camila Montalvão',
+      authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+      readTime: '9 min de leitura',
+      bestSeason: 'Melhor época: Maio a Setembro (lagoas cheias)',
+      fullText: [
+        'Ao nascer do sol, quando a areia fina ainda guarda o frescor da noite maranhense, caminhar descalço pelas cristas das dunas dos Lençóis Maranhenses provoca uma sensação rara de imensidão e silêncio absoluto.',
+        'Ao longo de 155 mil hectares de área protegida, os ventos alísios esculpem ondas de areia branca que avançam continente adentro, enquanto as chuvas do primeiro semestre preenchem os vales interdunares com milhares de lagoas cristalinas.',
+        'Nossa travessia a pé de três dias conectou Santo Amaro, Baixa Grande, Queimada dos Britos e Atins, pernoitando em redes sob tetos de palha de buriti e saboreando peixes frescos preparados pelas famílias nativas que habitam os oásis do parque.'
+      ]
+    };
+
+    // Estado atual dos filtros
+    let filterState = {
+      search: '',
+      region: 'Todos',
+      state: 'Todos'
+    };
+
+    // Referências do DOM
+    const articlesGrid = document.getElementById('articles-grid');
+    const emptyState = document.getElementById('empty-state');
+    const resultsCounter = document.getElementById('results-counter');
+    const feedHeading = document.getElementById('feed-heading');
+    const searchInput = document.getElementById('search-input');
+    const regionSelect = document.getElementById('region-select');
+    const stateSelect = document.getElementById('state-select');
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
+
+    // Renderiza os cartões de artigos no Grid
+    function renderArticles() {
+      const query = filterState.search.trim().toLowerCase();
+
+      const filtered = ARTICLES.filter(article => {
+        const matchesRegion = filterState.region === 'Todos' || article.region === filterState.region;
+        const matchesState = filterState.state === 'Todos' || article.state === filterState.state;
+        const matchesSearch = !query ||
+          article.title.toLowerCase().includes(query) ||
+          article.excerpt.toLowerCase().includes(query) ||
+          article.state.toLowerCase().includes(query) ||
+          article.region.toLowerCase().includes(query);
+
+        return matchesRegion && matchesState && matchesSearch;
+      });
+
+      // Atualiza título e contador
+      if (filterState.region !== 'Todos') {
+        feedHeading.textContent = `Roteiros na Região ${filterState.region}`;
+      } else if (filterState.state !== 'Todos') {
+        feedHeading.textContent = `Destinos em ${filterState.state}`;
+      } else {
+        feedHeading.textContent = 'Roteiros em Destaque pelo Brasil';
+      }
+
+      resultsCounter.textContent = filtered.length === 1
+        ? 'Mostrando 1 reportagem'
+        : `Mostrando ${filtered.length} reportagens`;
+
+      // Exibe estado vazio se necessário
+      if (filtered.length === 0) {
+        articlesGrid.innerHTML = '';
+        articlesGrid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      articlesGrid.classList.remove('hidden');
+
+      articlesGrid.innerHTML = filtered.map(article => `
+        <article class="bg-white rounded-3xl overflow-hidden shadow-editorial hover:shadow-editorial-hover border border-sand-200 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group">
+          <div>
+            <!-- Imagem Destacada -->
+            <div class="relative h-60 overflow-hidden bg-forest-900">
+              <img
+                src="${article.image}"
+                onerror="this.src='https://placehold.co/800x600/143326/FAF8F5?text=${encodeURIComponent(article.state)}'"
+                alt="${article.title}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                loading="lazy"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-forest-950/50 via-transparent to-transparent"></div>
+
+              <!-- Badge Região e Estado -->
+              <span class="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-sand-50/95 backdrop-blur-md text-forest-950 text-xs font-bold tracking-wide shadow-sm">
+                ${article.state} • <span class="text-terracotta-600">${article.region}</span>
+              </span>
+            </div>
+
+            <!-- Conteúdo Editorial do Card -->
+            <div class="p-6 sm:p-7">
+              <h3 class="font-serif text-xl sm:text-[22px] font-bold text-forest-950 leading-snug mb-3 group-hover:text-terracotta-600 transition-colors">
+                <button type="button" onclick="openArticleModal('${article.id}')" class="text-left cursor-pointer focus:outline-none">
+                  ${article.title}
+                </button>
+              </h3>
+              <p class="text-ink-700 text-sm leading-relaxed line-clamp-3">
+                ${article.excerpt}
+              </p>
+            </div>
+          </div>
+
+          <!-- Rodapé do Card: Autor e Tempo Estimado de Leitura -->
+          <div class="px-6 sm:px-7 py-4 bg-sand-50/70 border-t border-sand-200 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <img
+                src="${article.authorAvatar}"
+                onerror="this.src='https://placehold.co/80x80/143326/FAF8F5?text=RB'"
+                alt="${article.author}"
+                class="w-8 h-8 rounded-full object-cover border border-sand-300 shrink-0"
+              >
+              <span class="text-xs font-semibold text-ink-900 truncate">${article.author}</span>
+            </div>
+
+            <div class="flex items-center gap-1.5 text-xs font-semibold text-forest-800 shrink-0">
+              <svg class="w-4 h-4 text-terracotta-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>${article.readTime}</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // Atualiza destaque visual dos botões de região no cabeçalho
+    function updateRegionNavUI(selectedRegion) {
+      document.querySelectorAll('.region-nav-btn').forEach(btn => {
+        const isSelected = btn.getAttribute('data-region-nav') === selectedRegion;
+        if (isSelected) {
+          btn.classList.remove('bg-sand-100', 'text-ink-700', 'hover:bg-sand-200/70');
+          btn.classList.add('bg-forest-900', 'text-sand-50', 'font-semibold');
+        } else {
+          btn.classList.remove('bg-forest-900', 'text-sand-50');
+          btn.classList.add('text-ink-700');
+        }
+      });
+    }
+
+    // Eventos de filtro
+    searchInput.addEventListener('input', (e) => {
+      filterState.search = e.target.value;
+      renderArticles();
+    });
+
+    regionSelect.addEventListener('change', (e) => {
+      filterState.region = e.target.value;
+      updateRegionNavUI(filterState.region);
+      renderArticles();
+    });
+
+    stateSelect.addEventListener('change', (e) => {
+      filterState.state = e.target.value;
+      renderArticles();
+    });
+
+    // Navegação por botões de região (Header, Sidebar e Footer)
+    document.querySelectorAll('[data-region-nav]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const region = btn.getAttribute('data-region-nav');
+        filterState.region = region;
+        filterState.state = 'Todos';
+        regionSelect.value = region;
+        stateSelect.value = 'Todos';
+        updateRegionNavUI(region);
+        renderArticles();
+        document.getElementById('feed-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Filtro rápido ao clicar nos Destinos Mais Visitados da Sidebar
+    function quickFilterDestination(term) {
+      filterState.search = term;
+      filterState.region = 'Todos';
+      filterState.state = 'Todos';
+      searchInput.value = term;
+      regionSelect.value = 'Todos';
+      stateSelect.value = 'Todos';
+      updateRegionNavUI('Todos');
+      renderArticles();
+      document.getElementById('feed-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Resetar todos os filtros
+    function resetAllFilters() {
+      filterState = { search: '', region: 'Todos', state: 'Todos' };
+      searchInput.value = '';
+      regionSelect.value = 'Todos';
+      stateSelect.value = 'Todos';
+      updateRegionNavUI('Todos');
+      renderArticles();
+    }
+
+    resetFiltersBtn.addEventListener('click', resetAllFilters);
+    document.getElementById('brand-reset').addEventListener('click', (e) => {
+      e.preventDefault();
+      resetAllFilters();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Controle do Modal de Leitura Rápida
+    const modal = document.getElementById('article-modal');
+
+    function openArticleModal(id) {
+      const article = id === 'hero' ? HERO_ARTICLE : ARTICLES.find(a => a.id === id);
+      if (!article) return;
+
+      document.getElementById('modal-image').src = article.image;
+      document.getElementById('modal-image').alt = article.title;
+      document.getElementById('modal-badge').textContent = `${article.state} • ${article.region}`;
+      document.getElementById('modal-title').textContent = article.title;
+      document.getElementById('modal-author').textContent = `Por ${article.author}`;
+      document.getElementById('modal-author-avatar').src = article.authorAvatar;
+      document.getElementById('modal-read-time').textContent = article.readTime;
+      document.getElementById('modal-best-season').textContent = article.bestSeason;
+
+      const contentContainer = document.getElementById('modal-content');
+      contentContainer.innerHTML = article.fullText.map(p => `<p>${p}</p>`).join('');
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeArticleModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    // Fechar modal ao clicar fora ou pressionar ESC
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal || e.target.parentElement === modal) {
+        closeArticleModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeArticleModal();
+      }
+    });
+
+    // Formulário de Newsletter
+    document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const emailInput = document.getElementById('newsletter-email');
+      if (emailInput.value.trim()) {
+        document.getElementById('newsletter-feedback').classList.remove('hidden');
+        emailInput.value = '';
+      }
+    });
+
+    // Inicialização
+    renderArticles();
+  </script>
+</body>
+</html>

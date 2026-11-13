@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViajeMais | Agência de Turismo</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f7fa;
+    color: #263238;
+}
+
+header {
+    background: #075985;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 22px;
+}
+
+.hero {
+    min-height: 400px;
+    background:
+      linear-gradient(#0007, #0007),
+      url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600")
+      center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 40px 20px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+}
+
+.container {
+    width: 85%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.search-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px #0002;
+    margin-top: -45px;
+    position: relative;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    background: #e0f2fe;
+    color: #075985;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tabs button.active {
+    background: #075985;
+    color: white;
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input, select {
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.btn {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.btn:hover {
+    background: #d97706;
+}
+
+.search-form .btn {
+    align-self: end;
+}
+
+section {
+    padding: 65px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.section-title h2 {
+    color: #075985;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px #0001;
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content h3 {
+    margin-bottom: 10px;
+    color: #075985;
+}
+
+.price {
+    color: #059669;
+    font-size: 21px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.card .btn {
+    width: 100%;
+}
+
+footer {
+    background: #082f49;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0009;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 15px;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.modal-content h2 {
+    color: #075985;
+    margin-bottom: 20px;
+}
+
+.modal-content input {
+    margin-bottom: 12px;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 25px;
+}
+
+@media(max-width: 800px) {
+    .search-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    nav a {
+        margin-left: 8px;
+        font-size: 13px;
+    }
+}
+
+@media(max-width: 550px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .search-form, .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        width: 92%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✈ ViajeMais</div>
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#destinos">Destinos</a>
+        <a href="#hoteis">Hotéis</a>
+    </nav>
+</header>
+
+<div class="hero" id="inicio">
+    <h1>O mundo espera por você!</h1>
+    <p>Encontre passagens aéreas e hotéis com os melhores preços.</p>
+</div>
+
+<div class="container">
+    <div class="search-box">
+
+        <div class="tabs">
+            <button id="tabVoos" class="active"
+                onclick="mostrarBusca('voos')">✈ Passagens</button>
+
+            <button id="tabHoteis"
+                onclick="mostrarBusca('hoteis')">🏨 Hotéis</button>
+        </div>
+
+        <form class="search-form" id="formVoos"
+              onsubmit="pesquisar(event, 'voos')">
+
+            <div class="field">
+                <label>Origem</label>
+                <input type="text" placeholder="Ex: São Paulo" required>
+            </div>
+
+            <div class="field">
+                <label>Destino</label>
+                <input type="text" placeholder="Ex: Rio de Janeiro" required>
+            </div>
+
+            <div class="field">
+                <label>Data de ida</label>
+                <input type="date" required>
+            </div>
+
+            <div class="field">
+                <label>Passageiros</label>
+                <select>
+                    <option>1 passageiro</option>
+                    <option>2 passageiros</option>
+                    <option>3 passageiros</option>
+                    <option>4 passageiros</option>
+                </select>
+            </div>
+
+            <button class="btn" type="submit">Pesquisar voos</button>
+        </form>
+
+        <form class="search-form" id="formHoteis"
+              onsubmit="pesquisar(event, 'hoteis')" hidden>
+
+            <div class="field">
+                <label>Destino</label>
+                <input type="text" placeholder="Cidade ou região" required>
+            </div>
+
+            <div class="field">
+                <label>Check-in</label>
+                <input type="date" required>
+            </div>
+
+            <div class="field">
+                <label>Check-out</label>
+                <input type="date" required>
+            </div>
+
+            <div class="field">
+                <label>Hóspedes</label>
+                <select>
+                    <option>1 hóspede</option>
+                    <option>2 hóspedes</option>
+                    <option>3 hóspedes</option>
+                    <option>4 hóspedes</option>
+                </select>
+            </div>
+
+            <button class="btn" type="submit">Pesquisar hotéis</button>
+        </form>
+
+    </div>
+</div>
+
+<section id="destinos">
+    <div class="container">
+        <div class="section-title">
+            <h2>Destinos em destaque</h2>
+            <p>Descubra lugares incríveis para sua próxima viagem.</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?w=700">
+                <div class="card-content">
+                    <h3>Rio de Janeiro</h3>
+                    <p>Praias, paisagens e muita diversão.</p>
+                    <div class="price">A partir de R$ 499</div>
+                    <button class="btn" onclick="reservar('Rio de Janeiro')">
+                        Reservar viagem
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768bada?w=700">
+                <div class="card-content">
+                    <h3>Paris - França</h3>
+                    <p>Conheça a cidade da luz e do romance.</p>
+                    <div class="price">A partir de R$ 2.899</div>
+                    <button class="btn" onclick="reservar('Paris')">
+                        Reservar viagem
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=700">
+                <div class="card-content">
+                    <h3>Maldivas</h3>
+                    <p>Relaxe em praias paradisíacas.</p>
+                    <div class="price">A partir de R$ 3.499</div>
+                    <button class="btn" onclick="reservar('Maldivas')">
+                        Reservar viagem
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="hoteis" style="background:#e0f2fe">
+    <div class="container">
+        <div class="section-title">
+            <h2>Hotéis recomendados</h2>
+            <p>Hospedagens selecionadas para sua comodidade.</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700">
+                <div class="card-content">
+                    <h3>Hotel Paraíso</h3>
+                    <p>Rio de Janeiro - Café da manhã incluso.</p>
+                    <div class="price">R$ 250 / diária</div>
+                    <button class="btn" onclick="reservar('Hotel Paraíso')">
+                        Reservar hotel
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700">
+                <div class="card-content">
+                    <h3>Resort Tropical</h3>
+                    <p>Maldivas - Piscina e vista para o mar.</p>
+                    <div class="price">R$ 650 / diária</div>
+                    <button class="btn" onclick="reservar('Resort Tropical')">
+                        Reservar hotel
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=700">
+                <div class="card-content">
+                    <h3>Hotel Central</h3>
+                    <p>Paris - Próximo aos pontos turísticos.</p>
+                    <div class="price">R$ 480 / diária</div>
+                    <button class="btn" onclick="reservar('Hotel Central')">
+                        Reservar hotel
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Modal de reserva -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <h2>Finalizar reserva</h2>
+
+        <form onsubmit="confirmar(event)">
+            <label>Destino ou serviço escolhido:</label>
+            <input type="text" id="itemEscolhido" readonly>
+
+            <label>Nome completo:</label>
+            <input type="text" placeholder="Digite seu nome" required>
+
+            <label>E-mail:</label>
+            <input type="email" placeholder="Digite seu e-mail" required>
+
+            <label>Telefone:</label>
+            <input type="tel" placeholder="(00) 00000-0000" required>
+
+            <button class="btn" type="submit">Confirmar reserva</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <h3>ViajeMais Turismo</h3>
+    <p>Transformando sonhos em viagens inesquecíveis.</p>
+    <p>Contato: contato@viajemais.com.br</p>
+    <p>&copy; 2026 ViajeMais - Todos os direitos reservados.</p>
+</footer>
+
+<script>
+function mostrarBusca(tipo) {
+    const voos = document.getElementById('formVoos');
+    const hoteis = document.getElementById('formHoteis');
+
+    voos.hidden = tipo !== 'voos';
+    hoteis.hidden = tipo !== 'hoteis';
+
+    document.getElementById('tabVoos')
+        .classList.toggle('active', tipo === 'voos');
+
+    document.getElementById('tabHoteis')
+        .classList.toggle('active', tipo === 'hoteis');
+}
+
+function pesquisar(event, tipo) {
+    event.preventDefault();
+
+    const formulario = event.target;
+    const destino = tipo === 'voos'
+        ? formulario.querySelectorAll('input')[1].value
+        : formulario.querySelectorAll('input')[0].value;
+
+    alert('Pesquisa realizada!\nDestino: ' + destino +
+          '\n\nEsta é uma demonstração. Consulte as opções disponíveis na página.');
+
+    document.getElementById(
+        tipo === 'voos' ? 'destinos' : 'hoteis'
+    ).scrollIntoView({ behavior: 'smooth' });
+}
+
+function reservar(item) {
+    document.getElementById('itemEscolhido').value = item;
+    document.getElementById('modal').style.display = 'flex';
+}
+
+function fecharModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+function confirmar(event) {
+    event.preventDefault();
+
+    alert('Solicitação de reserva enviada com sucesso!\n' +
+          'Nossa equipe entrará em contato para confirmar os detalhes.');
+
+    event.target.reset();
+    fecharModal();
+}
+</script>
+
+</body>
+</html>

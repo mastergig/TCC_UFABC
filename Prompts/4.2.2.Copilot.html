@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PetCare - Castração Responsável</title>
+
+<style>
+:root{
+    --azul:#2f80ed;
+    --azul-claro:#eaf4ff;
+    --verde:#42b883;
+    --verde-claro:#eefbf5;
+    --texto:#333;
+    --branco:#ffffff;
+    --sombra:0 4px 15px rgba(0,0,0,0.1);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    color:var(--texto);
+    line-height:1.6;
+    background:#f8fafc;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+}
+
+header{
+    background:linear-gradient(135deg,var(--azul),var(--verde));
+    color:white;
+    text-align:center;
+    padding:80px 20px;
+}
+
+header h1{
+    font-size:3rem;
+    margin-bottom:15px;
+}
+
+header p{
+    max-width:800px;
+    margin:auto;
+    font-size:1.1rem;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:25px;
+    padding:15px 30px;
+    background:white;
+    color:var(--azul);
+    text-decoration:none;
+    border-radius:30px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+section{
+    padding:70px 0;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:40px;
+    color:var(--azul);
+}
+
+.beneficios{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:var(--sombra);
+    text-align:center;
+}
+
+.card h3{
+    color:var(--verde);
+    margin-bottom:15px;
+}
+
+.info{
+    background:var(--azul-claro);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:var(--sombra);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+th{
+    background:var(--azul);
+    color:white;
+}
+
+th, td{
+    padding:15px;
+    border:1px solid #ddd;
+    text-align:left;
+}
+
+tr:nth-child(even){
+    background:#f7f7f7;
+}
+
+.form-section{
+    background:var(--verde-claro);
+}
+
+.form-container{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:var(--sombra);
+}
+
+form{
+    display:grid;
+    gap:18px;
+}
+
+label{
+    font-weight:bold;
+}
+
+input, select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+button{
+    background:var(--verde);
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    background:#36986d;
+}
+
+footer{
+    background:#1f2937;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+.alerta{
+    text-align:center;
+    color:#006644;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+@media (max-width:768px){
+    header h1{
+        font-size:2.2rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Castração Responsável é Amor e Cuidado</h1>
+        <p>
+            Na PetCare, acreditamos que a posse responsável começa com decisões que promovem
+            a saúde e o bem-estar do seu pet. Agende uma avaliação pré-operatória e receba
+            orientação especializada para cães e gatos.
+        </p>
+        <a href="#agendamento" class="btn">Agendar Consulta</a>
+    </div>
+</header>
+
+<section>
+    <div class="container">
+        <h2>Por que Castrar seu Pet?</h2>
+
+        <div class="beneficios">
+
+            <div class="card">
+                <h3>✅ Mais Saúde</h3>
+                <p>
+                    Reduz o risco de tumores e doenças reprodutivas,
+                    aumentando a qualidade de vida do animal.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>✅ Menos Abandono</h3>
+                <p>
+                    Ajuda a controlar a população de animais e reduz
+                    o número de filhotes sem lar.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>✅ Melhor Comportamento</h3>
+                <p>
+                    Pode diminuir fugas, marcação territorial e
+                    comportamentos relacionados ao cio.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>✅ Posse Responsável</h3>
+                <p>
+                    Demonstra compromisso com a saúde do pet e com
+                    o bem-estar da comunidade.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="info">
+    <div class="container">
+        <h2>Orientações para a Consulta Pré-Operatória</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Orientação</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Documentação</td>
+                    <td>Leve carteira de vacinação e histórico clínico do animal.</td>
+                </tr>
+                <tr>
+                    <td>Jejum</td>
+                    <td>Seguir apenas se recomendado previamente pela equipe veterinária.</td>
+                </tr>
+                <tr>
+                    <td>Exames</td>
+                    <td>Alguns pets podem necessitar de exames laboratoriais antes da cirurgia.</td>
+                </tr>
+                <tr>
+                    <td>Acompanhante</td>
+                    <td>O tutor responsável deve estar presente para esclarecimento de dúvidas.</td>
+                </tr>
+                <tr>
+                    <td>Pós-operatório</td>
+                    <td>Serão fornecidas instruções detalhadas de recuperação após o procedimento.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="agendamento" class="form-section">
+    <div class="container">
+        <h2>Agende a Consulta Pré-Operatória</h2>
+
+        <div class="form-container">
+            <form id="formAgendamento">
+
+                <div>
+                    <label for="nome">Nome do Tutor</label>
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        required
+                        minlength="3"
+                        placeholder="Digite seu nome">
+                </div>
+
+                <div>
+                    <label for="especie">Espécie do Pet</label>
+                    <select id="especie" required>
+                        <option value="">Selecione</option>
+                        <option>Cachorro</option>
+                        <option>Gato</option>
+                        <option>Outro</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="idade">Idade do Pet (anos)</label>
+                    <input
+                        type="number"
+                        id="idade"
+                        min="0"
+                        max="30"
+                        required
+                        placeholder="Ex.: 2">
+                </div>
+
+                <div>
+                    <label for="data">Data Desejada</label>
+                    <input
+                        type="date"
+                        id="data"
+                        required>
+                </div>
+
+                <button type="submit">
+                    Solicitar Agendamento
+                </button>
+
+                <p id="mensagem" class="alerta"></p>
+
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 PetCare Clínica Veterinária | Castração Responsável e Bem-estar Animal</p>
+</footer>
+
+<script>
+const form = document.getElementById('formAgendamento');
+const mensagem = document.getElementById('mensagem');
+
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value.trim();
+    const especie = document.getElementById('especie').value;
+    const idade = document.getElementById('idade').value;
+    const data = document.getElementById('data').value;
+
+    if(nome.length < 3){
+        alert('Informe um nome válido.');
+        return;
+    }
+
+    if(especie === ''){
+        alert('Selecione a espécie do pet.');
+        return;
+    }
+
+    if(idade <= 0){
+        alert('Informe uma idade válida.');
+        return;
+    }
+
+    if(data === ''){
+        alert('Selecione uma data.');
+        return;
+    }
+
+    mensagem.textContent =
+    'Solicitação enviada com sucesso! Nossa equipe entrará em contato para confirmar o agendamento.';
+
+    form.reset();
+});
+</script>
+
+</body>
+</html>

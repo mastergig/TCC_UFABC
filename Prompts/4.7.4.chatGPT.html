@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerFit Academy | Transforme seus limites</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #111;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #080808;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #a3ff12;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        nav a:hover {
+            color: #a3ff12;
+        }
+
+        .hero {
+            min-height: 450px;
+            padding: 100px 8%;
+            background:
+                linear-gradient(90deg, #000 20%, #0008),
+                url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600")
+                center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(35px, 5vw, 58px);
+            max-width: 650px;
+        }
+
+        .hero h1 span {
+            color: #a3ff12;
+        }
+
+        .hero p {
+            max-width: 550px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #a3ff12;
+            color: #111;
+            padding: 13px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #86d500;
+        }
+
+        section {
+            padding: 65px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 35px;
+        }
+
+        .section-title span {
+            color: #a3ff12;
+        }
+
+        .about {
+            text-align: center;
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .diferenciais, .modalidades, .planos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: #202020;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .card h3 {
+            color: #a3ff12;
+            margin-bottom: 12px;
+        }
+
+        .modalidade {
+            background: #202020;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .modalidade img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .modalidade div {
+            padding: 18px;
+        }
+
+        .modalidade h3 {
+            color: #a3ff12;
+        }
+
+        .precos {
+            font-size: 30px;
+            color: #a3ff12;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .card ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .card li {
+            padding: 6px;
+            border-bottom: 1px solid #383838;
+        }
+
+        .destaque {
+            border: 2px solid #a3ff12;
+            transform: scale(1.03);
+        }
+
+        .matricula {
+            background: #1b1b1b;
+        }
+
+        form {
+            max-width: 750px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo.completo {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            padding: 13px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background: #292929;
+            color: white;
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #a3ff12;
+        }
+
+        form button {
+            grid-column: 1 / -1;
+            font-size: 16px;
+        }
+
+        footer {
+            background: #080808;
+            text-align: center;
+            padding: 25px;
+            color: #aaa;
+        }
+
+        @media(max-width: 650px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            nav a {
+                margin: 0;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo,
+            form button {
+                grid-column: 1;
+            }
+
+            .destaque {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">POWERFIT</div>
+
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#modalidades">Modalidades</a>
+        <a href="#planos">Planos</a>
+        <a href="#matricula">Matrícula</a>
+    </nav>
+</header>
+
+<main>
+
+    <!-- APRESENTAÇÃO -->
+    <section class="hero" id="inicio">
+        <h1>SUPERE SEUS LIMITES. <span>TRANSFORME SUA VIDA!</span></h1>
+
+        <p>
+            Na PowerFit Academy você encontra estrutura moderna,
+            profissionais qualificados e tudo o que precisa
+            para alcançar seus objetivos.
+        </p>
+
+        <a href="#matricula" class="btn">COMECE AGORA</a>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre">
+        <h2 class="section-title">SOBRE A <span>ACADEMIA</span></h2>
+
+        <div class="about">
+            <p>
+                A PowerFit Academy nasceu para transformar a maneira
+                como as pessoas cuidam da saúde e do bem-estar.
+                Oferecemos ambientes modernos, equipamentos de última
+                geração e acompanhamento profissional para todos
+                os níveis de condicionamento físico.
+            </p>
+        </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <section>
+        <h2 class="section-title">NOSSOS <span>DIFERENCIAIS</span></h2>
+
+        <div class="diferenciais">
+            <div class="card">
+                <h3>Equipamentos Modernos</h3>
+                <p>Máquinas atualizadas e estrutura completa para seus treinos.</p>
+            </div>
+
+            <div class="card">
+                <h3>Profissionais Qualificados</h3>
+                <p>Instrutores preparados para acompanhar sua evolução.</p>
+            </div>
+
+            <div class="card">
+                <h3>Horários Flexíveis</h3>
+                <p>Treine nos horários que melhor combinam com sua rotina.</p>
+            </div>
+
+            <div class="card">
+                <h3>Ambiente Climatizado</h3>
+                <p>Conforto e qualidade para aproveitar cada treino.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODALIDADES -->
+    <section id="modalidades">
+        <h2 class="section-title">NOSSAS <span>MODALIDADES</span></h2>
+
+        <div class="modalidades">
+
+            <div class="modalidade">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600"
+                     alt="Equipamentos de musculação">
+                <div>
+                    <h3>Musculação</h3>
+                    <p>Desenvolvimento muscular, força e resistência.</p>
+                </div>
+            </div>
+
+            <div class="modalidade">
+                <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600"
+                     alt="Treino funcional">
+                <div>
+                    <h3>Treino Funcional</h3>
+                    <p>Melhore seu equilíbrio, agilidade e condicionamento.</p>
+                </div>
+            </div>
+
+            <div class="modalidade">
+                <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600"
+                     alt="Piscina para natação">
+                <div>
+                    <h3>Natação</h3>
+                    <p>Atividade completa para saúde e condicionamento físico.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PLANOS -->
+    <section id="planos">
+        <h2 class="section-title">ESCOLHA SEU <span>PLANO</span></h2>
+
+        <div class="planos">
+
+            <div class="card">
+                <h3>Plano Mensal</h3>
+                <div class="precos">R$ 119,90</div>
+                <p>por mês</p>
+
+                <ul>
+                    <li>Musculação</li>
+                    <li>Acesso à unidade contratada</li>
+                    <li>Avaliação física inicial</li>
+                    <li>Sem fidelidade</li>
+                </ul>
+
+                <a href="#matricula" class="btn">Escolher plano</a>
+            </div>
+
+            <div class="card">
+                <h3>Plano Semestral</h3>
+                <div class="precos">R$ 99,90</div>
+                <p>por mês</p>
+
+                <ul>
+                    <li>Musculação</li>
+                    <li>Treino funcional</li>
+                    <li>Avaliação física</li>
+                    <li>Acompanhamento profissional</li>
+                    <li>Contrato de 6 meses</li>
+                </ul>
+
+                <a href="#matricula" class="btn">Escolher plano</a>
+            </div>
+
+            <div class="card destaque">
+                <h3>Plano Anual VIP</h3>
+                <div class="precos">R$ 89,90</div>
+                <p>por mês</p>
+
+                <ul>
+                    <li>Musculação</li>
+                    <li>Treino funcional</li>
+                    <li>Natação</li>
+                    <li>Acesso a todas as unidades</li>
+                    <li>Avaliação física periódica</li>
+                    <li>Acompanhamento personalizado</li>
+                </ul>
+
+                <a href="#matricula" class="btn">Escolher plano</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MATRÍCULA -->
+    <section class="matricula" id="matricula">
+        <h2 class="section-title">FAÇA SUA <span>MATRÍCULA</span></h2>
+
+        <form id="formMatricula">
+
+            <div class="campo">
+                <label for="nome">Nome completo</label>
+                <input type="text" id="nome" required
+                       placeholder="Digite seu nome">
+            </div>
+
+            <div class="campo">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" required
+                       placeholder="000.000.000-00"
+                       maxlength="14">
+            </div>
+
+            <div class="campo">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" required
+                       placeholder="seu@email.com">
+            </div>
+
+            <div class="campo">
+                <label for="telefone">Telefone</label>
+                <input type="tel" id="telefone" required
+                       placeholder="(11) 99999-9999">
+            </div>
+
+            <div class="campo">
+                <label for="nascimento">Data de nascimento</label>
+                <input type="date" id="nascimento" required>
+            </div>
+
+            <div class="campo">
+                <label for="plano">Plano desejado</label>
+                <select id="plano" required>
+                    <option value="">Selecione um plano</option>
+                    <option>Mensal</option>
+                    <option>Semestral</option>
+                    <option>Anual VIP</option>
+                </select>
+            </div>
+
+            <div class="campo completo">
+                <label for="unidade">Unidade de preferência</label>
+                <select id="unidade" required>
+                    <option value="">Selecione uma unidade</option>
+                    <option>Unidade Centro</option>
+                    <option>Unidade Zona Sul</option>
+                    <option>Unidade Zona Norte</option>
+                    <option>Unidade Zona Leste</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">
+                REALIZAR MATRÍCULA
+            </button>
+
+        </form>
+    </section>
+
+</main>
+
+<footer>
+    <p>© 2026 PowerFit Academy - Todos os direitos reservados.</p>
+    <p>Transformando vidas através da atividade física!</p>
+</footer>
+
+<script>
+    const formulario = document.getElementById("formMatricula");
+
+    formulario.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const nome = document.getElementById("nome").value;
+        const plano = document.getElementById("plano").value;
+        const unidade = document.getElementById("unidade").value;
+
+        alert(
+            "Matrícula realizada com sucesso!\n\n" +
+            "Aluno: " + nome +
+            "\nPlano: " + plano +
+            "\nUnidade: " + unidade
+        );
+
+        formulario.reset();
+    });
+
+    // Máscara simples de CPF
+    document.getElementById("cpf").addEventListener("input", function() {
+        let valor = this.value.replace(/\D/g, "").slice(0, 11);
+
+        valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+        valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+        this.value = valor;
+    });
+</script>
+
+</body>
+</html>

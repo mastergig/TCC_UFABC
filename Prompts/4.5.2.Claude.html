@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rota Brasil — Blog de Viagens pelo Brasil</title>
+  <meta name="description" content="Roteiros, guias e histórias para viajar pelo Nordeste, Amazônia, Sudeste e Sul do Brasil.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       1. TOKENS
+       ========================================================= */
+    :root {
+      --areia: #f7f1e6;
+      --areia-escura: #efe4d0;
+      --papel: #fffdf8;
+      --tinta: #1f2a24;
+      --tinta-suave: #56625b;
+      --linha: #e2d6c1;
+
+      --mata: #1d5c3f;        /* cor de marca */
+      --mata-clara: #e3efe7;
+
+      /* Cores por região */
+      --nordeste: #d9711c;
+      --amazonia: #2f7d4a;
+      --sudeste:  #2a6c9c;
+      --sul:      #8a3b5c;
+
+      --raio: 14px;
+      --sombra: 0 1px 2px rgba(31,42,36,.06), 0 8px 24px rgba(31,42,36,.07);
+      --fonte-titulo: "Fraunces", Georgia, serif;
+      --fonte-texto: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --largura: 1200px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--fonte-texto);
+      color: var(--tinta);
+      background: var(--areia);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; }
+    h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; margin: 0; }
+    .container { width: min(100% - 2.5rem, var(--largura)); margin-inline: auto; }
+    .visualmente-oculto {
+      position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap;
+    }
+    :focus-visible { outline: 3px solid var(--nordeste); outline-offset: 2px; }
+
+    /* =========================================================
+       2. CABEÇALHO (Flexbox)
+       ========================================================= */
+    .topo {
+      background: var(--papel);
+      border-bottom: 1px solid var(--linha);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topo__barra {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding-block: .9rem;
+    }
+    .marca {
+      display: flex; align-items: center; gap: .6rem;
+      text-decoration: none; font-family: var(--fonte-titulo);
+      font-size: 1.45rem; font-weight: 700; color: var(--mata);
+    }
+    .marca svg { width: 34px; height: 34px; }
+    .nav ul {
+      display: flex; flex-wrap: wrap; gap: .25rem;
+      list-style: none; margin: 0; padding: 0;
+    }
+    .nav a {
+      display: block; padding: .45rem .8rem; border-radius: 999px;
+      text-decoration: none; font-weight: 500; font-size: .95rem;
+      color: var(--tinta-suave); transition: background .2s, color .2s;
+    }
+    .nav a:hover, .nav a[aria-current="page"] { background: var(--mata-clara); color: var(--mata); }
+
+    /* =========================================================
+       3. HERÓI + BUSCA
+       ========================================================= */
+    .heroi {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(217,113,28,.18), transparent 45%),
+        radial-gradient(circle at 10% 90%, rgba(47,125,74,.18), transparent 50%),
+        var(--areia-escura);
+      padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    }
+    .heroi__texto { max-width: 680px; }
+    .heroi__selo {
+      display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--mata);
+      background: var(--papel); padding: .3rem .75rem; border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .heroi h1 { font-size: clamp(2rem, 5vw, 3.4rem); margin-bottom: .75rem; }
+    .heroi p { font-size: 1.1rem; color: var(--tinta-suave); margin: 0 0 2rem; }
+
+    /* Busca: Grid com 3 campos + botão */
+    .busca {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr auto;
+      gap: .5rem;
+      background: var(--papel);
+      padding: .6rem;
+      border-radius: calc(var(--raio) + 4px);
+      box-shadow: var(--sombra);
+    }
+    .busca__campo { display: flex; flex-direction: column; padding: .35rem .75rem; border-radius: 10px; }
+    .busca__campo:focus-within { background: var(--areia); }
+    .busca__campo + .busca__campo { border-left: 1px solid var(--linha); }
+    .busca label {
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--tinta-suave);
+    }
+    .busca input, .busca select {
+      border: 0; background: transparent; font: inherit; color: var(--tinta);
+      padding: .2rem 0; outline: none; width: 100%;
+    }
+    .botao {
+      border: 0; cursor: pointer; font: inherit; font-weight: 700;
+      background: var(--mata); color: #fff; border-radius: 10px;
+      padding: .8rem 1.5rem; transition: filter .2s, transform .1s;
+    }
+    .botao:hover { filter: brightness(1.12); }
+    .botao:active { transform: translateY(1px); }
+
+    .atalhos { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; align-items: center; }
+    .atalhos span { font-size: .9rem; color: var(--tinta-suave); margin-right: .25rem; }
+    .chip {
+      border: 1px solid var(--linha); background: var(--papel); cursor: pointer;
+      font: inherit; font-size: .88rem; font-weight: 500;
+      padding: .35rem .85rem; border-radius: 999px; color: var(--tinta);
+      display: inline-flex; align-items: center; gap: .4rem;
+    }
+    .chip::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: var(--cor, var(--mata)); }
+    .chip[aria-pressed="true"] { background: var(--tinta); color: #fff; border-color: var(--tinta); }
+
+    /* =========================================================
+       4. LAYOUT PRINCIPAL: conteúdo + sidebar (Grid)
+       ========================================================= */
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 2.5rem;
+      padding-block: 3rem 4rem;
+      align-items: start;
+    }
+
+    .secao-cabecalho {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .secao-cabecalho h2 { font-size: 1.75rem; }
+    .contador { color: var(--tinta-suave); font-size: .95rem; }
+
+    /* =========================================================
+       5. CARTÕES DE ARTIGO
+       ========================================================= */
+    .grade-artigos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      list-style: none; margin: 0; padding: 0;
+    }
+    /* Primeiro cartão em destaque ocupa a linha inteira */
+    .grade-artigos > li:first-child { grid-column: 1 / -1; }
+
+    .cartao {
+      height: 100%;
+      display: flex; flex-direction: column;
+      background: var(--papel);
+      border-radius: var(--raio);
+      overflow: hidden;
+      box-shadow: var(--sombra);
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+    }
+    .cartao:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(31,42,36,.08), 0 16px 36px rgba(31,42,36,.12); }
+
+    .cartao__midia { margin: 0; position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--areia-escura); }
+    .cartao__midia img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .cartao:hover .cartao__midia img { transform: scale(1.04); }
+
+    .etiqueta {
+      position: absolute; top: .85rem; left: .85rem;
+      background: var(--cor-regiao); color: #fff;
+      font-size: .74rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+      padding: .3rem .7rem; border-radius: 999px;
+    }
+    .cartao[data-regiao="nordeste"] { --cor-regiao: var(--nordeste); }
+    .cartao[data-regiao="amazonia"] { --cor-regiao: var(--amazonia); }
+    .cartao[data-regiao="sudeste"]  { --cor-regiao: var(--sudeste); }
+    .cartao[data-regiao="sul"]      { --cor-regiao: var(--sul); }
+
+    .cartao__corpo { display: flex; flex-direction: column; gap: .6rem; padding: 1.25rem 1.35rem 1.35rem; flex: 1; }
+    .cartao__local { font-size: .82rem; font-weight: 700; color: var(--cor-regiao); letter-spacing: .03em; }
+    .cartao h3 { font-size: 1.28rem; }
+    .cartao h3 a { text-decoration: none; }
+    /* Link "esticado": todo o cartão fica clicável */
+    .cartao h3 a::after { content: ""; position: absolute; inset: 0; }
+    .cartao__resumo { margin: 0; color: var(--tinta-suave); font-size: .95rem; }
+
+    .cartao__meta {
+      margin-top: auto; padding-top: 1rem; border-top: 1px dashed var(--linha);
+      display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+      font-size: .85rem; color: var(--tinta-suave);
+    }
+    .autor { display: flex; align-items: center; gap: .55rem; }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: grid; place-items: center; font-weight: 700; font-size: .78rem; color: #fff;
+      background: var(--cor-regiao);
+    }
+    .autor strong { display: block; color: var(--tinta); font-weight: 500; line-height: 1.2; }
+    .leitura { display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; }
+    .leitura svg { width: 16px; height: 16px; }
+
+    /* Cartão destaque: imagem ao lado do texto */
+    .cartao--destaque { flex-direction: row; }
+    .cartao--destaque .cartao__midia { flex: 1.25; aspect-ratio: auto; min-height: 340px; }
+    .cartao--destaque .cartao__corpo { flex: 1; padding: 2rem; justify-content: center; }
+    .cartao--destaque h3 { font-size: 1.9rem; }
+    .cartao--destaque .cartao__resumo { font-size: 1.02rem; }
+
+    .vazio {
+      display: none; text-align: center; padding: 3rem 1rem;
+      background: var(--papel); border-radius: var(--raio); border: 2px dashed var(--linha);
+      color: var(--tinta-suave);
+    }
+    .vazio.visivel { display: block; }
+
+    /* =========================================================
+       6. SIDEBAR
+       ========================================================= */
+    .lateral { display: flex; flex-direction: column; gap: 1.5rem; position: sticky; top: 90px; }
+    .caixa { background: var(--papel); border-radius: var(--raio); padding: 1.5rem; box-shadow: var(--sombra); }
+    .caixa h2 { font-size: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+
+    .ranking { list-style: none; margin: 0; padding: 0; counter-reset: pos; }
+    .ranking li { counter-increment: pos; }
+    .ranking li + li { border-top: 1px solid var(--linha); }
+    .ranking a {
+      display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: .6rem;
+      padding: .75rem 0; text-decoration: none;
+    }
+    .ranking a::before {
+      content: counter(pos, decimal-leading-zero);
+      font-family: var(--fonte-titulo); font-weight: 700; font-size: 1.35rem; color: var(--linha);
+    }
+    .ranking li:nth-child(-n+3) a::before { color: var(--nordeste); }
+    .ranking strong { display: block; font-weight: 500; line-height: 1.25; }
+    .ranking small { color: var(--tinta-suave); font-size: .8rem; }
+    .ranking a:hover strong { color: var(--mata); text-decoration: underline; }
+    .pino { width: .6rem; height: .6rem; border-radius: 50%; background: var(--cor); }
+
+    .regioes-lista { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .regioes-lista .chip { justify-content: center; }
+
+    .caixa--newsletter { background: var(--mata); color: #fff; }
+    .caixa--newsletter p { margin: 0 0 1rem; opacity: .85; font-size: .95rem; }
+    .newsletter { display: flex; flex-direction: column; gap: .5rem; }
+    .newsletter input {
+      font: inherit; padding: .7rem .9rem; border-radius: 10px; border: 0;
+    }
+    .newsletter .botao { background: var(--nordeste); }
+    .newsletter__retorno { font-size: .88rem; min-height: 1.2em; margin: 0; }
+
+    /* =========================================================
+       7. RODAPÉ
+       ========================================================= */
+    .rodape { background: var(--tinta); color: #cfd8d2; padding-block: 3rem 2rem; }
+    .rodape__grade {
+      display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 2rem;
+    }
+    .rodape h2 { font-size: 1rem; color: #fff; margin-bottom: .75rem; font-family: var(--fonte-texto); }
+    .rodape ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+    .rodape a { text-decoration: none; }
+    .rodape a:hover { color: #fff; text-decoration: underline; }
+    .rodape .marca { color: #fff; margin-bottom: .5rem; }
+    .rodape__base { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid #36443c; font-size: .85rem; }
+
+    /* =========================================================
+       8. RESPONSIVO
+       ========================================================= */
+    @media (max-width: 1000px) {
+      .layout { grid-template-columns: 1fr; }
+      .lateral { position: static; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .topo__barra { flex-direction: column; align-items: flex-start; }
+      .nav ul { gap: 0; }
+      .busca { grid-template-columns: 1fr 1fr; }
+      .busca__campo:first-child { grid-column: 1 / -1; }
+      .busca__campo + .busca__campo { border-left: 0; }
+      .busca .botao { grid-column: 1 / -1; }
+      .cartao--destaque { flex-direction: column; }
+      .cartao--destaque .cartao__midia { min-height: 0; aspect-ratio: 16 / 10; }
+      .cartao--destaque .cartao__corpo { padding: 1.35rem; }
+      .cartao--destaque h3 { font-size: 1.45rem; }
+      .rodape__grade { grid-template-columns: 1fr 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="visualmente-oculto" href="#artigos">Pular para os artigos</a>
+
+  <!-- ===================== CABEÇALHO ===================== -->
+  <header class="topo">
+    <div class="container topo__barra">
+      <a class="marca" href="#" aria-label="Rota Brasil — página inicial">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="19" fill="#1d5c3f"/>
+          <circle cx="27" cy="13" r="5" fill="#f2b33d"/>
+          <path d="M3 27c6-4 10-4 16 0s10 4 18 0v4a19 19 0 0 1-34 0z" fill="#7cc4d9"/>
+          <path d="M6 24l8-10 6 7 4-4 9 9" fill="none" stroke="#fffdf8" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>
+        Rota Brasil
+      </a>
+      <nav class="nav" aria-label="Regiões">
+        <ul>
+          <li><a href="#" aria-current="page" data-filtro-regiao="">Início</a></li>
+          <li><a href="#artigos" data-filtro-regiao="nordeste">Nordeste</a></li>
+          <li><a href="#artigos" data-filtro-regiao="amazonia">Amazônia</a></li>
+          <li><a href="#artigos" data-filtro-regiao="sudeste">Sudeste</a></li>
+          <li><a href="#artigos" data-filtro-regiao="sul">Sul</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================== HERÓI + BUSCA ===================== -->
+  <section class="heroi" aria-labelledby="titulo-heroi">
+    <div class="container">
+      <div class="heroi__texto">
+        <span class="heroi__selo">Turismo nacional</span>
+        <h1 id="titulo-heroi">Descubra o Brasil, um destino de cada vez</h1>
+        <p>Roteiros, guias práticos e histórias de quem viajou pelo Nordeste, pela Amazônia, pelo Sudeste e pelo Sul do país.</p>
+      </div>
+
+      <form class="busca" role="search" aria-label="Buscar destinos" id="form-busca">
+        <div class="busca__campo">
+          <label for="busca-termo">Destino</label>
+          <input id="busca-termo" name="termo" type="search" placeholder="Praia, serra, cidade histórica…" autocomplete="off">
+        </div>
+        <div class="busca__campo">
+          <label for="busca-regiao">Região</label>
+          <select id="busca-regiao" name="regiao">
+            <option value="">Todas</option>
+            <option value="nordeste">Nordeste</option>
+            <option value="amazonia">Amazônia</option>
+            <option value="sudeste">Sudeste</option>
+            <option value="sul">Sul</option>
+          </select>
+        </div>
+        <div class="busca__campo">
+          <label for="busca-estado">Estado</label>
+          <select id="busca-estado" name="estado">
+            <option value="">Todos</option>
+            <optgroup label="Nordeste" data-regiao="nordeste">
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="MA">Maranhão</option>
+              <option value="PE">Pernambuco</option>
+            </optgroup>
+            <optgroup label="Amazônia" data-regiao="amazonia">
+              <option value="AM">Amazonas</option>
+              <option value="PA">Pará</option>
+            </optgroup>
+            <optgroup label="Sudeste" data-regiao="sudeste">
+              <option value="MG">Minas Gerais</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="SP">São Paulo</option>
+            </optgroup>
+            <optgroup label="Sul" data-regiao="sul">
+              <option value="PR">Paraná</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="SC">Santa Catarina</option>
+            </optgroup>
+          </select>
+        </div>
+        <button class="botao" type="submit">Buscar</button>
+      </form>
+
+      <div class="atalhos" role="group" aria-label="Filtro rápido por região">
+        <span>Explorar:</span>
+        <button class="chip" type="button" data-regiao="nordeste" style="--cor: var(--nordeste)" aria-pressed="false">Nordeste</button>
+        <button class="chip" type="button" data-regiao="amazonia" style="--cor: var(--amazonia)" aria-pressed="false">Amazônia</button>
+        <button class="chip" type="button" data-regiao="sudeste" style="--cor: var(--sudeste)" aria-pressed="false">Sudeste</button>
+        <button class="chip" type="button" data-regiao="sul" style="--cor: var(--sul)" aria-pressed="false">Sul</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTEÚDO + SIDEBAR ===================== -->
+  <div class="container layout">
+
+    <main id="artigos" aria-labelledby="titulo-artigos">
+      <div class="secao-cabecalho">
+        <h2 id="titulo-artigos">Últimos roteiros</h2>
+        <p class="contador" id="contador" aria-live="polite">12 artigos</p>
+      </div>
+
+      <!--
+        IMAGENS: cada <img> usa data-cena para gerar uma ilustração de exemplo.
+        Em produção, troque por: <img src="img/jericoacoara.jpg" alt="…" loading="lazy" width="1280" height="800">
+      -->
+      <ul class="grade-artigos" id="grade">
+
+        <li>
+          <article class="cartao cartao--destaque" data-regiao="nordeste" data-estado="MA">
+            <figure class="cartao__midia">
+              <img data-cena="dunas" alt="Dunas brancas com lagoas de água verde-azulada sob céu limpo" width="1280" height="800">
+              <span class="etiqueta">Nordeste</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Barreirinhas · Maranhão</p>
+              <h3><a href="#">Lençóis Maranhenses: quando ir para ver as lagoas cheias</a></h3>
+              <p class="cartao__resumo">Um guia de temporada, passeios de 4x4 e travessias a pé pelo parque nacional onde dunas e lagoas de água da chuva formam uma paisagem única no mundo.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">MS</span>
+                  <span><strong>Marina Souza</strong><time datetime="2026-11-08">8 nov 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>12 min de leitura</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="amazonia" data-estado="AM">
+            <figure class="cartao__midia">
+              <img data-cena="rio" alt="Rio largo de águas escuras encontrando águas barrentas, com floresta nas margens" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Amazônia</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Manaus · Amazonas</p>
+              <h3><a href="#">Encontro das Águas e lodges na selva: roteiro de 5 dias</a></h3>
+              <p class="cartao__resumo">Do Teatro Amazonas ao passeio de barco pelos rios Negro e Solimões.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">RC</span>
+                  <span><strong>Rafael Cunha</strong><time datetime="2026-11-05">5 nov 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>9 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="sul" data-estado="PR">
+            <figure class="cartao__midia">
+              <img data-cena="cachoeira" alt="Grandes quedas d'água cercadas por mata verde" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Sul</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Foz do Iguaçu · Paraná</p>
+              <h3><a href="#">Cataratas do Iguaçu: lado brasileiro ou argentino?</a></h3>
+              <p class="cartao__resumo">Como dividir os dias, quais trilhas fazer e onde ficar na tríplice fronteira.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">LP</span>
+                  <span><strong>Luísa Prado</strong><time datetime="2026-11-02">2 nov 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>7 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="sudeste" data-estado="MG">
+            <figure class="cartao__midia">
+              <img data-cena="colonial" alt="Casario colonial com igreja barroca no alto de uma ladeira" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Sudeste</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Ouro Preto · Minas Gerais</p>
+              <h3><a href="#">Ouro Preto a pé: igrejas, museus e ladeiras</a></h3>
+              <p class="cartao__resumo">Um passeio pelo barroco mineiro com paradas para pão de queijo e café coado.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">TA</span>
+                  <span><strong>Thiago Andrade</strong><time datetime="2026-10-29">29 out 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>8 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="nordeste" data-estado="CE">
+            <figure class="cartao__midia">
+              <img data-cena="praia" alt="Praia com coqueiros, areia clara e mar turquesa ao entardecer" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Nordeste</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Jericoacoara · Ceará</p>
+              <h3><a href="#">Jeri sem pressa: pôr do sol na duna e lagoas</a></h3>
+              <p class="cartao__resumo">Como chegar, a melhor época para o vento e os passeios de buggy que valem a pena.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">MS</span>
+                  <span><strong>Marina Souza</strong><time datetime="2026-10-25">25 out 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>6 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="sul" data-estado="RS">
+            <figure class="cartao__midia">
+              <img data-cena="serra" alt="Serra coberta de araucárias com neblina no vale" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Sul</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Gramado e Canela · Rio Grande do Sul</p>
+              <h3><a href="#">Serra Gaúcha no inverno: fondue, vinhos e cânions</a></h3>
+              <p class="cartao__resumo">Roteiro de fim de semana combinando gastronomia e natureza nos Aparados da Serra.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">LP</span>
+                  <span><strong>Luísa Prado</strong><time datetime="2026-10-20">20 out 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>10 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="sudeste" data-estado="RJ">
+            <figure class="cartao__midia">
+              <img data-cena="ilha" alt="Enseada de águas calmas com morros cobertos de mata atlântica" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Sudeste</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Ilha Grande · Rio de Janeiro</p>
+              <h3><a href="#">Ilha Grande: trilhas até Lopes Mendes e Dois Rios</a></h3>
+              <p class="cartao__resumo">Tudo sobre a travessia de barco, as trilhas sinalizadas e as praias sem carros.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">TA</span>
+                  <span><strong>Thiago Andrade</strong><time datetime="2026-10-16">16 out 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>11 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="amazonia" data-estado="PA">
+            <figure class="cartao__midia">
+              <img data-cena="praia-rio" alt="Praia de areia branca às margens de um rio de água clara" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Amazônia</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Alter do Chão · Pará</p>
+              <h3><a href="#">Alter do Chão: o Caribe amazônico na seca do Tapajós</a></h3>
+              <p class="cartao__resumo">A Ilha do Amor, a Floresta Nacional do Tapajós e as comunidades ribeirinhas.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">RC</span>
+                  <span><strong>Rafael Cunha</strong><time datetime="2026-10-12">12 out 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>8 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="nordeste" data-estado="BA">
+            <figure class="cartao__midia">
+              <img data-cena="chapada" alt="Morros de topo plano e paredões de pedra ao pôr do sol" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Nordeste</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Lençóis · Bahia</p>
+              <h3><a href="#">Chapada Diamantina: Morro do Pai Inácio e poços azuis</a></h3>
+              <p class="cartao__resumo">Base em Lençóis, guias locais e as trilhas para cada nível de preparo.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">JN</span>
+                  <span><strong>Joana Nunes</strong><time datetime="2026-10-08">8 out 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>14 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="sul" data-estado="SC">
+            <figure class="cartao__midia">
+              <img data-cena="ilha" alt="Lagoa e praia cercadas por morros verdes na ilha" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Sul</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Florianópolis · Santa Catarina</p>
+              <h3><a href="#">Floripa além do verão: Lagoa da Conceição e o Norte da Ilha</a></h3>
+              <p class="cartao__resumo">Ostras no Ribeirão, trilhas para praias desertas e a cultura açoriana.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">JN</span>
+                  <span><strong>Joana Nunes</strong><time datetime="2026-10-03">3 out 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>9 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="nordeste" data-estado="PE">
+            <figure class="cartao__midia">
+              <img data-cena="praia" alt="Piscinas naturais formadas por recifes em mar verde-claro" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Nordeste</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Porto de Galinhas · Pernambuco</p>
+              <h3><a href="#">Piscinas naturais: a tábua de marés explicada</a></h3>
+              <p class="cartao__resumo">Quando a maré baixa permite o passeio de jangada e como aproveitar com respeito aos recifes.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">MS</span>
+                  <span><strong>Marina Souza</strong><time datetime="2026-09-29">29 set 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+
+        <li>
+          <article class="cartao" data-regiao="sudeste" data-estado="SP">
+            <figure class="cartao__midia">
+              <img data-cena="ilha" alt="Costa recortada com mata atlântica descendo até o mar" width="640" height="400" loading="lazy">
+              <span class="etiqueta">Sudeste</span>
+            </figure>
+            <div class="cartao__corpo">
+              <p class="cartao__local">Ilhabela · São Paulo</p>
+              <h3><a href="#">Ilhabela: cachoeiras, Castelhanos e mergulho</a></h3>
+              <p class="cartao__resumo">Balsa, estrada de terra até Castelhanos e as melhores praias do lado sul.</p>
+              <footer class="cartao__meta">
+                <div class="autor">
+                  <span class="avatar" aria-hidden="true">TA</span>
+                  <span><strong>Thiago Andrade</strong><time datetime="2026-09-24">24 set 2026</time></span>
+                </div>
+                <span class="leitura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>7 min</span>
+              </footer>
+            </div>
+          </article>
+        </li>
+      </ul>
+
+      <p class="vazio" id="vazio">Nenhum roteiro encontrado para essa busca. Tente outra região ou estado.</p>
+    </main>
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="lateral" aria-label="Barra lateral">
+
+      <section class="caixa" aria-labelledby="titulo-mais-visitados">
+        <h2 id="titulo-mais-visitados">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d9711c" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          Destinos mais visitados
+        </h2>
+        <ol class="ranking">
+          <li><a href="#"><span><strong>Foz do Iguaçu</strong><small>Paraná · Sul</small></span><span class="pino" style="--cor: var(--sul)" aria-hidden="true"></span></a></li>
+          <li><a href="#"><span><strong>Rio de Janeiro</strong><small>Rio de Janeiro · Sudeste</small></span><span class="pino" style="--cor: var(--sudeste)" aria-hidden="true"></span></a></li>
+          <li><a href="#"><span><strong>Lençóis Maranhenses</strong><small>Maranhão · Nordeste</small></span><span class="pino" style="--cor: var(--nordeste)" aria-hidden="true"></span></a></li>
+          <li><a href="#"><span><strong>Gramado</strong><small>Rio Grande do Sul · Sul</small></span><span class="pino" style="--cor: var(--sul)" aria-hidden="true"></span></a></li>
+          <li><a href="#"><span><strong>Jericoacoara</strong><small>Ceará · Nordeste</small></span><span class="pino" style="--cor: var(--nordeste)" aria-hidden="true"></span></a></li>
+          <li><a href="#"><span><strong>Manaus</strong><small>Amazonas · Amazônia</small></span><span class="pino" style="--cor: var(--amazonia)" aria-hidden="true"></span></a></li>
+          <li><a href="#"><span><strong>Ouro Preto</strong><small>Minas Gerais · Sudeste</small></span><span class="pino" style="--cor: var(--sudeste)" aria-hidden="true"></span></a></li>
+        </ol>
+      </section>
+
+      <section class="caixa" aria-labelledby="titulo-regioes">
+        <h2 id="titulo-regioes">Explore por região</h2>
+        <div class="regioes-lista">
+          <button class="chip" type="button" data-regiao="nordeste" style="--cor: var(--nordeste)" aria-pressed="false">Nordeste</button>
+          <button class="chip" type="button" data-regiao="amazonia" style="--cor: var(--amazonia)" aria-pressed="false">Amazônia</button>
+          <button class="chip" type="button" data-regiao="sudeste" style="--cor: var(--sudeste)" aria-pressed="false">Sudeste</button>
+          <button class="chip" type="button" data-regiao="sul" style="--cor: var(--sul)" aria-pressed="false">Sul</button>
+        </div>
+      </section>
+
+      <section class="caixa caixa--newsletter" aria-labelledby="titulo-news">
+        <h2 id="titulo-news">Roteiros no seu e-mail</h2>
+        <p>Um novo destino brasileiro toda semana, sem spam.</p>
+        <form class="newsletter" id="form-news">
+          <label class="visualmente-oculto" for="news-email">Seu e-mail</label>
+          <input id="news-email" type="email" placeholder="seu@email.com" required>
+          <button class="botao" type="submit">Quero receber</button>
+          <p class="newsletter__retorno" id="news-retorno" aria-live="polite"></p>
+        </form>
+      </section>
+    </aside>
+  </div>
+
+  <!-- ===================== RODAPÉ ===================== -->
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape__grade">
+        <div>
+          <a class="marca" href="#">Rota Brasil</a>
+          <p>Plataforma editorial dedicada a promover o turismo nacional, de norte a sul do país.</p>
+        </div>
+        <nav aria-labelledby="rod-regioes">
+          <h2 id="rod-regioes">Regiões</h2>
+          <ul>
+            <li><a href="#">Nordeste</a></li>
+            <li><a href="#">Amazônia</a></li>
+            <li><a href="#">Sudeste</a></li>
+            <li><a href="#">Sul</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="rod-guias">
+          <h2 id="rod-guias">Guias</h2>
+          <ul>
+            <li><a href="#">Quando viajar</a></li>
+            <li><a href="#">Viagem econômica</a></li>
+            <li><a href="#">Ecoturismo</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="rod-sobre">
+          <h2 id="rod-sobre">Sobre</h2>
+          <ul>
+            <li><a href="#">Quem somos</a></li>
+            <li><a href="#">Escreva para nós</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </nav>
+      </div>
+      <p class="rodape__base"><small>© 2026 Rota Brasil. Conteúdo de exemplo para demonstração de layout.</small></p>
+    </div>
+  </footer>
+
+  <script>
+    /* ---------------------------------------------------------
+       1. Ilustrações de exemplo (substitua por fotos reais)
+       --------------------------------------------------------- */
+    const CENAS = {
+      praia: { ceu: ["#ffcf8a", "#ff9a6b"], sol: "#fff3c4", mar: "#3fb6c4", chao: "#f5deb0", extra: "coqueiro" },
+      "praia-rio": { ceu: ["#bfe6f2", "#eaf6f2"], sol: "#fff7d6", mar: "#4fa3a8", chao: "#fbf1dc", extra: "floresta" },
+      dunas: { ceu: ["#9fd8f0", "#e8f6fb"], sol: "#fffbe6", mar: "#3fc1b6", chao: "#fbf5ea", extra: "dunas" },
+      rio:   { ceu: ["#d9eef0", "#f6efe2"], sol: "#fff3c4", mar: "#3a2f24", chao: "#c58a52", extra: "floresta" },
+      cachoeira: { ceu: ["#bde3ef", "#eef7f3"], sol: "#ffffff", mar: "#6fb7c9", chao: "#2f7d4a", extra: "cachoeira" },
+      colonial: { ceu: ["#f6c79b", "#f9e7d2"], sol: "#fff1d6", mar: "#5f8a5e", chao: "#7e6a55", extra: "colonial" },
+      serra: { ceu: ["#c9d6e3", "#eef1f2"], sol: "#ffffff", mar: "#4d6b5c", chao: "#2e4a3c", extra: "araucaria" },
+      ilha:  { ceu: ["#a8daf0", "#e9f7fb"], sol: "#fffbe6", mar: "#2f8fb0", chao: "#2f7d4a", extra: "morros" },
+      chapada: { ceu: ["#f2a65a", "#f9d9a7"], sol: "#fff0c9", mar: "#a5583a", chao: "#6f3a28", extra: "chapada" }
+    };
+
+    function cenaSVG(nome) {
+      const c = CENAS[nome] || CENAS.praia;
+      let extra = "";
+      switch (c.extra) {
+        case "coqueiro":
+          extra = `<path d="M470 400 Q480 300 455 215" stroke="#5a3d24" stroke-width="10" fill="none"/>
+                   <g fill="#2f6e3f"><path d="M455 215 q-60 -10 -95 30 q50 -20 95 -30z"/><path d="M455 215 q50 -40 110 -10 q-60 0 -110 10z"/><path d="M455 215 q-10 -55 -60 -70 q40 30 60 70z"/><path d="M455 215 q30 -60 80 -60 q-55 20 -80 60z"/></g>`;
+          break;
+        case "floresta":
+          extra = Array.from({length: 14}, (_, i) => `<circle cx="${i*48+10}" cy="${255 + (i%3)*8}" r="${34 + (i%4)*6}" fill="${i%2 ? '#2f6e3f' : '#3d8a52'}"/>`).join("");
+          break;
+        case "dunas":
+          extra = `<path d="M0 260 Q120 200 250 250 T520 230 T640 250 V400 H0z" fill="#fffaf0"/>
+                   <ellipse cx="200" cy="300" rx="90" ry="18" fill="${c.mar}"/><ellipse cx="470" cy="320" rx="70" ry="14" fill="#5ad0c3"/>`;
+          break;
+        case "cachoeira":
+          extra = `<path d="M0 180 H640 V400 H0z" fill="#2f6e3f"/><path d="M220 180 h200 v220 h-200z" fill="#d7eef3"/>
+                   <path d="M240 180 v220 M280 180 v220 M320 180 v220 M360 180 v220 M400 180 v220" stroke="#ffffff" stroke-width="6" opacity=".7"/>`;
+          break;
+        case "colonial":
+          extra = `<g fill="#fffaf2" stroke="#7e6a55" stroke-width="2">
+                    <rect x="250" y="150" width="140" height="130"/><rect x="262" y="105" width="34" height="45"/><rect x="344" y="105" width="34" height="45"/>
+                    <path d="M262 105 l17 -22 l17 22z M344 105 l17 -22 l17 22z" fill="#c26b3a"/>
+                    <rect x="60" y="215" width="120" height="70"/><rect x="460" y="205" width="130" height="80"/></g>
+                   <path d="M50 215 l70 -25 l70 25z M450 205 l75 -25 l75 25z" fill="#c26b3a"/>
+                   <g fill="#2a6c9c"><rect x="305" y="220" width="30" height="60"/><rect x="90" y="235" width="18" height="24"/><rect x="130" y="235" width="18" height="24"/><rect x="490" y="225" width="18" height="24"/><rect x="540" y="225" width="18" height="24"/></g>`;
+          break;
+        case "araucaria":
+          extra = Array.from({length: 7}, (_, i) => {
+            const x = 50 + i*90, y = 200 + (i%2)*25;
+            return `<path d="M${x} ${y+130} V${y}" stroke="#3b2c22" stroke-width="5"/><path d="M${x-45} ${y+5} Q${x} ${y-35} ${x+45} ${y+5} Q${x} ${y-10} ${x-45} ${y+5}z" fill="#24402f"/>`;
+          }).join("");
+          break;
+        case "morros":
+          extra = `<path d="M0 250 Q100 120 220 240 Q300 150 400 235 Q520 110 640 230 V300 H0z" fill="#2f7d4a"/>`;
+          break;
+        case "chapada":
+          extra = `<path d="M40 280 V190 L80 170 H210 L240 190 V280z M330 280 V160 L360 140 H520 L560 165 V280z" fill="${c.mar}"/>`;
+          break;
+      }
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.ceu[0]}"/><stop offset="1" stop-color="${c.ceu[1]}"/></linearGradient></defs>
+        <rect width="640" height="400" fill="url(#g)"/>
+        <circle cx="510" cy="95" r="42" fill="${c.sol}"/>
+        <path d="M0 230 Q160 200 320 225 T640 215 V400 H0z" fill="${c.mar}" opacity=".9"/>
+        ${extra}
+        <path d="M0 320 Q200 290 400 315 T640 305 V400 H0z" fill="${c.chao}"/>
+      </svg>`;
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+    document.querySelectorAll("img[data-cena]").forEach(img => { img.src = cenaSVG(img.dataset.cena); });
+
+    /* ---------------------------------------------------------
+       2. Busca por destino, região e estado
+       --------------------------------------------------------- */
+    const form = document.getElementById("form-busca");
+    const campoTermo = document.getElementById("busca-termo");
+    const campoRegiao = document.getElementById("busca-regiao");
+    const campoEstado = document.getElementById("busca-estado");
+    const itens = [...document.querySelectorAll("#grade > li")];
+    const contador = document.getElementById("contador");
+    const vazio = document.getElementById("vazio");
+    const chips = document.querySelectorAll(".chip[data-regiao]");
+
+    const normalizar = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+    function filtrar() {
+      const termo = normalizar(campoTermo.value.trim());
+      const regiao = campoRegiao.value;
+      const estado = campoEstado.value;
+      let visiveis = 0;
+
+      itens.forEach(li => {
+        const art = li.querySelector("article");
+        const ok =
+          (!regiao || art.dataset.regiao === regiao) &&
+          (!estado || art.dataset.estado === estado) &&
+          (!termo || normalizar(art.textContent).includes(termo));
+        li.hidden = !ok;
+        if (ok) visiveis++;
+      });
+
+      contador.textContent = visiveis === 1 ? "1 artigo" : `${visiveis} artigos`;
+      vazio.classList.toggle("visivel", visiveis === 0);
+      chips.forEach(ch => ch.setAttribute("aria-pressed", String(ch.dataset.regiao === regiao)));
+      document.querySelectorAll(".nav a").forEach(a => {
+        if ((a.dataset.filtroRegiao || "") === regiao) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
+    }
+
+    // Ao trocar a região, mostra só os estados daquela região
+    function ajustarEstados() {
+      const regiao = campoRegiao.value;
+      campoEstado.querySelectorAll("optgroup").forEach(g => {
+        const mostrar = !regiao || g.dataset.regiao === regiao;
+        g.hidden = !mostrar;
+        g.disabled = !mostrar;
+      });
+      const sel = campoEstado.selectedOptions[0];
+      if (sel && sel.parentElement.disabled) campoEstado.value = "";
+    }
+
+    // Escolher um estado define a região correspondente
+    campoEstado.addEventListener("change", () => {
+      const grupo = campoEstado.selectedOptions[0]?.parentElement;
+      if (grupo?.dataset.regiao) campoRegiao.value = grupo.dataset.regiao;
+      ajustarEstados(); filtrar();
+    });
+    campoRegiao.addEventListener("change", () => { ajustarEstados(); filtrar(); });
+    campoTermo.addEventListener("input", filtrar);
+    form.addEventListener("submit", e => {
+      e.preventDefault(); filtrar();
+      document.getElementById("artigos").scrollIntoView({ behavior: "smooth" });
+    });
+
+    function aplicarRegiao(regiao) {
+      campoRegiao.value = campoRegiao.value === regiao ? "" : regiao;
+      campoEstado.value = "";
+      ajustarEstados(); filtrar();
+    }
+    chips.forEach(ch => ch.addEventListener("click", () => aplicarRegiao(ch.dataset.regiao)));
+    document.querySelectorAll(".nav a").forEach(a => a.addEventListener("click", e => {
+      const r = a.dataset.filtroRegiao || "";
+      if (!r) { e.preventDefault(); campoRegiao.value = ""; campoEstado.value = ""; campoTermo.value = ""; ajustarEstados(); filtrar(); window.scrollTo({ top: 0 }); return; }
+      campoRegiao.value = r; campoEstado.value = ""; ajustarEstados(); filtrar();
+    }));
+
+    /* ---------------------------------------------------------
+       3. Newsletter (demonstração — sem envio real)
+       --------------------------------------------------------- */
+    document.getElementById("form-news").addEventListener("submit", e => {
+      e.preventDefault();
+      document.getElementById("news-retorno").textContent = "Demonstração: em produção, conecte este formulário ao seu serviço de e-mail.";
+    });
+
+    filtrar();
+  </script>
+</body>
+</html>

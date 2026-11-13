@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cardápio — Bistrô Aurora</title>
+  <style>
+    :root {
+      --cor-fundo: #faf7f2;
+      --cor-texto: #2b2622;
+      --cor-destaque: #b5532c;
+      --cor-suave: #e9e1d6;
+      --raio: 10px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      line-height: 1.5;
+    }
+
+    /* ---------- PASSO 2: barra de navegação superior ---------- */
+    .topo {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #fff;
+      border-bottom: 1px solid var(--cor-suave);
+      padding: 1rem;
+    }
+    .topo h1 { margin: 0 0 .75rem; font-size: 1.5rem; text-align: center; }
+    .filtros {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .5rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .filtros button {
+      font: inherit;
+      padding: .45rem 1rem;
+      border: 1px solid var(--cor-destaque);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--cor-destaque);
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .filtros button:hover { background: var(--cor-suave); }
+    .filtros button[aria-pressed="true"] {
+      background: var(--cor-destaque);
+      color: #fff;
+    }
+    .filtros button:focus-visible { outline: 3px solid #f0b48f; outline-offset: 2px; }
+
+    /* ---------- PASSO 1: seções e itens do cardápio ---------- */
+    main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .categoria { margin-bottom: 2.5rem; }
+    .categoria > h2 {
+      border-bottom: 2px solid var(--cor-destaque);
+      padding-bottom: .25rem;
+    }
+    .item {
+      background: #fff;
+      border: 1px solid var(--cor-suave);
+      border-radius: var(--raio);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .item header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+    .item h3 { margin: 0; font-size: 1.1rem; }
+    .preco { font-weight: 700; color: var(--cor-destaque); white-space: nowrap; }
+    .descricao { margin: .4rem 0 .6rem; }
+    .alergenos { font-size: .85rem; }
+    .alergenos h4 {
+      display: inline;
+      font-size: inherit;
+      font-weight: 600;
+      margin: 0 .35rem 0 0;
+    }
+    .alergenos ul { display: inline; list-style: none; padding: 0; margin: 0; }
+    .alergenos li {
+      display: inline-block;
+      background: var(--cor-suave);
+      border-radius: 4px;
+      padding: .05rem .5rem;
+      margin: .15rem .25rem .15rem 0;
+    }
+    .alergenos .nenhum { font-style: italic; }
+
+    /* Itens ocultados pelo filtro */
+    [hidden] { display: none !important; }
+
+    footer { text-align: center; font-size: .85rem; padding: 1rem; color: #6b625a; }
+  </style>
+</head>
+<body>
+
+  <!-- ============ PASSO 2: navegação com filtros ============ -->
+  <header class="topo">
+    <h1>Bistrô Aurora — Cardápio</h1>
+    <nav aria-label="Filtrar cardápio por tipo de refeição">
+      <ul class="filtros">
+        <li><button type="button" data-filtro="todos" aria-pressed="true">Todos</button></li>
+        <li><button type="button" data-filtro="entradas" aria-pressed="false">Entradas</button></li>
+        <li><button type="button" data-filtro="principais" aria-pressed="false">Pratos principais</button></li>
+        <li><button type="button" data-filtro="sobremesas" aria-pressed="false">Sobremesas</button></li>
+        <li><button type="button" data-filtro="bebidas" aria-pressed="false">Bebidas</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ============ PASSO 1: itens agrupados em seções semânticas ============ -->
+  <main id="cardapio">
+
+    <section class="categoria" data-categoria="entradas" aria-labelledby="titulo-entradas">
+      <h2 id="titulo-entradas">Entradas</h2>
+
+      <article class="item">
+        <header>
+          <h3>Bruschetta de tomate</h3>
+          <p class="preco"><data value="28.00">R$ 28,00</data></p>
+        </header>
+        <p class="descricao">Pão italiano tostado com tomate, manjericão fresco e azeite extravirgem.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <ul><li>Glúten</li></ul>
+        </aside>
+      </article>
+
+      <article class="item">
+        <header>
+          <h3>Bolinho de bacalhau</h3>
+          <p class="preco"><data value="36.00">R$ 36,00</data></p>
+        </header>
+        <p class="descricao">Seis unidades crocantes servidas com aioli de limão.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <ul><li>Peixe</li><li>Ovo</li><li>Glúten</li></ul>
+        </aside>
+      </article>
+    </section>
+
+    <section class="categoria" data-categoria="principais" aria-labelledby="titulo-principais">
+      <h2 id="titulo-principais">Pratos principais</h2>
+
+      <article class="item">
+        <header>
+          <h3>Risoto de cogumelos</h3>
+          <p class="preco"><data value="62.00">R$ 62,00</data></p>
+        </header>
+        <p class="descricao">Arroz arbóreo, mix de cogumelos frescos, parmesão e manteiga de ervas.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <ul><li>Leite</li></ul>
+        </aside>
+      </article>
+
+      <article class="item">
+        <header>
+          <h3>Filé ao molho de mostarda</h3>
+          <p class="preco"><data value="78.00">R$ 78,00</data></p>
+        </header>
+        <p class="descricao">Medalhão grelhado com molho de mostarda Dijon e batatas rústicas.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <ul><li>Mostarda</li><li>Leite</li></ul>
+        </aside>
+      </article>
+
+      <article class="item">
+        <header>
+          <h3>Moqueca de palmito</h3>
+          <p class="preco"><data value="58.00">R$ 58,00</data></p>
+        </header>
+        <p class="descricao">Opção vegana com palmito, pimentões e leite de coco, acompanha arroz.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <span class="nenhum">Nenhum alérgeno principal</span>
+        </aside>
+      </article>
+    </section>
+
+    <section class="categoria" data-categoria="sobremesas" aria-labelledby="titulo-sobremesas">
+      <h2 id="titulo-sobremesas">Sobremesas</h2>
+
+      <article class="item">
+        <header>
+          <h3>Petit gâteau</h3>
+          <p class="preco"><data value="32.00">R$ 32,00</data></p>
+        </header>
+        <p class="descricao">Bolinho de chocolate com recheio cremoso e sorvete de baunilha.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <ul><li>Glúten</li><li>Ovo</li><li>Leite</li></ul>
+        </aside>
+      </article>
+
+      <article class="item">
+        <header>
+          <h3>Pavlova de frutas vermelhas</h3>
+          <p class="preco"><data value="30.00">R$ 30,00</data></p>
+        </header>
+        <p class="descricao">Merengue crocante, chantilly e frutas vermelhas frescas.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <ul><li>Ovo</li><li>Leite</li></ul>
+        </aside>
+      </article>
+    </section>
+
+    <section class="categoria" data-categoria="bebidas" aria-labelledby="titulo-bebidas">
+      <h2 id="titulo-bebidas">Bebidas</h2>
+
+      <article class="item">
+        <header>
+          <h3>Suco natural</h3>
+          <p class="preco"><data value="14.00">R$ 14,00</data></p>
+        </header>
+        <p class="descricao">Laranja, abacaxi com hortelã ou maracujá (500 ml).</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <span class="nenhum">Nenhum alérgeno principal</span>
+        </aside>
+      </article>
+
+      <article class="item">
+        <header>
+          <h3>Cappuccino</h3>
+          <p class="preco"><data value="16.00">R$ 16,00</data></p>
+        </header>
+        <p class="descricao">Espresso, leite vaporizado e canela.</p>
+        <aside class="alergenos" aria-label="Alérgenos">
+          <h4>Alérgenos:</h4>
+          <ul><li>Leite</li></ul>
+        </aside>
+      </article>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Informe ao garçom sobre qualquer restrição alimentar.</p>
+  </footer>
+
+  <!-- ============ PASSO 3: script de filtragem ============ -->
+  <script>
+    // Seleciona todos os botões de filtro e todas as seções do cardápio
+    const botoes = document.querySelectorAll('.filtros button');
+    const secoes = document.querySelectorAll('.categoria');
+
+    function aplicarFiltro(filtro) {
+      // Exibe a seção se o filtro for "todos" ou se a categoria coincidir; oculta as demais
+      secoes.forEach(secao => {
+        const visivel = filtro === 'todos' || secao.dataset.categoria === filtro;
+        secao.hidden = !visivel;
+      });
+
+      // Marca visualmente (e para leitores de tela) qual botão está ativo
+      botoes.forEach(botao => {
+        botao.setAttribute('aria-pressed', String(botao.dataset.filtro === filtro));
+      });
+    }
+
+    // Associa o clique de cada botão à função de filtro
+    botoes.forEach(botao => {
+      botao.addEventListener('click', () => aplicarFiltro(botao.dataset.filtro));
+    });
+  </script>
+
+</body>
+</html>

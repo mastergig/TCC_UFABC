@@ -1,0 +1,834 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore os destinos mais incríveis do Brasil no nosso blog de viagens.">
+    <title>Viaje Brasil | Descubra o Brasil</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #087f5b;
+            --secondary: #f4a261;
+            --dark: #18332b;
+            --light: #f5f8f6;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--light);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--white);
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px #00000012;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            min-height: 470px;
+            background:
+                linear-gradient(#0005, #0008),
+                url("https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1800")
+                center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .hero h1 {
+            font-size: clamp(35px, 6vw, 58px);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            margin-bottom: 25px;
+        }
+
+        .hero a {
+            display: inline-block;
+            background: var(--secondary);
+            color: #222;
+            padding: 13px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 84%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 55px 0 30px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+        }
+
+        .section-title p {
+            color: #777;
+        }
+
+        .search-area {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .search-area input {
+            width: 100%;
+            max-width: 500px;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-area input:focus {
+            border-color: var(--primary);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .filters button {
+            border: none;
+            background: white;
+            padding: 11px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--dark);
+            transition: .3s;
+        }
+
+        .filters button:hover,
+        .filters button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .articles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            margin-bottom: 60px;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px #0000000d;
+            transition: .3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 25px #00000018;
+        }
+
+        .article-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .article-content {
+            padding: 22px;
+        }
+
+        .category {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .article-content h3 {
+            margin: 10px 0;
+            font-size: 21px;
+            color: var(--dark);
+        }
+
+        .article-content p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 17px;
+            background: var(--primary);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .read-more:hover {
+            background: #056448;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 30px;
+        }
+
+        .newsletter {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 55px 20px;
+        }
+
+        .newsletter h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .newsletter form {
+            margin-top: 22px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .newsletter input {
+            padding: 13px;
+            width: 280px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .newsletter button {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 5px;
+            background: var(--secondary);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #10251f;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* Modal de leitura */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000a;
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 650px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            border: none;
+            background: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .articles {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header {
+                padding: 18px 5%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .articles {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 90%;
+            }
+
+            .hero {
+                min-height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🌎 Viaje Brasil</div>
+
+    <nav aria-label="Menu principal">
+        <a href="#inicio">Início</a>
+        <a href="#destinos">Destinos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+    </nav>
+</header>
+
+<section class="hero" id="inicio">
+    <div class="hero-content">
+        <h1>Descubra as maravilhas do Brasil!</h1>
+        <p>
+            Explore paisagens incríveis, conheça novas culturas
+            e descubra destinos inesquecíveis pelo nosso país.
+        </p>
+        <a href="#destinos">Explorar destinos</a>
+    </div>
+</section>
+
+<main class="container" id="destinos">
+
+    <div class="section-title">
+        <h2>Explore nossos destinos</h2>
+        <p>Inspire-se para sua próxima aventura pelo Brasil!</p>
+    </div>
+
+    <div class="search-area">
+        <input
+            type="search"
+            id="search"
+            placeholder="🔎 Pesquise um destino..."
+            aria-label="Pesquisar destinos"
+        >
+    </div>
+
+    <div class="filters" aria-label="Filtrar por região">
+        <button class="active" data-category="todos">Todos</button>
+        <button data-category="norte">Norte</button>
+        <button data-category="nordeste">Nordeste</button>
+        <button data-category="centro-oeste">Centro-Oeste</button>
+        <button data-category="sudeste">Sudeste</button>
+        <button data-category="sul">Sul</button>
+    </div>
+
+    <section class="articles" id="article-list"
+        aria-label="Artigos de viagem">
+
+        <article class="article-card" data-category="norte">
+            <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=700"
+                 alt="Paisagem da Floresta Amazônica">
+            <div class="article-content">
+                <span class="category">Norte • Amazonas</span>
+                <h3>Descobrindo a Floresta Amazônica</h3>
+                <p>Conheça a maior floresta tropical do mundo, seus rios,
+                    sua biodiversidade e suas experiências ecológicas.</p>
+                <button class="read-more"
+                    data-article="amazonia">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="nordeste">
+            <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=700"
+                 alt="Praias de águas cristalinas">
+            <div class="article-content">
+                <span class="category">Nordeste • Alagoas</span>
+                <h3>As praias paradisíacas de Maragogi</h3>
+                <p>Descubra as famosas piscinas naturais, águas cristalinas
+                    e paisagens encantadoras do litoral alagoano.</p>
+                <button class="read-more"
+                    data-article="maragogi">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="centro-oeste">
+            <img src="https://images.unsplash.com/photo-1511497584788-876760111969?w=700"
+                 alt="Vegetação natural brasileira">
+            <div class="article-content">
+                <span class="category">Centro-Oeste • Mato Grosso</span>
+                <h3>Aventura no Pantanal</h3>
+                <p>Explore uma das maiores planícies alagáveis do planeta,
+                    com animais selvagens e natureza exuberante.</p>
+                <button class="read-more"
+                    data-article="pantanal">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="sudeste">
+            <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=700"
+                 alt="Vista panorâmica do Rio de Janeiro">
+            <div class="article-content">
+                <span class="category">Sudeste • Rio de Janeiro</span>
+                <h3>Rio de Janeiro: a cidade maravilhosa</h3>
+                <p>Conheça o Cristo Redentor, o Pão de Açúcar,
+                    Copacabana e os encantos cariocas.</p>
+                <button class="read-more"
+                    data-article="riodejaneiro">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="sul">
+            <img src="https://images.unsplash.com/photo-1518182170546-07661fd94144?w=700"
+                 alt="Cachoeira e natureza em Foz do Iguaçu">
+            <div class="article-content">
+                <span class="category">Sul • Paraná</span>
+                <h3>As impressionantes Cataratas do Iguaçu</h3>
+                <p>Uma das maiores maravilhas naturais do mundo,
+                    com centenas de quedas d'água impressionantes.</p>
+                <button class="read-more"
+                    data-article="iguacu">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="nordeste">
+            <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=700"
+                 alt="Praia tropical brasileira">
+            <div class="article-content">
+                <span class="category">Nordeste • Bahia</span>
+                <h3>Salvador: cultura, história e praias</h3>
+                <p>Descubra o Pelourinho, a culinária baiana,
+                    a música e as belas praias de Salvador.</p>
+                <button class="read-more"
+                    data-article="salvador">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="centro-oeste">
+            <img src="https://images.unsplash.com/photo-1472396961693-142e6e269027?w=700"
+                 alt="Paisagem natural do Cerrado">
+            <div class="article-content">
+                <span class="category">Centro-Oeste • Goiás</span>
+                <h3>Chapada dos Veadeiros</h3>
+                <p>Cachoeiras, trilhas, cânions e formações rochosas
+                    fazem deste destino um paraíso natural.</p>
+                <button class="read-more"
+                    data-article="chapada">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="sudeste">
+            <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=700"
+                 alt="Paisagem de montanhas">
+            <div class="article-content">
+                <span class="category">Sudeste • Minas Gerais</span>
+                <h3>O charme histórico de Ouro Preto</h3>
+                <p>Viaje pelo período colonial brasileiro e descubra
+                    igrejas, museus e ruas de pedra.</p>
+                <button class="read-more"
+                    data-article="ouropreto">Ler artigo</button>
+            </div>
+        </article>
+
+        <article class="article-card" data-category="sul">
+            <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=700"
+                 alt="Paisagem litorânea">
+            <div class="article-content">
+                <span class="category">Sul • Santa Catarina</span>
+                <h3>Florianópolis: a ilha da magia</h3>
+                <p>Conheça praias, lagoas, trilhas e a gastronomia
+                    que tornam Florianópolis tão especial.</p>
+                <button class="read-more"
+                    data-article="florianopolis">Ler artigo</button>
+            </div>
+        </article>
+
+        <p class="no-results" id="no-results">
+            Nenhum destino encontrado. Tente outra pesquisa!
+        </p>
+
+    </section>
+</main>
+
+<section class="newsletter" id="sobre">
+    <h2>Viaje com a gente!</h2>
+    <p>
+        Receba dicas de viagem, novos destinos e experiências
+        incríveis diretamente no seu e-mail.
+    </p>
+
+    <form id="newsletter-form">
+        <input type="email" placeholder="Digite seu e-mail"
+               aria-label="Seu e-mail" required>
+        <button type="submit">Inscrever-se</button>
+    </form>
+</section>
+
+<footer id="contato">
+    <p>🌎 Viaje Brasil - Explorando o melhor do nosso país.</p>
+    <p>© 2026 Viaje Brasil. Todos os direitos reservados.</p>
+</footer>
+
+<!-- Janela de leitura dos artigos -->
+<div class="modal" id="article-modal"
+     role="dialog" aria-modal="true"
+     aria-labelledby="modal-title">
+
+    <div class="modal-content">
+        <button class="close-modal" aria-label="Fechar">&times;</button>
+        <h2 id="modal-title"></h2>
+        <div id="modal-text"></div>
+    </div>
+</div>
+
+<script>
+    // Filtro por região
+    const filterButtons = document.querySelectorAll(".filters button");
+    const cards = document.querySelectorAll(".article-card");
+    const searchInput = document.getElementById("search");
+    const noResults = document.getElementById("no-results");
+
+    let currentCategory = "todos";
+
+    function filterArticles() {
+        const search = searchInput.value.toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const category = card.dataset.category;
+            const content = card.textContent.toLowerCase();
+
+            const matchesCategory =
+                currentCategory === "todos" ||
+                category === currentCategory;
+
+            const matchesSearch = content.includes(search);
+
+            const visible = matchesCategory && matchesSearch;
+
+            card.style.display = visible ? "block" : "none";
+
+            if (visible) visibleCount++;
+        });
+
+        noResults.style.display =
+            visibleCount === 0 ? "block" : "none";
+    }
+
+    filterButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            filterButtons.forEach(btn =>
+                btn.classList.remove("active")
+            );
+
+            button.classList.add("active");
+            currentCategory = button.dataset.category;
+
+            filterArticles();
+        });
+    });
+
+    searchInput.addEventListener("input", filterArticles);
+
+    // Conteúdo completo dos artigos
+    const articles = {
+        amazonia: {
+            title: "Descobrindo a Floresta Amazônica",
+            text: `
+                <p>A Amazônia é um dos maiores patrimônios naturais
+                do planeta. Sua floresta abriga uma enorme variedade
+                de espécies de plantas e animais.</p>
+
+                <p>Durante a visita, é possível realizar passeios
+                de barco, observar a fauna e conhecer comunidades
+                tradicionais que preservam seus costumes.</p>
+
+                <p><strong>O que visitar:</strong> Manaus, Encontro
+                das Águas, Parque Nacional de Anavilhanas e comunidades
+                ribeirinhas.</p>
+
+                <p><strong>Dica:</strong> Contrate guias locais
+                credenciados e respeite as orientações ambientais.</p>
+            `
+        },
+
+        maragogi: {
+            title: "As praias paradisíacas de Maragogi",
+            text: `
+                <p>Maragogi, em Alagoas, é conhecida por suas águas
+                transparentes e piscinas naturais, chamadas de galés.</p>
+
+                <p>Os visitantes podem aproveitar passeios de barco,
+                mergulho com snorkel e caminhadas pelas praias.</p>
+
+                <p><strong>O que visitar:</strong> Galés de Maragogi,
+                Praia de Antunes e Praia de Barra Grande.</p>
+
+                <p><strong>Dica:</strong> Consulte a tábua de marés
+                antes de programar os passeios às piscinas naturais.</p>
+            `
+        },
+
+        pantanal: {
+            title: "Aventura no Pantanal",
+            text: `
+                <p>O Pantanal é uma das regiões mais importantes
+                do mundo para a observação da vida selvagem.</p>
+
+                <p>É possível encontrar jacarés, capivaras,
+                araras-azuis e diversas espécies de aves.</p>
+
+                <p><strong>O que fazer:</strong> Safáris fotográficos,
+                passeios de barco e observação de animais.</p>
+
+                <p><strong>Dica:</strong> Prefira visitar a região
+                durante a estação seca, geralmente entre maio e setembro.</p>
+            `
+        },
+
+        riodejaneiro: {
+            title: "Rio de Janeiro: a cidade maravilhosa",
+            text: `
+                <p>O Rio de Janeiro combina praias famosas,
+                montanhas, história e uma vida cultural intensa.</p>
+
+                <p>O Cristo Redentor é um dos cartões-postais
+                mais conhecidos do Brasil.</p>
+
+                <p><strong>O que visitar:</strong> Cristo Redentor,
+                Pão de Açúcar, Copacabana, Ipanema e Jardim Botânico.</p>
+
+                <p><strong>Dica:</strong> Reserve um dia para conhecer
+                os principais pontos turísticos e aproveite o pôr do sol
+                na praia.</p>
+            `
+        },
+
+        iguacu: {
+            title: "As Cataratas do Iguaçu",
+            text: `
+                <p>Localizadas em Foz do Iguaçu, no Paraná, as
+                Cataratas do Iguaçu formam um conjunto impressionante
+                de quedas d'água na fronteira entre Brasil e Argentina.</p>
+
+                <p>O Parque Nacional do Iguaçu oferece trilhas,
+                mirantes e experiências de contato com a natureza.</p>
+
+                <p><strong>O que visitar:</strong> Cataratas,
+                Parque das Aves e Marco das Três Fronteiras.</p>
+
+                <p><strong>Dica:</strong> Reserve tempo para conhecer
+                o lado brasileiro e, se possível, o argentino.</p>
+            `
+        },
+
+        salvador: {
+            title: "Salvador: cultura, história e praias",
+            text: `
+                <p>Salvador é uma cidade marcada pela influência
+                africana, pela arquitetura colonial e pela riqueza
+                de suas manifestações culturais.</p>
+
+                <p>A culinária é outro destaque, com pratos
+                tradicionais como acarajé, vatapá e moqueca.</p>
+
+                <p><strong>O que visitar:</strong> Pelourinho,
+                Elevador Lacerda, Farol da Barra e Mercado Modelo.</p>
+
+                <p><strong>Dica:</strong> Experimente a culinária local
+                e conheça a história da cidade através de visitas guiadas.</p>
+            `
+        },
+
+        chapada: {
+            title: "Chapada dos Veadeiros",
+            text: `
+                <p>Localizada em Goiás, a Chapada dos Veadeiros
+                é um destino conhecido por suas paisagens naturais,
+                cachoeiras e trilhas ecológicas.</p>
+
+                <p>O parque nacional protege uma área importante
+                do Cerrado brasileiro.</p>
+
+                <p><strong>O que visitar:</strong> Vale da Lua,
+                Cachoeira Santa Bárbara e Saltos do Rio Preto.</p>
+
+                <p><strong>Dica:</strong> Utilize calçados adequados
+                e respeite as regras de visitação.</p>
+            `
+        },
+
+        ouropreto: {
+            title: "O charme histórico de Ouro Preto",
+            text: `
+                <p>Ouro Preto, em Minas Gerais, preserva um conjunto
+                arquitetônico colonial de grande importância histórica.</p>
+
+                <p>Suas igrejas, museus e ruas de pedra contam parte
+                da história do Brasil durante o ciclo do ouro.</p>
+
+                <p><strong>O que visitar:</strong> Igreja de São
+                Francisco de Assis, Museu da Inconfidência e Mina
+                da Passagem.</p>
+
+                <p><strong>Dica:</strong> Prepare-se para caminhar
+                por ruas íngremes e aproveite a gastronomia mineira.</p>
+            `
+        },
+
+        florianopolis: {
+            title: "Florianópolis: a ilha da magia",
+            text: `
+                <p>Florianópolis, capital de Santa Catarina,
+                é famosa por suas praias, lagoas e paisagens naturais.</p>
+
+                <p>A cidade oferece opções para quem gosta de
+                esportes aquáticos, trilhas e gastronomia.</p>
+
+                <p><strong>O que visitar:</strong> Lagoa da Conceição,
+                Praia da Joaquina, Jurerê e Santo Antônio de Lisboa.</p>
+
+                <p><strong>Dica:</strong> Explore diferentes praias
+                para conhecer a diversidade da ilha.</p>
+            `
+        }
+    };
+
+    // Abrir artigo
+    const modal = document.getElementById("article-modal");
+    const modalTitle = document.getElementById("modal-title");
+    const modalText = document.getElementById("modal-text");
+
+    document.querySelectorAll(".read-more").forEach(button => {
+        button.addEventListener("click", () => {
+            const article = articles[button.dataset.article];
+
+            modalTitle.textContent = article.title;
+            modalText.innerHTML = article.text;
+
+            modal.classList.add("open");
+            document.querySelector(".close-modal").focus();
+        });
+    });
+
+    // Fechar modal
+    function closeModal() {
+        modal.classList.remove("open");
+    }
+
+    document.querySelector(".close-modal")
+        .addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeModal();
+    });
+
+    // Newsletter demonstrativa
+    document.getElementById("newsletter-form")
+        .addEventListener("submit", event => {
+            event.preventDefault();
+
+            alert("Obrigado por se inscrever no Viaje Brasil!");
+
+            event.target.reset();
+        });
+</script>
+
+</body>
+</html>

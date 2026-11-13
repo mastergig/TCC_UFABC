@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineMax - Cinema</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #101018;
+    color: #fff;
+}
+
+header {
+    background: #191923;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    color: #ff3838;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+    color: #ff3838;
+}
+
+.hero {
+    padding: 65px 8%;
+    background: linear-gradient(90deg, #15151f, #401515);
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #ccc;
+    font-size: 17px;
+}
+
+.container {
+    padding: 40px 8%;
+}
+
+.section-title {
+    font-size: 27px;
+    margin-bottom: 25px;
+    border-left: 5px solid #ff3838;
+    padding-left: 12px;
+}
+
+.movies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.movie {
+    background: #1d1d29;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.movie:hover {
+    transform: translateY(-6px);
+}
+
+.movie img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 18px;
+}
+
+.movie-info h3 {
+    margin-bottom: 10px;
+}
+
+.movie-info p {
+    color: #bbb;
+    font-size: 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.tag {
+    display: inline-block;
+    background: #343444;
+    color: #ff7777;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+button {
+    background: #ff3838;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #d92020;
+}
+
+.booking {
+    background: #1d1d29;
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.booking label {
+    display: block;
+    margin: 15px 0 8px;
+}
+
+select, input {
+    width: 100%;
+    padding: 13px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #292936;
+    color: white;
+}
+
+.screen {
+    background: #ddd;
+    color: #222;
+    text-align: center;
+    padding: 10px;
+    margin: 30px auto;
+    width: 80%;
+    border-radius: 50% 50% 5px 5px;
+    font-size: 13px;
+    letter-spacing: 3px;
+}
+
+.seats {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 10px;
+    max-width: 420px;
+    margin: auto;
+}
+
+.seat {
+    background: #44445a;
+    padding: 12px 5px;
+    text-align: center;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.seat:hover {
+    background: #777;
+}
+
+.seat.selected {
+    background: #21a56b;
+}
+
+.seat.occupied {
+    background: #a83232;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    font-size: 13px;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend i {
+    width: 13px;
+    height: 13px;
+    display: inline-block;
+    border-radius: 3px;
+}
+
+.total {
+    margin: 20px 0;
+    font-size: 20px;
+    color: #39d997;
+    font-weight: bold;
+}
+
+.confirmation {
+    display: none;
+    background: #174d37;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    line-height: 1.8;
+}
+
+footer {
+    background: #191923;
+    padding: 25px;
+    text-align: center;
+    color: #aaa;
+    margin-top: 40px;
+}
+
+@media(max-width: 600px) {
+    header {
+        justify-content: center;
+    }
+
+    nav {
+        text-align: center;
+    }
+
+    nav a {
+        margin: 0 7px;
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+    }
+
+    .container {
+        padding: 30px 5%;
+    }
+
+    .seats {
+        gap: 6px;
+    }
+
+    .seat {
+        padding: 10px 2px;
+        font-size: 11px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">CINEMAX 🎬</div>
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#filmes">Filmes</a>
+        <a href="#reservas">Reservas</a>
+    </nav>
+</header>
+
+<section class="hero" id="inicio">
+    <h1>Viva a emoção do cinema!</h1>
+    <p>Confira nossa programação e reserve seu lugar na próxima sessão.</p>
+</section>
+
+<main>
+
+<section class="container" id="filmes">
+    <h2 class="section-title">Filmes em Cartaz</h2>
+
+    <div class="movies">
+
+        <article class="movie">
+            <img src="https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg" alt="Poster de ficção científica">
+            <div class="movie-info">
+                <span class="tag">12 anos</span>
+                <h3>Interestelar</h3>
+                <p>Uma jornada espacial em busca de um novo lar para a humanidade.</p>
+                <p>Gênero: Ficção Científica</p>
+                <button onclick="selectMovie('Interestelar')">Ver horários</button>
+            </div>
+        </article>
+
+        <article class="movie">
+            <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" alt="Poster de Batman">
+            <div class="movie-info">
+                <span class="tag">14 anos</span>
+                <h3>Batman</h3>
+                <p>O Cavaleiro das Trevas enfrenta uma nova ameaça em Gotham City.</p>
+                <p>Gênero: Ação</p>
+                <button onclick="selectMovie('Batman')">Ver horários</button>
+            </div>
+        </article>
+
+        <article class="movie">
+            <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Poster de Oppenheimer">
+            <div class="movie-info">
+                <span class="tag">16 anos</span>
+                <h3>Oppenheimer</h3>
+                <p>A história do cientista responsável pelo desenvolvimento da bomba atômica.</p>
+                <p>Gênero: Drama</p>
+                <button onclick="selectMovie('Oppenheimer')">Ver horários</button>
+            </div>
+        </article>
+
+        <article class="movie">
+            <img src="https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg" alt="Poster de Barbie">
+            <div class="movie-info">
+                <span class="tag">12 anos</span>
+                <h3>Barbie</h3>
+                <p>Uma aventura divertida que começa no fantástico mundo da Barbie.</p>
+                <p>Gênero: Comédia</p>
+                <button onclick="selectMovie('Barbie')">Ver horários</button>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<section class="container" id="reservas">
+    <h2 class="section-title">Agende sua Sessão</h2>
+
+    <div class="booking">
+
+        <label for="movieSelect">Escolha o filme:</label>
+        <select id="movieSelect" onchange="updateTotal()">
+            <option value="">Selecione um filme</option>
+            <option>Interestelar</option>
+            <option>Batman</option>
+            <option>Oppenheimer</option>
+            <option>Barbie</option>
+        </select>
+
+        <label for="date">Data da sessão:</label>
+        <input type="date" id="date">
+
+        <label for="time">Horário disponível:</label>
+        <select id="time">
+            <option value="">Selecione o horário</option>
+            <option>14:00</option>
+            <option>16:30</option>
+            <option>19:00</option>
+            <option>21:30</option>
+        </select>
+
+        <h3 style="margin-top:30px;">Escolha seus assentos</h3>
+
+        <div class="screen">TELA DO CINEMA</div>
+
+        <div class="seats" id="seats"></div>
+
+        <div class="legend">
+            <span><i style="background:#44445a"></i> Disponível</span>
+            <span><i style="background:#21a56b"></i> Selecionado</span>
+            <span><i style="background:#a83232"></i> Ocupado</span>
+        </div>
+
+        <p id="seatCount">Assentos selecionados: 0</p>
+
+        <p class="total" id="total">Total: R$ 0,00</p>
+
+        <label for="name">Nome completo:</label>
+        <input type="text" id="name" placeholder="Digite seu nome">
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" placeholder="Digite seu e-mail">
+
+        <button style="margin-top:25px;width:100%"
+            onclick="bookSession()">
+            Confirmar Agendamento
+        </button>
+
+        <div class="confirmation" id="confirmation"></div>
+
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2026 CineMax - Todos os direitos reservados.</p>
+    <p>Rua do Cinema, 100 - Sua Cidade</p>
+</footer>
+
+<script>
+const ticketPrice = 25;
+
+const occupiedSeats = [4, 12, 19, 27];
+
+let selectedSeats = [];
+
+const seatsContainer = document.getElementById("seats");
+
+function createSeats() {
+    for (let i = 1; i <= 40; i++) {
+        const seat = document.createElement("div");
+
+        seat.classList.add("seat");
+        seat.textContent = i;
+
+        if (occupiedSeats.includes(i)) {
+            seat.classList.add("occupied");
+        }
+
+        seat.addEventListener("click", () => {
+            if (seat.classList.contains("occupied")) {
+                return;
+            }
+
+            if (selectedSeats.includes(i)) {
+                selectedSeats = selectedSeats.filter(s => s !== i);
+                seat.classList.remove("selected");
+            } else {
+                selectedSeats.push(i);
+                seat.classList.add("selected");
+            }
+
+            updateTotal();
+        });
+
+        seatsContainer.appendChild(seat);
+    }
+}
+
+function updateTotal() {
+    const quantity = selectedSeats.length;
+    const total = quantity * ticketPrice;
+
+    document.getElementById("seatCount").textContent =
+        "Assentos selecionados: " + quantity;
+
+    document.getElementById("total").textContent =
+        "Total: " + total.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+}
+
+function selectMovie(movie) {
+    document.getElementById("movieSelect").value = movie;
+
+    document.getElementById("reservas").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+function bookSession() {
+    const movie = document.getElementById("movieSelect").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    const confirmation = document.getElementById("confirmation");
+
+    if (!movie || !date || !time || !name || !email) {
+        alert("Preencha todos os campos para continuar!");
+        return;
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+        alert("Digite um e-mail válido!");
+        return;
+    }
+
+    if (selectedSeats.length === 0) {
+        alert("Selecione pelo menos um assento!");
+        return;
+    }
+
+    const selectedDate = new Date(date + "T00:00:00");
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+        alert("Escolha uma data válida!");
+        return;
+    }
+
+    const total = selectedSeats.length * ticketPrice;
+
+    confirmation.style.display = "block";
+
+    confirmation.innerHTML = `
+        <h3>✓ Agendamento realizado!</h3>
+        <p><strong>Cliente:</strong> ${escapeHTML(name)}</p>
+        <p><strong>Filme:</strong> ${escapeHTML(movie)}</p>
+        <p><strong>Data:</strong> ${selectedDate.toLocaleDateString("pt-BR")}</p>
+        <p><strong>Horário:</strong> ${escapeHTML(time)}</p>
+        <p><strong>Assentos:</strong> ${selectedSeats.join(", ")}</p>
+        <p><strong>Total:</strong> ${total.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })}</p>
+        <p>Uma confirmação foi preparada para ${escapeHTML(email)}.</p>
+        <p>Apresente seus dados na bilheteria.</p>
+    `;
+
+    confirmation.scrollIntoView({ behavior: "smooth" });
+}
+
+function escapeHTML(value) {
+    return value.replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+}
+
+createSeats();
+</script>
+
+</body>
+</html>

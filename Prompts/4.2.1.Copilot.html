@@ -1,0 +1,120 @@
+export default function PetShopCastracao() {
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800">
+      <header className="bg-emerald-700 text-white sticky top-0 z-50 shadow-lg">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold">🐾 PetCare Castração</h1>
+          <nav className="flex gap-6 text-sm font-medium">
+            <a href="#sobre">Sobre</a>
+            <a href="#servicos">Serviços</a>
+            <a href="#beneficios">Benefícios</a>
+            <a href="#agendamento">Agendamento</a>
+          </nav>
+        </div>
+      </header>
+
+      <section className="bg-gradient-to-r from-emerald-700 to-green-500 text-white py-24">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-5xl font-bold mb-6">
+            Castração Segura para Cães e Gatos
+          </h2>
+          <p className="text-xl max-w-3xl mx-auto mb-8">
+            Equipe veterinária especializada, atendimento humanizado e acompanhamento completo para o bem-estar do seu pet.
+          </p>
+          <a
+            href="#agendamento"
+            className="bg-white text-emerald-700 px-8 py-4 rounded-2xl font-bold shadow-lg inline-block"
+          >
+            Agendar Consulta
+          </a>
+        </div>
+      </section>
+
+      <section id="sobre" className="max-w-6xl mx-auto px-6 py-16">
+        <h3 className="text-3xl font-bold mb-6 text-center">Quem Somos</h3>
+        <p className="text-lg text-center max-w-4xl mx-auto">
+          Somos um pet shop especializado em procedimentos de castração preventiva para cães e gatos. Trabalhamos com protocolos modernos de anestesia, avaliação pré-operatória e acompanhamento pós-cirúrgico.
+        </p>
+      </section>
+
+      <section id="servicos" className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-6">
+          <h3 className="text-3xl font-bold text-center mb-12">Nossos Serviços</h3>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-slate-100 p-6 rounded-3xl shadow-md">
+              <h4 className="font-bold text-xl mb-3">🐶 Castração Canina</h4>
+              <p>Avaliação completa e procedimento seguro para cães de diferentes portes.</p>
+            </div>
+
+            <div className="bg-slate-100 p-6 rounded-3xl shadow-md">
+              <h4 className="font-bold text-xl mb-3">🐱 Castração Felina</h4>
+              <p>Cirurgia especializada com foco na rápida recuperação do animal.</p>
+            </div>
+
+            <div className="bg-slate-100 p-6 rounded-3xl shadow-md">
+              <h4 className="font-bold text-xl mb-3">🩺 Check-up Pré-operatório</h4>
+              <p>Exames e consulta veterinária para maior segurança antes da cirurgia.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="beneficios" className="py-16 bg-emerald-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <h3 className="text-3xl font-bold text-center mb-12">Benefícios da Castração</h3>
+
+          <div className="grid md:grid-cols-4 gap-6 text-center">
+            <div className="bg-white rounded-3xl p-6 shadow">
+              <div className="text-4xl mb-3">❤️</div>
+              <p>Mais qualidade de vida</p>
+            </div>
+            <div className="bg-white rounded-3xl p-6 shadow">
+              <div className="text-4xl mb-3">✅</div>
+              <p>Prevenção de doenças</p>
+            </div>
+            <div className="bg-white rounded-3xl p-6 shadow">
+              <div className="text-4xl mb-3">🏠</div>
+              <p>Redução de abandono</p>
+            </div>
+            <div className="bg-white rounded-3xl p-6 shadow">
+              <div className="text-4xl mb-3">🐾</div>
+              <p>Controle populacional</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="agendamento" className="py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="bg-white rounded-3xl shadow-xl p-8">
+            <h3 className="text-3xl font-bold text-center mb-8">
+              Agendamento de Consulta
+            </h3>
+
+            <form className="grid gap-4">
+              <input className="border rounded-xl p-3" type="text" placeholder="Nome do Tutor" />
+              <input className="border rounded-xl p-3" type="text" placeholder="Nome do Pet" />
+              <select className="border rounded-xl p-3">
+                <option>Cão</option>
+                <option>Gato</option>
+              </select>
+              <input className="border rounded-xl p-3" type="tel" placeholder="Telefone" />
+              <input className="border rounded-xl p-3" type="email" placeholder="E-mail" />
+              <input className="border rounded-xl p-3" type="date" />
+              <textarea className="border rounded-xl p-3" rows="4" placeholder="Informações adicionais"></textarea>
+
+              <button className="bg-emerald-700 text-white p-4 rounded-xl font-bold hover:bg-emerald-800">
+                Solicitar Agendamento
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-slate-900 text-white text-center py-8">
+        <p>© 2026 PetCare Castração - Todos os direitos reservados.</p>
+      </footer>
+    </div>
+  );
+}

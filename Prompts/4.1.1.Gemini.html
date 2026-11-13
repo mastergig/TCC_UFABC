@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Studio Photography | Fotografia de Alto Padrão</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontes Google: Cormorant Garamond (Elegante/Serif) e Inter (Sans-serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#aa8c2c',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#121212',
+                            700: '#1a1a1a',
+                            600: '#262626'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados e refinamentos */
+        .glass-header {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .gold-gradient-text {
+            background: linear-[#d4af37], #fef08a;
+            background: linear-gradient(135deg, #fef08a 0%, #d4af37 50%, #aa8c2c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow:hover {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+        }
+
+        /* Animação simples de fade in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-200 font-sans selection:bg-gold-500 selection:text-dark-900 antialiased">
+
+    <!-- HEADER / NAVEGAÇÃO FIXA -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-header border-b border-dark-600/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#home" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-full border border-gold-500/60 flex items-center justify-center group-hover:border-gold-400 transition-colors">
+                        <i class="fa-solid fa-camera text-gold-500 text-lg group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif text-2xl font-bold tracking-wider text-white group-hover:text-gold-400 transition-colors">LUMINA</span>
+                        <span class="text-[9px] uppercase tracking-[0.3em] text-gray-400 -mt-1">Studio Photography</span>
+                    </div>
+                </a>
+
+                <!-- Nav Desktop -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+                    <a href="#home" class="text-white hover:text-gold-400 transition-colors">Início</a>
+                    <a href="#portfolio" class="text-gray-300 hover:text-gold-400 transition-colors">Portfólio</a>
+                    <a href="#sobre" class="text-gray-300 hover:text-gold-400 transition-colors">Sobre Nós</a>
+                    <a href="#servicos" class="text-gray-300 hover:text-gold-400 transition-colors">Serviços</a>
+                    <a href="#depoimentos" class="text-gray-300 hover:text-gold-400 transition-colors">Depoimentos</a>
+                    <a href="#contato" class="px-5 py-2.5 rounded-full border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-dark-900 font-semibold transition-all duration-300">Contato</a>
+                </nav>
+
+                <!-- Botão Menu Mobile -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2 focus:outline-none" aria-label="Abrir Menu">
+                        <i class="fa-solid fa-bars text-2xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-800 border-b border-dark-600 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" class="mobile-link block py-2 text-white font-medium hover:text-gold-400">Início</a>
+            <a href="#portfolio" class="mobile-link block py-2 text-gray-300 font-medium hover:text-gold-400">Portfólio</a>
+            <a href="#sobre" class="mobile-link block py-2 text-gray-300 font-medium hover:text-gold-400">Sobre Nós</a>
+            <a href="#servicos" class="mobile-link block py-2 text-gray-300 font-medium hover:text-gold-400">Serviços</a>
+            <a href="#depoimentos" class="mobile-link block py-2 text-gray-300 font-medium hover:text-gold-400">Depoimentos</a>
+            <a href="#contato" class="mobile-link block py-2.5 text-center rounded-full bg-gold-500 text-dark-900 font-semibold mt-4">Agendar Sessão</a>
+        </div>
+    </header>
+
+    <!-- SEÇÃO HERO -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Imagem com Overlay Gradient -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=2000&q=80" 
+                 alt="Fotografia de Estúdio" 
+                 class="w-full h-full object-cover object-center scale-105 filter brightness-75 duration-1000"
+                 onerror="this.onerror=null; this.src='https://placehold.co/1920x1080/121212/ffffff?text=Lumina+Studio';">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/70 to-dark-900/40"></div>
+        </div>
+
+        <!-- Conteúdo Hero -->
+        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center mt-10">
+            <span class="inline-block py-1 px-4 rounded-full border border-gold-500/40 bg-gold-500/10 text-gold-400 text-xs sm:text-sm font-medium uppercase tracking-widest mb-6 backdrop-blur-sm">
+                Especialistas em Eternizar Momentos
+            </span>
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-white tracking-tight leading-tight mb-6">
+                Capturando a alma,<br>
+                <span class="gold-gradient-text">escrevendo com a luz.</span>
+            </h1>
+            <p class="text-base sm:text-xl text-gray-300 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
+                Fotografia autoral de alto padrão para casamentos, retratos corporativos, ensaios e momentos inesquecíveis. A arte de tornar suas memórias atemporais.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#contato" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gold-500 hover:bg-gold-400 text-dark-900 font-semibold shadow-lg shadow-gold-500/20 hover:scale-105 transition-all duration-300">
+                    Agende sua Sessão
+                </a>
+                <a href="#portfolio" class="w-full sm:w-auto px-8 py-4 rounded-full border border-gray-600 hover:border-gold-400 text-white hover:text-gold-400 transition-all duration-300">
+                    Explorar Portfólio <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden sm:flex flex-col items-center gap-2 text-gray-400 animate-bounce">
+            <span class="text-[10px] uppercase tracking-widest">Role para explorar</span>
+            <i class="fa-solid fa-chevron-down text-sm"></i>
+        </div>
+    </section>
+
+    <!-- SEÇÃO SOBRE NÓS -->
+    <section id="sobre" class="py-24 bg-dark-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <!-- Composição de Imagens -->
+                <div class="relative">
+                    <div class="relative z-10 rounded-2xl overflow-hidden border border-dark-600 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?auto=format&fit=crop&w=1000&q=80" 
+                             alt="Fotógrafo em ação" 
+                             class="w-full h-[450px] object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/800x1000/1e1e1e/d4af37?text=Sobre+Lumina';">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 z-20 hidden sm:block bg-dark-700 border border-gold-500/40 p-6 rounded-xl shadow-2xl backdrop-blur-md max-w-xs">
+                        <div class="flex items-center gap-4">
+                            <span class="font-serif text-4xl font-bold text-gold-400">12+</span>
+                            <p class="text-xs text-gray-300 leading-snug">Anos de excelência transformando histórias em arte fotográfica.</p>
+                        </div>
+                    </div>
+                    <div class="absolute -top-4 -left-4 w-32 h-32 border-t-2 border-l-2 border-gold-500/50 rounded-tl-2xl pointer-events-none"></div>
+                </div>
+
+                <!-- Conteúdo de Texto -->
+                <div>
+                    <span class="text-gold-400 font-medium uppercase tracking-widest text-xs">Nossa História</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-6 leading-tight">
+                        Paixão pela essência, precisão em cada detalhe.
+                    </h2>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        No <strong>Lumina Studio</strong>, acreditamos que uma grande fotografia vai além da técnica perfeita: trata-se de capturar a emoção genuína que torna cada momento único. Fundado por uma equipe apaixonada pela arte visual, combinamos iluminação impecável, equipamentos de ponta e um olhar sensível.
+                    </p>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        Seja na celebração de um casamento elegante, na delicadeza de um ensaio gestante ou no posicionamento de imagem de um perfil executivo, nosso compromisso é entregar memórias vibrantes que superam gerações.
+                    </p>
+
+                    <!-- Métricas / Destaques -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-dark-600">
+                        <div>
+                            <span class="block font-serif text-2xl sm:text-3xl font-bold text-white">1.5k+</span>
+                            <span class="text-xs text-gray-400">Ensaios Realizados</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-2xl sm:text-3xl font-bold text-white">350+</span>
+                            <span class="text-xs text-gray-400">Casamentos</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-2xl sm:text-3xl font-bold text-white">100%</span>
+                            <span class="text-xs text-gray-400">Satisfação</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO PORTFÓLIO -->
+    <section id="portfolio" class="py-24 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-gold-400 font-medium uppercase tracking-widest text-xs">Galeria de Trabalhos</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-4">Portfólio Selecionado</h2>
+                <p class="text-gray-400 text-sm sm:text-base">Navegue por nossas produções mais recentes e sinta a estética do Lumina Studio.</p>
+            </div>
+
+            <!-- Filtros de Categoria -->
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12" id="portfolio-filters">
+                <button data-filter="todos" class="filter-btn active px-5 py-2 rounded-full text-xs sm:text-sm font-medium border border-gold-500 bg-gold-500 text-dark-900 transition-all duration-300">
+                    Todos
+                </button>
+                <button data-filter="casamentos" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium border border-dark-600 text-gray-300 hover:border-gold-400 hover:text-white transition-all duration-300">
+                    Casamentos
+                </button>
+                <button data-filter="retratos" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium border border-dark-600 text-gray-300 hover:border-gold-400 hover:text-white transition-all duration-300">
+                    Retratos
+                </button>
+                <button data-filter="gestantes" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium border border-dark-600 text-gray-300 hover:border-gold-400 hover:text-white transition-all duration-300">
+                    Gestante
+                </button>
+                <button data-filter="eventos" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium border border-dark-600 text-gray-300 hover:border-gold-400 hover:text-white transition-all duration-300">
+                    Eventos
+                </button>
+                <button data-filter="moda" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium border border-dark-600 text-gray-300 hover:border-gold-400 hover:text-white transition-all duration-300">
+                    Moda
+                </button>
+            </div>
+
+            <!-- Grid da Galeria -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
+                
+                <!-- Item 1: Casamentos -->
+                <div class="portfolio-item group relative h-80 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 cursor-pointer" data-category="casamentos" data-src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80" data-title="Casamento Ana & Carlos" data-desc="Celebração ao ar livre durante o pôr do sol.">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Casamento" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">Casamentos</span>
+                        <h3 class="font-serif text-xl font-bold text-white">Ana & Carlos</h3>
+                        <p class="text-gray-300 text-xs mt-1">Ver em tela cheia <i class="fa-solid fa-expand ml-1"></i></p>
+                    </div>
+                </div>
+
+                <!-- Item 2: Retratos -->
+                <div class="portfolio-item group relative h-80 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 cursor-pointer" data-category="retratos" data-src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80" data-title="Retrato Corporativo Fine Art" data-desc="Ensaio focado em posicionamento de liderança.">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Retrato" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">Retratos</span>
+                        <h3 class="font-serif text-xl font-bold text-white">Perfil Executivo</h3>
+                        <p class="text-gray-300 text-xs mt-1">Ver em tela cheia <i class="fa-solid fa-expand ml-1"></i></p>
+                    </div>
+                </div>
+
+                <!-- Item 3: Gestantes -->
+                <div class="portfolio-item group relative h-80 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 cursor-pointer" data-category="gestantes" data-src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=1200&q=80" data-title="Ensaio Maternidade Studio" data-desc="Iluminação suave destacando a beleza da maternidade.">
+                    <img src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80" alt="Gestante" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">Ensaio Gestante</span>
+                        <h3 class="font-serif text-xl font-bold text-white">Renata & Gabriel</h3>
+                        <p class="text-gray-300 text-xs mt-1">Ver em tela cheia <i class="fa-solid fa-expand ml-1"></i></p>
+                    </div>
+                </div>
+
+                <!-- Item 4: Moda -->
+                <div class="portfolio-item group relative h-80 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 cursor-pointer" data-category="moda" data-src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=80" data-title="Editorial de Moda Outono" data-desc="Produção para coleção de grife contemporânea.">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80" alt="Moda" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">Moda</span>
+                        <h3 class="font-serif text-xl font-bold text-white">Editorial Urban Luxe</h3>
+                        <p class="text-gray-300 text-xs mt-1">Ver em tela cheia <i class="fa-solid fa-expand ml-1"></i></p>
+                    </div>
+                </div>
+
+                <!-- Item 5: Eventos -->
+                <div class="portfolio-item group relative h-80 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 cursor-pointer" data-category="eventos" data-src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80" data-title="Gala Beneficiente" data-desc="Cobertura completa de evento exclusivo.">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Eventos" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">Eventos</span>
+                        <h3 class="font-serif text-xl font-bold text-white">Noite de Gala</h3>
+                        <p class="text-gray-300 text-xs mt-1">Ver em tela cheia <i class="fa-solid fa-expand ml-1"></i></p>
+                    </div>
+                </div>
+
+                <!-- Item 6: Casamentos -->
+                <div class="portfolio-item group relative h-80 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 cursor-pointer" data-category="casamentos" data-src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80" data-title="Mini Wedding Intimista" data-desc="Detalhes delicados e emoções à flor da pele.">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Casamento" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">Casamentos</span>
+                        <h3 class="font-serif text-xl font-bold text-white">Juliana & Lucas</h3>
+                        <p class="text-gray-300 text-xs mt-1">Ver em tela cheia <i class="fa-solid fa-expand ml-1"></i></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL LIGHTBOX FOTOGRAFIA -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex-col justify-center items-center p-4">
+        <button id="close-modal" class="absolute top-6 right-6 text-gray-400 hover:text-white text-3xl focus:outline-none transition-colors" aria-label="Fechar modal">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="max-w-5xl w-full max-h-[80vh] flex flex-col items-center">
+            <img id="modal-img" src="" alt="Ampliação" class="max-h-[70vh] max-w-full object-contain rounded-lg shadow-2xl">
+            <div class="mt-4 text-center">
+                <h3 id="modal-title" class="font-serif text-2xl font-bold text-white"></h3>
+                <p id="modal-desc" class="text-gray-400 text-sm mt-1"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEÇÃO SERVIÇOS & PACOTES -->
+    <section id="servicos" class="py-24 bg-dark-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-400 font-medium uppercase tracking-widest text-xs">Experiências Exclusivas</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-4">Nossos Serviços</h2>
+                <p class="text-gray-400 text-sm sm:text-base">Pacotes cuidadosamente elaborados para atender às suas maiores expectativas.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="bg-dark-700/60 border border-dark-600 rounded-2xl p-8 hover:border-gold-500/50 transition-all duration-300 flex flex-col justify-between gold-border-glow">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-user-ninja text-gold-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-white mb-3">Ensaio Pessoal / Retrato</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Perfeito para posicionamento profissional, redes sociais ou celebração pessoal com direção criativa.</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> 2 Horas de sessão em estúdio ou externa</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> 20 Fotos tratadas em alta resolução</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> 2 Trocas de figurino</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> Galeria digital privativa</li>
+                        </ul>
+                    </div>
+                    <a href="#contato" class="w-full py-3 rounded-xl border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-dark-900 text-center font-semibold text-sm transition-all duration-300">
+                        Consultar Valores
+                    </a>
+                </div>
+
+                <!-- Card 2 (Destaque) -->
+                <div class="bg-dark-900 border-2 border-gold-500 rounded-2xl p-8 relative flex flex-col justify-between shadow-xl shadow-gold-500/5">
+                    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold-500 text-dark-900 text-[11px] font-bold uppercase tracking-wider py-1 px-4 rounded-full">
+                        Mais Procurado
+                    </span>
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-gold-500/20 border border-gold-500 flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-ring text-gold-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-white mb-3">Casamentos & Weddings</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Cobertura documental e artística completa para eternizar o dia mais especial da sua vida.</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> Cobertura completa (Making of à festa)</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> 2 Fotógrafos seniores</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> Ensaio Pré-Wedding incluso</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> Álbum encadernado Fine Art</li>
+                        </ul>
+                    </div>
+                    <a href="#contato" class="w-full py-3 rounded-xl bg-gold-500 text-dark-900 hover:bg-gold-400 text-center font-semibold text-sm shadow-md transition-all duration-300">
+                        Solicitar Orçamento
+                    </a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-dark-700/60 border border-dark-600 rounded-2xl p-8 hover:border-gold-500/50 transition-all duration-300 flex flex-col justify-between gold-border-glow">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-baby text-gold-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-white mb-3">Gestante & Família</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Sessões aconchegantes criadas para celebrar o amor familiar e a chegada de uma nova vida.</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> Ambiente climatizado e confortável</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> 25 Fotos editadas de alta precisão</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> Acessórios e figurinos de estúdio</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold-400 text-xs"></i> Fotos com o parceiro(a) e filhos</li>
+                        </ul>
+                    </div>
+                    <a href="#contato" class="w-full py-3 rounded-xl border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-dark-900 text-center font-semibold text-sm transition-all duration-300">
+                        Consultar Valores
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO DEPOIMENTOS -->
+    <section id="depoimentos" class="py-24 bg-dark-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-400 font-medium uppercase tracking-widest text-xs">Feedback dos Clientes</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2">O Que Dizem Sobre Nós</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 relative">
+                    <div class="flex text-gold-400 mb-4 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm italic mb-6 leading-relaxed">"O trabalho do Lumina no nosso casamento foi simplesmente inacreditável! Eles conseguiram capturar momentos espontâneos que nos fazem chorar toda vez que olhamos o álbum."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center font-bold text-gold-400 text-sm">MC</div>
+                        <div>
+                            <h4 class="text-white text-sm font-semibold">Mariana & Camilo</h4>
+                            <span class="text-gray-400 text-xs">Casamento em São Paulo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 relative">
+                    <div class="flex text-gold-400 mb-4 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm italic mb-6 leading-relaxed">"Fiz meu ensaio de posicionamento de marca e superou todas as expectativas. A direção de pose me deixou super à vontade e as fotos ficaram extremamente profissionais."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center font-bold text-gold-400 text-sm">DR</div>
+                        <div>
+                            <h4 class="text-white text-sm font-semibold">Dra. Rosana Almeida</h4>
+                            <span class="text-gray-400 text-xs">Ensaio Corporativo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 relative">
+                    <div class="flex text-gold-400 mb-4 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm italic mb-6 leading-relaxed">"O carinho e a paciência durante meu ensaio gestante foram incríveis. O estúdio é impecável e o resultado final parecia capa de revista!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center font-bold text-gold-400 text-sm">VP</div>
+                        <div>
+                            <h4 class="text-white text-sm font-semibold">Vanessa Pires</h4>
+                            <span class="text-gray-400 text-xs">Ensaio Maternidade</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO CONTATO E FORMULÁRIO -->
+    <section id="contato" class="py-24 bg-dark-800 border-t border-dark-700 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Informações de Contato -->
+                <div class="lg:col-span-5">
+                    <span class="text-gold-400 font-medium uppercase tracking-widest text-xs">Vamos Conversar?</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-6">Entre em Contato</h2>
+                    <p class="text-gray-300 leading-relaxed mb-8">
+                        Estamos prontos para ouvir sua história e planejar a sessão perfeita. Preencha o formulário ou entre em contato diretamente pelos nossos canais.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-dark-700 border border-dark-600 flex items-center justify-center text-gold-400 shrink-0">
+                                <i class="fa-solid fa-location-dot text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">Nosso Estúdio</h4>
+                                <p class="text-gray-400 text-sm">Av. Paulista, 1500 - Jardins, São Paulo - SP</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-dark-700 border border-dark-600 flex items-center justify-center text-gold-400 shrink-0">
+                                <i class="fa-solid fa-envelope text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">E-mail Direto</h4>
+                                <p class="text-gray-400 text-sm">contato@luminastudio.com.br</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-dark-700 border border-dark-600 flex items-center justify-center text-gold-400 shrink-0">
+                                <i class="fa-brands fa-whatsapp text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">WhatsApp / Telefone</h4>
+                                <p class="text-gray-400 text-sm">+55 (11) 99876-5432</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Redes Sociais -->
+                    <div class="mt-10 pt-8 border-t border-dark-700">
+                        <h4 class="text-xs uppercase tracking-widest text-gray-400 mb-4">Siga o Lumina Studio</h4>
+                        <div class="flex gap-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-dark-700 hover:bg-gold-500 hover:text-dark-900 text-gray-300 flex items-center justify-center transition-all" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-dark-700 hover:bg-gold-500 hover:text-dark-900 text-gray-300 flex items-center justify-center transition-all" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-dark-700 hover:bg-gold-500 hover:text-dark-900 text-gray-300 flex items-center justify-center transition-all" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulário de Contato -->
+                <div class="lg:col-span-7">
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-6 sm:p-10 shadow-2xl relative">
+                        
+                        <!-- Alerta de Sucesso (Oculto por padrão) -->
+                        <div id="success-alert" class="hidden mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 text-sm animate-fade-in">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-xl"></i>
+                                <div>
+                                    <h5 class="font-bold">Mensagem Enviada com Sucesso!</h5>
+                                    <p class="text-xs text-emerald-300/80">Obrigado pelo contato. Nossa equipe retornará seu e-mail em até 24 horas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="contact-form" class="space-y-6" novalidate>
+                            
+                            <!-- Nome Completo -->
+                            <div>
+                                <label for="fullname" class="block text-xs uppercase tracking-wider text-gray-300 font-medium mb-2">Nome Completo *</label>
+                                <input type="text" id="fullname" name="fullname" required
+                                       placeholder="Digite seu nome completo"
+                                       class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors">
+                                <span class="error-msg text-xs text-rose-500 mt-1 hidden">Por favor, informe seu nome.</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <!-- E-mail -->
+                                <div>
+                                    <label for="email" class="block text-xs uppercase tracking-wider text-gray-300 font-medium mb-2">E-mail *</label>
+                                    <input type="email" id="email" name="email" required
+                                           placeholder="seu.email@exemplo.com"
+                                           class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors">
+                                    <span class="error-msg text-xs text-rose-500 mt-1 hidden">Informe um e-mail válido.</span>
+                                </div>
+
+                                <!-- WhatsApp / Telefone -->
+                                <div>
+                                    <label for="phone" class="block text-xs uppercase tracking-wider text-gray-300 font-medium mb-2">Telefone / WhatsApp *</label>
+                                    <input type="tel" id="phone" name="phone" required
+                                           placeholder="(11) 99999-9999"
+                                           class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors">
+                                    <span class="error-msg text-xs text-rose-500 mt-1 hidden">Informe um telefone de contato.</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <!-- Tipo de Ensaio -->
+                                <div>
+                                    <label for="service_type" class="block text-xs uppercase tracking-wider text-gray-300 font-medium mb-2">Tipo de Ensaio / Evento *</label>
+                                    <select id="service_type" name="service_type" required
+                                            class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                        <option value="" disabled selected>Selecione uma opção</option>
+                                        <option value="casamento">Casamento / Wedding</option>
+                                        <option value="retrato">Retrato Pessoal / Corporativo</option>
+                                        <option value="gestante">Ensaio Gestante / Maternidade</option>
+                                        <option value="evento">Evento Social ou Corporativo</option>
+                                        <option value="moda">Editorial de Moda</option>
+                                        <option value="outro">Outros</option>
+                                    </select>
+                                    <span class="error-msg text-xs text-rose-500 mt-1 hidden">Selecione uma categoria.</span>
+                                </div>
+
+                                <!-- Data Pretendida -->
+                                <div>
+                                    <label for="event_date" class="block text-xs uppercase tracking-wider text-gray-300 font-medium mb-2">Data Pretendida (Opcional)</label>
+                                    <input type="date" id="event_date" name="event_date"
+                                           class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                </div>
+                            </div>
+
+                            <!-- Mensagem -->
+                            <div>
+                                <label for="message" class="block text-xs uppercase tracking-wider text-gray-300 font-medium mb-2">Sua Mensagem *</label>
+                                <textarea id="message" name="message" rows="4" required
+                                          placeholder="Conte-nos um pouco sobre a sua ideia ou evento..."
+                                          class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors resize-none"></textarea>
+                                <span class="error-msg text-xs text-rose-500 mt-1 hidden">Escreva uma breve mensagem.</span>
+                            </div>
+
+                            <!-- Botão de Envio -->
+                            <button type="submit" id="submit-btn" class="w-full py-4 rounded-xl bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold uppercase tracking-wider text-sm shadow-lg shadow-gold-500/20 transition-all duration-300 flex justify-center items-center gap-2">
+                                <span>Enviar Mensagem</span>
+                                <i class="fa-solid fa-paper-plane text-xs"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark-900 border-t border-dark-700 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full border border-gold-500/60 flex items-center justify-center">
+                        <i class="fa-solid fa-camera text-gold-500 text-xs"></i>
+                    </div>
+                    <span class="font-serif text-xl font-bold tracking-wider text-white">LUMINA STUDIO</span>
+                </div>
+
+                <p class="text-xs text-gray-500 text-center">
+                    &copy; <span id="year"></span> Lumina Studio Photography. Todos os direitos reservados.
+                </p>
+
+                <div class="flex gap-6 text-xs text-gray-400">
+                    <a href="#" class="hover:text-gold-400 transition-colors">Termos de Uso</a>
+                    <a href="#" class="hover:text-gold-400 transition-colors">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC E SCRIPTS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Ano Dinâmico no Footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // --- 1. Menu Mobile Toggle ---
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                if (mobileMenu.classList.contains('hidden')) {
+                    menuIcon.classList.remove('fa-xmark');
+                    menuIcon.classList.add('fa-bars');
+                } else {
+                    menuIcon.classList.remove('fa-bars');
+                    menuIcon.classList.add('fa-xmark');
+                }
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('fa-xmark');
+                    menuIcon.classList.add('fa-bars');
+                });
+            });
+
+            // --- 2. Filtros de Portfólio ---
+            const filterBtns = document.querySelectorAll('#portfolio-filters .filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Atualiza estado ativo nos botões
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-gold-500', 'text-dark-900', 'border-gold-500');
+                        b.classList.add('border-dark-600', 'text-gray-300');
+                    });
+                    btn.classList.remove('border-dark-600', 'text-gray-300');
+                    btn.classList.add('bg-gold-500', 'text-dark-900', 'border-gold-500');
+
+                    const filter = btn.getAttribute('data-filter');
+
+                    portfolioItems.forEach(item => {
+                        if (filter === 'todos' || item.getAttribute('data-category') === filter) {
+                            item.style.display = 'block';
+                            item.classList.add('animate-fade-in');
+                        } else {
+                            item.style.display = 'none';
+                            item.classList.remove('animate-fade-in');
+                        }
+                    });
+                });
+            });
+
+            // --- 3. Lightbox Modal ---
+            const modal = document.getElementById('lightbox-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+            const closeModal = document.getElementById('close-modal');
+
+            portfolioItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const src = item.getAttribute('data-src');
+                    const title = item.getAttribute('data-title');
+                    const desc = item.getAttribute('data-desc');
+
+                    modalImg.src = src;
+                    modalTitle.textContent = title;
+                    modalDesc.textContent = desc;
+
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    document.body.style.overflow = 'hidden'; // Impede scroll ao fundo
+                });
+            });
+
+            const hideModal = () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            };
+
+            closeModal.addEventListener('click', hideModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) hideModal();
+            });
+
+            // --- 4. Validação e Simulação de Envio do Formulário ---
+            const form = document.getElementById('contact-form');
+            const successAlert = document.getElementById('success-alert');
+            const submitBtn = document.getElementById('submit-btn');
+
+            const validateEmail = (email) => {
+                return String(email)
+                    .toLowerCase()
+                    .match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+            };
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // Inputs obrigatórios
+                const fields = [
+                    { id: 'fullname', validate: val => val.trim() !== '' },
+                    { id: 'email', validate: val => validateEmail(val) },
+                    { id: 'phone', validate: val => val.trim().length >= 8 },
+                    { id: 'service_type', validate: val => val !== null && val !== '' },
+                    { id: 'message', validate: val => val.trim() !== '' }
+                ];
+
+                fields.forEach(field => {
+                    const input = document.getElementById(field.id);
+                    const errorSpan = input.nextElementSibling;
+
+                    if (!field.validate(input.value)) {
+                        isValid = false;
+                        input.classList.add('border-rose-500');
+                        if (errorSpan && errorSpan.classList.contains('error-msg')) {
+                            errorSpan.classList.remove('hidden');
+                        }
+                    } else {
+                        input.classList.remove('border-rose-500');
+                        if (errorSpan && errorSpan.classList.contains('error-msg')) {
+                            errorSpan.classList.add('hidden');
+                        }
+                    }
+                });
+
+                if (isValid) {
+                    // Animação no botão durante envio simulado
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Enviando...</span>`;
+
+                    setTimeout(() => {
+                        // Reset do formulário
+                        form.reset();
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = `<span>Enviar Mensagem</span> <i class="fa-solid fa-paper-plane text-xs"></i>`;
+
+                        // Mostrar aviso de sucesso
+                        successAlert.classList.remove('hidden');
+
+                        // Ocultar mensagem de sucesso após 6 segundos
+                        setTimeout(() => {
+                            successAlert.classList.add('hidden');
+                        }, 6000);
+                    }, 1500);
+                }
+            });
+
+            // Remover borda de erro no input ao digitar
+            form.querySelectorAll('input, select, textarea').forEach(element => {
+                element.addEventListener('input', () => {
+                    element.classList.remove('border-rose-500');
+                    const errorSpan = element.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('error-msg')) {
+                        errorSpan.classList.add('hidden');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

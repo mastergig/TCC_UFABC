@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rota Brasilis — Blog de Viagens pelo Brasil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ Tokens ============ */
+:root{
+  --areia:#f6f1e7;
+  --papel:#fffdf8;
+  --tinta:#1d2a24;
+  --tinta-suave:#55625b;
+  --mata:#1f5c45;
+  --mata-escura:#143d2e;
+  --mar:#1d6f8c;
+  --sol:#e8a33d;
+  --terra:#c4623a;
+  --linha:#e2dacb;
+  --raio:18px;
+  --sombra:0 1px 2px rgba(29,42,36,.06),0 8px 24px rgba(29,42,36,.08);
+  --largura:1180px;
+  --fs-base:clamp(1rem,.96rem + .2vw,1.075rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--areia);color:var(--tinta);
+  font-family:Inter,system-ui,sans-serif;font-size:var(--fs-base);line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0;letter-spacing:-.01em}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+.container{width:min(100% - 2.5rem,var(--largura));margin-inline:auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--sol);outline-offset:3px;border-radius:6px}
+
+/* ============ Passo 1: Cabeçalho ============ */
+.topo{
+  position:sticky;top:0;z-index:50;
+  background:rgba(246,241,231,.88);backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--linha);
+}
+.topo .container{display:flex;align-items:center;gap:1.5rem;height:68px}
+.marca{display:flex;align-items:center;gap:.6rem;text-decoration:none;font-family:Fraunces,serif;font-weight:700;font-size:1.35rem}
+.marca svg{width:34px;height:34px}
+.marca span em{font-style:normal;color:var(--mata)}
+.menu{display:flex;gap:1.6rem;margin-left:auto;list-style:none;padding:0;margin-block:0}
+.menu a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--tinta-suave);padding:.4rem 0;border-bottom:2px solid transparent;transition:.2s}
+.menu a:hover,.menu a[aria-current]{color:var(--tinta);border-color:var(--sol)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
+  border:0;border-radius:999px;padding:.65rem 1.2rem;font:600 .92rem Inter,sans-serif;cursor:pointer;
+  background:var(--mata);color:#fff;text-decoration:none;transition:background .2s,transform .2s;
+  min-height:44px;
+}
+.btn:hover{background:var(--mata-escura)}
+.btn-menu{display:none;background:transparent;color:var(--tinta);padding:.5rem;margin-left:auto}
+.btn-menu svg{width:26px;height:26px}
+
+/* ============ Passo 1: Painel principal (hero) ============ */
+.hero{padding:3.5rem 0 2.5rem}
+.hero-texto{max-width:720px}
+.selo{display:inline-block;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--terra);margin-bottom:.9rem}
+.hero h1{font-size:clamp(2.1rem,1.4rem + 3.2vw,3.9rem);font-weight:700}
+.hero h1 em{font-style:italic;color:var(--mata)}
+.hero p.lead{color:var(--tinta-suave);font-size:clamp(1.05rem,1rem + .3vw,1.2rem);margin:1rem 0 1.8rem;max-width:58ch}
+
+.busca{
+  display:flex;align-items:center;gap:.5rem;background:var(--papel);
+  border:1px solid var(--linha);border-radius:999px;padding:.4rem .4rem .4rem 1.2rem;
+  box-shadow:var(--sombra);max-width:620px;
+}
+.busca svg{width:20px;height:20px;flex:none;color:var(--tinta-suave)}
+.busca input{
+  flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:1rem;color:var(--tinta);padding:.6rem 0;
+}
+.busca input:focus{outline:none}
+.busca:focus-within{border-color:var(--mata);box-shadow:0 0 0 4px rgba(31,92,69,.12),var(--sombra)}
+.sugestoes{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;font-size:.88rem;color:var(--tinta-suave);align-items:center}
+.sugestoes button{border:1px solid var(--linha);background:transparent;border-radius:999px;padding:.3rem .8rem;font:inherit;color:var(--tinta);cursor:pointer;min-height:36px}
+.sugestoes button:hover{background:var(--papel);border-color:var(--mata)}
+
+/* Destaques */
+.destaques{display:grid;grid-template-columns:1.6fr 1fr;grid-template-rows:1fr 1fr;gap:1.25rem;margin-top:2.75rem}
+.destaque{
+  position:relative;border-radius:var(--raio);overflow:hidden;min-height:220px;color:#fff;
+  display:flex;align-items:flex-end;text-decoration:none;box-shadow:var(--sombra);isolation:isolate;
+}
+.destaque.principal{grid-row:span 2;min-height:460px}
+.destaque .arte{position:absolute;inset:0;z-index:-2;transition:transform .6s ease}
+.destaque .arte svg{width:100%;height:100%}
+.destaque::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 35%,rgba(10,20,16,.78))}
+.destaque:hover .arte{transform:scale(1.04)}
+.destaque .conteudo{padding:1.5rem}
+.destaque.principal .conteudo{padding:2rem}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);padding:.3rem .65rem;border-radius:999px;margin-bottom:.7rem}
+.destaque h2{font-size:1.35rem}
+.destaque.principal h2{font-size:clamp(1.6rem,1.2rem + 1.4vw,2.3rem);max-width:20ch}
+.destaque p{margin:.5rem 0 0;font-size:.95rem;opacity:.9;max-width:52ch}
+.meta-leve{font-size:.82rem;opacity:.85;margin-top:.7rem}
+
+/* ============ Passo 2: Grade de artigos ============ */
+.secao{padding:3rem 0 4rem}
+.secao-topo{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.5rem}
+.secao-topo h2{font-size:clamp(1.6rem,1.3rem + 1vw,2.2rem)}
+.secao-topo p{margin:.3rem 0 0;color:var(--tinta-suave)}
+.filtros{display:flex;gap:.5rem;flex-wrap:wrap}
+.filtro{border:1px solid var(--linha);background:var(--papel);border-radius:999px;padding:.45rem 1rem;font:500 .9rem Inter,sans-serif;cursor:pointer;color:var(--tinta);min-height:40px}
+.filtro[aria-pressed="true"]{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+.cartao{
+  background:var(--papel);border:1px solid var(--linha);border-radius:var(--raio);overflow:hidden;
+  display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;
+}
+.cartao:hover{transform:translateY(-4px);box-shadow:var(--sombra)}
+.cartao .arte{aspect-ratio:16/10;position:relative}
+.cartao .arte svg{width:100%;height:100%}
+.cartao .estado{position:absolute;top:.8rem;left:.8rem;background:rgba(255,253,248,.92);color:var(--tinta);font-size:.75rem;font-weight:600;padding:.25rem .6rem;border-radius:999px}
+.cartao-corpo{padding:1.25rem 1.35rem 1.4rem;display:flex;flex-direction:column;flex:1}
+.categoria{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--terra)}
+.cartao h3{font-size:1.3rem;margin:.35rem 0 .5rem}
+.cartao p{margin:0;color:var(--tinta-suave);font-size:.96rem}
+.fatos{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.45rem;font-size:.88rem}
+.fatos li{display:flex;gap:.55rem;align-items:flex-start}
+.fatos b{font-weight:600;color:var(--tinta);min-width:7.2em}
+.cartao-rodape{margin-top:auto;padding-top:1.1rem;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--tinta-suave)}
+.ler{font-weight:600;color:var(--mata);text-decoration:none;display:inline-flex;align-items:center;gap:.25rem;min-height:44px}
+.ler:hover{text-decoration:underline}
+.vazio{grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--tinta-suave);background:var(--papel);border:1px dashed var(--linha);border-radius:var(--raio)}
+mark{background:#fbe3b6;color:inherit;border-radius:3px;padding:0 .1em}
+
+/* Leitura do artigo (painel) */
+.leitor{position:fixed;inset:0;z-index:100;display:none}
+.leitor.aberto{display:block}
+.leitor-fundo{position:absolute;inset:0;background:rgba(15,25,20,.55)}
+.leitor-painel{
+  position:absolute;right:0;top:0;bottom:0;width:min(640px,100%);background:var(--papel);overflow-y:auto;
+  box-shadow:-10px 0 40px rgba(0,0,0,.2);animation:entra .3s ease;
+}
+@keyframes entra{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
+.leitor-arte{aspect-ratio:16/9}
+.leitor-arte svg{width:100%;height:100%}
+.leitor-texto{padding:1.75rem 2rem 3rem}
+.leitor-texto h2{font-size:clamp(1.7rem,1.4rem + 1.2vw,2.4rem);margin:.4rem 0 1rem}
+.leitor-texto p{margin:0 0 1.1rem;max-width:65ch}
+.leitor-texto h3{font-size:1.15rem;margin:1.6rem 0 .6rem}
+.leitor-texto ul{padding-left:1.2rem;margin:0 0 1rem}
+.fechar{position:absolute;top:1rem;right:1rem;z-index:2;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,253,248,.95);cursor:pointer;font-size:1.4rem;box-shadow:var(--sombra)}
+
+/* Rodapé */
+.rodape{background:var(--mata-escura);color:#d9e5de;padding:2.5rem 0;font-size:.9rem}
+.rodape .container{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
+.rodape strong{font-family:Fraunces,serif;font-size:1.15rem;color:#fff}
+
+/* ============ Passo 3: Responsividade ============ */
+@media (max-width:960px){
+  .destaques{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .destaque.principal{grid-column:1/-1;grid-row:auto;min-height:380px}
+}
+@media (max-width:720px){
+  :root{--raio:14px}
+  .container{width:min(100% - 2rem,var(--largura))}
+  .topo .container{height:60px}
+  .btn-menu{display:inline-flex}
+  .topo .btn-assinar{display:none}
+  .menu{
+    position:absolute;top:60px;left:0;right:0;flex-direction:column;gap:0;margin:0;
+    background:var(--papel);border-bottom:1px solid var(--linha);box-shadow:var(--sombra);
+    max-height:0;overflow:hidden;transition:max-height .3s ease;
+  }
+  .menu.aberto{max-height:320px}
+  .menu a{display:block;padding:1rem 1.25rem;border-bottom:1px solid var(--linha);font-size:1.05rem;color:var(--tinta)}
+  .hero{padding:2rem 0 1.5rem}
+  .busca{padding-left:1rem}
+  .busca .btn{padding:.6rem .9rem}
+  .busca .btn span{display:none}
+  .sugestoes{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-1rem;padding:0 1rem .2rem}
+  .sugestoes::-webkit-scrollbar{display:none}
+  .sugestoes>*{flex:none}
+  .destaques{grid-template-columns:1fr;gap:1rem;margin-top:2rem}
+  .destaque,.destaque.principal{min-height:300px}
+  .destaque.principal .conteudo,.destaque .conteudo{padding:1.25rem}
+  .secao{padding:2rem 0 3rem}
+  .filtros{flex-wrap:nowrap;overflow-x:auto;width:100%;scrollbar-width:none;margin-inline:-1rem;padding:0 1rem}
+  .filtros::-webkit-scrollbar{display:none}
+  .filtro{flex:none}
+  .grade{grid-template-columns:1fr;gap:1.1rem}
+  .cartao:hover{transform:none}
+  .cartao h3{font-size:1.25rem}
+  .leitor-texto{padding:1.4rem 1.25rem 3rem}
+  .leitor-texto p{font-size:1.06rem;line-height:1.75}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Passo 1: Cabeçalho ===== -->
+<header class="topo">
+  <div class="container">
+    <a href="#inicio" class="marca" aria-label="Rota Brasilis, início">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#1f5c45"/><path d="M6 27c5-6 9-6 14 0s9 6 14 0" stroke="#e8a33d" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="26" cy="13" r="5" fill="#e8a33d"/></svg>
+      <span>Rota <em>Brasilis</em></span>
+    </a>
+    <button class="btn btn-menu" id="btnMenu" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav aria-label="Principal">
+      <ul class="menu" id="menu">
+        <li><a href="#inicio" aria-current="page">Início</a></li>
+        <li><a href="#destinos">Destinos</a></li>
+        <li><a href="#destinos" data-filtro="Praia">Praias</a></li>
+        <li><a href="#destinos" data-filtro="Ecoturismo">Ecoturismo</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+      </ul>
+    </nav>
+    <a href="#sobre" class="btn btn-assinar">Assinar newsletter</a>
+  </div>
+</header>
+
+<main id="inicio">
+  <!-- ===== Passo 1: Painel principal ===== -->
+  <section class="hero container">
+    <div class="hero-texto">
+      <span class="selo">Guias, roteiros e histórias de estrada</span>
+      <h1>Descubra o Brasil <em>além do cartão-postal</em></h1>
+      <p class="lead">Roteiros testados, dicas práticas e o que ninguém conta sobre os destinos mais incríveis do país — de lagoas cristalinas a cânions no sertão.</p>
+      <form class="busca" role="search" id="formBusca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label for="campoBusca" class="sr-only">Pesquisar destinos</label>
+        <input id="campoBusca" type="search" placeholder="Pesquise um destino, estado ou atividade…" autocomplete="off">
+        <button class="btn" type="submit"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span>Buscar</span></button>
+      </form>
+      <div class="sugestoes" aria-label="Buscas populares">
+        <span>Populares:</span>
+        <button type="button">mergulho</button>
+        <button type="button">cachoeiras</button>
+        <button type="button">Bahia</button>
+        <button type="button">dunas</button>
+        <button type="button">vida selvagem</button>
+      </div>
+    </div>
+
+    <div class="destaques" id="destaques" aria-label="Artigos em destaque"></div>
+  </section>
+
+  <!-- ===== Passo 2: Grade de cartões ===== -->
+  <section class="secao" id="destinos" aria-labelledby="tituloDestinos">
+    <div class="container">
+      <div class="secao-topo">
+        <div>
+          <h2 id="tituloDestinos">Pontos turísticos brasileiros</h2>
+          <p id="contador" aria-live="polite"></p>
+        </div>
+        <div class="filtros" role="group" aria-label="Filtrar por categoria" id="filtros"></div>
+      </div>
+      <div class="grade" id="grade"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape" id="sobre">
+  <div class="container">
+    <div><strong>Rota Brasilis</strong><br>Um blog de viagens independente sobre o Brasil.</div>
+    <div>Informações como taxas e regras de visitação mudam — confirme sempre nos sites oficiais antes de viajar.</div>
+  </div>
+</footer>
+
+<!-- Painel de leitura -->
+<div class="leitor" id="leitor" role="dialog" aria-modal="true" aria-labelledby="leitorTitulo">
+  <div class="leitor-fundo" data-fechar></div>
+  <article class="leitor-painel">
+    <button class="fechar" data-fechar aria-label="Fechar artigo">×</button>
+    <div class="leitor-arte" id="leitorArte"></div>
+    <div class="leitor-texto" id="leitorTexto"></div>
+  </article>
+</div>
+
+<script>
+/* ---------- Ilustrações em SVG (sem imagens externas) ---------- */
+const arte = {
+  noronha:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc7e0"/><stop offset="1" stop-color="#d9f1f5"/></linearGradient></defs><rect width="400" height="250" fill="url(#cn)"/><circle cx="320" cy="60" r="26" fill="#ffe2a0"/><path d="M150 160 L205 40 L240 75 L255 160Z" fill="#3c6b4f"/><path d="M190 160 L215 70 L235 160Z" fill="#2f5a41"/><rect y="150" width="400" height="100" fill="#1d8aa8"/><path d="M0 170 Q100 160 200 172 T400 168 V250 H0Z" fill="#23a3b8"/><path d="M0 215 Q120 200 260 214 T400 210 V250 H0Z" fill="#f0dcb0"/></svg>`,
+  bonito:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="#0e7a82"/><rect width="400" height="70" fill="#5fb6a2"/><path d="M0 70 Q100 60 200 72 T400 66 V0 H0Z" fill="#2d6f4a"/><g fill="#e8a33d"><path d="M120 150 q20-14 40 0 q-20 14-40 0z"/><path d="M160 150 l12-9 v18z"/><path d="M240 185 q16-11 32 0 q-16 11-32 0z"/><path d="M272 185 l10-7 v14z"/></g><g fill="#7fd3c4" opacity=".6"><circle cx="80" cy="120" r="3"/><circle cx="90" cy="105" r="2"/><circle cx="300" cy="120" r="3"/><circle cx="310" cy="100" r="2"/></g><path d="M0 230 Q60 210 120 228 T240 222 T400 228 V250 H0Z" fill="#4a8f5b"/><path d="M60 230 q5-40 10-60 M75 230 q-2-30 6-55 M330 230 q4-35 12-58" stroke="#3f7f50" stroke-width="4" fill="none"/></svg>`,
+  chapada:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3b26b"/><stop offset="1" stop-color="#f7dcae"/></linearGradient></defs><rect width="400" height="250" fill="url(#cc)"/><circle cx="90" cy="70" r="24" fill="#fff1cf"/><path d="M0 150 L40 95 H130 L150 150Z" fill="#a8583a"/><path d="M120 160 L170 70 H290 L320 160Z" fill="#8e4a31"/><path d="M280 165 L320 110 H400 V165Z" fill="#a8583a"/><rect x="226" y="72" width="6" height="90" fill="#e8f3f5" opacity=".9"/><rect y="155" width="400" height="95" fill="#5b7a3f"/><path d="M0 190 Q100 175 200 192 T400 186 V250 H0Z" fill="#4a6833"/></svg>`,
+  lencois:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="#a9dcf2"/><path d="M0 120 Q60 80 130 115 T260 105 T400 115 V250 H0Z" fill="#fbf3e0"/><path d="M0 160 Q90 120 180 155 T400 150 V250 H0Z" fill="#f4e7c8"/><ellipse cx="120" cy="170" rx="70" ry="14" fill="#2a9fc4"/><ellipse cx="290" cy="200" rx="85" ry="16" fill="#3bb3c9"/><path d="M0 215 Q100 195 200 220 T400 215 V250 H0Z" fill="#fbf3e0"/></svg>`,
+  jalapao:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="#f6c27a"/><circle cx="200" cy="80" r="30" fill="#fbe6b4"/><path d="M0 150 L60 100 H170 L190 150Z" fill="#b8532f"/><path d="M220 150 Q290 90 400 130 V150Z" fill="#e9944a"/><rect y="148" width="400" height="102" fill="#d9a35b"/><path d="M0 175 Q150 160 400 180 V250 H0Z" fill="#7f9a46"/><ellipse cx="270" cy="210" rx="55" ry="15" fill="#4fc0c8"/><ellipse cx="270" cy="210" rx="30" ry="7" fill="#9fe3e0"/></svg>`,
+  iguacu:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="#bfe1f0"/><path d="M0 60 H400 V95 H0Z" fill="#3e7a4a"/><g fill="#eef8fb"><rect x="30" y="95" width="40" height="95"/><rect x="95" y="95" width="60" height="95"/><rect x="180" y="95" width="30" height="95"/><rect x="235" y="95" width="80" height="95"/><rect x="340" y="95" width="35" height="95"/></g><g fill="#5f6f5a"><rect x="70" y="95" width="25" height="95"/><rect x="155" y="95" width="25" height="95"/><rect x="210" y="95" width="25" height="95"/><rect x="315" y="95" width="25" height="95"/></g><path d="M0 185 Q100 170 200 188 T400 182 V250 H0Z" fill="#9b7a4c"/><path d="M0 200 Q100 190 200 205 T400 198 V250 H0Z" fill="#c9e9f2" opacity=".85"/><path d="M40 60 a160 160 0 0 1 320 0" stroke="#f29a9a" stroke-width="4" fill="none" opacity=".5"/></svg>`,
+  veadeiros:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="#cfe6d8"/><path d="M0 110 Q100 70 200 105 T400 95 V250 H0Z" fill="#8fb27a"/><path d="M0 150 Q120 120 240 150 T400 140 V250 H0Z" fill="#6c9a5c"/><path d="M180 140 h40 l10 110 h-60z" fill="#7a5a3c"/><rect x="196" y="140" width="8" height="110" fill="#e8f5f8"/><g stroke="#3f6b3b" stroke-width="3"><path d="M60 200 v-30 M60 175 l-12-10 M60 180 l12-12"/><path d="M330 210 v-35 M330 182 l-14-10 M330 186 l14-12"/></g></svg>`,
+  paraty:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="#f9d9b8"/><path d="M0 120 Q100 70 220 110 T400 90 V170 H0Z" fill="#3d7a55"/><g><rect x="40" y="130" width="70" height="50" fill="#fff"/><rect x="40" y="130" width="70" height="8" fill="#c4623a"/><rect x="55" y="150" width="12" height="30" fill="#2d6fa8"/><rect x="80" y="150" width="12" height="18" fill="#e8a33d"/><rect x="120" y="120" width="60" height="60" fill="#fffdf2"/><rect x="120" y="120" width="60" height="8" fill="#c4623a"/><rect x="140" y="145" width="14" height="35" fill="#1f5c45"/><rect x="190" y="135" width="55" height="45" fill="#fff"/><rect x="200" y="150" width="12" height="30" fill="#c4623a"/><rect x="222" y="150" width="12" height="16" fill="#2d6fa8"/></g><rect y="180" width="400" height="70" fill="#2b88a2"/><path d="M280 200 h70 l-10 14 h-50z" fill="#e8a33d"/><path d="M305 200 v-25 l20 22" fill="#fff"/></svg>`,
+  pantanal:`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f08a4b"/><stop offset="1" stop-color="#f7cf8c"/></linearGradient></defs><rect width="400" height="250" fill="url(#cp)"/><circle cx="200" cy="120" r="34" fill="#fde3a6"/><rect y="140" width="400" height="110" fill="#4b7f86"/><path d="M0 140 Q60 125 120 140 T240 136 T400 140 V150 H0Z" fill="#3b5d3a"/><g stroke="#2a2a2a" stroke-width="3" fill="none"><path d="M300 175 v-28 M300 147 q10-12 4-22"/><path d="M314 175 v-22"/></g><ellipse cx="305" cy="140" rx="14" ry="9" fill="#f4f1ea"/><path d="M80 210 q30-8 60 0" stroke="#e7d7b0" stroke-width="2" fill="none" opacity=".6"/></svg>`
+};
+
+/* ---------- Dados dos artigos ---------- */
+const artigos = [
+  {id:"noronha",titulo:"Fernando de Noronha",estado:"PE",categoria:"Praia",arte:"noronha",
+   resumo:"Arquipélago vulcânico com águas transparentes, golfinhos-rotadores e praias frequentemente eleitas entre as mais bonitas do mundo.",
+   fatos:{"Destaque":"Baía do Sancho","Melhor época":"Set a mar (mar calmo)","Atividades":"Mergulho, trilhas"},
+   tempo:"7 min",tags:"mergulho praia ilha pernambuco golfinhos nordeste vida selvagem",
+   texto:[["p","Noronha é um arquipélago de 21 ilhas a cerca de 350 km da costa de Pernambuco, e boa parte dele é Parque Nacional Marinho. O acesso é controlado, o que mantém o lugar preservado — e exige planejamento."],
+          ["h3","O que não pode faltar"],["ul",["Baía do Sancho, descendo pela escada na fenda da falésia","Mirante dos Golfinhos ao amanhecer","Mergulho de cilindro ou snorkel na Praia do Atalaia (com agendamento)","Pôr do sol no Forte do Boldró"]],
+          ["h3","Dica prática"],["p","Há uma taxa diária de preservação (TPA) cobrada pelo arquipélago e um ingresso separado para o parque nacional. Os valores mudam, então consulte os sites oficiais antes de fechar o orçamento."]]},
+  {id:"bonito",titulo:"Bonito",estado:"MS",categoria:"Ecoturismo",arte:"bonito",
+   resumo:"Rios de água cristalina onde você flutua ao lado de peixes, grutas azuis e um modelo de turismo sustentável referência no país.",
+   fatos:{"Destaque":"Flutuação no Rio da Prata","Melhor época":"Dez a mar (água mais clara: mai–set)","Atividades":"Flutuação, grutas"},
+   tempo:"6 min",tags:"rio flutuação gruta mergulho mato grosso do sul cachoeiras centro-oeste",
+   texto:[["p","Em Bonito, quase todos os passeios funcionam com voucher e limite diário de visitantes, vendidos por agências credenciadas. Isso protege os rios e garante que a água continue absurdamente transparente."],
+          ["h3","Roteiro de 4 dias"],["ul",["Dia 1: Gruta do Lago Azul e Gruta de São Miguel","Dia 2: Flutuação no Rio da Prata","Dia 3: Buraco das Araras e Estância Mimosa (cachoeiras)","Dia 4: Balneário Municipal para relaxar"]],
+          ["h3","Dica prática"],["p","Reserve os passeios mais concorridos com antecedência, especialmente em feriados. Protetor solar é proibido em várias flutuações para não poluir a água."]]},
+  {id:"chapada",titulo:"Chapada Diamantina",estado:"BA",categoria:"Aventura",arte:"chapada",
+   resumo:"Paredões de arenito, cachoeiras gigantes e trilhas de vários dias no coração da Bahia, com a charmosa Lençóis como base.",
+   fatos:{"Destaque":"Cachoeira da Fumaça","Melhor época":"Abr a out (mais seco)","Atividades":"Trekking, poços"},
+   tempo:"8 min",tags:"trilha cachoeiras bahia poço trekking nordeste aventura vale do pati",
+   texto:[["p","A cidade de Lençóis, antiga vila do garimpo de diamantes, é a porta de entrada mais comum. Dali saem trilhas para poços azuis, grutas e mirantes que parecem outro planeta."],
+          ["h3","Imperdíveis"],["ul",["Morro do Pai Inácio no fim de tarde","Cachoeira da Fumaça, uma das mais altas do Brasil","Poço Azul e Poço Encantado (luz do sol entra na água em certas épocas)","Travessia do Vale do Pati, de 3 a 5 dias, com hospedagem em casas de moradores"]],
+          ["h3","Dica prática"],["p","Para trilhas longas, contrate um guia local credenciado: além de segurança, você ajuda a economia da região."]]},
+  {id:"lencois",titulo:"Lençóis Maranhenses",estado:"MA",categoria:"Natureza",arte:"lencois",
+   resumo:"Um mar de dunas brancas pontilhado por lagoas de água doce que se formam com as chuvas — paisagem única no planeta.",
+   fatos:{"Destaque":"Lagoa Azul e Lagoa Bonita","Melhor época":"Jun a set (lagoas cheias)","Atividades":"Caminhadas, 4x4"},
+   tempo:"5 min",tags:"dunas lagoas maranhão barreirinhas nordeste natureza",
+   texto:[["p","As lagoas se enchem com as chuvas do primeiro semestre e atingem o auge entre junho e setembro. Fora dessa janela, muitas secam."],
+          ["h3","Como ir"],["ul",["Base em Barreirinhas (cerca de 4 h de São Luís) ou em Santo Amaro, mais rústica","Passeios em 4x4 para os circuitos Lagoa Azul e Lagoa Bonita","Travessia a pé dos Lençóis para quem quer aventura de verdade"]],
+          ["h3","Dica prática"],["p","Vá de manhã cedo ou no fim da tarde: a areia esquenta muito ao meio-dia."]]},
+  {id:"jalapao",titulo:"Jalapão",estado:"TO",categoria:"Aventura",arte:"jalapao",
+   resumo:"Fervedouros onde é impossível afundar, dunas douradas e cachoeiras no meio do cerrado — um roteiro remoto e inesquecível.",
+   fatos:{"Destaque":"Fervedouros","Melhor época":"Mai a set (seca)","Atividades":"Expedição 4x4"},
+   tempo:"6 min",tags:"fervedouro dunas tocantins cerrado aventura cachoeiras 4x4 norte",
+   texto:[["p","O Jalapão é grande, isolado e de estradas de areia. A forma mais tranquila de conhecer é em expedição 4x4 com agência, saindo de Palmas."],
+          ["h3","Os clássicos"],["ul",["Fervedouros: nascentes onde a pressão da água faz você boiar","Dunas do Jalapão ao pôr do sol","Cachoeira da Velha e Cachoeira do Formiga","Comunidade quilombola de Mumbuca e o artesanato em capim-dourado"]],
+          ["h3","Dica prática"],["p","Os fervedouros têm tempo de permanência limitado e regras de uso. Leve dinheiro em espécie — sinal e maquininhas falham."]]},
+  {id:"iguacu",titulo:"Cataratas do Iguaçu",estado:"PR",categoria:"Natureza",arte:"iguacu",
+   resumo:"Centenas de quedas d'água na fronteira com a Argentina, cercadas por Mata Atlântica e com arco-íris quase garantido.",
+   fatos:{"Destaque":"Garganta do Diabo","Melhor época":"O ano todo","Atividades":"Passarelas, barco"},
+   tempo:"5 min",tags:"cachoeiras paraná foz do iguaçu cataratas sul natureza",
+   texto:[["p","O lado brasileiro oferece a vista panorâmica; o argentino, a proximidade com as quedas. Separe pelo menos um dia para cada."],
+          ["h3","Programe-se"],["ul",["Trilha das Cataratas e passarela da Garganta do Diabo (lado BR)","Passeio de barco até perto das quedas","Parque das Aves, em frente à entrada do parque","Lado argentino: Circuito Superior, Inferior e Garganta del Diablo"]],
+          ["h3","Dica prática"],["p","Chegue na abertura do parque para evitar filas e leve capa de chuva: você vai se molhar."]]},
+  {id:"veadeiros",titulo:"Chapada dos Veadeiros",estado:"GO",categoria:"Ecoturismo",arte:"veadeiros",
+   resumo:"Cerrado de altitude, cristais de quartzo e cachoeiras em cânions, a poucas horas de Brasília.",
+   fatos:{"Destaque":"Vale da Lua","Melhor época":"Mai a set","Atividades":"Trilhas, banho"},
+   tempo:"6 min",tags:"cerrado goiás cachoeiras trilha alto paraíso cavalcante centro-oeste",
+   texto:[["p","Alto Paraíso e São Jorge são as bases para o Parque Nacional; Cavalcante dá acesso a cachoeiras no território kalunga."],
+          ["h3","Não perca"],["ul",["Vale da Lua e suas rochas esculpidas pela água","Saltos do Rio Preto, dentro do parque nacional","Cachoeira Santa Bárbara, de água azul-turquesa (Cavalcante)","Jardim de Maytrea para o pôr do sol"]],
+          ["h3","Dica prática"],["p","Na época de chuvas, há risco de cabeça d'água: observe o rio e respeite as orientações dos guias."]]},
+  {id:"paraty",titulo:"Paraty",estado:"RJ",categoria:"Cultura",arte:"paraty",
+   resumo:"Centro histórico colonial de ruas de pedra, passeios de escuna por ilhas e cachoeiras na Mata Atlântica.",
+   fatos:{"Destaque":"Centro histórico","Melhor época":"Abr a jun (menos chuva)","Atividades":"Escuna, cultura"},
+   tempo:"5 min",tags:"história colonial rio de janeiro praia escuna cultura sudeste unesco",
+   texto:[["p","Paraty e Ilha Grande foram reconhecidas pela UNESCO como patrimônio mundial misto, combinando cultura e natureza."],
+          ["h3","Roteiro"],["ul",["Caminhada pelo centro histórico no fim da tarde","Passeio de escuna pelas ilhas da baía","Trindade e a piscina natural do Cachadaço","Caminho do Ouro e alambiques de cachaça artesanal"]],
+          ["h3","Dica prática"],["p","Use calçado firme: as pedras do centro são irregulares, e em maré cheia algumas ruas alagam de propósito."]]},
+  {id:"pantanal",titulo:"Pantanal",estado:"MT/MS",categoria:"Ecoturismo",arte:"pantanal",
+   resumo:"A maior planície alagável do mundo e um dos melhores lugares das Américas para observar onças, jacarés e aves.",
+   fatos:{"Destaque":"Safári fotográfico","Melhor época":"Jul a out (seca)","Atividades":"Fauna, barco"},
+   tempo:"7 min",tags:"vida selvagem onça aves mato grosso transpantaneira centro-oeste fauna",
+   texto:[["p","No norte, a Transpantaneira (MT) leva a Porto Jofre, famoso pela observação de onças-pintadas. No sul, fazendas perto de Miranda e Corumbá (MS) oferecem safáris e passeios a cavalo."],
+          ["h3","O que esperar"],["ul",["Saídas de barco ao amanhecer para ver onças","Focagem noturna em busca de mamíferos","Tuiuiús, araras-azuis e capivaras por toda parte","Pescaria esportiva no sistema pesque-e-solte"]],
+          ["h3","Dica prática"],["p","A seca concentra os animais perto da água. Leve binóculo, roupas neutras e repelente."]]}
+];
+const destaquesIds = ["noronha","chapada","lencois"];
+
+/* ---------- Utilitários ---------- */
+const $ = s => document.querySelector(s);
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function realce(texto,termo){
+  if(!termo) return esc(texto);
+  const t = norm(termo), n = norm(texto), i = n.indexOf(t);
+  if(i<0) return esc(texto);
+  return esc(texto.slice(0,i))+"<mark>"+esc(texto.slice(i,i+t.length))+"</mark>"+esc(texto.slice(i+t.length));
+}
+
+/* ---------- Passo 1: destaques ---------- */
+$("#destaques").innerHTML = destaquesIds.map((id,i)=>{
+  const a = artigos.find(x=>x.id===id);
+  return `<a href="#${a.id}" class="destaque ${i===0?"principal":""}" data-abrir="${a.id}">
+    <div class="arte" aria-hidden="true">${arte[a.arte]}</div>
+    <div class="conteudo">
+      <span class="tag">${i===0?"Destaque da semana":a.categoria}</span>
+      <h2>${i===0?"Fernando de Noronha: o guia completo para a primeira viagem":a.titulo+" — "+a.fatos["Destaque"]}</h2>
+      ${i===0?`<p>${a.resumo}</p>`:""}
+      <div class="meta-leve">${a.estado} · ${a.tempo} de leitura</div>
+    </div></a>`;
+}).join("");
+
+/* ---------- Passo 2: grade + filtros + busca ---------- */
+const categorias = ["Todos",...new Set(artigos.map(a=>a.categoria))];
+let filtroAtual = "Todos", termo = "";
+
+$("#filtros").innerHTML = categorias.map(c=>`<button class="filtro" type="button" aria-pressed="${c==="Todos"}" data-cat="${c}">${c}</button>`).join("");
+
+function render(){
+  const t = norm(termo.trim());
+  const lista = artigos.filter(a=>{
+    const okCat = filtroAtual==="Todos" || a.categoria===filtroAtual;
+    const alvo = norm([a.titulo,a.estado,a.categoria,a.resumo,a.tags,...Object.values(a.fatos)].join(" "));
+    return okCat && (!t || alvo.includes(t));
+  });
+  $("#contador").textContent = lista.length
+    ? `${lista.length} ${lista.length===1?"destino encontrado":"destinos encontrados"}${termo?` para “${termo}”`:""}`
+    : "";
+  $("#grade").innerHTML = lista.length ? lista.map(a=>`
+    <article class="cartao" id="${a.id}">
+      <div class="arte" aria-hidden="true">${arte[a.arte]}<span class="estado">${a.estado}</span></div>
+      <div class="cartao-corpo">
+        <span class="categoria">${a.categoria}</span>
+        <h3>${realce(a.titulo,termo.trim())}</h3>
+        <p>${realce(a.resumo,termo.trim())}</p>
+        <ul class="fatos">${Object.entries(a.fatos).map(([k,v])=>`<li><b>${k}</b><span>${esc(v)}</span></li>`).join("")}</ul>
+        <div class="cartao-rodape">
+          <span>${a.tempo} de leitura</span>
+          <a href="#${a.id}" class="ler" data-abrir="${a.id}">Ler guia <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </article>`).join("")
+  : `<div class="vazio"><strong>Nenhum destino encontrado.</strong><br>Tente “praia”, “cachoeiras” ou o nome de um estado.</div>`;
+}
+render();
+
+$("#filtros").addEventListener("click",e=>{
+  const b = e.target.closest(".filtro"); if(!b) return;
+  setFiltro(b.dataset.cat);
+});
+function setFiltro(cat){
+  filtroAtual = cat;
+  document.querySelectorAll(".filtro").forEach(f=>f.setAttribute("aria-pressed",f.dataset.cat===cat));
+  render();
+}
+
+$("#campoBusca").addEventListener("input",e=>{termo=e.target.value;render()});
+$("#formBusca").addEventListener("submit",e=>{
+  e.preventDefault(); termo=$("#campoBusca").value; render();
+  $("#destinos").scrollIntoView({behavior:"smooth"});
+});
+document.querySelectorAll(".sugestoes button").forEach(b=>b.addEventListener("click",()=>{
+  $("#campoBusca").value=b.textContent; termo=b.textContent; setFiltro("Todos");
+  $("#destinos").scrollIntoView({behavior:"smooth"});
+}));
+
+/* ---------- Menu mobile ---------- */
+const btnMenu = $("#btnMenu"), menu = $("#menu");
+btnMenu.addEventListener("click",()=>{
+  const aberto = menu.classList.toggle("aberto");
+  btnMenu.setAttribute("aria-expanded",aberto);
+});
+menu.addEventListener("click",e=>{
+  const a = e.target.closest("a"); if(!a) return;
+  menu.classList.remove("aberto"); btnMenu.setAttribute("aria-expanded",false);
+  if(a.dataset.filtro){ $("#campoBusca").value=""; termo=""; setFiltro(a.dataset.filtro); }
+});
+
+/* ---------- Leitor de artigo ---------- */
+const leitor = $("#leitor"); let ultimoFoco=null;
+function abrir(id){
+  const a = artigos.find(x=>x.id===id); if(!a) return;
+  ultimoFoco = document.activeElement;
+  $("#leitorArte").innerHTML = arte[a.arte];
+  $("#leitorTexto").innerHTML = `<span class="categoria">${a.categoria} · ${a.estado}</span>
+    <h2 id="leitorTitulo">${a.titulo}</h2>` +
+    a.texto.map(([tipo,c])=>tipo==="ul"?`<ul>${c.map(li=>`<li>${li}</li>`).join("")}</ul>`:`<${tipo}>${c}</${tipo}>`).join("");
+  leitor.classList.add("aberto"); document.body.style.overflow="hidden";
+  leitor.querySelector(".leitor-painel").scrollTop=0;
+  leitor.querySelector(".fechar").focus();
+}
+function fechar(){
+  leitor.classList.remove("aberto"); document.body.style.overflow="";
+  if(ultimoFoco) ultimoFoco.focus();
+}
+document.addEventListener("click",e=>{
+  const alvo = e.target.closest("[data-abrir]");
+  if(alvo){ e.preventDefault(); abrir(alvo.dataset.abrir); }
+  if(e.target.closest("[data-fechar]")) fechar();
+});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && leitor.classList.contains("aberto")) fechar(); });
+</script>
+</body>
+</html>
