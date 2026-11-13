@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pata Segura – Castração de cães e gatos</title>
+<style>
+:root{--bg:#fbf8f3;--surface:#fff;--text:#2a2622;--muted:#6b645c;--brand:#1f7a6d;--brand-ink:#fff;--accent:#f2a65a;--line:#e6dfd3;--soft:#e8f3f0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#16201e;--surface:#1e2b28;--text:#f1ece4;--muted:#a9b3ae;--brand:#4cc2ae;--brand-ink:#0f1f1c;--accent:#f2a65a;--line:#31403c;--soft:#223632}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#16201e;--surface:#1e2b28;--text:#f1ece4;--muted:#a9b3ae;--brand:#4cc2ae;--brand-ink:#0f1f1c;--accent:#f2a65a;--line:#31403c;--soft:#223632}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:12px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:1.25rem;color:var(--brand);text-decoration:none}
+nav a{color:var(--text);text-decoration:none;margin-left:18px;font-size:.95rem}
+nav a:hover{color:var(--brand)}
+.btn{display:inline-block;background:var(--brand);color:var(--brand-ink);padding:13px 24px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-size:1rem}
+.btn.alt{background:transparent;color:var(--text);border:2px solid var(--line)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:36px 0 56px}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;margin:0 0 16px}
+.hero p{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero-art{background:var(--soft);border-radius:28px;aspect-ratio:1;display:grid;place-items:center;font-size:7rem}
+section{padding:48px 0}
+h2{font-size:1.8rem;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card .ic{font-size:1.8rem}
+.card h3{margin:8px 0 6px;font-size:1.1rem}
+.card p{margin:0;color:var(--muted);font-size:.95rem}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:0;list-style:none}
+.steps li{counter-increment:s;background:var(--soft);border-radius:18px;padding:22px}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);font-weight:800;margin-bottom:10px}
+.steps b{display:block;margin-bottom:4px}
+.steps span{color:var(--muted);font-size:.95rem}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--muted);margin:10px 0 0}
+.formbox{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:28px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:16px}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:1px}
+textarea{min-height:90px;resize:vertical}
+.err{color:#c0392b;font-size:.85rem;margin-top:4px;display:none}
+.invalid .err{display:block}.invalid input,.invalid select{border-color:#c0392b}
+.note{color:var(--muted);font-size:.85rem;margin-top:12px}
+#ok{display:none;background:var(--soft);border-radius:18px;padding:24px}
+#ok h3{margin-top:0;color:var(--brand)}
+#ok dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 16px}
+#ok dt{font-weight:600}#ok dd{margin:0;word-break:break-word}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.hero-art{aspect-ratio:2/1;font-size:5rem}nav a{margin:0 14px 0 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="logo" href="#topo">🐾 Pata Segura</a>
+  <nav><a href="#servicos">Serviços</a><a href="#como">Como funciona</a><a href="#faq">Dúvidas</a><a href="#agendar">Agendar</a></nav>
+</header>
+
+<main id="topo">
+<div class="hero">
+  <div>
+    <h1>Castração segura para cães e gatos, com carinho do início ao fim.</h1>
+    <p>Somos especialistas em castração: avaliação pré-operatória, anestesia monitorada e acompanhamento pós-cirúrgico para o seu pet voltar para casa tranquilo.</p>
+    <div class="cta"><a class="btn" href="#agendar">Agendar consulta</a><a class="btn alt" href="#como">Como funciona</a></div>
+  </div>
+  <div class="hero-art" aria-hidden="true">🐶🐱</div>
+</div>
+
+<section id="servicos">
+  <h2>Nossos serviços</h2>
+  <p class="sub">Tudo o que o seu pet precisa para uma castração tranquila.</p>
+  <div class="grid">
+    <div class="card"><div class="ic">🩺</div><h3>Consulta pré-operatória</h3><p>Avaliação clínica e orientação sobre exames e jejum antes da cirurgia.</p></div>
+    <div class="card"><div class="ic">🐕</div><h3>Castração de cães</h3><p>Machos e fêmeas, de todos os portes, com técnica cirúrgica cuidadosa.</p></div>
+    <div class="card"><div class="ic">🐈</div><h3>Castração de gatos</h3><p>Procedimento ágil, com atenção especial ao conforto e à recuperação.</p></div>
+    <div class="card"><div class="ic">💊</div><h3>Pós-operatório</h3><p>Orientações de cuidados, medicação e retorno para avaliação.</p></div>
+  </div>
+</section>
+
+<section id="como">
+  <h2>Como funciona</h2>
+  <p class="sub">Quatro passos simples.</p>
+  <ol class="steps">
+    <li><b>Agende</b><span>Preencha o formulário abaixo com os dados do seu pet.</span></li>
+    <li><b>Consulta</b><span>Avaliamos a saúde do animal e definimos a data da cirurgia.</span></li>
+    <li><b>Cirurgia</b><span>Procedimento com anestesia monitorada por profissional habilitado.</span></li>
+    <li><b>Recuperação</b><span>Você recebe as orientações e acompanhamos a evolução.</span></li>
+  </ol>
+</section>
+
+<section id="faq">
+  <h2>Dúvidas frequentes</h2>
+  <p class="sub">Orientações gerais; a equipe confirma cada caso na consulta.</p>
+  <details><summary>Com que idade o pet pode ser castrado?</summary><p>Depende da espécie, da raça e da saúde do animal. O médico-veterinário indica o melhor momento na consulta.</p></details>
+  <details><summary>Preciso levar o pet em jejum?</summary><p>Na maioria dos casos há jejum de alimento e água antes da cirurgia. Passamos as orientações exatas ao confirmar o agendamento.</p></details>
+  <details><summary>Quanto tempo leva a recuperação?</summary><p>Costuma ser de cerca de 10 a 14 dias, com repouso, colar protetor e cuidados com o curativo, conforme a orientação recebida.</p></details>
+  <details><summary>A castração traz benefícios?</summary><p>Ajuda a prevenir ninhadas indesejadas e certas doenças reprodutivas. Converse com o veterinário sobre o caso do seu pet.</p></details>
+</section>
+
+<section id="agendar">
+  <h2>Agende a consulta</h2>
+  <p class="sub">Preencha os dados e entraremos em contato para confirmar o horário.</p>
+  <div class="formbox">
+    <form id="f" novalidate>
+      <div class="row">
+        <div class="fld"><label for="tutor">Nome do tutor *</label><input id="tutor" required autocomplete="name"><div class="err">Informe seu nome.</div></div>
+        <div class="fld"><label for="tel">WhatsApp / telefone *</label><input id="tel" type="tel" required autocomplete="tel" placeholder="(11) 90000-0000"><div class="err">Informe um telefone válido.</div></div>
+        <div class="fld"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email"><div class="err">E-mail inválido.</div></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label for="pet">Nome do pet *</label><input id="pet" required><div class="err">Informe o nome do pet.</div></div>
+        <div class="fld"><label for="esp">Espécie *</label><select id="esp" required><option value="">Selecione</option><option>Cão</option><option>Gato</option></select><div class="err">Selecione a espécie.</div></div>
+        <div class="fld"><label for="sexo">Sexo *</label><select id="sexo" required><option value="">Selecione</option><option>Macho</option><option>Fêmea</option></select><div class="err">Selecione o sexo.</div></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label for="idade">Idade aproximada</label><input id="idade" placeholder="Ex.: 8 meses"></div>
+        <div class="fld"><label for="peso">Peso aproximado (kg)</label><input id="peso" type="number" min="0" step="0.1"></div>
+        <div class="fld"><label for="raca">Raça</label><input id="raca" placeholder="Ou SRD"></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label for="data">Data preferida *</label><input id="data" type="date" required><div class="err">Escolha uma data a partir de hoje.</div></div>
+        <div class="fld"><label for="per">Período *</label><select id="per" required><option value="">Selecione</option><option>Manhã</option><option>Tarde</option></select><div class="err">Selecione o período.</div></div>
+      </div>
+      <div class="fld" style="margin-bottom:16px"><label for="obs">Observações (saúde, medicações, cirurgias anteriores)</label><textarea id="obs"></textarea></div>
+      <button class="btn" type="submit">Solicitar agendamento</button>
+      <p class="note">Os horários são confirmados pela nossa equipe após o recebimento do pedido.</p>
+    </form>
+    <div id="ok" role="status" aria-live="polite">
+      <h3>Pedido pronto para envio ✅</h3>
+      <dl id="resumo"></dl>
+      <a class="btn" id="mail" href="#">Enviar por e-mail</a>
+      <a class="btn alt" id="wpp" href="#" style="margin-left:8px">Enviar por WhatsApp</a>
+      <p class="note">Ao clicar, seu aplicativo de e-mail ou WhatsApp abre com a mensagem pronta.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div>🐾 Pata Segura · Rua Exemplo, 123 · São Paulo – SP</div>
+  <div>Seg a Sáb, 8h–18h · (11) 90000-0000 · contato@pataseguraexemplo.com.br</div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var EMAIL="contato@pataseguraexemplo.com.br", WPP="5511900000000";
+  var f=document.getElementById("f"), ok=document.getElementById("ok");
+  var d=document.getElementById("data");
+  var t=new Date(); t.setMinutes(t.getMinutes()-t.getTimezoneOffset());
+  d.min=t.toISOString().slice(0,10);
+  function v(id){return document.getElementById(id).value.trim();}
+  function valid(el){
+    if(el.required&&!el.value.trim())return false;
+    if(el.id==="tel"&&el.value.replace(/\D/g,"").length<10)return false;
+    if(el.id==="email"&&el.value&&!/^\S+@\S+\.\S+$/.test(el.value))return false;
+    if(el.id==="data"&&el.value&&el.value<d.min)return false;
+    return true;
+  }
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    var bad=null;
+    f.querySelectorAll("input,select,textarea").forEach(function(el){
+      var good=valid(el), fld=el.closest(".fld");
+      if(fld)fld.classList.toggle("invalid",!good);
+      if(!good&&!bad)bad=el;
+    });
+    if(bad){bad.focus();return;}
+    var dt=v("data").split("-").reverse().join("/");
+    var rows=[["Tutor",v("tutor")],["Telefone",v("tel")],["E-mail",v("email")||"—"],["Pet",v("pet")+" ("+v("esp")+", "+v("sexo")+")"],["Raça",v("raca")||"—"],["Idade / peso",(v("idade")||"—")+" / "+(v("peso")?v("peso")+" kg":"—")],["Data preferida",dt+" – "+v("per")],["Observações",v("obs")||"—"]];
+    var dl=document.getElementById("resumo"); dl.innerHTML="";
+    var txt="Olá! Gostaria de agendar uma consulta de castração.\n\n";
+    rows.forEach(function(r){
+      var a=document.createElement("dt"),b=document.createElement("dd");
+      a.textContent=r[0]; b.textContent=r[1]; dl.appendChild(a); dl.appendChild(b);
+      txt+=r[0]+": "+r[1]+"\n";
+    });
+    document.getElementById("mail").href="mailto:"+EMAIL+"?subject="+encodeURIComponent("Agendamento de consulta – "+v("pet"))+"&body="+encodeURIComponent(txt);
+    document.getElementById("wpp").href="https://wa.me/"+WPP+"?text="+encodeURIComponent(txt);
+    f.style.display="none"; ok.style.display="block";
+    ok.scrollIntoView({behavior:"smooth",block:"center"});
+  });
+})();
+</script>
+</body>
+</html>

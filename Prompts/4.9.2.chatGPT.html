@@ -1,0 +1,644 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Portal comunitário de notícias locais. Informação acessível para todos.">
+
+    <title>Jornal da Comunidade | Notícias Locais</title>
+
+    <style>
+        /* CONFIGURAÇÕES GERAIS */
+        :root {
+            font-size: 100%;
+
+            --primary: #123b63;
+            --secondary: #e8f0f7;
+            --accent: #f2b632;
+            --background: #ffffff;
+            --surface: #f4f6f8;
+            --text: #20252b;
+            --muted: #454d55;
+            --border: #aeb8c2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 1rem;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--background);
+            overflow-wrap: break-word;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            color: #124f83;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration-thickness: 0.15em;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* FOCO VISÍVEL PARA NAVEGAÇÃO POR TECLADO */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible {
+            outline: 0.2rem solid #d18b00;
+            outline-offset: 0.2rem;
+        }
+
+        /* ATALHO DE ACESSIBILIDADE */
+        .skip-link {
+            position: absolute;
+            top: -10rem;
+            left: 1rem;
+            z-index: 1000;
+            background: #ffffff;
+            color: #123b63;
+            padding: 1rem;
+            border: 0.15rem solid #123b63;
+        }
+
+        .skip-link:focus {
+            top: 1rem;
+        }
+
+        /* CABEÇALHO */
+        header {
+            background: var(--primary);
+            color: #ffffff;
+            padding: 1.5rem 5%;
+        }
+
+        .header-content {
+            max-width: 75rem;
+            margin: auto;
+        }
+
+        .logo {
+            margin: 0;
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+        }
+
+        .tagline {
+            margin: 0.3rem 0 1rem;
+            font-size: 1rem;
+        }
+
+        /* NAVEGAÇÃO */
+        nav {
+            background: #0b2d4d;
+            padding: 0.7rem 5%;
+        }
+
+        nav ul {
+            max-width: 75rem;
+            margin: auto;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.5rem;
+        }
+
+        nav a {
+            color: #ffffff;
+            display: inline-block;
+            padding: 0.4rem 0;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        main {
+            width: min(90%, 75rem);
+            margin: 2rem auto;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            border-bottom: 0.15rem solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        /* FERRAMENTAS DE ACESSIBILIDADE */
+        .accessibility-tools {
+            background: var(--surface);
+            border: 0.08rem solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .accessibility-tools button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.3rem;
+            padding: 0.6rem 1rem;
+        }
+
+        .accessibility-tools button:hover {
+            background: #244f75;
+        }
+
+        /* BUSCA */
+        .search-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-area label {
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .search-area input {
+            flex: 1 1 15rem;
+            min-width: 0;
+            padding: 0.8rem;
+            border: 0.1rem solid #59636e;
+            border-radius: 0.3rem;
+            background: white;
+            color: #20252b;
+        }
+
+        .search-area button {
+            padding: 0.8rem 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.3rem;
+        }
+
+        /* NOTÍCIAS */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(min(100%, 19rem), 1fr)
+            );
+            gap: 1.5rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 0.08rem solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1.2rem;
+            min-width: 0;
+        }
+
+        article h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            line-height: 1.4;
+        }
+
+        article p {
+            color: var(--text);
+        }
+
+        .category {
+            display: inline-block;
+            background: #dce8f3;
+            color: #123b63;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.2rem;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .empty-message {
+            font-weight: bold;
+            padding: 1rem;
+        }
+
+        /* COLUNA LATERAL */
+        aside {
+            background: var(--secondary);
+            border-left: 0.3rem solid var(--primary);
+            padding: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        aside h2 {
+            color: var(--primary);
+        }
+
+        /* RODAPÉ */
+        footer {
+            background: var(--primary);
+            color: #ffffff;
+            text-align: center;
+            padding: 2rem 5%;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #ffffff;
+        }
+
+        /* ALTO CONTRASTE */
+        body.high-contrast {
+            --primary: #000000;
+            --secondary: #ffffff;
+            --accent: #ffff00;
+            --background: #000000;
+            --surface: #000000;
+            --text: #ffffff;
+            --muted: #ffffff;
+            --border: #ffffff;
+        }
+
+        body.high-contrast a {
+            color: #ffff00;
+        }
+
+        body.high-contrast .category {
+            background: #000000;
+            color: #ffff00;
+            border: 1px solid #ffffff;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 40rem) {
+            header {
+                padding: 1.2rem 5%;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+
+            nav a {
+                display: block;
+                padding: 0.6rem 0;
+            }
+
+            main {
+                width: 92%;
+                margin: 1rem auto;
+            }
+
+            .accessibility-tools {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .accessibility-tools button {
+                width: 100%;
+            }
+
+            .search-area {
+                flex-direction: column;
+            }
+
+            .search-area input,
+            .search-area button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="skip-link" href="#conteudo">
+        Pular para o conteúdo principal
+    </a>
+
+    <header>
+        <div class="header-content">
+            <h1 class="logo">Jornal da Comunidade</h1>
+            <p class="tagline">
+                Informação local acessível para todos.
+            </p>
+        </div>
+    </header>
+
+    <nav aria-label="Navegação principal">
+        <ul>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#noticias">Notícias</a></li>
+            <li><a href="#cidade">Nossa cidade</a></li>
+            <li><a href="#contato">Contato</a></li>
+        </ul>
+    </nav>
+
+    <main id="conteudo">
+
+        <section id="inicio" aria-labelledby="welcome-title">
+            <h2 id="welcome-title">Bem-vindo ao nosso portal</h2>
+            <p>
+                Acompanhe as principais notícias da sua região,
+                com informação clara, confiável e acessível.
+            </p>
+        </section>
+
+        <section class="accessibility-tools"
+                 aria-label="Ferramentas de acessibilidade">
+
+            <strong>Acessibilidade:</strong>
+
+            <button type="button" id="increase-font"
+                    aria-label="Aumentar tamanho do texto">
+                A + 
+            </button>
+
+            <button type="button" id="decrease-font"
+                    aria-label="Diminuir tamanho do texto">
+                A -
+            </button>
+
+            <button type="button" id="contrast-button"
+                    aria-pressed="false">
+                Alto contraste
+            </button>
+
+            <button type="button" id="reset-font">
+                Restaurar visualização
+            </button>
+        </section>
+
+        <section aria-labelledby="search-title">
+            <h2 id="search-title" class="section-title">
+                Buscar notícias
+            </h2>
+
+            <form class="search-area" id="search-form" role="search">
+                <label for="search-input">
+                    Digite o assunto que deseja pesquisar:
+                </label>
+
+                <input
+                    type="search"
+                    id="search-input"
+                    placeholder="Ex.: transporte, saúde, educação">
+
+                <button type="submit">Pesquisar</button>
+            </form>
+
+            <p id="search-status"
+               role="status"
+               aria-live="polite"></p>
+        </section>
+
+        <section id="noticias" aria-labelledby="news-title">
+
+            <h2 id="news-title" class="section-title">
+                Últimas notícias
+            </h2>
+
+            <div class="news-grid" id="news-grid">
+
+                <article>
+                    <span class="category">Infraestrutura</span>
+
+                    <h3>Obras de revitalização começam no centro</h3>
+
+                    <p>
+                        A prefeitura iniciou nesta semana as obras
+                        de revitalização das principais ruas do
+                        centro urbano.
+                    </p>
+
+                    <a class="read-more" href="#cidade">
+                        Saiba mais sobre a cidade
+                    </a>
+                </article>
+
+                <article>
+                    <span class="category">Educação</span>
+
+                    <h3>Escolas municipais recebem novos equipamentos</h3>
+
+                    <p>
+                        As unidades escolares receberão computadores,
+                        materiais didáticos e melhorias em seus
+                        espaços de aprendizagem.
+                    </p>
+
+                    <a class="read-more" href="#contato">
+                        Mais informações
+                    </a>
+                </article>
+
+                <article>
+                    <span class="category">Saúde</span>
+
+                    <h3>Campanha de vacinação acontece neste sábado</h3>
+
+                    <p>
+                        Os postos de saúde estarão abertos para
+                        atender a população durante a campanha
+                        de vacinação.
+                    </p>
+
+                    <a class="read-more" href="#contato">
+                        Consulte os canais de atendimento
+                    </a>
+                </article>
+
+                <article>
+                    <span class="category">Transporte</span>
+
+                    <h3>Novos horários de ônibus são anunciados</h3>
+
+                    <p>
+                        O transporte público terá mudanças nos
+                        horários de algumas linhas para melhorar
+                        o atendimento aos moradores.
+                    </p>
+
+                    <a class="read-more" href="#cidade">
+                        Confira as informações locais
+                    </a>
+                </article>
+
+            </div>
+
+            <p id="empty-message" class="empty-message" hidden>
+                Nenhuma notícia encontrada.
+            </p>
+
+        </section>
+
+        <aside id="cidade" aria-labelledby="community-title">
+            <h2 id="community-title">A comunidade em destaque</h2>
+
+            <p>
+                Este espaço é dedicado às iniciativas dos moradores,
+                projetos sociais, eventos culturais e acontecimentos
+                importantes da nossa cidade.
+            </p>
+        </aside>
+
+        <section id="contato" aria-labelledby="contact-title">
+            <h2 id="contact-title" class="section-title">
+                Entre em contato
+            </h2>
+
+            <p>
+                Tem uma notícia ou sugestão para compartilhar?
+            </p>
+
+            <p>
+                E-mail:
+                <a href="mailto:redacao@jornaldacomunidade.com.br">
+                    redacao@jornaldacomunidade.com.br
+                </a>
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>
+            &copy; 2026 Jornal da Comunidade.
+            Todos os direitos reservados.
+        </p>
+
+        <p>
+            Informação acessível é um direito de todos.
+        </p>
+    </footer>
+
+    <script>
+        // CONTROLE DO TAMANHO DA FONTE
+        const root = document.documentElement;
+
+        let fontSize = 100;
+
+        document.getElementById("increase-font")
+            .addEventListener("click", () => {
+                if (fontSize < 150) {
+                    fontSize += 10;
+                    root.style.fontSize = fontSize + "%";
+                }
+            });
+
+        document.getElementById("decrease-font")
+            .addEventListener("click", () => {
+                if (fontSize > 80) {
+                    fontSize -= 10;
+                    root.style.fontSize = fontSize + "%";
+                }
+            });
+
+        document.getElementById("reset-font")
+            .addEventListener("click", () => {
+                fontSize = 100;
+                root.style.fontSize = "100%";
+
+                document.body.classList.remove("high-contrast");
+
+                document.getElementById("contrast-button")
+                    .setAttribute("aria-pressed", "false");
+            });
+
+        // ALTO CONTRASTE
+        document.getElementById("contrast-button")
+            .addEventListener("click", function () {
+                const enabled =
+                    document.body.classList.toggle("high-contrast");
+
+                this.setAttribute("aria-pressed", String(enabled));
+            });
+
+        // BUSCA DE NOTÍCIAS
+        const searchForm = document.getElementById("search-form");
+        const searchInput = document.getElementById("search-input");
+        const articles = document.querySelectorAll("#news-grid article");
+
+        const emptyMessage = document.getElementById("empty-message");
+        const searchStatus = document.getElementById("search-status");
+
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const term = searchInput.value
+                .trim()
+                .toLocaleLowerCase("pt-BR");
+
+            let found = 0;
+
+            articles.forEach(article => {
+                const content = article.textContent
+                    .toLocaleLowerCase("pt-BR");
+
+                const matches = content.includes(term);
+
+                article.hidden = !matches;
+
+                if (matches) found++;
+            });
+
+            emptyMessage.hidden = found !== 0;
+
+            searchStatus.textContent =
+                found + (found === 1
+                    ? " notícia encontrada."
+                    : " notícias encontradas.");
+        });
+    </script>
+
+</body>
+</html>

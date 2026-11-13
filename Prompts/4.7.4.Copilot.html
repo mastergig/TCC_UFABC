@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academia Performance+</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f8fafc;
+    color:#1e293b;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+}
+
+.hero{
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    color:#fff;
+    text-align:center;
+    padding:100px 20px;
+}
+
+.hero h1{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.hero p{
+    max-width:700px;
+    margin:auto;
+    font-size:1.1rem;
+    opacity:.9;
+}
+
+section{
+    padding:70px 0;
+}
+
+.section-title{
+    text-align:center;
+    font-size:2.2rem;
+    margin-bottom:40px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#fff;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card h3{
+    margin-bottom:15px;
+    color:#2563eb;
+}
+
+.modalidades{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.modalidade{
+    height:180px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:20px;
+    color:white;
+    font-size:1.5rem;
+    font-weight:bold;
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+}
+
+.planos{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.plano{
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    border:2px solid #e2e8f0;
+}
+
+.plano h3{
+    font-size:1.8rem;
+    margin-bottom:10px;
+}
+
+.preco{
+    font-size:2rem;
+    font-weight:bold;
+    color:#2563eb;
+    margin-bottom:20px;
+}
+
+.plano ul{
+    list-style:none;
+}
+
+.plano ul li{
+    margin-bottom:10px;
+}
+
+.form-section{
+    background:#0f172a;
+    color:white;
+}
+
+.formulario{
+    max-width:800px;
+    margin:auto;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-grid input,
+.form-grid select{
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.full{
+    grid-column:1 / -1;
+}
+
+.btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:#1d4ed8;
+}
+
+footer{
+    background:#020617;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+@media(max-width:768px){
+    .hero h1{
+        font-size:2.2rem;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="container">
+        <h1>Academia Performance+</h1>
+        <p>
+            Estrutura moderna, treinos personalizados e profissionais
+            qualificados para ajudar você a conquistar seus objetivos.
+        </p>
+    </div>
+</header>
+
+<section>
+    <div class="container">
+        <h2 class="section-title">Nossos Diferenciais</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Equipe Técnica</h3>
+                <p>
+                    Professores especializados e acompanhamento contínuo
+                    da evolução dos alunos.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Equipamentos Modernos</h3>
+                <p>
+                    Máquinas de última geração para segurança e melhor desempenho.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Avaliação Física</h3>
+                <p>
+                    Monitoramento periódico para ajustar metas e maximizar resultados.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background:white;">
+    <div class="container">
+        <h2 class="section-title">Galeria de Modalidades</h2>
+
+        <div class="modalidades">
+            <div class="modalidade">Musculação</div>
+            <div class="modalidade">Cross Training</div>
+            <div class="modalidade">Spinning</div>
+            <div class="modalidade">Pilates</div>
+            <div class="modalidade">Funcional</div>
+            <div class="modalidade">Yoga</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <h2 class="section-title">Planos e Benefícios</h2>
+
+        <div class="planos">
+            <div class="plano">
+                <h3>Basic</h3>
+                <div class="preco">R$ 89/mês</div>
+
+                <ul>
+                    <li>✅ Musculação</li>
+                    <li>✅ Avaliação física inicial</li>
+                    <li>✅ Acesso em horário comercial</li>
+                </ul>
+            </div>
+
+            <div class="plano">
+                <h3>Premium</h3>
+                <div class="preco">R$ 129/mês</div>
+
+                <ul>
+                    <li>✅ Musculação</li>
+                    <li>✅ Aulas coletivas</li>
+                    <li>✅ Avaliações periódicas</li>
+                    <li>✅ Aplicativo de treinos</li>
+                </ul>
+            </div>
+
+            <div class="plano">
+                <h3>Elite</h3>
+                <div class="preco">R$ 189/mês</div>
+
+                <ul>
+                    <li>✅ Acesso ilimitado</li>
+                    <li>✅ Personal orientador</li>
+                    <li>✅ Todas as modalidades</li>
+                    <li>✅ Área Premium</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="form-section">
+    <div class="container">
+        <div class="formulario">
+
+            <h2 class="section-title">Matrícula Online</h2>
+
+            <form id="matriculaForm">
+                <div class="form-grid">
+
+                    <input type="text"
+                        placeholder="Nome Completo"
+                        required>
+
+                    <input type="text"
+                        placeholder="CPF"
+                        required>
+
+                    <input type="email"
+                        placeholder="E-mail"
+                        required>
+
+                    <input type="tel"
+                        placeholder="Telefone"
+                        required>
+
+                    <input class="full"
+                        type="text"
+                        placeholder="Endereço">
+
+                    <select class="full" required>
+                        <option value="">Escolha sua unidade</option>
+                        <option>Unidade Centro</option>
+                        <option>Unidade Zona Sul</option>
+                        <option>Unidade Zona Norte</option>
+                    </select>
+
+                    <button class="btn full" type="submit">
+                        Solicitar Matrícula
+                    </button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Academia Performance+ | Todos os direitos reservados.</p>
+</footer>
+
+<script>
+document
+.getElementById("matriculaForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    alert(
+        "Cadastro enviado com sucesso! Em breve entraremos em contato."
+    );
+
+    this.reset();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roteiro Brasil — Blog de Viagens e Destinos Brasileiros</title>
+  <!-- Tailwind CSS via CDN conforme diretrizes + Fontes Google (Inter e Playfair Display para toque editorial) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       PASSO 3: ESTILOS CSS RESPONSIVOS, TIPOGRAFIA FLUIDA E MOBILE-FIRST
+       ========================================================================== */
+    :root {
+      --cor-primaria: #0f5132;      /* Verde Mata Atlântica */
+      --cor-primaria-hover: #0a3622;
+      --cor-secundaria: #d97706;    /* Âmbar Dourado / Pôr do Sol */
+      --cor-fundo: #f8faf9;
+      --cor-superficie: #ffffff;
+      --cor-texto: #1e293b;
+      --cor-texto-suave: #475569;
+      --borda-suave: #e2e8f0;
+      --sombra-cartao: 0 10px 25px -5px rgba(15, 81, 50, 0.08), 0 8px 10px -6px rgba(15, 81, 50, 0.04);
+      --sombra-hover: 0 20px 30px -10px rgba(15, 81, 50, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--cor-texto);
+      background-color: var(--cor-fundo);
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* Tipografia Editorial com clamp() para adaptação fluida */
+    .fonte-editorial {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .titulo-hero {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitulo-hero {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      line-height: 1.6;
+    }
+
+    .titulo-secao {
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      line-height: 1.25;
+    }
+
+    .texto-leitura {
+      font-size: clamp(1.02rem, 1.8vw, 1.125rem);
+      line-height: 1.75;
+      color: #334155;
+    }
+
+    /* Gradiente e Padrão Artístico do Hero (Inspirado nas paisagens do Brasil) */
+    .hero-brasil {
+      background: linear-gradient(135deg, #064e3b 0%, #0f766e 48%, #0369a1 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-brasil::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 85% 20%, rgba(251, 191, 36, 0.22) 0%, transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.28) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Cartões e Transições Suaves */
+    .cartao-destino {
+      background: var(--cor-superficie);
+      border: 1px solid var(--borda-suave);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow: var(--sombra-cartao);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .cartao-destino:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--sombra-hover);
+    }
+
+    .cartao-imagem-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background-color: #d1fae5;
+    }
+
+    .cartao-imagem-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .cartao-destino:hover .cartao-imagem-wrapper img {
+      transform: scale(1.05);
+    }
+
+    /* Área de toque acessível (mínimo 44px de altura) */
+    .btn-toque {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
+    }
+
+    /* Grade Responsiva Personalizada (Mobile-First) */
+    .grade-artigos {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    /* Tablets: 600px a 900px */
+    @media (min-width: 600px) {
+      .grade-artigos {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.75rem;
+      }
+    }
+
+    /* Desktop: > 900px */
+    @media (min-width: 901px) {
+      .grade-artigos {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    /* Ajustes específicos para Smartphones (< 600px) */
+    @media (max-width: 599px) {
+      .container-principal {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .filtros-scroll {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        gap: 0.5rem;
+        scrollbar-width: none; /* Firefox */
+      }
+
+      .filtros-scroll::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+      }
+
+      .filtros-scroll button {
+        flex-shrink: 0;
+      }
+
+      .modal-conteudo {
+        border-radius: 1.25rem 1.25rem 0 0;
+        margin-top: auto;
+        max-height: 92vh;
+      }
+    }
+
+    /* Animação do Modal */
+    @keyframes surgirModal {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .animar-modal {
+      animation: surgirModal 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+  <!-- ==========================================================================
+       PASSO 1: CABEÇALHO RESPONSIVO E NAVEGAÇÃO MOBILE
+       ========================================================================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logotipo / Nome do Blog -->
+        <a href="#inicio" class="flex items-center gap-3 group focus:outline-none">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-700 to-teal-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+            <!-- Ícone SVG de Bússola / Sol Tropical -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" fill-opacity="0.25"></polygon>
+            </svg>
+          </div>
+          <div>
+            <span class="fonte-editorial text-xl sm:text-2xl font-bold text-slate-900 tracking-tight block leading-none">
+              Roteiro <span class="text-emerald-700">Brasil</span>
+            </span>
+            <span class="text-[11px] uppercase tracking-widest text-slate-500 font-medium hidden sm:block">
+              Expedições & Cultura
+            </span>
+          </div>
+        </a>
+
+        <!-- Navegação Desktop -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Menu Principal">
+          <a href="#inicio" class="btn-toque px-4 py-2 rounded-xl text-sm font-semibold text-emerald-800 bg-emerald-50 transition-colors">
+            Início
+          </a>
+          <a href="#destinos" class="btn-toque px-4 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-emerald-800 hover:bg-slate-100 transition-colors">
+            Destinos
+          </a>
+          <a href="#destaque" class="btn-toque px-4 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-emerald-800 hover:bg-slate-100 transition-colors">
+            Roteiros
+          </a>
+          <a href="#sobre" class="btn-toque px-4 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-emerald-800 hover:bg-slate-100 transition-colors">
+            Sobre
+          </a>
+        </nav>
+
+        <!-- Botão de Menu Mobile (Hambúrguer) -->
+        <button 
+          id="btn-menu-mobile" 
+          type="button" 
+          class="md:hidden btn-toque p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+          aria-expanded="false" 
+          aria-controls="menu-mobile"
+          aria-label="Abrir menu de navegação">
+          <svg id="icone-abrir" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg id="icone-fechar" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu Dropdown Mobile -->
+    <div id="menu-mobile" class="hidden md:hidden bg-white border-t border-slate-100 px-4 pt-2 pb-4 space-y-1 shadow-lg">
+      <a href="#inicio" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold text-emerald-800 bg-emerald-50">Início</a>
+      <a href="#destinos" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50">Destinos</a>
+      <a href="#destaque" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50">Roteiros</a>
+      <a href="#sobre" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50">Sobre</a>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <!-- ==========================================================================
+         PASSO 1 (Cont.): PAINEL PRINCIPAL (HERO) COM CAMPO DE PESQUISA FUNCIONAL
+         ========================================================================== -->
+    <section class="hero-brasil text-white py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center relative z-10">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-white/15 backdrop-blur-sm border border-white/25 text-amber-200 mb-6">
+          <span>🇧🇷</span> Descubra as maravilhas naturais do Brasil
+        </span>
+
+        <h1 class="fonte-editorial titulo-hero font-bold text-white mb-5">
+          Explore paisagens inesquecíveis de norte a sul do país
+        </h1>
+
+        <p class="subtitulo-hero text-emerald-50/90 max-w-2xl mx-auto mb-8 sm:mb-10 font-normal">
+          Guias completos, dicas práticas de ecoturismo e roteiros autênticos para você planejar sua próxima jornada pelos paraísos brasileiros.
+        </p>
+
+        <!-- Barra de Pesquisa Interativa -->
+        <div class="max-w-2xl mx-auto">
+          <div class="relative flex items-center bg-white rounded-2xl shadow-xl p-1.5 sm:p-2 focus-within:ring-4 focus-within:ring-amber-400/50 transition-shadow">
+            <div class="pl-3 sm:pl-4 text-slate-400 pointer-events-none">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"></path>
+              </svg>
+            </div>
+            <input 
+              type="search" 
+              id="campo-pesquisa" 
+              placeholder="Busque por destino, estado ou atividade (ex: Noronha, trilhas, dunas)..." 
+              aria-label="Pesquisar destinos brasileiros"
+              class="w-full px-3 sm:px-4 py-3 text-slate-800 placeholder-slate-400 bg-transparent border-none focus:outline-none text-sm sm:text-base"
+            >
+            <button 
+              type="button" 
+              id="btn-limpar-busca"
+              class="hidden btn-toque px-3 text-slate-400 hover:text-slate-600 text-sm font-medium"
+              aria-label="Limpar busca">
+              Limpar
+            </button>
+            <a 
+              href="#destinos" 
+              class="btn-toque px-5 sm:px-7 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm sm:text-base transition-colors shrink-0 shadow-sm">
+              Explorar
+            </a>
+          </div>
+          <p class="text-xs text-emerald-100/80 mt-3">
+            Sugestões populares: 
+            <button type="button" class="termo-rapido underline hover:text-amber-300 ml-1" data-termo="Fernando de Noronha">Noronha</button>, 
+            <button type="button" class="termo-rapido underline hover:text-amber-300 ml-1" data-termo="Bonito">Bonito</button>, 
+            <button type="button" class="termo-rapido underline hover:text-amber-300 ml-1" data-termo="Chapada Diamantina">Chapada Diamantina</button>, 
+            <button type="button" class="termo-rapido underline hover:text-amber-300 ml-1" data-termo="Lençóis">Lençóis Maranhenses</button>
+          </p>
+        </div>
+      </div>
+
+      <!-- Onda decorativa inferior em SVG -->
+      <div class="absolute bottom-0 left-0 right-0 leading-none overflow-hidden pointer-events-none">
+        <svg class="relative block w-full h-6 sm:h-10 text-[#f8faf9]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.3,192.39,105.7,237.11,95.82,278.5,64.4,321.39,56.44Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         PASSO 1 (Cont.): ARTIGO EM DESTAQUE (FEATURED ARTICLE)
+         ========================================================================== -->
+    <section id="destaque" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-6">
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+          <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-500">
+            Artigo em Destaque da Semana
+          </h2>
+        </div>
+      </div>
+
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12 transition-all hover:shadow-xl">
+        <!-- Imagem do Destaque com Fallback SVG garantido -->
+        <div class="lg:col-span-7 relative min-h-[240px] sm:min-h-[340px] bg-emerald-900 overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1518639192441-8fce0a366e2e?auto=format&fit=crop&w=1200&q=80" 
+            alt="Vista panorâmica das águas cristalinas e falésias de Fernando de Noronha"
+            class="w-full h-full object-cover"
+            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 500%22><defs><linearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22><stop offset=%220%25%22 stop-color=%22%23047857%22/><stop offset=%22100%25%22 stop-color=%22%230284c7%22/></linearGradient></defs><rect width=%22800%22 height=%22500%22 fill=%22url(%23g)%22/><circle cx=%22640%22 cy=%22110%22 r=%2255%22 fill=%22%23fcd34d%22 opacity=%220.85%22/><path d=%22M0 360 Q 220 290 450 360 T 800 340 L 800 500 L 0 500 Z%22 fill=%22%23065f46%22/><path d=%22M0 410 Q 300 370 600 415 T 800 400 L 800 500 L 0 500 Z%22 fill=%22%230ea5e9%22 opacity=%220.7%22/></svg>';"
+          >
+          <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide bg-amber-500 text-slate-950 shadow">
+              ★ Destaque Editorial
+            </span>
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900/75 text-white backdrop-blur-sm">
+              Nordeste • Pernambuco
+            </span>
+          </div>
+        </div>
+
+        <!-- Conteúdo do Destaque -->
+        <div class="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 text-xs sm:text-sm text-slate-500 mb-3">
+              <span class="font-medium text-emerald-700">Roteiro Completo</span>
+              <span>•</span>
+              <span>8 min de leitura</span>
+            </div>
+
+            <h3 class="fonte-editorial text-2xl sm:text-3xl font-bold text-slate-900 leading-tight mb-4">
+              Fernando de Noronha: O Guia Definitivo para Conhecer o Santuário Ecológico
+            </h3>
+
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+              De mergulhos com golfinhos na Baía dos Porcos ao pôr do sol inesquecível no Mirante do Boldró. Descubra a melhor época para viajar, como organizar os passeios na Baía do Sancho e dicas para economizar no arquipélago mais desejado do Brasil.
+            </p>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center">
+                CM
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-800">Camila Mendes</p>
+                <p class="text-[11px] text-slate-500">Editora de Ecoturismo</p>
+              </div>
+            </div>
+
+            <button 
+              type="button"
+              onclick="abrirArtigo(1)"
+              class="btn-toque px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm transition-colors shadow-sm gap-2">
+              <span>Ler artigo</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==========================================================================
+         PASSO 2: GRADE DE CARTÕES DE ARTIGOS (DESTINOS BRASILEIROS)
+         ========================================================================== -->
+    <section id="destinos" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      
+      <!-- Cabeçalho da Seção + Filtros Regionais -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10">
+        <div>
+          <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-700 block mb-1">
+            Explorar por Região
+          </span>
+          <h2 class="fonte-editorial titulo-secao font-bold text-slate-900">
+            Destinos Imperdíveis no Brasil
+          </h2>
+        </div>
+
+        <!-- Botões de Filtro Rápido -->
+        <div class="filtros-scroll flex flex-wrap gap-2" role="group" aria-label="Filtrar artigos por região">
+          <button type="button" data-regiao="Todos" class="filtro-btn btn-toque px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-700 text-white shadow-sm transition-all">
+            Todos (6)
+          </button>
+          <button type="button" data-regiao="Nordeste" class="filtro-btn btn-toque px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:border-emerald-600 transition-all">
+            Nordeste
+          </button>
+          <button type="button" data-regiao="Centro-Oeste" class="filtro-btn btn-toque px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:border-emerald-600 transition-all">
+            Centro-Oeste
+          </button>
+          <button type="button" data-regiao="Norte" class="filtro-btn btn-toque px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:border-emerald-600 transition-all">
+            Norte
+          </button>
+          <button type="button" data-regiao="Sul" class="filtro-btn btn-toque px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:border-emerald-600 transition-all">
+            Sul
+          </button>
+        </div>
+      </div>
+
+      <!-- Status da Pesquisa / Contagem -->
+      <div id="status-filtro" class="hidden mb-6 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm flex items-center justify-between">
+        <span id="texto-status-filtro">Exibindo resultados filtrados</span>
+        <button type="button" id="resetar-filtros" class="font-semibold underline hover:text-emerald-700">
+          Mostrar todos
+        </button>
+      </div>
+
+      <!-- Grade Responsiva de Cartões -->
+      <div id="grade-artigos" class="grade-artigos">
+        <!-- Os cartões são renderizados dinamicamente via JavaScript com dados ricos e fallbacks SVG -->
+      </div>
+
+      <!-- Mensagem caso nenhum artigo corresponda à busca -->
+      <div id="estado-vazio" class="hidden text-center py-16 px-4 bg-white rounded-3xl border border-slate-200">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="fonte-editorial text-xl font-bold text-slate-800 mb-2">Nenhum destino encontrado</h3>
+        <p class="text-slate-600 max-w-md mx-auto mb-6 text-sm sm:text-base">
+          Não encontramos artigos com os termos pesquisados. Tente buscar por outro estado, cidade ou selecione "Todos" nos filtros acima.
+        </p>
+        <button type="button" id="btn-reset-vazio" class="btn-toque px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm">
+          Ver todos os destinos
+        </button>
+      </div>
+    </section>
+
+    <!-- Seção Institucional / Sobre o Blog -->
+    <section id="sobre" class="bg-emerald-950 text-emerald-50 py-14 sm:py-16 px-4 sm:px-6 lg:px-8 mt-8">
+      <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-2">Sobre o Roteiro Brasil</span>
+          <h2 class="fonte-editorial text-2xl sm:text-3xl font-bold text-white mb-4">
+            Turismo sustentável e descobertas autênticas em cada canto do nosso território
+          </h2>
+          <p class="text-emerald-100/85 text-sm sm:text-base leading-relaxed">
+            O <strong>Roteiro Brasil</strong> nasceu com a missão de valorizar a biodiversidade, a cultura regional e os roteiros de natureza do Brasil. Nossos guias são escritos por viajantes experientes para ajudar você a explorar cada destino com respeito ambiental e planejamento inteligente.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-5 rounded-2xl bg-white/5 border border-white/10">
+            <p class="fonte-editorial text-3xl font-bold text-amber-400 mb-1">26 + DF</p>
+            <p class="text-xs sm:text-sm text-emerald-100/80">Estados catalogados com dicas locais</p>
+          </div>
+          <div class="p-5 rounded-2xl bg-white/5 border border-white/10">
+            <p class="fonte-editorial text-3xl font-bold text-amber-400 mb-1">100%</p>
+            <p class="text-xs sm:text-sm text-emerald-100/80">Foco em ecoturismo e cultura brasileira</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-slate-900 text-slate-400 py-8 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
+      <p>© 2026 <span class="text-white font-semibold">Roteiro Brasil</span> — Todos os direitos reservados.</p>
+      <p>Desenvolvido com foco em leitura responsiva e experiência mobile.</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MODAL DE LEITURA COMPLETA DO ARTIGO (OTIMIZADO PARA SMARTPHONES)
+       ========================================================================== -->
+  <div 
+    id="modal-artigo" 
+    class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="modal-titulo">
+    
+    <div class="modal-conteudo animar-modal bg-white w-full max-w-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[88vh]">
+      
+      <!-- Barra Superior Fixa do Modal -->
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-white sticky top-0 z-10">
+        <span id="modal-tag" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+          Região
+        </span>
+        <button 
+          type="button" 
+          id="btn-fechar-modal" 
+          class="btn-toque w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors"
+          aria-label="Fechar artigo">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Área Rolável de Leitura -->
+      <div class="overflow-y-auto p-5 sm:p-8 space-y-6">
+        <div class="rounded-2xl overflow-hidden aspect-video bg-slate-100">
+          <img id="modal-imagem" src="" alt="" class="w-full h-full object-cover">
+        </div>
+
+        <div>
+          <div class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-slate-500 mb-2">
+            <span id="modal-local" class="font-semibold text-emerald-700"></span>
+            <span>•</span>
+            <span id="modal-tempo"></span>
+            <span>•</span>
+            <span id="modal-autor"></span>
+          </div>
+          <h2 id="modal-titulo" class="fonte-editorial text-2xl sm:text-3xl font-bold text-slate-900 leading-tight"></h2>
+        </div>
+
+        <!-- Destaques Rápidos do Destino -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-2xl bg-emerald-50/80 border border-emerald-100">
+          <div>
+            <span class="text-[11px] uppercase tracking-wider font-bold text-emerald-800 block">Melhor Época</span>
+            <span id="modal-epoca" class="text-sm font-medium text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-[11px] uppercase tracking-wider font-bold text-emerald-800 block">Atrações Principais</span>
+            <span id="modal-atracoes" class="text-sm font-medium text-slate-800"></span>
+          </div>
+        </div>
+
+        <!-- Corpo do Texto Otimizado para Leitura Mobile -->
+        <div id="modal-corpo" class="texto-leitura space-y-4"></div>
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="px-5 py-3.5 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+        <span class="text-xs text-slate-500">Roteiro Brasil • Guia de Viagem</span>
+        <button 
+          type="button" 
+          id="btn-concluir-leitura"
+          class="btn-toque px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm transition-colors">
+          Voltar aos destinos
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT: DADOS DOS DESTINOS, FILTRAGEM EM TEMPO REAL E INTERATIVIDADE
+       ========================================================================== -->
+  <script>
+    // Banco de dados completo dos 6 destinos brasileiros solicitados
+    const artigosDestinos = [
+      {
+        id: 1,
+        titulo: "Fernando de Noronha: Praias Cristalinas e Vida Marinha",
+        destino: "Fernando de Noronha (PE)",
+        regiao: "Nordeste",
+        categoria: "Praias & Mergulho",
+        tempoLeitura: "8 min",
+        autor: "Camila Mendes",
+        epoca: "Agosto a Dezembro (mar calmo e visibilidade perfeita)",
+        atracoes: "Baía do Sancho, Baía dos Porcos, Mirante do Boldró",
+        resumo: "Explore a Baía do Sancho, eleita diversas vezes a praia mais bonita do mundo, e mergulhe ao lado de tartarugas e golfinhos em águas azul-turquesa.",
+        imagem: "https://images.unsplash.com/photo-1518639192441-8fce0a366e2e?auto=format&fit=crop&w=900&q=80",
+        corFallback: "#0284c7",
+        conteudo: [
+          "Localizado a cerca de 545 km da costa de Pernambuco, o arquipélago de Fernando de Noronha é um verdadeiro santuário ecológico protegido pelo Parque Nacional Marinho. Com controle rigoroso de visitantes, o destino preserva uma natureza intocada que encanta logo no primeiro olhar.",
+          "A Baía do Sancho é parada obrigatória: acessada por uma escadaria encravada entre falésias ou por embarcações, revela um mar de transparência impressionante e rica biodiversidade marinha, ideal para snorkeling.",
+          "Dica prática: reserve seus ingressos para o Parque Nacional com antecedência e não deixe de assistir ao pôr do sol no Forte de Nossa Senhora dos Remédios ou no Mirante do Boldró, onde o Morro Dois Irmãos emoldura o horizonte."
+        ]
+      },
+      {
+        id: 2,
+        titulo: "Bonito: Flutuação em Rios Cristalinos e Grutas Milenares",
+        destino: "Bonito (MS)",
+        regiao: "Centro-Oeste",
+        categoria: "Ecoturismo",
+        tempoLeitura: "6 min",
+        autor: "Rafael Costa",
+        epoca: "Dezembro a Março (cheia e vegetação exuberante) ou Maio a Agosto (águas ainda mais límpidas)",
+        atracoes: "Rio da Prata, Gruta do Lago Azul, Nascente Azul",
+        resumo: "Referência mundial em turismo sustentável, Bonito oferece flutuações em aquários naturais repletos de peixes e cavernas subterrâneas fascinantes.",
+        imagem: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80",
+        corFallback: "#0d9488",
+        conteudo: [
+          "Situado na Serra da Bodoquena, em Mato Grosso do Sul, Bonito faz jus ao nome. Graças à alta concentração de calcário nas rochas, as impurezas decantam naturalmente, transformando rios como o Rio da Prata e o Rio Sucuri em verdadeiros aquários naturais.",
+          "Durante a flutuação, o visitante apenas boia suavemente seguindo a correnteza, observando cardumes de piraputangas, dourados e curimbatás sem precisar fazer esforço.",
+          "Outro cartão-postal imperdível é a Gruta do Lago Azul, uma caverna com estalactites milenares que guarda um lago subterrâneo de tonalidade azul intensa, especialmente iluminado pelos raios solares nas manhãs de verão."
+        ]
+      },
+      {
+        id: 3,
+        titulo: "Chapada Diamantina: Cânions, Trilhas e Cachoeiras Gigantes",
+        destino: "Chapada Diamantina (BA)",
+        regiao: "Nordeste",
+        categoria: "Aventura & Trilhas",
+        tempoLeitura: "7 min",
+        autor: "Lucas Andrade",
+        epoca: "Abril a Outubro (clima mais seco para trilhas)",
+        atracoes: "Morro do Pai Inácio, Cachoeira da Fumaça, Poço Encantado",
+        resumo: "No coração da Bahia, formações rochosas monumentais escondem quedas d'água de quase 400 metros e grutas iluminadas por feixes de luz.",
+        imagem: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=900&q=80",
+        corFallback: "#059669",
+        conteudo: [
+          "Com base na charmosa cidade histórica de Lençóis, a Chapada Diamantina é o paraíso brasileiro para quem ama caminhadas em meio à natureza. Suas paisagens misturam cerrado, campos rupestres e mata atlântica.",
+          "Subir o Morro do Pai Inácio no final da tarde proporciona uma das vistas panorâmicas mais icônicas do Brasil. Já a trilha até a Cachoeira da Fumaça leva ao topo de um paredão de 340 metros de altura, onde o vento dispersa a água antes mesmo de tocar o solo.",
+          "Para momentos de contemplação, o Poço Encantado e o Poço Azul surpreendem com águas subterrâneas tão cristalinas que parecem invisíveis sob os raios de sol."
+        ]
+      },
+      {
+        id: 4,
+        titulo: "Lençóis Maranhenses: O Deserto Brasileiro de Lagoas Doces",
+        destino: "Lençóis Maranhenses (MA)",
+        regiao: "Nordeste",
+        categoria: "Paisagens Únicas",
+        tempoLeitura: "5 min",
+        autor: "Camila Mendes",
+        epoca: "Maio a Setembro (lagoas cheias após o período de chuvas)",
+        atracoes: "Lagoa Azul, Lagoa Bonita, Atins e Canto do Atins",
+        resumo: "Quilômetros de dunas de areia branca intercaladas por milhares de lagoas de água da chuva em tons de verde-esmeralda e azul-turquesa.",
+        imagem: "https://images.unsplash.com/photo-1591533985302-42123fa9240b?auto=format&fit=crop&w=900&q=80",
+        corFallback: "#0369a1",
+        conteudo: [
+          "Um fenômeno geológico raro no planeta: nos Lençóis Maranhenses, ventos fortes sopram a areia do litoral para o interior formando dunas de até 40 metros de altura. Entre janeiro e maio, as chuvas preenchem os vales entre as dunas, criando milhares de lagoas cristalinas.",
+          "As bases principais são Barreirinhas, Santo Amaro e o vilarejo rústico de Atins. Caminhar descalço pela areia fina e mergulhar na Lagoa Bonita ao entardecer é uma experiência sensorial inesquecível.",
+          "Dica de viagem: leve protetor solar, óculos escuros e roupas leves, pois não há sombra nas dunas; prefira os passeios no início da manhã ou no meio da tarde."
+        ]
+      },
+      {
+        id: 5,
+        titulo: "Jalapão: Fervedouros Mágicos e Dunas Douradas no Cerrado",
+        destino: "Jalapão (TO)",
+        regiao: "Norte",
+        categoria: "Expedição Off-Road",
+        tempoLeitura: "6 min",
+        autor: "Rafael Costa",
+        epoca: "Maio a Setembro (estação seca, estradas mais acessíveis)",
+        atracoes: "Fervedouro do Ceiça, Dunas do Jalapão, Cachoeira da Velha",
+        resumo: "Uma expedição pelo coração do Tocantins para flutuar sem afundar nos fervedouros e admirar o pôr do sol nas dunas alaranjadas.",
+        imagem: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80",
+        corFallback: "#d97706",
+        conteudo: [
+          "O Parque Estadual do Jalapão, no leste do Tocantins, é um destino de aventura bruta e beleza singular. Por conta das estradas de areia fofa, a região é explorada principalmente em veículos 4x4.",
+          "A grande estrela local são os fervedouros — nascentes de rios subterrâneos onde a pressão da água que brota do solo impede que qualquer pessoa afunde, criando uma sensação deliciosa de gravidade zero.",
+          "Além disso, a imponente Cachoeira da Velha, em formato de ferradura, e as Dunas do Jalapão, que ganham tons dourados intensos no fim do dia, completam o roteiro."
+        ]
+      },
+      {
+        id: 6,
+        titulo: "Serra Gaúcha: Charme Europeu, Vinhedos e Natureza em Gramado",
+        destino: "Gramado e Canela (RS)",
+        regiao: "Sul",
+        categoria: "Gastronomia & Inverno",
+        tempoLeitura: "5 min",
+        autor: "Mariana Silva",
+        epoca: "Junho a Agosto (frio e clima serrano) ou Novembro a Janeiro (Natal Luz)",
+        atracoes: "Lago Negro, Cascata do Caracol, Vale dos Vinhedos",
+        resumo: "Arquitetura alpina, hortênsias floridas, cafés coloniais fartos e parques naturais cercados por araucárias no sul do Brasil.",
+        imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80",
+        corFallback: "#15803d",
+        conteudo: [
+          "A Serra Gaúcha combina infraestrutura turística impecável com paisagens de montanha e forte herança cultural de imigrantes italianos e alemães. Gramado e a vizinha Canela encantam em qualquer estação do ano.",
+          "Em Gramado, caminhar ao redor do Lago Negro cercado por árvores importadas da Floresta Negra alemã é um programa clássico. A poucos quilômetros, em Canela, o Parque do Caracol revela uma queda d'água de 131 metros em meio à mata de araucárias.",
+          "Na gastronomia, destaque para os tradicionais fondues, chocolates artesanais e o farto café colonial, além dos passeios de enoturismo no vizinho Vale dos Vinhedos."
+        ]
+      }
+    ];
+
+    // Estado atual dos filtros
+    let filtroRegiaoAtual = "Todos";
+    let termoPesquisaAtual = "";
+
+    // Elementos do DOM
+    const gradeArtigosEl = document.getElementById("grade-artigos");
+    const campoPesquisaEl = document.getElementById("campo-pesquisa");
+    const btnLimparBuscaEl = document.getElementById("btn-limpar-busca");
+    const botoesFiltroEl = document.querySelectorAll(".filtro-btn");
+    const estadoVazioEl = document.getElementById("estado-vazio");
+    const statusFiltroEl = document.getElementById("status-filtro");
+    const textoStatusFiltroEl = document.getElementById("texto-status-filtro");
+
+    // Gera um SVG de fallback personalizado caso alguma imagem externa demore ou falhe
+    function gerarFallbackSVG(cor, titulo) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${cor}"/>
+            <stop offset="100%" stop-color="#064e3b"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="500" fill="url(#bg)"/>
+        <circle cx="650" cy="120" r="60" fill="#fde68a" opacity="0.75"/>
+        <path d="M0 350 Q 250 260 500 350 T 800 320 L 800 500 L 0 500 Z" fill="#022c22" opacity="0.5"/>
+        <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="26" font-weight="bold">${titulo}</text>
+      </svg>`;
+      return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+
+    // Normaliza texto para busca sem acentos
+    function normalizarTexto(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    // Renderiza os cartões na grade
+    function renderizarArtigos() {
+      const termoNorm = normalizarTexto(termoPesquisaAtual.trim());
+
+      const filtrados = artigosDestinos.filter((artigo) => {
+        const correspondeRegiao = filtroRegiaoAtual === "Todos" || artigo.regiao === filtroRegiaoAtual;
+        const textoCompleto = normalizarTexto(
+          `${artigo.titulo} ${artigo.destino} ${artigo.regiao} ${artigo.categoria} ${artigo.resumo} ${artigo.atracoes}`
+        );
+        const correspondeBusca = termoNorm === "" || textoCompleto.includes(termoNorm);
+        return correspondeRegiao && correspondeBusca;
+      });
+
+      // Atualiza barra de status de filtro
+      if (filtroRegiaoAtual !== "Todos" || termoNorm !== "") {
+        statusFiltroEl.classList.remove("hidden");
+        textoStatusFiltroEl.textContent = `Exibindo ${filtrados.length} ${filtrados.length === 1 ? "destino encontrado" : "destinos encontrados"}${filtroRegiaoAtual !== "Todos" ? ` na região ${filtroRegiaoAtual}` : ""}${termoNorm ? ` para "${termoPesquisaAtual}"` : ""}.`;
+      } else {
+        statusFiltroEl.classList.add("hidden");
+      }
+
+      // Alterna estado vazio
+      if (filtrados.length === 0) {
+        gradeArtigosEl.innerHTML = "";
+        estadoVazioEl.classList.remove("hidden");
+        return;
+      } else {
+        estadoVazioEl.classList.add("hidden");
+      }
+
+      // Monta o HTML dos cartões
+      gradeArtigosEl.innerHTML = filtrados
+        .map(
+          (artigo) => `
+          <article class="cartao-destino group">
+            <div class="cartao-imagem-wrapper">
+              <img 
+                src="${artigo.imagem}" 
+                alt="${artigo.destino}" 
+                loading="lazy"
+                onerror="this.onerror=null; this.src='${gerarFallbackSVG(artigo.corFallback, artigo.destino)}';"
+              >
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-emerald-900 shadow-sm">
+                  ${artigo.regiao}
+                </span>
+              </div>
+              <div class="absolute bottom-3 right-3">
+                <span class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-slate-900/75 text-white backdrop-blur-sm">
+                  ⏱ ${artigo.tempoLeitura}
+                </span>
+              </div>
+            </div>
+
+            <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs font-semibold text-emerald-700 mb-2">
+                  <span>📍 ${artigo.destino}</span>
+                  <span class="text-slate-400 font-normal">${artigo.categoria}</span>
+                </div>
+
+                <h3 class="fonte-editorial text-xl font-bold text-slate-900 group-hover:text-emerald-800 transition-colors leading-snug mb-3">
+                  ${artigo.titulo}
+                </h3>
+
+                <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                  ${artigo.resumo}
+                </p>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-500">Por ${artigo.autor}</span>
+                <button 
+                  type="button"
+                  onclick="abrirArtigo(${artigo.id})"
+                  class="btn-toque px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-700 text-emerald-800 hover:text-white font-semibold text-sm transition-colors gap-1.5">
+                  <span>Ler guia</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+        `
+        )
+        .join("");
+    }
+
+    // Eventos de Pesquisa em Tempo Real
+    campoPesquisaEl.addEventListener("input", (e) => {
+      termoPesquisaAtual = e.target.value;
+      btnLimparBuscaEl.classList.toggle("hidden", termoPesquisaAtual === "");
+      renderizarArtigos();
+    });
+
+    btnLimparBuscaEl.addEventListener("click", () => {
+      termoPesquisaAtual = "";
+      campoPesquisaEl.value = "";
+      btnLimparBuscaEl.classList.add("hidden");
+      renderizarArtigos();
+      campoPesquisaEl.focus();
+    });
+
+    // Sugestões rápidas abaixo da barra de pesquisa
+    document.querySelectorAll(".termo-rapido").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const termo = btn.getAttribute("data-termo");
+        campoPesquisaEl.value = termo;
+        termoPesquisaAtual = termo;
+        btnLimparBuscaEl.classList.remove("hidden");
+        renderizarArtigos();
+        document.getElementById("destinos").scrollIntoView({ behavior: "smooth" });
+      });
+    });
+
+    // Eventos dos Botões de Filtro Regional
+    botoesFiltroEl.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filtroRegiaoAtual = btn.getAttribute("data-regiao");
+
+        botoesFiltroEl.forEach((b) => {
+          b.classList.remove("bg-emerald-700", "text-white", "shadow-sm");
+          b.classList.add("bg-white", "text-slate-700", "border", "border-slate-200");
+        });
+
+        btn.classList.remove("bg-white", "text-slate-700", "border", "border-slate-200");
+        btn.classList.add("bg-emerald-700", "text-white", "shadow-sm");
+
+        renderizarArtigos();
+      });
+    });
+
+    // Botões de reset
+    function resetarTodosFiltros() {
+      filtroRegiaoAtual = "Todos";
+      termoPesquisaAtual = "";
+      campoPesquisaEl.value = "";
+      btnLimparBuscaEl.classList.add("hidden");
+
+      botoesFiltroEl.forEach((b) => {
+        const isTodos = b.getAttribute("data-regiao") === "Todos";
+        b.className = isTodos
+          ? "filtro-btn btn-toque px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-700 text-white shadow-sm transition-all"
+          : "filtro-btn btn-toque px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:border-emerald-600 transition-all";
+      });
+
+      renderizarArtigos();
+    }
+
+    document.getElementById("resetar-filtros").addEventListener("click", resetarTodosFiltros);
+    document.getElementById("btn-reset-vazio").addEventListener("click", resetarTodosFiltros);
+
+    // Menu Mobile Toggle
+    const btnMenuMobile = document.getElementById("btn-menu-mobile");
+    const menuMobile = document.getElementById("menu-mobile");
+    const iconeAbrir = document.getElementById("icone-abrir");
+    const iconeFechar = document.getElementById("icone-fechar");
+
+    btnMenuMobile.addEventListener("click", () => {
+      const aberto = !menuMobile.classList.contains("hidden");
+      menuMobile.classList.toggle("hidden", aberto);
+      iconeAbrir.classList.toggle("hidden", !aberto);
+      iconeFechar.classList.toggle("hidden", aberto);
+      btnMenuMobile.setAttribute("aria-expanded", String(!aberto));
+    });
+
+    document.querySelectorAll(".mobile-link").forEach((link) => {
+      link.addEventListener("click", () => {
+        menuMobile.classList.add("hidden");
+        iconeAbrir.classList.remove("hidden");
+        iconeFechar.classList.add("hidden");
+        btnMenuMobile.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // Modal de Leitura Completa
+    const modalEl = document.getElementById("modal-artigo");
+
+    window.abrirArtigo = function (id) {
+      const artigo = artigosDestinos.find((item) => item.id === id);
+      if (!artigo) return;
+
+      document.getElementById("modal-tag").textContent = `${artigo.regiao} • ${artigo.categoria}`;
+      document.getElementById("modal-local").textContent = `📍 ${artigo.destino}`;
+      document.getElementById("modal-tempo").textContent = `⏱ ${artigo.tempoLeitura} de leitura`;
+      document.getElementById("modal-autor").textContent = `Por ${artigo.autor}`;
+      document.getElementById("modal-titulo").textContent = artigo.titulo;
+      document.getElementById("modal-epoca").textContent = artigo.epoca;
+      document.getElementById("modal-atracoes").textContent = artigo.atracoes;
+
+      const imgEl = document.getElementById("modal-imagem");
+      imgEl.src = artigo.imagem;
+      imgEl.alt = artigo.destino;
+      imgEl.onerror = function () {
+        this.onerror = null;
+        this.src = gerarFallbackSVG(artigo.corFallback, artigo.destino);
+      };
+
+      document.getElementById("modal-corpo").innerHTML = artigo.conteudo
+        .map((paragrafo) => `<p>${paragrafo}</p>`)
+        .join("");
+
+      modalEl.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    };
+
+    function fecharModal() {
+      modalEl.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+
+    document.getElementById("btn-fechar-modal").addEventListener("click", fecharModal);
+    document.getElementById("btn-concluir-leitura").addEventListener("click", fecharModal);
+
+    modalEl.addEventListener("click", (e) => {
+      if (e.target === modalEl) fecharModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modalEl.classList.contains("hidden")) {
+        fecharModal();
+      }
+    });
+
+    // Inicializa a grade ao carregar a página
+    renderizarArtigos();
+  </script>
+</body>
+</html>

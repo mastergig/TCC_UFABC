@@ -1,0 +1,708 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViajeMais | Agência de Turismo</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f6fa;
+    color: #263445;
+}
+
+header {
+    background: #073b63;
+    color: white;
+    padding: 22px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 27px;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+}
+
+.hero {
+    background: linear-gradient(
+        rgba(0, 35, 65, .65),
+        rgba(0, 35, 65, .65)
+    ), url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600");
+    background-size: cover;
+    background-position: center;
+    padding: 75px 20px;
+    text-align: center;
+    color: white;
+}
+
+.hero h2 {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    font-size: 17px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: -35px auto 50px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.search-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px #0002;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tabs button {
+    padding: 13px 25px;
+    border: none;
+    background: #e8eef5;
+    color: #073b63;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.tabs button.active {
+    background: #0879bd;
+    color: white;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccd5df;
+    border-radius: 6px;
+    outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+    border-color: #0879bd;
+}
+
+.search-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ff8c32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.search-btn:hover {
+    background: #e8751d;
+}
+
+.results {
+    margin-top: 45px;
+}
+
+.results h2 {
+    margin-bottom: 22px;
+    color: #073b63;
+}
+
+.result-card {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 3px 12px #0001;
+}
+
+.result-info h3 {
+    color: #073b63;
+    margin-bottom: 10px;
+}
+
+.result-info p {
+    margin: 7px 0;
+    color: #5c6875;
+}
+
+.price {
+    color: #07834c;
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.select-btn {
+    padding: 12px 20px;
+    background: #0879bd;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.select-btn:hover {
+    background: #055b90;
+}
+
+.hotel-card {
+    overflow: hidden;
+}
+
+.hotel-card img {
+    width: 190px;
+    height: 145px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.hotel-info {
+    flex: 1;
+}
+
+.stars {
+    color: #f5a623;
+    margin: 8px 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0009;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 10;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    color: #073b63;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    margin: 12px 0;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccd5df;
+    border-radius: 6px;
+}
+
+.close-btn {
+    background: #e74c3c;
+    margin-top: 10px;
+}
+
+footer {
+    background: #073b63;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+@media(max-width: 750px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    header nav a {
+        margin: 0 8px;
+    }
+
+    .hero h2 {
+        font-size: 27px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .result-card {
+        flex-wrap: wrap;
+    }
+
+    .hotel-card img {
+        width: 100%;
+        height: 190px;
+    }
+}
+
+@media(max-width: 480px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>✈ ViajeMais</h1>
+    <nav>
+        <a href="#">Início</a>
+        <a href="#busca">Pesquisar</a>
+        <a href="#resultados">Ofertas</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>O mundo espera por você!</h2>
+    <p>Encontre voos e hospedagens com facilidade e segurança.</p>
+</section>
+
+<main class="container" id="busca">
+
+    <section class="search-box">
+
+        <div class="tabs">
+            <button id="tabFlight" class="active"
+                onclick="showTab('flight')">
+                ✈ Buscar Voos
+            </button>
+
+            <button id="tabHotel"
+                onclick="showTab('hotel')">
+                🏨 Buscar Hotéis
+            </button>
+        </div>
+
+        <!-- FORMULÁRIO DE VOOS -->
+        <form id="flightForm">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>Origem</label>
+                    <input id="origin" type="text"
+                        placeholder="Ex: São Paulo" required>
+                </div>
+
+                <div class="field">
+                    <label>Destino</label>
+                    <input id="destination" type="text"
+                        placeholder="Ex: Rio de Janeiro" required>
+                </div>
+
+                <div class="field">
+                    <label>Data de ida</label>
+                    <input id="departure" type="date" required>
+                </div>
+
+                <div class="field">
+                    <label>Passageiros</label>
+                    <select id="passengers">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button class="search-btn" type="submit">
+                Pesquisar Voos
+            </button>
+
+        </form>
+
+        <!-- FORMULÁRIO DE HOTÉIS -->
+        <form id="hotelForm" class="hidden">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>Destino</label>
+                    <input id="hotelCity" type="text"
+                        placeholder="Ex: Salvador" required>
+                </div>
+
+                <div class="field">
+                    <label>Check-in</label>
+                    <input id="checkin" type="date" required>
+                </div>
+
+                <div class="field">
+                    <label>Check-out</label>
+                    <input id="checkout" type="date" required>
+                </div>
+
+                <div class="field">
+                    <label>Hóspedes</label>
+                    <select id="guests">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button class="search-btn" type="submit">
+                Pesquisar Hotéis
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- RESULTADOS -->
+    <section class="results" id="resultsSection">
+        <h2 id="resultsTitle">Ofertas em destaque</h2>
+        <div id="results">
+            <p>Escolha uma das opções acima para iniciar sua pesquisa.</p>
+        </div>
+    </section>
+
+</main>
+
+<!-- MODAL DE RESERVA -->
+<div class="modal" id="bookingModal">
+
+    <div class="modal-content">
+
+        <h2>Confirmar Reserva</h2>
+
+        <p id="bookingDescription"></p>
+
+        <form id="bookingForm">
+
+            <input type="text" id="customerName"
+                placeholder="Seu nome completo" required>
+
+            <input type="email" id="customerEmail"
+                placeholder="Seu e-mail" required>
+
+            <button class="search-btn" type="submit">
+                Confirmar Solicitação
+            </button>
+
+        </form>
+
+        <button class="search-btn close-btn"
+            onclick="closeModal()">
+            Fechar
+        </button>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 ViajeMais - Agência de Turismo</p>
+    <p>Viaje com conforto, segurança e economia!</p>
+</footer>
+
+<script>
+
+const results = document.getElementById("results");
+
+let selectedItem = "";
+
+function showTab(tab) {
+
+    const flightForm = document.getElementById("flightForm");
+    const hotelForm = document.getElementById("hotelForm");
+
+    document.getElementById("tabFlight").classList.toggle(
+        "active", tab === "flight"
+    );
+
+    document.getElementById("tabHotel").classList.toggle(
+        "active", tab === "hotel"
+    );
+
+    flightForm.classList.toggle("hidden", tab !== "flight");
+    hotelForm.classList.toggle("hidden", tab !== "hotel");
+
+    document.getElementById("resultsTitle").textContent =
+        tab === "flight" ? "Voos disponíveis" : "Hotéis disponíveis";
+
+    results.innerHTML =
+        "<p>Preencha o formulário para visualizar os resultados.</p>";
+}
+
+// PESQUISA DE VOOS
+document.getElementById("flightForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const origin = document.getElementById("origin").value;
+    const destination = document.getElementById("destination").value;
+
+    const departure = document.getElementById("departure").value;
+    const passengers = document.getElementById("passengers").value;
+
+    document.getElementById("resultsTitle").textContent =
+        `Voos: ${origin} → ${destination}`;
+
+    const flights = [
+        {
+            company: "LATAM Airlines",
+            departure: "08:30",
+            arrival: "09:40",
+            price: 450
+        },
+        {
+            company: "GOL Linhas Aéreas",
+            departure: "12:15",
+            arrival: "13:25",
+            price: 520
+        },
+        {
+            company: "Azul Linhas Aéreas",
+            departure: "18:00",
+            arrival: "19:10",
+            price: 490
+        }
+    ];
+
+    results.innerHTML = "";
+
+    flights.forEach(flight => {
+
+        results.innerHTML += `
+            <div class="result-card">
+
+                <div class="result-info">
+                    <h3>✈ ${flight.company}</h3>
+
+                    <p>
+                        ${origin} (${flight.departure})
+                        →
+                        ${destination} (${flight.arrival})
+                    </p>
+
+                    <p>Data: ${departure}</p>
+                    <p>Passageiros: ${passengers}</p>
+                </div>
+
+                <div>
+                    <div class="price">
+                        R$ ${flight.price.toFixed(2)}
+                    </div>
+
+                    <button class="select-btn"
+                        onclick="openModal(
+                            '${flight.company}',
+                            'Voo ${origin} para ${destination} - R$ ${flight.price.toFixed(2)}'
+                        )">
+                        Selecionar Voo
+                    </button>
+                </div>
+
+            </div>
+        `;
+
+    });
+
+});
+
+// PESQUISA DE HOTÉIS
+document.getElementById("hotelForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const city = document.getElementById("hotelCity").value;
+    const checkin = document.getElementById("checkin").value;
+    const checkout = document.getElementById("checkout").value;
+    const guests = document.getElementById("guests").value;
+
+    if (checkout <= checkin) {
+        alert("A data de check-out deve ser posterior ao check-in.");
+        return;
+    }
+
+    document.getElementById("resultsTitle").textContent =
+        `Hotéis disponíveis em ${city}`;
+
+    const hotels = [
+        {
+            name: "Resort Paraíso Tropical",
+            stars: 5,
+            price: 650,
+            image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500"
+        },
+        {
+            name: "Hotel Vista Mar",
+            stars: 4,
+            price: 380,
+            image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500"
+        },
+        {
+            name: "Pousada Sol e Praia",
+            stars: 3,
+            price: 220,
+            image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=500"
+        }
+    ];
+
+    results.innerHTML = "";
+
+    hotels.forEach(hotel => {
+
+        results.innerHTML += `
+            <div class="result-card hotel-card">
+
+                <img src="${hotel.image}"
+                    alt="${hotel.name}"
+                    onerror="this.style.display='none'">
+
+                <div class="hotel-info">
+
+                    <h3>${hotel.name}</h3>
+
+                    <div class="stars">
+                        ${"★".repeat(hotel.stars)}
+                        ${"☆".repeat(5 - hotel.stars)}
+                    </div>
+
+                    <p>📍 ${city}</p>
+                    <p>Check-in: ${checkin}</p>
+                    <p>Check-out: ${checkout}</p>
+                    <p>Hóspedes: ${guests}</p>
+
+                </div>
+
+                <div>
+                    <div class="price">
+                        R$ ${hotel.price.toFixed(2)}
+                    </div>
+
+                    <p>Por diária</p>
+
+                    <button class="select-btn"
+                        onclick="openModal(
+                            '${hotel.name}',
+                            'Hotel ${hotel.name} em ${city} - R$ ${hotel.price.toFixed(2)} por diária'
+                        )">
+                        Reservar Quarto
+                    </button>
+                </div>
+
+            </div>
+        `;
+
+    });
+
+});
+
+// ABRIR MODAL
+function openModal(item, description) {
+
+    selectedItem = item;
+
+    document.getElementById("bookingDescription")
+        .textContent = description;
+
+    document.getElementById("bookingModal")
+        .style.display = "flex";
+
+}
+
+// FECHAR MODAL
+function closeModal() {
+
+    document.getElementById("bookingModal")
+        .style.display = "none";
+
+}
+
+// CONFIRMAR SOLICITAÇÃO
+document.getElementById("bookingForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("customerName").value;
+    const email = document.getElementById("customerEmail").value;
+
+    alert(
+        "Solicitação registrada com sucesso!\n\n" +
+        "Cliente: " + name +
+        "\nE-mail: " + email +
+        "\nReserva: " + selectedItem
+    );
+
+    this.reset();
+    closeModal();
+
+});
+
+</script>
+
+</body>
+</html>

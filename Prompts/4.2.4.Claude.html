@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PetShop Cuidar – Castração Responsável</title>
+<style>
+:root{
+  --bg:#f4faf8; --surface:#ffffff; --text:#1f3340; --muted:#5a7080;
+  --blue:#3b82a6; --blue-dark:#2a6585; --green:#6cb894; --green-soft:#e3f4ec; --blue-soft:#e4f1f8;
+  --border:#cfe0e6; --radius:16px; --err:#b4412f;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#10201f; --surface:#182b2b; --text:#e6f1ee; --muted:#9db5b4;
+    --blue:#6bb4d6; --blue-dark:#8cc6e2; --green:#7cc9a3; --green-soft:#1c3a30; --blue-soft:#1a3342;
+    --border:#2b4545; --err:#f0937f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10201f; --surface:#182b2b; --text:#e6f1ee; --muted:#9db5b4;
+  --blue:#6bb4d6; --blue-dark:#8cc6e2; --green:#7cc9a3; --green-soft:#1c3a30; --blue-soft:#1a3342;
+  --border:#2b4545; --err:#f0937f;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:1.0625rem/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+img,svg{max-width:100%}
+.wrap{width:min(1080px,100% - 2rem);margin-inline:auto}
+h1,h2,h3{line-height:1.2;margin:0 0 .6rem}
+h1{font-size:clamp(1.9rem,6vw,3.1rem)}
+h2{font-size:clamp(1.5rem,4.5vw,2.1rem)}
+p{margin:0 0 1rem}
+a{color:var(--blue-dark)}
+
+/* Cabeçalho */
+header.topo{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 0;flex-wrap:wrap}
+.logo{font-weight:800;font-size:1.25rem;color:var(--blue-dark);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1.1rem;flex-wrap:wrap}
+nav a{text-decoration:none;font-weight:600;color:var(--text);font-size:.95rem}
+nav a:hover{color:var(--blue)}
+.info{background:var(--green-soft);font-size:.9rem;text-align:center;padding:.45rem 1rem;color:var(--text)}
+
+/* Hero */
+.hero{padding:clamp(2.5rem,8vw,5rem) 0;background:linear-gradient(160deg,var(--blue-soft),var(--green-soft))}
+.hero .wrap{display:grid;gap:2rem;align-items:center}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:60ch}
+.btn{display:inline-block;background:var(--blue);color:#fff;border:0;border-radius:999px;padding:.85rem 1.6rem;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;min-height:48px}
+.btn:hover{background:var(--blue-dark)}
+:root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#0b1a1a}
+.benefits{display:grid;gap:.8rem;list-style:none;padding:0;margin:0}
+.benefits li{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem}
+.benefits strong{display:block;color:var(--blue-dark)}
+
+section{padding:clamp(2.2rem,6vw,4rem) 0}
+.sec-intro{max-width:62ch;color:var(--muted)}
+
+/* Grade pós-operatória */
+.grid{display:grid;gap:1rem;grid-template-columns:1fr;margin-top:1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);border-top:5px solid var(--green);border-radius:var(--radius);padding:1.2rem}
+.card:nth-child(even){border-top-color:var(--blue)}
+.card .ico{font-size:1.8rem;display:block;margin-bottom:.3rem}
+.card h3{font-size:1.15rem}
+.card p{margin:0;color:var(--muted);font-size:.98rem}
+.alerta{margin-top:1.5rem;background:var(--blue-soft);border-left:5px solid var(--blue);border-radius:12px;padding:1rem 1.2rem}
+
+/* Formulário */
+#agendar{background:var(--green-soft)}
+form{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(1.1rem,4vw,2rem);margin-top:1.5rem}
+fieldset{border:0;margin:0 0 1.5rem;padding:0;min-width:0}
+legend{font-weight:800;font-size:1.15rem;color:var(--blue-dark);padding:0;margin-bottom:.8rem}
+.campos{display:grid;gap:1rem;grid-template-columns:1fr}
+label{display:block;font-weight:600;font-size:.95rem;margin-bottom:.3rem}
+input,select,textarea{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:.7rem .8rem;min-height:48px}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.erro{display:none;color:var(--err);font-size:.85rem;margin-top:.25rem}
+.invalido input,.invalido select{border-color:var(--err)}
+.invalido .erro{display:block}
+.check{display:flex;gap:.7rem;align-items:flex-start;font-weight:400}
+.check input{width:22px;height:22px;min-height:0;margin-top:.2rem;flex:none}
+#ok{display:none;margin-top:1rem;background:var(--green-soft);border:1px solid var(--green);border-radius:12px;padding:1rem}
+form button[type=submit]{width:100%;margin-top:.5rem}
+
+footer{background:var(--surface);border-top:1px solid var(--border);padding:2rem 0;text-align:center;color:var(--muted);font-size:.92rem}
+
+@media (min-width:640px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .campos{grid-template-columns:repeat(2,1fr)}
+  .campos .full{grid-column:1/-1}
+  form button[type=submit]{width:auto}
+}
+@media (min-width:920px){
+  .hero .wrap{grid-template-columns:1.2fr .8fr}
+  .grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ===== PASSO 1: estrutura ===== -->
+<div class="info">📍 Atendimento com hora marcada · Seg a Sáb, 8h às 18h · WhatsApp (11) 90000-0000</div>
+<header class="topo">
+  <div class="wrap">
+    <a class="logo" href="#topo">🐾 PetShop Cuidar</a>
+    <nav aria-label="Navegação principal">
+      <ul>
+        <li><a href="#consciencia">Por que castrar</a></li>
+        <li><a href="#cuidados">Pós-operatório</a></li>
+        <li><a href="#agendar">Agendar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="topo">
+  <section class="hero" id="consciencia" aria-labelledby="t-hero">
+    <div class="wrap">
+      <div>
+        <h1 id="t-hero">Castrar é um ato de amor e posse responsável</h1>
+        <p class="lead">A castração previne doenças, evita ninhadas indesejadas e contribui para a redução do abandono de animais. Nossa equipe cuida de cada etapa com carinho, segurança e transparência.</p>
+        <a class="btn" href="#agendar">Agendar consulta</a>
+      </div>
+      <ul class="benefits" aria-label="Benefícios da castração">
+        <li><strong>Mais saúde</strong>Reduz o risco de infecções e de alguns tipos de tumores.</li>
+        <li><strong>Mais tranquilidade</strong>Costuma diminuir fugas, marcação de território e brigas.</li>
+        <li><strong>Menos abandono</strong>Evita ninhadas não planejadas e ajuda a combater o abandono.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="cuidados" aria-labelledby="t-cuidados">
+    <div class="wrap">
+      <h2 id="t-cuidados">Cuidados pós-operatórios</h2>
+      <p class="sec-intro">A recuperação em casa é tão importante quanto a cirurgia. Confira o essencial e siga sempre as orientações do veterinário.</p>
+      <div class="grid">
+        <article class="card"><span class="ico" aria-hidden="true">🛏️</span><h3>Repouso</h3><p>Deixe o pet em local calmo, limpo e aconchegante, sem pulos nem corridas por cerca de 10 dias.</p></article>
+        <article class="card"><span class="ico" aria-hidden="true">🩹</span><h3>Curativo e ferida</h3><p>Mantenha a região seca e limpa. Faça a limpeza apenas como o veterinário orientou.</p></article>
+        <article class="card"><span class="ico" aria-hidden="true">🧣</span><h3>Colar ou roupa cirúrgica</h3><p>Use o tempo todo para impedir que o animal lamba ou morda os pontos.</p></article>
+        <article class="card"><span class="ico" aria-hidden="true">💊</span><h3>Medicação</h3><p>Dê os remédios nos horários e doses receitados. Nunca medique por conta própria.</p></article>
+        <article class="card"><span class="ico" aria-hidden="true">🥣</span><h3>Alimentação e água</h3><p>Ofereça água fresca e uma refeição leve ao chegar em casa. Retome a rotina aos poucos.</p></article>
+        <article class="card"><span class="ico" aria-hidden="true">👀</span><h3>Observação diária</h3><p>Verifique os pontos todos os dias e compareça ao retorno para a retirada, se necessário.</p></article>
+      </div>
+      <div class="alerta" role="note"><strong>Procure o veterinário imediatamente</strong> se notar sangramento, inchaço, secreção, pontos abertos, vômitos persistentes, apatia ou recusa de comida e água.</div>
+    </div>
+  </section>
+
+  <!-- ===== PASSO 2: formulário ===== -->
+  <section id="agendar" aria-labelledby="t-agendar">
+    <div class="wrap">
+      <h2 id="t-agendar">Agende a consulta pré-operatória</h2>
+      <p class="sec-intro">Preencha os dados abaixo e nossa equipe entrará em contato para confirmar o horário.</p>
+
+      <form id="form-agenda" novalidate>
+        <fieldset>
+          <legend>Dados do tutor</legend>
+          <div class="campos">
+            <div class="full" data-campo>
+              <label for="tutor">Nome completo *</label>
+              <input id="tutor" name="tutor" type="text" autocomplete="name" required minlength="3">
+              <div class="erro">Informe seu nome completo.</div>
+            </div>
+            <div data-campo>
+              <label for="telefone">WhatsApp / Telefone *</label>
+              <input id="telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000" required pattern="[0-9()\s\-+]{10,}">
+              <div class="erro">Informe um telefone válido com DDD.</div>
+            </div>
+            <div data-campo>
+              <label for="email">E-mail *</label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+              <div class="erro">Informe um e-mail válido.</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Dados do animal</legend>
+          <div class="campos">
+            <div data-campo>
+              <label for="pet">Nome do pet *</label>
+              <input id="pet" name="pet" type="text" required>
+              <div class="erro">Informe o nome do pet.</div>
+            </div>
+            <div data-campo>
+              <label for="especie">Espécie *</label>
+              <select id="especie" name="especie" required>
+                <option value="">Selecione</option>
+                <option>Cão</option>
+                <option>Gato</option>
+              </select>
+              <div class="erro">Selecione a espécie.</div>
+            </div>
+            <div data-campo>
+              <label for="sexo">Sexo *</label>
+              <select id="sexo" name="sexo" required>
+                <option value="">Selecione</option>
+                <option>Macho</option>
+                <option>Fêmea</option>
+              </select>
+              <div class="erro">Selecione o sexo.</div>
+            </div>
+            <div data-campo>
+              <label for="raca">Raça</label>
+              <input id="raca" name="raca" type="text" placeholder="Ex.: SRD">
+            </div>
+            <div data-campo>
+              <label for="idade">Idade (anos) *</label>
+              <input id="idade" name="idade" type="number" min="0" max="30" step="0.5" inputmode="decimal" required>
+              <div class="erro">Informe a idade (use 0,5 para 6 meses).</div>
+            </div>
+            <div data-campo>
+              <label for="peso">Peso aproximado (kg) *</label>
+              <input id="peso" name="peso" type="number" min="0.5" max="100" step="0.1" inputmode="decimal" required>
+              <div class="erro">Informe o peso aproximado.</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Agendamento</legend>
+          <div class="campos">
+            <div data-campo>
+              <label for="data">Data de preferência *</label>
+              <input id="data" name="data" type="date" required>
+              <div class="erro">Escolha uma data a partir de amanhã.</div>
+            </div>
+            <div data-campo>
+              <label for="periodo">Período *</label>
+              <select id="periodo" name="periodo" required>
+                <option value="">Selecione</option>
+                <option>Manhã</option>
+                <option>Tarde</option>
+              </select>
+              <div class="erro">Selecione o período.</div>
+            </div>
+            <div class="full" data-campo>
+              <label for="obs">Observações de saúde (opcional)</label>
+              <textarea id="obs" name="obs" placeholder="Vacinas em dia, alergias, medicamentos em uso, cirurgias anteriores..."></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <div data-campo>
+          <label class="check" for="aceite">
+            <input id="aceite" name="aceite" type="checkbox" required>
+            <span>Concordo em ser contatado(a) para confirmação do agendamento. *</span>
+          </label>
+          <div class="erro">É necessário concordar para continuar.</div>
+        </div>
+
+        <button class="btn" type="submit">Solicitar agendamento</button>
+        <div id="ok" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>🐾 PetShop Cuidar</strong> · Castração segura e posse responsável</p>
+    <p>© 2026 PetShop Cuidar. Este site não substitui a avaliação de um médico-veterinário.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var form=document.getElementById('form-agenda');
+  var data=document.getElementById('data');
+  var amanha=new Date(); amanha.setDate(amanha.getDate()+1);
+  data.min=amanha.toISOString().slice(0,10);
+
+  function validar(campo){
+    var el=campo.querySelector('input,select,textarea');
+    var ok=el.checkValidity();
+    campo.classList.toggle('invalido',!ok);
+    return ok;
+  }
+  var campos=[].slice.call(form.querySelectorAll('[data-campo]')).filter(function(c){
+    return c.querySelector('[required]');
+  });
+  campos.forEach(function(c){
+    var el=c.querySelector('input,select,textarea');
+    el.addEventListener('blur',function(){validar(c)});
+    el.addEventListener('input',function(){ if(c.classList.contains('invalido')) validar(c) });
+  });
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var primeiro=null;
+    campos.forEach(function(c){
+      if(!validar(c) && !primeiro) primeiro=c;
+    });
+    if(primeiro){ primeiro.querySelector('input,select,textarea').focus(); return; }
+    var ok=document.getElementById('ok');
+    var pet=document.getElementById('pet').value.trim();
+    ok.textContent='✅ Solicitação recebida! Entraremos em contato em breve para confirmar a consulta de '+pet+'.';
+    ok.style.display='block';
+    form.reset();
+    ok.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+})();
+</script>
+</body>
+</html>

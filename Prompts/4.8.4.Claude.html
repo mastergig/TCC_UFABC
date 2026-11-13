@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viagens — Busca de voos e hospedagem</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#14213d;--muted:#667085;--line:#e3e8ef;--brand:#0b5fff;--brand-d:#0846c2;--ok:#117a4d;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+button,input,select{font:inherit}
+/* ---------- PASSO 1: barra de busca ---------- */
+header.top{background:linear-gradient(135deg,#0b2a6b,#0b5fff);color:#fff;padding:22px 20px 26px}
+.wrap{max-width:1180px;margin:0 auto}
+.brand{font-weight:700;font-size:20px;letter-spacing:.2px;margin-bottom:14px}
+.search{background:var(--card);color:var(--ink);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.18);overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tab{flex:0 0 auto;padding:14px 22px;border:0;background:none;cursor:pointer;font-weight:600;color:var(--muted);border-bottom:3px solid transparent}
+.tab[aria-selected=true]{color:var(--brand);border-bottom-color:var(--brand)}
+.fields{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:16px;align-items:end}
+.f{display:flex;flex-direction:column;gap:4px;grid-column:span 1}
+.f.wide{grid-column:span 2}
+.f label{font-size:12px;color:var(--muted);font-weight:600}
+.f input,.f select{padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;width:100%}
+.f input:focus,.f select:focus{outline:2px solid var(--brand);border-color:transparent}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer}
+.btn:hover{background:var(--brand-d)}
+.btn:disabled{background:#a9b8d6;cursor:not-allowed}
+.hidden{display:none!important}
+/* ---------- PASSO 2: resultados ---------- */
+main.layout{display:grid;grid-template-columns:1fr 340px;gap:22px;padding:22px 20px 60px}
+h2{font-size:18px;margin:0 0 10px}
+.section{margin-bottom:26px}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:var(--r);padding:28px;text-align:center;color:var(--muted)}
+.item{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.item.sel{border-color:var(--brand);box-shadow:0 0 0 3px rgba(11,95,255,.12)}
+.flight .route{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
+.flight .line{flex:1;height:2px;background:var(--line);position:relative;min-width:50px}
+.flight .line::after{content:"✈";position:absolute;left:50%;top:-11px;transform:translateX(-50%);background:var(--card);padding:0 4px;color:var(--brand);font-size:14px}
+.meta{font-size:13px;color:var(--muted);margin-top:4px}
+.price{text-align:right}
+.price b{font-size:20px;display:block}
+.price small{color:var(--muted)}
+.pick{margin-top:8px;background:#fff;color:var(--brand);border:1.5px solid var(--brand);border-radius:9px;padding:7px 14px;font-weight:700;cursor:pointer}
+.item.sel .pick{background:var(--brand);color:#fff}
+.hotel{grid-template-columns:96px 1fr auto}
+.thumb{width:96px;height:80px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff}
+.stars{color:#e8a200;letter-spacing:1px}
+.tag{display:inline-block;background:#eaf1ff;color:var(--brand-d);border-radius:20px;padding:2px 9px;font-size:12px;margin:6px 6px 0 0}
+/* ---------- PASSO 3: resumo + reserva ---------- */
+aside.panel{position:sticky;top:14px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:0 4px 16px rgba(20,33,61,.06)}
+aside h3{margin:0 0 12px;font-size:16px}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:6px 0}
+.row span:first-child{color:var(--muted)}
+.row.total{border-top:1px solid var(--line);margin-top:6px;padding-top:12px;font-size:18px;font-weight:800}
+.row.total span:first-child{color:var(--ink)}
+.none{color:var(--muted);font-size:13px}
+form.book{margin-top:16px;border-top:1px solid var(--line);padding-top:14px;display:grid;gap:10px}
+form.book .f{grid-column:auto}
+.err{color:#b42318;font-size:12px;min-height:14px}
+.ok{background:#e8f7ef;border:1px solid #b7e4cb;color:var(--ok);border-radius:12px;padding:14px;font-size:14px}
+.ok b{font-size:16px}
+.note{font-size:11px;color:var(--muted);margin-top:10px}
+@media(max-width:900px){
+  main.layout{grid-template-columns:1fr}
+  aside.panel{position:static}
+  .fields{grid-template-columns:repeat(2,1fr)}
+  .f.wide{grid-column:span 2}
+  .hotel{grid-template-columns:72px 1fr}
+  .hotel .price{grid-column:1 / -1;text-align:left}
+  .thumb{width:72px;height:64px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ PASSO 1: BARRA DE BUSCA MULTIFUNCIONAL ============ -->
+<header class="top">
+  <div class="wrap">
+    <div class="brand">✈ ViajaFácil <span style="font-weight:400;opacity:.8">· demonstração com dados fictícios</span></div>
+    <div class="search">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="tab-voo" aria-selected="true" data-tab="voo">✈ Passagens aéreas</button>
+        <button class="tab" role="tab" id="tab-hotel" aria-selected="false" data-tab="hotel">🏨 Hospedagem</button>
+      </div>
+      <form id="searchForm" class="fields" novalidate>
+        <div class="f wide" data-for="voo"><label for="origem">Origem</label>
+          <select id="origem"></select></div>
+        <div class="f wide"><label for="destino">Destino</label>
+          <select id="destino"></select></div>
+        <div class="f"><label for="ida" id="lblIda">Ida</label><input type="date" id="ida"></div>
+        <div class="f"><label for="volta" id="lblVolta">Volta</label><input type="date" id="volta"></div>
+        <div class="f"><label for="pax" id="lblPax">Passageiros</label>
+          <select id="pax"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+        <div class="f"><label>&nbsp;</label><button class="btn" type="submit">Buscar</button></div>
+        <div class="err" id="searchErr" style="grid-column:1/-1"></div>
+      </form>
+    </div>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <!-- ============ PASSO 2: RESULTADOS ============ -->
+  <div id="results">
+    <div class="empty" id="emptyState">Escolha um destino e clique em <b>Buscar</b> para ver voos e hotéis.</div>
+    <section class="section hidden" id="secVoos"><h2 id="hVoos">Voos</h2><div id="listVoos"></div></section>
+    <section class="section hidden" id="secHoteis"><h2 id="hHoteis">Hotéis</h2><div id="listHoteis"></div></section>
+  </div>
+
+  <!-- ============ PASSO 3: PAINEL DE RESUMO + RESERVA ============ -->
+  <aside class="panel" id="panel">
+    <h3>Resumo do pacote</h3>
+    <div id="summary"><p class="none">Selecione um voo e/ou um hotel para montar o pacote.</p></div>
+    <form class="book" id="bookForm" novalidate>
+      <div class="f"><label for="nome">Nome completo</label><input id="nome" autocomplete="name"><div class="err" data-err="nome"></div></div>
+      <div class="f"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email"><div class="err" data-err="email"></div></div>
+      <div class="f"><label for="tel">Telefone</label><input id="tel" type="tel" placeholder="(11) 90000-0000" autocomplete="tel"><div class="err" data-err="tel"></div></div>
+      <div class="f"><label for="pgto">Forma de pagamento</label>
+        <select id="pgto"><option value="pix">Pix (5% de desconto)</option><option value="cartao">Cartão em até 6x</option><option value="boleto">Boleto</option></select></div>
+      <button class="btn" type="submit" id="btnReservar" disabled>Reservar pacote</button>
+      <div class="err" id="bookErr"></div>
+    </form>
+    <div id="confirm"></div>
+    <p class="note">Demonstração: nenhum dado é enviado e nenhum pagamento é processado.</p>
+  </aside>
+</main>
+
+<script>
+"use strict";
+const BRL = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const $ = id => document.getElementById(id);
+
+/* ---------- dados fictícios ---------- */
+const CITIES = {
+  "São Paulo (GRU)":{code:"GRU",base:0},
+  "Rio de Janeiro":{code:"GIG",base:380,emoji:"🏖️",color:"#0e9aa7"},
+  "Salvador":{code:"SSA",base:620,emoji:"🌴",color:"#e07a1f"},
+  "Florianópolis":{code:"FLN",base:450,emoji:"🏝️",color:"#2a9d5c"},
+  "Lisboa":{code:"LIS",base:3900,emoji:"🏰",color:"#7a4fd1"},
+  "Buenos Aires":{code:"EZE",base:1700,emoji:"💃",color:"#c0392b"}
+};
+const ORIGINS = ["São Paulo (GRU)","Rio de Janeiro","Salvador","Florianópolis"];
+const AIRLINES = [["Azul",1.00,"07:15","09:00"],["LATAM",1.12,"11:40","13:30"],["GOL",0.92,"18:05","19:50"]];
+const HOTEL_TPL = [
+  {n:"Pousada Brisa Mar",s:3,p:260,t:["Café da manhã","Wi-Fi"]},
+  {n:"Hotel Central Plaza",s:4,p:410,t:["Piscina","Academia","Wi-Fi"]},
+  {n:"Grand Palace Resort",s:5,p:780,t:["Spa","Piscina","Café da manhã"]}
+];
+
+/* ---------- estado ---------- */
+const state = { tab:"voo", search:null, voo:null, hotel:null };
+
+/* ---------- PASSO 1: lógica da barra ---------- */
+function fillSelect(sel, items, selected){
+  sel.innerHTML = items.map(i=>`<option ${i===selected?"selected":""}>${i}</option>`).join("");
+}
+fillSelect($("origem"), ORIGINS, "São Paulo (GRU)");
+fillSelect($("destino"), Object.keys(CITIES).filter(c=>c!=="São Paulo (GRU)"), "Rio de Janeiro");
+
+function isoPlus(days){const d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10)}
+$("ida").value = isoPlus(30); $("volta").value = isoPlus(35);
+$("ida").min = $("volta").min = isoPlus(0);
+
+function setTab(tab){
+  state.tab = tab;
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===tab));
+  const voo = tab==="voo";
+  document.querySelector('[data-for="voo"]').classList.toggle("hidden", !voo);
+  $("lblIda").textContent   = voo ? "Ida" : "Check-in";
+  $("lblVolta").textContent = voo ? "Volta" : "Check-out";
+  $("lblPax").textContent   = voo ? "Passageiros" : "Hóspedes";
+  // a aba ativa define o que aparece primeiro nos resultados
+  const r = $("results");
+  if(state.search){ r.insertBefore(voo?$("secVoos"):$("secHoteis"), voo?$("secHoteis"):$("secVoos")); }
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+
+function nightsBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
+
+$("searchForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const ida=$("ida").value, volta=$("volta").value, dest=$("destino").value, orig=$("origem").value;
+  const err=$("searchErr"); err.textContent="";
+  if(!ida||!volta){err.textContent="Informe as duas datas.";return}
+  if(nightsBetween(ida,volta)<1){err.textContent="A data final deve ser posterior à inicial.";return}
+  if(state.tab==="voo" && orig===dest){err.textContent="Origem e destino devem ser diferentes.";return}
+  state.search = {ida,volta,dest,orig,pax:+$("pax").value,noites:nightsBetween(ida,volta)};
+  state.voo=null; state.hotel=null;
+  renderResults(); renderSummary(); setTab(state.tab);
+});
+
+/* ---------- PASSO 2: resultados ---------- */
+const fmtDate = iso => new Date(iso+"T12:00").toLocaleDateString("pt-BR",{day:"2-digit",month:"short"});
+
+function buildFlights(s){
+  const dest=CITIES[s.dest], orig=CITIES[s.orig];
+  const dist = Math.max(250, Math.abs(dest.base-orig.base)+ (orig.base?150:0));
+  return AIRLINES.map((a,i)=>({
+    id:"v"+i, cia:a[0], saida:a[2], chegada:a[3],
+    de:orig.code, para:dest.code,
+    preco:Math.round(dist*a[1]/10)*10,       // por passageiro, ida e volta
+    escala: i===2 ? "1 escala" : "Direto"
+  }));
+}
+function buildHotels(s){
+  const dest=CITIES[s.dest]; const f = dest.base>1500 ? 1.35 : 1;
+  return HOTEL_TPL.map((h,i)=>({
+    id:"h"+i, nome:h.n+" "+s.dest.split(" ")[0], estrelas:h.s,
+    diaria:Math.round(h.p*f/10)*10, tags:h.t, emoji:dest.emoji, cor:dest.color, nota:(8.1+i*.5).toFixed(1)
+  }));
+}
+
+function renderResults(){
+  const s=state.search;
+  $("emptyState").classList.add("hidden");
+  $("secVoos").classList.remove("hidden"); $("secHoteis").classList.remove("hidden");
+  $("hVoos").textContent = `Voos para ${s.dest} · ${fmtDate(s.ida)} – ${fmtDate(s.volta)}`;
+  $("hHoteis").textContent = `Hotéis em ${s.dest} · ${s.noites} noite(s)`;
+
+  const flights=buildFlights(s), hotels=buildHotels(s);
+  state.flights=flights; state.hotels=hotels;
+
+  $("listVoos").innerHTML = flights.map(v=>`
+    <article class="item flight" data-v="${v.id}">
+      <div>
+        <div class="route"><span>${v.saida} ${v.de}</span><span class="line"></span><span>${v.chegada} ${v.para}</span></div>
+        <div class="meta">${v.cia} · ${v.escala} · ida e volta · ${s.pax} passageiro(s)</div>
+      </div>
+      <div class="price"><b>${BRL(v.preco)}</b><small>por pessoa</small><br>
+        <button class="pick" data-pick="voo" data-id="${v.id}">Selecionar</button></div>
+    </article>`).join("");
+
+  $("listHoteis").innerHTML = hotels.map(h=>`
+    <article class="item hotel" data-h="${h.id}">
+      <div class="thumb" style="background:${h.cor}">${h.emoji}</div>
+      <div>
+        <strong>${h.nome}</strong> <span class="stars">${"★".repeat(h.estrelas)}</span>
+        <div class="meta">Nota ${h.nota}/10 · quarto para ${s.pax} hóspede(s)</div>
+        <div>${h.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+      </div>
+      <div class="price"><b>${BRL(h.diaria)}</b><small>por noite</small><br>
+        <button class="pick" data-pick="hotel" data-id="${h.id}">Selecionar</button></div>
+    </article>`).join("");
+}
+
+$("results").addEventListener("click", e=>{
+  const b=e.target.closest(".pick"); if(!b) return;
+  const kind=b.dataset.pick, id=b.dataset.id;
+  if(kind==="voo") state.voo = state.voo?.id===id ? null : state.flights.find(x=>x.id===id);
+  else state.hotel = state.hotel?.id===id ? null : state.hotels.find(x=>x.id===id);
+  markSelection(); renderSummary();
+});
+function markSelection(){
+  document.querySelectorAll("[data-v]").forEach(el=>{
+    const on = state.voo?.id===el.dataset.v; el.classList.toggle("sel",on);
+    el.querySelector(".pick").textContent = on?"✓ Selecionado":"Selecionar";
+  });
+  document.querySelectorAll("[data-h]").forEach(el=>{
+    const on = state.hotel?.id===el.dataset.h; el.classList.toggle("sel",on);
+    el.querySelector(".pick").textContent = on?"✓ Selecionado":"Selecionar";
+  });
+}
+
+/* ---------- PASSO 3: resumo, soma e reserva ---------- */
+function totals(){
+  const s=state.search; if(!s) return null;
+  const voo   = state.voo   ? state.voo.preco*s.pax : 0;
+  const hotel = state.hotel ? state.hotel.diaria*s.noites : 0;
+  const taxas = state.voo   ? Math.round(voo*0.06) : 0;           // taxas de embarque fictícias
+  let sub = voo+hotel+taxas;
+  const desc = $("pgto").value==="pix" ? Math.round(sub*0.05) : 0;
+  return {voo,hotel,taxas,desc,total:sub-desc};
+}
+function renderSummary(){
+  const s=state.search, box=$("summary");
+  if(!s || (!state.voo && !state.hotel)){
+    box.innerHTML='<p class="none">Selecione um voo e/ou um hotel para montar o pacote.</p>';
+    $("btnReservar").disabled=true; return;
+  }
+  const t=totals(); let h="";
+  if(state.voo) h+=`<div class="row"><span>✈ ${state.voo.cia} ${state.voo.de}→${state.voo.para}<br><small>${s.pax} × ${BRL(state.voo.preco)}</small></span><span>${BRL(t.voo)}</span></div>
+                    <div class="row"><span>Taxas de embarque</span><span>${BRL(t.taxas)}</span></div>`;
+  if(state.hotel) h+=`<div class="row"><span>🏨 ${state.hotel.nome}<br><small>${s.noites} × ${BRL(state.hotel.diaria)}</small></span><span>${BRL(t.hotel)}</span></div>`;
+  if(t.desc) h+=`<div class="row"><span>Desconto Pix (5%)</span><span>− ${BRL(t.desc)}</span></div>`;
+  h+=`<div class="row total"><span>Total</span><span>${BRL(t.total)}</span></div>`;
+  box.innerHTML=h; $("btnReservar").disabled=false;
+}
+$("pgto").addEventListener("change", renderSummary);
+
+function setErr(k,msg){const el=document.querySelector(`[data-err="${k}"]`); if(el) el.textContent=msg||""}
+$("bookForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const nome=$("nome").value.trim(), email=$("email").value.trim(), tel=$("tel").value.replace(/\D/g,"");
+  let ok=true;
+  setErr("nome", nome.split(/\s+/).length<2 ? (ok=false,"Informe nome e sobrenome.") : "");
+  setErr("email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "" : (ok=false,"E-mail inválido."));
+  setErr("tel", tel.length>=10 && tel.length<=11 ? "" : (ok=false,"Telefone com DDD, 10 ou 11 dígitos."));
+  if(!ok) return;
+  const t=totals(), code="VF-"+Math.random().toString(36).slice(2,8).toUpperCase();
+  $("bookForm").classList.add("hidden");
+  $("confirm").innerHTML=`<div class="ok"><b>Reserva confirmada! ✔</b><br>Código: <b>${code}</b><br>
+    ${nome}, enviaremos os detalhes para ${email}.<br>Total: <b>${BRL(t.total)}</b></div>
+    <button class="btn" style="margin-top:12px;width:100%" id="novaBusca">Nova reserva</button>`;
+  $("novaBusca").addEventListener("click",()=>{
+    $("confirm").innerHTML=""; $("bookForm").classList.remove("hidden"); $("bookForm").reset();
+    state.voo=null; state.hotel=null; markSelection(); renderSummary(); window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+</script>
+</body>
+</html>

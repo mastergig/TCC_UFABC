@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viaje+ | Agência de Viagens</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f6fa;
+    color: #26354a;
+}
+
+header {
+    background: #102c50;
+    color: white;
+    padding: 22px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    color: #42d6c2;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+}
+
+.hero {
+    background: linear-gradient(120deg, #123b68, #167c9d);
+    color: white;
+    padding: 45px 7% 65px;
+}
+
+.hero h1 {
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+.search-box {
+    background: white;
+    color: #26354a;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 30px;
+    box-shadow: 0 8px 25px #0002;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.tabs button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #e8edf3;
+    color: #26354a;
+    font-weight: bold;
+}
+
+.tabs button.active {
+    background: #087f91;
+    color: white;
+}
+
+.search-fields {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.field label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.field input, .field select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d5dce5;
+    border-radius: 6px;
+}
+
+.search-button {
+    background: #ff9e43;
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 18px;
+}
+
+.container {
+    padding: 40px 7%;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    gap: 25px;
+    align-items: start;
+}
+
+.section-title {
+    margin-bottom: 20px;
+}
+
+.section-title h2 {
+    font-size: 24px;
+    margin-bottom: 7px;
+}
+
+.result-card {
+    background: white;
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 12px #0000000c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.result-info h3 {
+    margin-bottom: 10px;
+    color: #123b68;
+}
+
+.result-info p {
+    color: #66758a;
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #087f91;
+    white-space: nowrap;
+}
+
+.price small {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    color: #777;
+    text-align: right;
+}
+
+.select-button {
+    margin-top: 10px;
+    padding: 10px 17px;
+    background: #087f91;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.select-button:hover, .search-button:hover {
+    opacity: .85;
+}
+
+.selected {
+    background: #16804b;
+}
+
+.summary {
+    background: white;
+    border-radius: 10px;
+    padding: 23px;
+    box-shadow: 0 3px 12px #0000000c;
+    position: sticky;
+    top: 20px;
+}
+
+.summary h2 {
+    margin-bottom: 20px;
+    color: #123b68;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    font-size: 14px;
+    gap: 10px;
+}
+
+.total {
+    border-top: 1px solid #ddd;
+    padding-top: 18px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #087f91;
+}
+
+.booking {
+    margin-top: 25px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.booking h3 {
+    margin-bottom: 15px;
+}
+
+.booking input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #d5dce5;
+    border-radius: 5px;
+}
+
+.booking button {
+    width: 100%;
+    padding: 14px;
+    background: #ff9e43;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.empty {
+    color: #888;
+    font-size: 13px;
+}
+
+footer {
+    background: #102c50;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media(max-width: 850px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+
+    .summary {
+        position: static;
+    }
+
+    .search-fields {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 550px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 0 8px;
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .search-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .result-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .price small {
+        text-align: left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✈ Viaje+</div>
+    <nav>
+        <a href="#">Início</a>
+        <a href="#resultados">Destinos</a>
+        <a href="#reserva">Reservas</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Descubra seu próximo destino!</h1>
+    <p>Encontre passagens e hospedagens com os melhores preços.</p>
+
+    <div class="search-box">
+
+        <div class="tabs">
+            <button id="flightTab" class="active"
+                onclick="changeTab('flight')">✈ Passagens</button>
+
+            <button id="hotelTab"
+                onclick="changeTab('hotel')">🏨 Hospedagens</button>
+        </div>
+
+        <div class="search-fields">
+            <div class="field">
+                <label>Destino</label>
+                <input type="text" id="destination"
+                    placeholder="Ex: Salvador" value="Salvador">
+            </div>
+
+            <div class="field">
+                <label>Data de ida</label>
+                <input type="date" id="departure">
+            </div>
+
+            <div class="field">
+                <label>Data de volta</label>
+                <input type="date" id="returnDate">
+            </div>
+
+            <div class="field">
+                <label>Passageiros</label>
+                <select id="passengers">
+                    <option value="1">1 passageiro</option>
+                    <option value="2" selected>2 passageiros</option>
+                    <option value="3">3 passageiros</option>
+                    <option value="4">4 passageiros</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="search-button" onclick="searchTravel()">
+            Buscar viagens
+        </button>
+    </div>
+</section>
+
+<main class="container" id="resultados">
+
+    <div class="content">
+
+        <section>
+            <div class="section-title">
+                <h2 id="resultsTitle">Passagens aéreas disponíveis</h2>
+                <p id="resultsSubtitle">Confira as melhores opções para sua viagem.</p>
+            </div>
+
+            <div id="flightResults">
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <h3>LATAM Airlines</h3>
+                        <p>São Paulo (GRU) → Salvador (SSA)</p>
+                        <p>08:30 - 10:50 | Voo direto</p>
+                        <p>Duração: 2h20</p>
+                    </div>
+                    <div>
+                        <div class="price">R$ 850,00</div>
+                        <small>por pessoa</small>
+                        <button class="select-button"
+                            onclick="selectItem('flight', 850, this)">
+                            Selecionar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <h3>GOL Linhas Aéreas</h3>
+                        <p>São Paulo (GRU) → Salvador (SSA)</p>
+                        <p>11:15 - 13:40 | Voo direto</p>
+                        <p>Duração: 2h25</p>
+                    </div>
+                    <div>
+                        <div class="price">R$ 720,00</div>
+                        <small>por pessoa</small>
+                        <button class="select-button"
+                            onclick="selectItem('flight', 720, this)">
+                            Selecionar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <h3>Azul Linhas Aéreas</h3>
+                        <p>São Paulo (VCP) → Salvador (SSA)</p>
+                        <p>15:00 - 17:30 | Voo direto</p>
+                        <p>Duração: 2h30</p>
+                    </div>
+                    <div>
+                        <div class="price">R$ 910,00</div>
+                        <small>por pessoa</small>
+                        <button class="select-button"
+                            onclick="selectItem('flight', 910, this)">
+                            Selecionar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hotelResults" class="hidden">
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <h3>Hotel Bahia Premium ★★★★★</h3>
+                        <p>Localização: Orla de Salvador</p>
+                        <p>Café da manhã incluso</p>
+                        <p>Piscina, academia e Wi-Fi gratuito</p>
+                    </div>
+                    <div>
+                        <div class="price">R$ 450,00</div>
+                        <small>por diária</small>
+                        <button class="select-button"
+                            onclick="selectItem('hotel', 450, this)">
+                            Selecionar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <h3>Hotel Sol Tropical ★★★★</h3>
+                        <p>Localização: Praia de Itapuã</p>
+                        <p>Café da manhã incluso</p>
+                        <p>Piscina e estacionamento</p>
+                    </div>
+                    <div>
+                        <div class="price">R$ 320,00</div>
+                        <small>por diária</small>
+                        <button class="select-button"
+                            onclick="selectItem('hotel', 320, this)">
+                            Selecionar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <h3>Pousada Mar Azul ★★★</h3>
+                        <p>Localização: Centro Histórico</p>
+                        <p>Quartos com ar-condicionado</p>
+                        <p>Wi-Fi gratuito</p>
+                    </div>
+                    <div>
+                        <div class="price">R$ 210,00</div>
+                        <small>por diária</small>
+                        <button class="select-button"
+                            onclick="selectItem('hotel', 210, this)">
+                            Selecionar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <aside class="summary">
+            <h2>Resumo do pacote</h2>
+
+            <div class="summary-line">
+                <span>Passagem aérea</span>
+                <strong id="flightPrice">R$ 0,00</strong>
+            </div>
+
+            <div class="summary-line">
+                <span>Hospedagem</span>
+                <strong id="hotelPrice">R$ 0,00</strong>
+            </div>
+
+            <div class="summary-line">
+                <span>Passageiros</span>
+                <strong id="passengerCount">2</strong>
+            </div>
+
+            <div class="summary-line">
+                <span>Diárias</span>
+                <strong id="nights">1</strong>
+            </div>
+
+            <div class="summary-line total">
+                <span>Total estimado</span>
+                <strong id="totalPrice">R$ 0,00</strong>
+            </div>
+
+            <div class="booking" id="reserva">
+                <h3>Finalizar reserva</h3>
+
+                <form id="bookingForm">
+                    <input type="text" id="name"
+                        placeholder="Nome completo" required>
+
+                    <input type="email" id="email"
+                        placeholder="E-mail" required>
+
+                    <input type="tel" id="phone"
+                        placeholder="Telefone" required>
+
+                    <button type="submit">Confirmar reserva</button>
+                </form>
+
+                <p class="empty" style="margin-top:12px">
+                    * Valores demonstrativos. Nenhum pagamento será realizado.
+                </p>
+            </div>
+        </aside>
+
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 Viaje+ Agência de Turismo | Sua viagem começa aqui!</p>
+</footer>
+
+<script>
+let currentTab = 'flight';
+
+let selectedFlight = 0;
+let selectedHotel = 0;
+
+function changeTab(tab) {
+    currentTab = tab;
+
+    document.getElementById('flightTab')
+        .classList.toggle('active', tab === 'flight');
+
+    document.getElementById('hotelTab')
+        .classList.toggle('active', tab === 'hotel');
+
+    document.getElementById('flightResults')
+        .classList.toggle('hidden', tab !== 'flight');
+
+    document.getElementById('hotelResults')
+        .classList.toggle('hidden', tab !== 'hotel');
+
+    document.getElementById('resultsTitle').textContent =
+        tab === 'flight'
+        ? 'Passagens aéreas disponíveis'
+        : 'Hospedagens disponíveis';
+}
+
+function searchTravel() {
+    const destination =
+        document.getElementById('destination').value.trim();
+
+    if (!destination) {
+        alert('Informe o destino da viagem!');
+        return;
+    }
+
+    document.getElementById('resultsSubtitle').textContent =
+        'Opções fictícias para: ' + destination;
+
+    alert('Busca realizada para ' + destination +
+        '! Confira os resultados disponíveis.');
+}
+
+function selectItem(type, price, button) {
+
+    if (type === 'flight') {
+        selectedFlight = price;
+
+        document.getElementById('flightPrice').textContent =
+            formatCurrency(price * getPassengers());
+
+        document.querySelectorAll('#flightResults .select-button')
+            .forEach(btn => {
+                btn.textContent = 'Selecionar';
+                btn.classList.remove('selected');
+            });
+    }
+
+    if (type === 'hotel') {
+        selectedHotel = price;
+
+        document.getElementById('hotelPrice').textContent =
+            formatCurrency(price * getNights());
+
+        document.querySelectorAll('#hotelResults .select-button')
+            .forEach(btn => {
+                btn.textContent = 'Selecionar';
+                btn.classList.remove('selected');
+            });
+    }
+
+    button.textContent = 'Selecionado ✓';
+    button.classList.add('selected');
+
+    updateSummary();
+}
+
+function getPassengers() {
+    return Number(document.getElementById('passengers').value);
+}
+
+function getNights() {
+    const start = document.getElementById('departure').value;
+    const end = document.getElementById('returnDate').value;
+
+    if (!start || !end) return 1;
+
+    const difference =
+        (new Date(end + 'T00:00:00') -
+         new Date(start + 'T00:00:00')) / 86400000;
+
+    return difference > 0 ? difference : 1;
+}
+
+function formatCurrency(value) {
+    return value.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+}
+
+function updateSummary() {
+    const passengers = getPassengers();
+    const nights = getNights();
+
+    const flightTotal = selectedFlight * passengers;
+    const hotelTotal = selectedHotel * nights;
+    const total = flightTotal + hotelTotal;
+
+    document.getElementById('flightPrice').textContent =
+        formatCurrency(flightTotal);
+
+    document.getElementById('hotelPrice').textContent =
+        formatCurrency(hotelTotal);
+
+    document.getElementById('passengerCount').textContent =
+        passengers;
+
+    document.getElementById('nights').textContent = nights;
+
+    document.getElementById('totalPrice').textContent =
+        formatCurrency(total);
+}
+
+document.getElementById('passengers')
+    .addEventListener('change', updateSummary);
+
+document.getElementById('departure')
+    .addEventListener('change', updateSummary);
+
+document.getElementById('returnDate')
+    .addEventListener('change', updateSummary);
+
+document.getElementById('bookingForm')
+    .addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        if (!selectedFlight || !selectedHotel) {
+            alert('Selecione uma passagem e uma hospedagem antes de reservar!');
+            return;
+        }
+
+        const name = document.getElementById('name').value;
+
+        alert(
+            'Reserva demonstrativa realizada com sucesso!\n\n' +
+            'Cliente: ' + name + '\n' +
+            'Destino: ' + document.getElementById('destination').value +
+            '\nTotal: ' + document.getElementById('totalPrice').textContent
+        );
+
+        this.reset();
+    });
+</script>
+
+</body>
+</html>

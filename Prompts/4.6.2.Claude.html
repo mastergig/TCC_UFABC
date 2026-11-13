@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cine Vila Verde — Em cartaz e reservas</title>
+<style>
+:root{
+  --bg:#0e0f13; --panel:#181a21; --panel2:#20232d; --line:#2d3140;
+  --text:#f2f2f5; --muted:#9aa0b2; --accent:#e4572e; --accent-h:#f0703f;
+  --ok:#2ec27e; --warn:#f0b429; --danger:#ef4444;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+header{background:var(--panel);border-bottom:1px solid var(--line);padding:18px 24px;position:sticky;top:0;z-index:10}
+.topo{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:.3px}
+.logo span{color:var(--accent)}
+.endereco{color:var(--muted);font-size:.9rem}
+main{max-width:1100px;margin:0 auto;padding:24px}
+h1.titulo-pagina{font-size:1.5rem;margin:8px 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+
+.dias{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin-bottom:22px}
+.dia{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 16px;cursor:pointer;min-width:130px;text-align:left;font:inherit}
+.dia span{display:block;font-weight:700}
+.dia small{color:var(--muted);text-transform:capitalize}
+.dia[aria-selected="true"]{border-color:var(--accent);background:var(--panel2);box-shadow:inset 0 -3px 0 var(--accent)}
+.dia:focus-visible,.sessao:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.poster{height:150px;display:flex;align-items:flex-end;padding:14px;position:relative}
+.poster::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent 60%)}
+.poster span{position:relative;z-index:1;font-weight:800;font-size:1.25rem;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.85rem}
+.card h2{font-size:1.15rem;margin:0}
+.sinopse{margin:0;color:#c9cdd9;font-size:.93rem}
+.badge{font-weight:800;font-size:.78rem;padding:3px 9px;border-radius:999px;color:#fff}
+.c-L{background:#2ec27e}.c-10{background:#3b82f6}.c-12{background:#facc15;color:#1a1a1a}
+.c-14{background:#f97316}.c-16{background:#ef4444}.c-18{background:#000;border:1px solid #fff}
+.rotulo{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.horarios{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.sessoes{display:flex;gap:8px;flex-wrap:wrap}
+.sessao{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:7px 12px;cursor:pointer;text-align:center;min-width:92px;font:inherit}
+.sessao strong{display:block;font-size:1.05rem}
+.sessao small{display:block;font-size:.72rem;color:var(--muted)}
+.sessao:hover:not(:disabled){border-color:var(--accent)}
+.sessao.poucos small{color:var(--warn)}
+.sessao.esgotada,.sessao.encerrada{opacity:.45;cursor:not-allowed;text-decoration:line-through}
+.sessao.esgotada small,.sessao.encerrada small{text-decoration:none}
+
+.rodape{max-width:1100px;margin:30px auto 0;padding:0 24px 30px;color:var(--muted);font-size:.8rem}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;width:100%;max-width:460px;max-height:92vh;overflow:auto;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal h3{margin:0 0 12px;font-size:1.2rem}
+.fechar{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted);font-size:1.6rem;cursor:pointer;line-height:1}
+.resumo{background:var(--panel2);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:.92rem;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.resumo dt{color:var(--muted)}
+.resumo dd{margin:0;font-weight:600}
+form{display:flex;flex-direction:column;gap:12px}
+label.campo{display:flex;flex-direction:column;gap:5px;font-size:.9rem;color:#d6d9e3}
+input[type=text],input[type=email],input[type=tel],select{background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;font:inherit}
+input[aria-invalid="true"]{border-color:var(--danger)}
+.erro{color:var(--danger);font-size:.8rem;min-height:1em}
+.linha{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+fieldset{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:0;display:flex;gap:16px;flex-wrap:wrap;font-size:.92rem}
+fieldset legend{color:#d6d9e3;font-size:.9rem;padding:0 4px}
+.total{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);padding-top:12px;font-size:1rem}
+.total strong{font-size:1.35rem;color:var(--ok)}
+.acoes{display:flex;gap:10px;justify-content:flex-end;margin-top:4px}
+.btn{border-radius:10px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;border:1px solid transparent}
+.btn.pri{background:var(--accent);color:#fff}
+.btn.pri:hover{background:var(--accent-h)}
+.btn.sec{background:transparent;color:var(--text);border-color:var(--line)}
+.geral{color:var(--warn);font-size:.85rem;min-height:1em;text-align:center}
+.confirma{text-align:center}
+.check{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:4px auto 12px}
+.codigo{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.4rem;letter-spacing:3px;background:var(--bg);border:1px dashed var(--accent);border-radius:10px;padding:10px;margin:12px 0}
+.confirma .resumo{text-align:left}
+.nota{color:var(--muted);font-size:.85rem;margin:8px 0 16px}
+
+@media (max-width:560px){
+  main{padding:16px}
+  .linha{grid-template-columns:1fr}
+  .grade{grid-template-columns:1fr}
+  .modal{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topo">
+    <div class="logo">🎬 Cine <span>Vila Verde</span></div>
+    <div class="endereco">Rua das Acácias, 120 · Centro · Sala 2 com acessibilidade</div>
+  </div>
+</header>
+
+<main>
+  <h1 class="titulo-pagina">Em cartaz</h1>
+  <p class="sub">Escolha o dia e um horário para agendar seus ingressos.</p>
+
+  <nav class="dias" id="dias" role="tablist" aria-label="Escolha o dia"></nav>
+
+  <section class="grade" id="lista" aria-live="polite"></section>
+</main>
+
+<p class="rodape">Demonstração: filmes, classificações e preços são fictícios. As reservas ficam apenas nesta página e não são enviadas a nenhum servidor.</p>
+
+<!-- Modal de agendamento -->
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <button class="fechar" id="btn-fechar" aria-label="Fechar">×</button>
+
+    <div id="etapa-form">
+      <h3 id="modal-titulo">Agendar sessão</h3>
+      <dl class="resumo" id="resumo"></dl>
+
+      <form id="form-reserva" novalidate>
+        <div class="linha">
+          <label class="campo">Nome completo
+            <input type="text" id="f-nome" name="nome" autocomplete="name" required>
+            <span class="erro" id="e-nome"></span>
+          </label>
+          <label class="campo">Telefone (com DDD)
+            <input type="tel" id="f-tel" name="telefone" autocomplete="tel" placeholder="(11) 99999-9999" required>
+            <span class="erro" id="e-tel"></span>
+          </label>
+        </div>
+
+        <label class="campo">E-mail
+          <input type="email" id="f-email" name="email" autocomplete="email" required>
+          <span class="erro" id="e-email"></span>
+        </label>
+
+        <div class="linha">
+          <label class="campo">Quantidade
+            <select id="f-qtd" name="quantidade"></select>
+          </label>
+          <fieldset>
+            <legend>Tipo</legend>
+            <label><input type="radio" name="tipo" value="inteira" checked> Inteira</label>
+            <label><input type="radio" name="tipo" value="meia"> Meia</label>
+          </fieldset>
+        </div>
+
+        <div class="total">
+          <span id="total-desc">1 × inteira</span>
+          <strong id="total">R$ 30,00</strong>
+        </div>
+
+        <div class="geral" id="e-geral" aria-live="polite"></div>
+
+        <div class="acoes">
+          <button type="button" class="btn sec" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn pri">Confirmar agendamento</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="etapa-confirmacao" class="confirma" hidden>
+      <div class="check" aria-hidden="true">✓</div>
+      <h3>Agendamento confirmado!</h3>
+      <p class="sub">Seus ingressos foram reservados.</p>
+      <div class="codigo" id="codigo"></div>
+      <dl class="resumo" id="resumo-final"></dl>
+      <p class="nota">Apresente este código na bilheteria até 15 minutos antes do início da sessão.</p>
+      <button class="btn pri" id="btn-ok" style="width:100%">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CINEMA = { sala: 'Sala 2', capacidade: 40 };
+const PRECOS = { inteira: 30, meia: 15 };
+const fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+const CLASSIF = {
+  L:  { rot: 'Livre',   cls: 'c-L'  },
+  '10': { rot: '10 anos', cls: 'c-10' },
+  '12': { rot: '12 anos', cls: 'c-12' },
+  '14': { rot: '14 anos', cls: 'c-14' },
+  '16': { rot: '16 anos', cls: 'c-16' },
+  '18': { rot: '18 anos', cls: 'c-18' }
+};
+
+const FILMES = [
+  { id: 'm1', titulo: 'Horizonte de Vidro', classificacao: '12', duracao: '118 min', genero: 'Ficção científica',
+    sinopse: 'Uma engenheira capta um sinal vindo de uma estação abandonada e precisa decidir se revela o segredo que pode mudar a cidade.',
+    cores: ['#1d4ed8', '#7c3aed'], horarios: ['15:00', '18:00', '21:00'] },
+  { id: 'm2', titulo: 'A Última Sessão', classificacao: 'L', duracao: '96 min', genero: 'Comédia',
+    sinopse: 'Um projecionista aposentado tenta salvar o velho cinema do bairro com a ajuda de três vizinhos improváveis.',
+    cores: ['#ea580c', '#facc15'], horarios: ['15:00', '18:00'] },
+  { id: 'm3', titulo: 'Neblina no Porto', classificacao: '16', duracao: '124 min', genero: 'Suspense',
+    sinopse: 'Durante uma tempestade, uma jornalista investiga o desaparecimento de um pescador e encontra pistas que ninguém quer ver.',
+    cores: ['#334155', '#0f766e'], horarios: ['18:00', '21:00'] },
+  { id: 'm4', titulo: 'Coração de Mapa', classificacao: '10', duracao: '102 min', genero: 'Aventura',
+    sinopse: 'Dois irmãos atravessam a serra em busca de um tesouro da família e reencontram laços que o tempo havia desfeito.',
+    cores: ['#15803d', '#a3e635'], horarios: ['15:00', '18:00'] },
+  { id: 'm5', titulo: 'Noite Sem Relógio', classificacao: '18', duracao: '131 min', genero: 'Drama',
+    sinopse: 'Um cirurgião em fim de carreira revisita as escolhas que fez ao longo de trinta anos de profissão.',
+    cores: ['#7f1d1d', '#111827'], horarios: ['21:00'] }
+];
+
+let diaIdx = 0;
+let atual = null;       // sessão aberta no modal
+let gatilho = null;     // dados para devolver o foco ao fechar
+const vendidos = {};    // chave da sessão -> ingressos reservados nesta página
+
+const $ = (s) => document.querySelector(s);
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+const rotHora = (h) => h.split(':')[0] + 'h';
+
+function ymd(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function diasDisponiveis() {
+  const base = new Date();
+  base.setHours(0, 0, 0, 0);
+  const out = [];
+  for (let i = 0; i < 3; i++) {
+    const d = new Date(base);
+    d.setDate(base.getDate() + i);
+    const nomeDia = i === 0 ? 'Hoje' : i === 1 ? 'Amanhã' : cap(d.toLocaleDateString('pt-BR', { weekday: 'long' }));
+    out.push({ key: ymd(d), date: d, label: nomeDia, sub: d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) });
+  }
+  return out;
+}
+const DIAS = diasDisponiveis();
+
+// Ocupação "inicial" determinística por sessão (simulação de bilheteria)
+function hash(str) {
+  let h = 0;
+  for (const c of str) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return h;
+}
+function lugaresLivres(key) {
+  const ocupadosBase = 8 + (hash(key) % 22);
+  return CINEMA.capacidade - ocupadosBase - (vendidos[key] || 0);
+}
+function sessaoEncerrada(dia, hora) {
+  const [h, m] = hora.split(':').map(Number);
+  const dt = new Date(dia.date);
+  dt.setHours(h, m, 0, 0);
+  return dt < new Date();
+}
+function statusSessao(filme, dia, hora) {
+  const key = `${filme.id}|${dia.key}|${hora}`;
+  if (sessaoEncerrada(dia, hora)) return { key, estado: 'encerrada', livres: 0 };
+  const livres = lugaresLivres(key);
+  if (livres <= 0) return { key, estado: 'esgotada', livres: 0 };
+  return { key, estado: livres <= 5 ? 'poucos' : 'disponivel', livres };
+}
+
+function renderDias() {
+  $('#dias').innerHTML = DIAS.map((d, i) =>
+    `<button class="dia" role="tab" aria-selected="${i === diaIdx}" data-acao="dia" data-idx="${i}">
+       <span>${d.label}</span><small>${d.sub}</small>
+     </button>`).join('');
+}
+
+function renderFilmes() {
+  const dia = DIAS[diaIdx];
+  $('#lista').innerHTML = FILMES.map((f) => {
+    const c = CLASSIF[f.classificacao];
+    const sessoes = f.horarios.map((h) => {
+      const s = statusSessao(f, dia, h);
+      const textoSub =
+        s.estado === 'disponivel' ? `${s.livres} lugares livres` :
+        s.estado === 'poucos'     ? `Últimos ${s.livres} lugares` :
+        s.estado === 'esgotada'   ? 'Esgotada' : 'Encerrada';
+      const desativado = s.estado === 'esgotada' || s.estado === 'encerrada';
+      return `<button class="sessao ${s.estado}" data-acao="sessao" data-filme="${f.id}" data-hora="${h}" ${desativado ? 'disabled' : ''}
+                aria-label="${f.titulo}, ${rotHora(h)}, ${textoSub}">
+                <strong>${rotHora(h)}</strong><small>${textoSub}</small>
+              </button>`;
+    }).join('');
+
+    return `
+      <article class="card">
+        <div class="poster" style="background:linear-gradient(135deg,${f.cores[0]},${f.cores[1]})">
+          <span>${f.titulo}</span>
+        </div>
+        <div class="info">
+          <div class="meta">
+            <span class="badge ${c.cls}">${c.rot}</span>
+            <span>${f.duracao}</span>
+            <span>· ${f.genero}</span>
+          </div>
+          <h2>${f.titulo}</h2>
+          <p class="sinopse">${f.sinopse}</p>
+          <div class="horarios">
+            <span class="rotulo">Horários · ${dia.label}</span>
+            <div class="sessoes">${sessoes}</div>
+          </div>
+        </div>
+      </article>`;
+  }).join('');
+}
+
+/* ---------- Modal ---------- */
+
+function abrirModal(filmeId, hora, botao) {
+  const filme = FILMES.find((f) => f.id === filmeId);
+  const dia = DIAS[diaIdx];
+  const st = statusSessao(filme, dia, hora);
+  if (st.estado === 'esgotada' || st.estado === 'encerrada') return;
+
+  atual = { filme, dia, hora, key: st.key };
+  gatilho = { filmeId, hora };
+
+  const c = CLASSIF[filme.classificacao];
+  $('#resumo').innerHTML = `
+    <dt>Filme</dt><dd>${filme.titulo}</dd>
+    <dt>Classificação</dt><dd>${c.rot}</dd>
+    <dt>Data</dt><dd>${dia.label} (${dia.sub})</dd>
+    <dt>Horário</dt><dd>${rotHora(hora)} · ${CINEMA.sala}</dd>`;
+
+  const max = Math.min(6, st.livres);
+  $('#f-qtd').innerHTML = Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
+
+  $('#form-reserva').reset();
+  ['nome', 'email', 'tel'].forEach((c2) => {
+    $('#e-' + c2).textContent = '';
+    $('#f-' + c2).setAttribute('aria-invalid', 'false');
+  });
+  $('#e-geral').textContent = '';
+  atualizarTotal();
+
+  $('#etapa-form').hidden = false;
+  $('#etapa-confirmacao').hidden = true;
+  $('#overlay').hidden = false;
+  document.body.style.overflow = 'hidden';
+  $('#f-nome').focus();
+}
+
+function fecharModal() {
+  if ($('#overlay').hidden) return;
+  $('#overlay').hidden = true;
+  document.body.style.overflow = '';
+  atual = null;
+  renderFilmes();
+  if (gatilho) {
+    const btn = document.querySelector(`[data-filme="${gatilho.filmeId}"][data-hora="${gatilho.hora}"]`);
+    if (btn && !btn.disabled) btn.focus();
+    gatilho = null;
+  }
+}
+
+function atualizarTotal() {
+  const qtd = Number($('#f-qtd').value) || 1;
+  const tipo = document.querySelector('input[name="tipo"]:checked').value;
+  const total = qtd * PRECOS[tipo];
+  $('#total-desc').textContent = `${qtd} × ${tipo}`;
+  $('#total').textContent = fmtBRL.format(total);
+}
+
+function validar() {
+  const nome = $('#f-nome').value.trim();
+  const email = $('#f-email').value.trim();
+  const tel = $('#f-tel').value.replace(/\D/g, '');
+  const erros = {};
+  if (nome.length < 3) erros.nome = 'Informe seu nome completo (mínimo de 3 letras).';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) erros.email = 'Informe um e-mail válido.';
+  if (tel.length < 10 || tel.length > 11) erros.tel = 'Informe um telefone com DDD (10 ou 11 dígitos).';
+
+  ['nome', 'email', 'tel'].forEach((c) => {
+    $('#e-' + c).textContent = erros[c] || '';
+    $('#f-' + c).setAttribute('aria-invalid', erros[c] ? 'true' : 'false');
+  });
+  return erros;
+}
+
+function mostrarConfirmacao(dados) {
+  $('#codigo').textContent = dados.codigo;
+  $('#resumo-final').innerHTML = `
+    <dt>Filme</dt><dd>${dados.filme}</dd>
+    <dt>Data</dt><dd>${dados.data}</dd>
+    <dt>Horário</dt><dd>${dados.hora} · ${CINEMA.sala}</dd>
+    <dt>Ingressos</dt><dd>${dados.qtd} × ${dados.tipo}</dd>
+    <dt>Total</dt><dd>${dados.total}</dd>
+    <dt>Nome</dt><dd>${dados.nome}</dd>`;
+  $('#etapa-form').hidden = true;
+  $('#etapa-confirmacao').hidden = false;
+  $('#btn-ok').focus();
+}
+
+/* ---------- Eventos ---------- */
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-acao]');
+  if (!t || t.disabled) return;
+  if (t.dataset.acao === 'dia') {
+    diaIdx = Number(t.dataset.idx);
+    renderDias();
+    renderFilmes();
+  } else if (t.dataset.acao === 'sessao') {
+    abrirModal(t.dataset.filme, t.dataset.hora, t);
+  }
+});
+
+$('#btn-fechar').addEventListener('click', fecharModal);
+$('#btn-cancelar').addEventListener('click', fecharModal);
+$('#btn-ok').addEventListener('click', fecharModal);
+$('#overlay').addEventListener('click', (e) => { if (e.target.id === 'overlay') fecharModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharModal(); });
+
+$('#f-qtd').addEventListener('change', atualizarTotal);
+document.querySelectorAll('input[name="tipo"]').forEach((r) => r.addEventListener('change', atualizarTotal));
+
+$('#form-reserva').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!atual) return;
+
+  const erros = validar();
+  if (Object.keys(erros).length) {
+    const primeiro = ['nome', 'tel', 'email'].find((c) => erros[c]);
+    $('#f-' + primeiro).focus();
+    return;
+  }
+
+  const qtd = Number($('#f-qtd').value);
+  const tipo = document.querySelector('input[name="tipo"]:checked').value;
+  const livresAgora = lugaresLivres(atual.key);
+  if (qtd > livresAgora) {
+    $('#e-geral').textContent = livresAgora > 0
+      ? `Restam apenas ${livresAgora} lugares para esta sessão. Ajuste a quantidade.`
+      : 'Esta sessão acabou de esgotar. Escolha outro horário.';
+    return;
+  }
+
+  vendidos[atual.key] = (vendidos[atual.key] || 0) + qtd;
+  const codigo = 'CVV-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+
+  mostrarConfirmacao({
+    codigo,
+    filme: atual.filme.titulo,
+    data: `${atual.dia.label} (${atual.dia.sub})`,
+    hora: rotHora(atual.hora),
+    qtd,
+    tipo: tipo === 'meia' ? 'meia-entrada' : 'inteira',
+    total: fmtBRL.format(qtd * PRECOS[tipo]),
+    nome: $('#f-nome').value.trim()
+  });
+  renderFilmes();
+});
+
+renderDias();
+renderFilmes();
+</script>
+</body>
+</html>

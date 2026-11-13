@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bistrô L'Étoile — Cardápio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap');
+
+    :root {
+      --bg-color: #faf8f5;
+      --card-bg: #ffffff;
+      --text-primary: #222222;
+      --text-secondary: #666666;
+      --accent-gold: #a68246;
+      --border-light: #e6dfd5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .menu-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      padding: 60px 50px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.04);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--accent-gold);
+    }
+
+    section {
+      margin-bottom: 50px;
+    }
+
+    section:last-of-type {
+      margin-bottom: 10px;
+    }
+
+    section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--accent-gold);
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    section h2::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 1px;
+      background-color: var(--accent-gold);
+      margin: 10px auto 0;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px 45px;
+    }
+
+    /* Estilização fiel à estrutura HTML solicitada */
+    .menu-grid > div {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "titulo preco"
+        "descricao descricao";
+      align-items: baseline;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed var(--border-light);
+    }
+
+    .menu-grid > div h3 {
+      grid-area: titulo;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      padding-right: 12px;
+    }
+
+    .menu-grid > div span {
+      grid-area: preco;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--accent-gold);
+      white-space: nowrap;
+    }
+
+    .menu-grid > div p {
+      grid-area: descricao;
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border-light);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      .menu-container {
+        padding: 35px 24px;
+      }
+
+      header h1 {
+        font-size: 2.2rem;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="menu-container">
+    <header>
+      <h1>Bistrô L'Étoile</h1>
+      <p>Gastronomia Contemporânea &amp; Artesanal</p>
+    </header>
+
+    <!-- Seção: Café da Manhã -->
+    <section id="cafe-da-manha">
+      <h2>Café da Manhã</h2>
+      <div class="menu-grid">
+        <div>
+          <h3>Ovos Benedict</h3>
+          <p>Ovos poché sobre muffin inglês com molho holandês.</p>
+          <span>R$ 32,00</span>
+        </div>
+        <div>
+          <h3>Croissant de Amêndoas</h3>
+          <p>Massa folhada francesa recheada com creme frangipane e lâminas tostadas.</p>
+          <span>R$ 22,00</span>
+        </div>
+        <div>
+          <h3>Avocado Toast</h3>
+          <p>Pão de fermentação natural, abacate temperado, queijo feta e sementes de girassol.</p>
+          <span>R$ 29,00</span>
+        </div>
+        <div>
+          <h3>Panquecas de Ricota</h3>
+          <p>Servidas com calda morna de frutas vermelhas e mel silvestre.</p>
+          <span>R$ 34,00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção: Executivo -->
+    <section id="executivo">
+      <h2>Executivo</h2>
+      <div class="menu-grid">
+        <div>
+          <h3>Escalope de Mignon</h3>
+          <p>Acompanha risoto de queijo parmesão e legumes salteados na manteiga de ervas.</p>
+          <span>R$ 64,00</span>
+        </div>
+        <div>
+          <h3>Supremo de Frango Grelhado</h3>
+          <p>Purê de mandioquinha defumada, farofa crocante de castanhas e molho rôti.</p>
+          <span>R$ 52,00</span>
+        </div>
+        <div>
+          <h3>Tilápia em Crosta de Ervas</h3>
+          <p>Filé assado servido com arroz sete grãos e emulsão de limão-siciliano.</p>
+          <span>R$ 56,00</span>
+        </div>
+        <div>
+          <h3>Nhoque de Batata-Baroa</h3>
+          <p>Salteado ao molho pomodoro rústico, manjericão fresco e burrata cremosa.</p>
+          <span>R$ 49,00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção: À la Carte -->
+    <section id="a-la-carte">
+      <h2>À la Carte</h2>
+      <div class="menu-grid">
+        <div>
+          <h3>Tornedor Rossini</h3>
+          <p>Filé mignon alto sobre brioche tostado, escalope de foie gras e redução de vinho do Porto.</p>
+          <span>R$ 118,00</span>
+        </div>
+        <div>
+          <h3>Polvo Grelhado na Brasa</h3>
+          <p>Tentáculos macios sobre batatas ao murro, páprica defumada e azeite de alho confit.</p>
+          <span>R$ 104,00</span>
+        </div>
+        <div>
+          <h3>Magret de Pato</h3>
+          <p>Peito de pato selado ao ponto, molho de laranja e gengibre com mousseline de cenoura.</p>
+          <span>R$ 96,00</span>
+        </div>
+        <div>
+          <h3>Risoto de Funghi Secchi</h3>
+          <p>Arroz arbóreo finalizado com cogumelos frescos, azeite trufado e lascas de grana padano.</p>
+          <span>R$ 78,00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção: Bebidas -->
+    <section id="bebidas">
+      <h2>Bebidas</h2>
+      <div class="menu-grid">
+        <div>
+          <h3>Espresso Artesanal</h3>
+          <p>Grãos 100% arábica de torra média com notas de chocolate e caramelo.</p>
+          <span>R$ 9,00</span>
+        </div>
+        <div>
+          <h3>Suco Detox Verde</h3>
+          <p>Abacaxi, couve orgânica, hortelã fresca, gengibre e água de coco.</p>
+          <span>R$ 16,00</span>
+        </div>
+        <div>
+          <h3>Soda Italiana de Frutas Vermelhas</h3>
+          <p>Xarope artesanal de amora e framboesa com água com gás e gelo.</p>
+          <span>R$ 18,00</span>
+        </div>
+        <div>
+          <h3>Taça de Vinho Malbec</h3>
+          <p>Vinho tinto encorpado com passagem de 12 meses em barrica de carvalho francês.</p>
+          <span>R$ 36,00</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Taxa de serviço opcional de 10% &bull; Consulte nossa equipe sobre restrições alimentares.</p>
+    </footer>
+  </main>
+
+</body>
+</html>

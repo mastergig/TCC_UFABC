@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light" data-font-scale="100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diário Local — Jornalismo Comunitário e Acessível</title>
+  <meta name="description" content="Portal de notícias locais com foco em mobilidade urbana, cultura, saúde e utilidade pública, projetado com acessibilidade integral.">
+  
+  <!-- Importação da fonte Inter para excelente legibilidade em telas pequenas e altos níveis de zoom -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. VARIÁVEIS E TOKENS DE DESIGN (UNIDADES RELATIVAS & ALTO CONTRASTE)
+       ========================================================================== */
+    :root {
+      /* Escala base controlada via JS (padrão 100% = 1rem = 16px do navegador) */
+      --font-scale: 1;
+
+      /* Paleta Tema Claro (Relação de contraste superior a 7:1 - WCAG AAA) */
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-alt: #f1f5f9;
+      --bg-header: #0f172a;
+      --bg-topbar: #1e293b;
+      --bg-badge: #e0f2fe;
+      --bg-alert: #fef3c7;
+
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-inverse: #ffffff;
+      --text-badge: #0369a1;
+      --text-alert: #78350f;
+
+      --brand-primary: #1d4ed8;
+      --brand-primary-hover: #1e40af;
+      --border-color: #cbd5e1;
+      --border-strong: #64748b;
+      --focus-ring: #d97706;
+
+      /* Espaçamentos e raios inteiramente em unidades relativas (rem/em) */
+      --radius-sm: 0.375rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --radius-pill: 9999rem;
+
+      /* Área de toque mínima WCAG 2.5.5 (equivalente a 44px em 100% = 2.75rem) */
+      --touch-target: 2.75rem;
+      --container-max: 75rem;
+      --gutter: clamp(1rem, 3vw, 2rem);
+    }
+
+    /* Tema Escuro / Alto Contraste */
+    [data-theme="dark"] {
+      --bg-page: #090d16;
+      --bg-surface: #111827;
+      --bg-surface-alt: #1f2937;
+      --bg-header: #030712;
+      --bg-topbar: #111827;
+      --bg-badge: #1e3a8a;
+      --bg-alert: #451a03;
+
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-inverse: #ffffff;
+      --text-badge: #93c5fd;
+      --text-alert: #fde68a;
+
+      --brand-primary: #60a5fa;
+      --brand-primary-hover: #93c5fd;
+      --border-color: #374151;
+      --border-strong: #9ca3af;
+      --focus-ring: #fbbf24;
+    }
+
+    /* ==========================================================================
+       2. RESET RESPONSIVO E PREVENÇÃO DE ROLAGEM HORIZONTAL (WCAG 1.4.10 REFLOW)
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      /* Permite que o usuário controle a fonte pelo navegador e pelos botões A-/A+ */
+      font-size: calc(100% * var(--font-scale));
+      scroll-behavior: smooth;
+      max-width: 100%;
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.6;
+      max-width: 100%;
+      overflow-x: clip;
+      /* Garante quebra segura de palavras longas em telas de 320px ou zoom 400% */
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    img, svg, video, canvas {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ==========================================================================
+       3. INDICADORES DE FOCO VISÍVEL E SKIP LINK (WCAG 2.4.1 & 2.4.7)
+       ========================================================================== */
+    :focus-visible {
+      outline: 0.2rem solid var(--focus-ring);
+      outline-offset: 0.15rem;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -10rem;
+      left: 1rem;
+      z-index: 1000;
+      background-color: var(--focus-ring);
+      color: #000000;
+      font-weight: 700;
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      min-height: var(--touch-target);
+      display: inline-flex;
+      align-items: center;
+      transition: top 0.15s ease;
+    }
+
+    .skip-link:focus {
+      top: 0.75rem;
+    }
+
+    /* Classe utilitária para leitores de tela */
+    .sr-only {
+      position: absolute;
+      width: 0.0625rem;
+      height: 0.0625rem;
+      padding: 0;
+      margin: -0.0625rem;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ==========================================================================
+       4. LAYOUT E CONTÊINERES FLUIDOS
+       ========================================================================== */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+
+    /* Barra de Acessibilidade Superior */
+    .a11y-bar {
+      background-color: var(--bg-topbar);
+      color: var(--text-inverse);
+      border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.15);
+      padding-block: 0.5rem;
+    }
+
+    .a11y-bar__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .a11y-bar__date {
+      font-size: 0.875rem;
+      color: #e2e8f0;
+      margin: 0;
+    }
+
+    .a11y-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-a11y {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border: 0.0625rem solid rgba(255, 255, 255, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.75rem;
+      min-height: var(--touch-target);
+      min-width: var(--touch-target);
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-a11y:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-a11y[aria-pressed="true"] {
+      background-color: var(--focus-ring);
+      color: #000000;
+      border-color: #000000;
+    }
+
+    /* Cabeçalho Principal do Portal */
+    .site-header {
+      background-color: var(--bg-header);
+      color: var(--text-inverse);
+      padding-block: clamp(1rem, 2.5vw, 1.75rem);
+      border-bottom: 0.25rem solid var(--brand-primary);
+    }
+
+    .site-header__top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .brand__title {
+      margin: 0;
+      font-size: clamp(1.65rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: #ffffff;
+    }
+
+    .brand__tagline {
+      margin: 0;
+      font-size: clamp(0.875rem, 1.8vw, 1rem);
+      color: #cbd5e1;
+      max-width: 55ch;
+    }
+
+    /* Navegação Principal com Wrap Fluido (sem quebra em zoom 400%) */
+    .main-nav {
+      border-top: 0.0625rem solid rgba(255, 255, 255, 0.15);
+      padding-top: 1rem;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .nav-btn {
+      background-color: transparent;
+      color: #f1f5f9;
+      border: 0.0625rem solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-pill);
+      padding: 0.5rem 1rem;
+      min-height: var(--touch-target);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: #ffffff;
+    }
+
+    .nav-btn[aria-pressed="true"] {
+      background-color: #ffffff;
+      color: #0f172a;
+      border-color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       5. GRADE PRINCIPAL DO CONTEÚDO (CSS GRID COM MINMAX(0, 1FR))
+       ========================================================================== */
+    .main-content {
+      padding-block: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    /* Layout responsivo: 1 coluna em telas estreitas ou zoom elevado; 2 colunas em desktop */
+    .portal-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(1.5rem, 3vw, 2.25rem);
+      align-items: start;
+    }
+
+    @media (min-width: 62rem) {
+      .portal-grid {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      }
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 0.125rem solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .filter-status {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================================================
+       6. ARTIGOS E CARTÕES DE NOTÍCIAS (ESTRUTURA ACESSÍVEL)
+       ========================================================================== */
+    .news-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .news-card {
+      background-color: var(--bg-surface);
+      border: 0.0625rem solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.125rem, 3vw, 1.75rem);
+      box-shadow: 0 0.125rem 0.5rem rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .news-card--featured {
+      border-left: 0.375rem solid var(--brand-primary);
+      background-color: var(--bg-surface);
+    }
+
+    .news-card[hidden] {
+      display: none;
+    }
+
+    .news-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .badge {
+      background-color: var(--bg-badge);
+      color: var(--text-badge);
+      font-weight: 700;
+      font-size: 0.8125rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* Ilustração SVG vetorial responsiva (nunca estoura a largura) */
+    .news-card__media {
+      width: 100%;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background-color: var(--bg-surface-alt);
+      border: 0.0625rem solid var(--border-color);
+    }
+
+    /* Título da notícia conforme exemplo: <h2> */
+    .news-card h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.8vw, 1.65rem);
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--text-primary);
+    }
+
+    /* Parágrafo da notícia com largura de leitura ideal (max 68ch) e unidades relativas */
+    .news-card p {
+      margin: 0;
+      font-size: clamp(1rem, 1.8vw, 1.0625rem);
+      line-height: 1.65;
+      color: var(--text-secondary);
+      max-width: 68ch;
+    }
+
+    .news-card__footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 0.375rem;
+      padding-top: 0.875rem;
+      border-top: 0.0625rem solid var(--border-color);
+    }
+
+    .btn-read-more {
+      background-color: var(--brand-primary);
+      color: #ffffff;
+      border: 0.0625rem solid transparent;
+      border-radius: var(--radius-md);
+      padding: 0.625rem 1.125rem;
+      min-height: var(--touch-target);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      transition: background-color 0.15s ease;
+    }
+
+    [data-theme="dark"] .btn-read-more {
+      color: #090d16;
+    }
+
+    .btn-read-more:hover {
+      background-color: var(--brand-primary-hover);
+    }
+
+    /* ==========================================================================
+       7. BARRA LATERAL (<aside>) DE UTILIDADE PÚBLICA
+       ========================================================================== */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .widget {
+      background-color: var(--bg-surface);
+      border: 0.0625rem solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.125rem, 2.5vw, 1.5rem);
+    }
+
+    .widget--alert {
+      background-color: var(--bg-alert);
+      border-color: #d97706;
+    }
+
+    .widget h3 {
+      margin: 0 0 0.875rem 0;
+      font-size: clamp(1.125rem, 2.2vw, 1.25rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .widget--alert h3 {
+      color: var(--text-alert);
+    }
+
+    .widget p {
+      margin: 0 0 0.75rem 0;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+
+    .widget--alert p {
+      color: var(--text-alert);
+      font-weight: 500;
+    }
+
+    .utility-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .utility-item {
+      background-color: var(--bg-surface-alt);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      border: 0.0625rem solid var(--border-color);
+    }
+
+    .utility-item__title {
+      display: block;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .utility-item__desc {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================================================
+       8. MODAL ACESSÍVEL DE LEITURA COMPLETA (GERENCIAMENTO DE FOCO)
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(2, 6, 23, 0.8);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+      overflow-y: auto;
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .modal-dialog {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border: 0.125rem solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 46rem;
+      max-height: 90dvh;
+      overflow-y: auto;
+      padding: clamp(1.25rem, 3.5vw, 2rem);
+      box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 0.0625rem solid var(--border-color);
+    }
+
+    .modal-title {
+      margin: 0.5rem 0 0 0;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+
+    .btn-close-modal {
+      background-color: var(--bg-surface-alt);
+      color: var(--text-primary);
+      border: 0.0625rem solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.875rem;
+      min-height: var(--touch-target);
+      min-width: var(--touch-target);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-close-modal:hover {
+      background-color: var(--border-color);
+    }
+
+    .modal-body p {
+      margin: 0 0 1rem 0;
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: var(--text-primary);
+      max-width: 65ch;
+    }
+
+    /* ==========================================================================
+       9. RODAPÉ ACESSÍVEL
+       ========================================================================== */
+    .site-footer {
+      background-color: var(--bg-header);
+      color: #e2e8f0;
+      padding-block: clamp(1.75rem, 4vw, 2.5rem);
+      margin-top: 2rem;
+      border-top: 0.25rem solid var(--brand-primary);
+    }
+
+    .site-footer__inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .site-footer p {
+      margin: 0;
+      font-size: 0.9375rem;
+      max-width: 60ch;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Link de salto direto para o conteúdo principal (WCAG 2.4.1 Bypass Blocks) -->
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+  <!-- Região de anúncios dinâmicos para leitores de tela (WCAG 4.1.3 Status Messages) -->
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Barra Superior de Ferramentas de Acessibilidade -->
+  <div class="a11y-bar" role="region" aria-label="Barra de ferramentas de acessibilidade">
+    <div class="container a11y-bar__inner">
+      <p class="a11y-bar__date">
+        <time datetime="2026-11-12">Quinta-feira, 12 de novembro de 2026</time> • Edição Comunitária
+      </p>
+
+      <div class="a11y-controls" role="group" aria-label="Ajustes de leitura e contraste">
+        <button type="button" class="btn-a11y" id="btn-font-dec" aria-label="Diminuir tamanho da fonte">
+          A-
+        </button>
+        <button type="button" class="btn-a11y" id="btn-font-reset" aria-label="Restaurar tamanho padrão da fonte">
+          A
+        </button>
+        <button type="button" class="btn-a11y" id="btn-font-inc" aria-label="Aumentar tamanho da fonte">
+          A+
+        </button>
+        <button type="button" class="btn-a11y" id="btn-theme-toggle" aria-pressed="false">
+          <span aria-hidden="true">◐</span> Alto Contraste
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cabeçalho Principal Semântico -->
+  <header class="site-header">
+    <div class="container">
+      <div class="site-header__top">
+        <div class="brand">
+          <h1 class="brand__title">Diário Local</h1>
+          <p class="brand__tagline">Informação cidadã, mobilidade urbana e serviços públicos sem barreiras.</p>
+        </div>
+      </div>
+
+      <!-- Navegação de Categorias com Estados Acessíveis -->
+      <nav class="main-nav" aria-label="Filtrar notícias por categoria">
+        <ul class="nav-list">
+          <li>
+            <button type="button" class="nav-btn" data-category="todas" aria-pressed="true">
+              Todas as Notícias
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-category="urbanismo" aria-pressed="false">
+              Urbanismo e Obras
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-category="transporte" aria-pressed="false">
+              Transporte Público
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-category="cultura" aria-pressed="false">
+              Cultura Local
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-category="saude" aria-pressed="false">
+              Saúde e Meio Ambiente
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main id="conteudo-principal" class="main-content" tabindex="-1">
+    <div class="container portal-grid">
+
+      <!-- Coluna Principal: Feed de Notícias -->
+      <section aria-labelledby="heading-ultimas-noticias">
+        <div class="section-header">
+          <h2 id="heading-ultimas-noticias" class="section-title">Destaques da Cidade</h2>
+          <p id="filter-status-text" class="filter-status">Exibindo todas as 4 notícias</p>
+        </div>
+
+        <div class="news-feed" id="news-feed">
+
+          <!-- ARTIGO 1: Exemplo exato fornecido pelo usuário como destaque principal -->
+          <article class="news-card news-card--featured" data-category="urbanismo" data-article-id="obras-centro">
+            <div class="news-card__meta">
+              <span class="badge">Urbanismo e Obras</span>
+              <time datetime="2026-11-12T08:30">Hoje, às 08h30</time>
+              <span>• Leitura de 3 min</span>
+            </div>
+
+            <div class="news-card__media">
+              <!-- Gráfico SVG acessível ilustrando a requalificação urbana com calçadas acessíveis -->
+              <svg viewBox="0 0 800 260" role="img" aria-label="Ilustração esquemática das novas calçadas largas com piso tátil e ciclovia no Centro Urbano">
+                <rect width="800" height="260" fill="#1e3a8a"/>
+                <rect y="175" width="800" height="85" fill="#334155"/>
+                <rect y="160" width="800" height="15" fill="#fbbf24"/>
+                <!-- Prédios estilizados -->
+                <rect x="60" y="65" width="110" height="95" rx="6" fill="#3b82f6"/>
+                <rect x="200" y="40" width="140" height="120" rx="6" fill="#60a5fa"/>
+                <rect x="480" y="55" width="130" height="105" rx="6" fill="#3b82f6"/>
+                <rect x="640" y="80" width="100" height="80" rx="6" fill="#2563eb"/>
+                <!-- Árvores urbanas -->
+                <circle cx="405" cy="115" r="28" fill="#10b981"/>
+                <rect x="400" y="135" width="10" height="25" fill="#78350f"/>
+                <!-- Faixa de travessia acessível -->
+                <rect x="360" y="185" width="80" height="12" rx="3" fill="#ffffff"/>
+                <rect x="360" y="207" width="80" height="12" rx="3" fill="#ffffff"/>
+                <rect x="360" y="229" width="80" height="12" rx="3" fill="#ffffff"/>
+              </svg>
+            </div>
+
+            <!-- Marcação fiel ao exemplo de estrutura acessível -->
+            <h2>Obras no Centro Urbano</h2>
+            <p>
+              As intervenções de requalificação viária no quadrilátero central entram na etapa final nesta semana, ampliando calçadas com piso tátil direcional, rampas de acessibilidade universal e iluminação em LED. O projeto prioriza a circulação segura de pedestres e garante fluidez para o transporte coletivo sem bloquear o acesso ao comércio local.
+            </p>
+
+            <div class="news-card__footer">
+              <span class="news-card__author">Por Redação — Mobilidade e Infraestrutura</span>
+              <button type="button" class="btn-read-more" data-open-article="obras-centro">
+                Ler reportagem completa
+                <span class="sr-only">sobre Obras no Centro Urbano</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- ARTIGO 2: Transporte Público -->
+          <article class="news-card" data-category="transporte" data-article-id="corredor-expresso">
+            <div class="news-card__meta">
+              <span class="badge">Transporte Público</span>
+              <time datetime="2026-11-12T07:15">Hoje, às 07h15</time>
+              <span>• Leitura de 2 min</span>
+            </div>
+
+            <h2>Nova Linha Expresa Interbairros Reduz Tempo de Viagem em 25%</h2>
+            <p>
+              A Secretaria de Transportes colocou em operação doze novos ônibus elétricos articulados equipados com piso baixo integral, espaço reservado para cadeiras de rodas e avisos sonoros de próxima parada. A linha conecta os terminais Norte e Sul com intervalos de oito minutos nos horários de pico.
+            </p>
+
+            <div class="news-card__footer">
+              <span class="news-card__author">Por Mariana Costa — Mobilidade</span>
+              <button type="button" class="btn-read-more" data-open-article="corredor-expresso">
+                Ler reportagem completa
+                <span class="sr-only">sobre Nova Linha Expresa Interbairros</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- ARTIGO 3: Cultura Local -->
+          <article class="news-card" data-category="cultura" data-article-id="festival-literario">
+            <div class="news-card__meta">
+              <span class="badge">Cultura Local</span>
+              <time datetime="2026-11-11T18:40">Ontem, às 18h40</time>
+              <span>• Leitura de 3 min</span>
+            </div>
+
+            <h2>Praça da Biblioteca Recebe Feira do Livro com Tradução em Libras e Audiolivros</h2>
+            <p>
+              Com entrada gratuita e programação voltada a todas as idades, o evento cultural deste fim de semana contará com rodas de conversa com autores regionais, oficinas de escrita criativa, exemplares em braille e intérpretes de Língua Brasileira de Sinais em todos os palcos principais.
+            </p>
+
+            <div class="news-card__footer">
+              <span class="news-card__author">Por Lucas Andrade — Cultura</span>
+              <button type="button" class="btn-read-more" data-open-article="festival-literario">
+                Ler reportagem completa
+                <span class="sr-only">sobre Feira do Livro na Praça da Biblioteca</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- ARTIGO 4: Saúde e Meio Ambiente -->
+          <article class="news-card" data-category="saude" data-article-id="parque-linear">
+            <div class="news-card__meta">
+              <span class="badge">Saúde e Meio Ambiente</span>
+              <time datetime="2026-11-11T14:20">Ontem, às 14h20</time>
+              <span>• Leitura de 2 min</span>
+            </div>
+
+            <h2>Mutirão Comunitário Planta 500 Mudas Nativas no Parque Linear do Ribeirão</h2>
+            <p>
+              Moradores, estudantes da rede municipal e agentes ambientais uniram esforços para recuperar a mata ciliar e criar novas áreas de sombra ao longo da pista de caminhada. As Unidades Básicas de Saúde da região também ofereceram aferição gratuita de pressão arterial e orientação nutricional.
+            </p>
+
+            <div class="news-card__footer">
+              <span class="news-card__author">Por Fernanda Oliveira — Cidade</span>
+              <button type="button" class="btn-read-more" data-open-article="parque-linear">
+                Ler reportagem completa
+                <span class="sr-only">sobre Mutirão Comunitário no Parque Linear</span>
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Barra Lateral (<aside>): Alertas e Utilidade Pública -->
+      <aside class="sidebar" aria-label="Alertas locais e utilidade pública">
+
+        <!-- Alerta Urgente de Trânsito -->
+        <section class="widget widget--alert" aria-labelledby="heading-alerta-transito">
+          <h3 id="heading-alerta-transito">
+            <span aria-hidden="true">⚠️</span> Desvio Temporário no Centro
+          </h3>
+          <p>
+            Devido à etapa final das obras no Centro Urbano, a Rua XV de Novembro opera em meia pista entre 09h e 16h. Utilize a Avenida Brasil como rota alternativa.
+          </p>
+        </section>
+
+        <!-- Previsão do Tempo Local -->
+        <section class="widget" aria-labelledby="heading-clima">
+          <h3 id="heading-clima">
+            <span aria-hidden="true">🌤️</span> Clima na Cidade
+          </h3>
+          <p>
+            <strong>24°C — Parcialmente nublado.</strong> Umidade relativa do ar em 62%. Sem previsão de chuvas fortes para as próximas 24 horas.
+          </p>
+        </section>
+
+        <!-- Serviços de Utilidade Pública -->
+        <section class="widget" aria-labelledby="heading-servicos">
+          <h3 id="heading-servicos">
+            <span aria-hidden="true">📋</span> Utilidade Pública
+          </h3>
+          <ul class="utility-list">
+            <li class="utility-item">
+              <span class="utility-item__title">Defesa Civil e Emergências</span>
+              <span class="utility-item__desc">Atendimento 24h pelo telefone 199 (ligação gratuita).</span>
+            </li>
+            <li class="utility-item">
+              <span class="utility-item__title">Central de Atendimento ao Cidadão</span>
+              <span class="utility-item__desc">Solicitações de poda, iluminação e acessibilidade pelo 156.</span>
+            </li>
+            <li class="utility-item">
+              <span class="utility-item__title">Vacinação nas UBS</span>
+              <span class="utility-item__desc">Postos abertos de segunda a sexta, das 07h às 19h.</span>
+            </li>
+          </ul>
+        </section>
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- Rodapé Semântico -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>
+        <strong>Diário Local</strong> — Jornalismo público e acessível para todos os moradores. Desenvolvido conforme as diretrizes WCAG 2.2 AA/AAA.
+      </p>
+      <p>
+        Redação: redacao@diariolocal.exemplo.br
+      </p>
+    </div>
+  </footer>
+
+  <!-- Modal Acessível para Leitura Completa da Notícia -->
+  <div class="modal-backdrop" id="article-modal" role="dialog" aria-modal="true" aria-labelledby="modal-article-title" hidden>
+    <div class="modal-dialog" tabindex="-1">
+      <div class="modal-header">
+        <div>
+          <span class="badge" id="modal-article-badge">Categoria</span>
+          <h2 class="modal-title" id="modal-article-title">Título da Notícia</h2>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-modal" aria-label="Fechar janela de leitura da notícia">
+          Fechar ✕
+        </button>
+      </div>
+      <div class="modal-body" id="modal-article-body">
+        <!-- Conteúdo injetado dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * Módulo de Acessibilidade e Interatividade do Portal Diário Local
+     * - Controle de escala tipográfica (85% a 140%, cumulativo ao zoom do navegador)
+     * - Alternador de Tema Escuro / Alto Contraste com persistência
+     * - Filtro dinâmico de categorias com anúncio via aria-live
+     * - Modal acessível com armadilha de foco (focus trap) e fechamento via Escape
+     */
+    (function () {
+      'use strict';
+
+      // Base de dados completa das reportagens para leitura expandida
+      const ARTICLES_DATA = {
+        'obras-centro': {
+          category: 'Urbanismo e Obras',
+          title: 'Obras no Centro Urbano',
+          paragraphs: [
+            'As intervenções de requalificação viária no quadrilátero central entram na etapa final nesta semana, ampliando calçadas com piso tátil direcional, rampas de acessibilidade universal e iluminação em LED. O projeto prioriza a circulação segura de pedestres e garante fluidez para o transporte coletivo sem bloquear o acesso ao comércio local.',
+            'Segundo a Secretaria Municipal de Obras, foram substituídos mais de 3,2 quilômetros de redes antigas de drenagem pluvial antes da pavimentação definitiva, reduzindo historicamente os pontos de alagamento durante o verão.',
+            'Todas as esquinas receberam rebaixamento de guia em nível com a faixa de travessia e semáforos sonoros para pessoas com deficiência visual. A entrega oficial do novo calçadão está prevista para o próximo sábado.'
+          ]
+        },
+        'corredor-expresso': {
+          category: 'Transporte Público',
+          title: 'Nova Linha Expresa Interbairros Reduz Tempo de Viagem em 25%',
+          paragraphs: [
+            'A Secretaria de Transportes colocou em operação doze novos ônibus elétricos articulados equipados com piso baixo integral, espaço reservado para cadeiras de rodas e avisos sonoros de próxima parada. A linha conecta os terminais Norte e Sul com intervalos de oito minutos nos horários de pico.',
+            'Além de reduzir a emissão de poluentes e o ruído urbano, a nova frota conta com painéis internos de alto contraste exibindo o itinerário em tempo real e integração tarifária gratuita por até duas horas.'
+          ]
+        },
+        'festival-literario': {
+          category: 'Cultura Local',
+          title: 'Praça da Biblioteca Recebe Feira do Livro com Tradução em Libras e Audiolivros',
+          paragraphs: [
+            'Com entrada gratuita e programação voltada a todas as idades, o evento cultural deste fim de semana contará com rodas de conversa com autores regionais, oficinas de escrita criativa, exemplares em braille e intérpretes de Língua Brasileira de Sinais em todos os palcos principais.',
+            'A organização também disponibilizará mapas táteis na entrada da praça e rotas acessíveis interligando os estandes de editoras independentes, o espaço infantil e a área de alimentação.'
+          ]
+        },
+        'parque-linear': {
+          category: 'Saúde e Meio Ambiente',
+          title: 'Mutirão Comunitário Planta 500 Mudas Nativas no Parque Linear do Ribeirão',
+          paragraphs: [
+            'Moradores, estudantes da rede municipal e agentes ambientais uniram esforços para recuperar a mata ciliar e criar novas áreas de sombra ao longo da pista de caminhada. As Unidades Básicas de Saúde da região também ofereceram aferição gratuita de pressão arterial e orientação nutricional.',
+            'Entre as espécies plantadas estão ipês-amarelos, pitangueiras e jatobás, escolhidos para atrair aves nativas e melhorar o microclima da região ao longo dos próximos anos.'
+          ]
+        }
+      };
+
+      // Elementos do DOM
+      const root = document.documentElement;
+      const announcer = document.getElementById('live-announcer');
+      const btnFontDec = document.getElementById('btn-font-dec');
+      const btnFontReset = document.getElementById('btn-font-reset');
+      const btnFontInc = document.getElementById('btn-font-inc');
+      const btnThemeToggle = document.getElementById('btn-theme-toggle');
+      const navButtons = document.querySelectorAll('.nav-btn');
+      const articleCards = document.querySelectorAll('.news-card');
+      const filterStatusText = document.getElementById('filter-status-text');
+
+      // Elementos do Modal
+      const modalBackdrop = document.getElementById('article-modal');
+      const modalDialog = modalBackdrop.querySelector('.modal-dialog');
+      const modalBadge = document.getElementById('modal-article-badge');
+      const modalTitle = document.getElementById('modal-article-title');
+      const modalBody = document.getElementById('modal-article-body');
+      const btnCloseModal = document.getElementById('btn-close-modal');
+      const openModalButtons = document.querySelectorAll('[data-open-article]');
+
+      let currentScale = 1.0;
+      let lastFocusedElement = null;
+
+      /**
+       * Anuncia mensagens importantes para tecnologias assistivas
+       */
+      function announce(message) {
+        announcer.textContent = '';
+        window.setTimeout(() => {
+          announcer.textContent = message;
+        }, 50);
+      }
+
+      /**
+       * Controle de Tamanho de Fonte em Unidades Relativas
+       */
+      function updateFontScale(newScale) {
+        currentScale = Math.min(1.4, Math.max(0.85, Number(newScale.toFixed(2))));
+        root.style.setProperty('--font-scale', currentScale);
+        const percent = Math.round(currentScale * 100);
+        announce(`Tamanho do texto ajustado para ${percent} por cento.`);
+      }
+
+      btnFontDec.addEventListener('click', () => updateFontScale(currentScale - 0.1));
+      btnFontReset.addEventListener('click', () => updateFontScale(1.0));
+      btnFontInc.addEventListener('click', () => updateFontScale(currentScale + 0.1));
+
+      /**
+       * Alternador de Alto Contraste / Tema Escuro
+       */
+      btnThemeToggle.addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        const nextTheme = isDark ? 'light' : 'dark';
+        root.setAttribute('data-theme', nextTheme);
+        btnThemeToggle.setAttribute('aria-pressed', String(!isDark));
+        announce(!isDark ? 'Modo de alto contraste escuro ativado.' : 'Modo claro padrão ativado.');
+      });
+
+      /**
+       * Filtro de Categorias Acessível
+       */
+      navButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const selectedCategory = btn.getAttribute('data-category');
+
+          // Atualiza estado aria-pressed dos botões
+          navButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+
+          let visibleCount = 0;
+          articleCards.forEach((card) => {
+            const cardCategory = card.getAttribute('data-category');
+            const shouldShow = selectedCategory === 'todas' || cardCategory === selectedCategory;
+            card.hidden = !shouldShow;
+            if (shouldShow) visibleCount++;
+          });
+
+          const categoryLabel = btn.textContent.trim();
+          const statusMsg = selectedCategory === 'todas'
+            ? `Exibindo todas as ${visibleCount} notícias`
+            : `Categoria ${categoryLabel}: ${visibleCount} ${visibleCount === 1 ? 'notícia encontrada' : 'notícias encontradas'}`;
+
+          filterStatusText.textContent = statusMsg;
+          announce(statusMsg);
+        });
+      });
+
+      /**
+       * Abertura e Fechamento do Modal de Leitura Completa
+       */
+      function openArticleModal(articleId, triggerButton) {
+        const data = ARTICLES_DATA[articleId];
+        if (!data) return;
+
+        lastFocusedElement = triggerButton || document.activeElement;
+        modalBadge.textContent = data.category;
+        modalTitle.textContent = data.title;
+
+        // Preenche parágrafos de forma segura
+        modalBody.innerHTML = '';
+        data.paragraphs.forEach((text) => {
+          const p = document.createElement('p');
+          p.textContent = text;
+          modalBody.appendChild(p);
+        });
+
+        modalBackdrop.hidden = false;
+        document.body.style.overflow = 'hidden';
+        btnCloseModal.focus();
+        announce(`Reportagem aberta: ${data.title}`);
+      }
+
+      function closeArticleModal() {
+        if (modalBackdrop.hidden) return;
+        modalBackdrop.hidden = true;
+        document.body.style.overflow = '';
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+        announce('Janela de leitura fechada.');
+      }
+
+      openModalButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const articleId = btn.getAttribute('data-open-article');
+          openArticleModal(articleId, btn);
+        });
+      });
+
+      btnCloseModal.addEventListener('click', closeArticleModal);
+
+      modalBackdrop.addEventListener('click', (event) => {
+        if (event.target === modalBackdrop) {
+          closeArticleModal();
+        }
+      });
+
+      // Suporte a tecla Escape e Focus Trap dentro do modal
+      document.addEventListener('keydown', (event) => {
+        if (modalBackdrop.hidden) return;
+
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeArticleModal();
+          return;
+        }
+
+        if (event.key === 'Tab') {
+          const focusable = modalDialog.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
+          if (focusable.length === 0) return;
+
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

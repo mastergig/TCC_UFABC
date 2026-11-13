@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare Castração & Bem-Estar | Clínica Veterinária Especializada</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        coral: {
+                            400: '#fb7185',
+                            500: '#f97316',
+                            600: '#ea580c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-700 antialiased selection:bg-teal-200 selection:text-teal-900">
+
+    <!-- ==================== CABEÇALHO FIXO ==================== -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logotipo -->
+                <a href="#inicio" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-paw text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-bold text-xl text-slate-800 tracking-tight block leading-none">PetCare</span>
+                        <span class="text-xs font-medium text-teal-600 tracking-wider uppercase">Castração & Bem-Estar</span>
+                    </div>
+                </a>
+
+                <!-- Menu Desktop -->
+                <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600">
+                    <a href="#inicio" class="hover:text-teal-600 transition-colors">Início</a>
+                    <a href="#beneficios" class="hover:text-teal-600 transition-colors">Por que Castrar?</a>
+                    <a href="#procedimento" class="hover:text-teal-600 transition-colors">O Procedimento</a>
+                    <a href="#pacotes" class="hover:text-teal-600 transition-colors">Valores & Pacotes</a>
+                    <a href="#faq" class="hover:text-teal-600 transition-colors">Dúvidas Frequentes</a>
+                </nav>
+
+                <!-- Botão CTA Desktop & Menu Mobile Toggle -->
+                <div class="flex items-center gap-3">
+                    <a href="#agendar" class="hidden sm:inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-md shadow-orange-500/25 transition-all hover:-translate-y-0.5">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        Agendar Consulta
+                    </a>
+                    <button id="mobile-menu-btn" aria-label="Abrir menu" class="lg:hidden p-2.5 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-6 space-y-2 shadow-lg">
+            <a href="#inicio" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-700">Início</a>
+            <a href="#beneficios" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-700">Por que Castrar?</a>
+            <a href="#procedimento" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-700">Como Funciona o Procedimento</a>
+            <a href="#pacotes" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-700">Valores & Pacotes</a>
+            <a href="#faq" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-700">Dúvidas Frequentes</a>
+            <div class="pt-2">
+                <a href="#agendar" class="mobile-link flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl shadow-md">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    Agendar Avaliação Agora
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== SEÇÃO HERO ==================== -->
+    <section id="inicio" class="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-gradient-to-b from-teal-50/80 via-sky-50/40 to-slate-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <!-- Coluna de Texto -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-100/80 text-teal-800 text-xs sm:text-sm font-semibold border border-teal-200/60">
+                        <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
+                        Centro Cirúrgico Veterinário Especializado em Castração
+                    </div>
+
+                    <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight">
+                        Mais saúde, tranquilidade e <span class="text-teal-600">anos de vida</span> ao lado do seu melhor amigo.
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Realizamos castração minimamente invasiva para cães e gatos com anestesia inalatória monitorada, exames pré-operatórios completos e uma equipe apaixonada pelo bem-estar animal.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#agendar" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-base px-8 py-4 rounded-2xl shadow-lg shadow-orange-500/30 transition-all hover:-translate-y-0.5">
+                            <i class="fa-solid fa-calendar-plus"></i>
+                            Agendar Avaliação
+                        </a>
+                        <a href="#procedimento" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-700 font-semibold text-base px-8 py-4 rounded-2xl border border-slate-200 shadow-sm transition-all">
+                            <i class="fa-solid fa-circle-info text-teal-600"></i>
+                            Saiba Mais
+                        </a>
+                    </div>
+
+                    <!-- Estatísticas Rápidas -->
+                    <div class="grid grid-cols-3 gap-3 sm:gap-6 pt-6 border-t border-slate-200/80">
+                        <div class="bg-white/80 p-3 sm:p-4 rounded-2xl border border-slate-100 shadow-sm">
+                            <p class="font-display font-extrabold text-xl sm:text-2xl text-teal-700">+5.000</p>
+                            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Cirurgias realizadas com sucesso</p>
+                        </div>
+                        <div class="bg-white/80 p-3 sm:p-4 rounded-2xl border border-slate-100 shadow-sm">
+                            <p class="font-display font-extrabold text-xl sm:text-2xl text-teal-700">100%</p>
+                            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Anestesia Inalatória Segura</p>
+                        </div>
+                        <div class="bg-white/80 p-3 sm:p-4 rounded-2xl border border-slate-100 shadow-sm">
+                            <p class="font-display font-extrabold text-xl sm:text-2xl text-teal-700">24h/7d</p>
+                            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Acompanhamento Pós-Operatório</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna de Imagem -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/4] sm:aspect-[4/3] lg:aspect-[4/5] bg-teal-100">
+                        <img 
+                            src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=900&q=80" 
+                            alt="Veterinária cuidando com carinho de um cãozinho saudável" 
+                            onerror="this.src='https://placehold.co/800x900/0d9488/ffffff?text=PetCare+Veterinaria'"
+                            class="w-full h-full object-cover"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
+                        
+                        <!-- Card Flutuante de Confiança -->
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-heart-pulse text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800 text-sm">Protocolo Zero Estresse</p>
+                                <p class="text-xs text-slate-500">Ambiente climatizado e separado para cães e felinos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SEÇÃO POR QUE CASTRAR? ==================== -->
+    <section id="beneficios" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-teal-600 font-bold text-sm uppercase tracking-wider">Ato de Amor e Prevenção</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Por que castrar seu cão ou gato?</h2>
+                <p class="text-slate-600 mt-4 text-base sm:text-lg">
+                    A castração é o procedimento preventivo mais recomendado pela medicina veterinária moderna para garantir qualidade de vida e longevidade aos pets.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                <!-- Card 1 -->
+                <div class="bg-slate-50 hover:bg-teal-50/50 border border-slate-100 hover:border-teal-200 p-7 rounded-3xl transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-3">Prevenção de Doenças Graves</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Reduz em até 99% o risco de câncer de mama e elimina a chance de piometra (infecção uterina grave) em fêmeas, além de prevenir tumores testiculares e problemas de próstata em machos.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-slate-50 hover:bg-teal-50/50 border border-slate-100 hover:border-teal-200 p-7 rounded-3xl transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-house-chimney-heart"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-3">Comportamento Equilibrado</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Diminui drasticamente a demarcação de território com urina, miados excessivos no cio, agressividade por disputa hormonal e a ansiedade causada pelos instintos reprodutivos.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-slate-50 hover:bg-teal-50/50 border border-slate-100 hover:border-teal-200 p-7 rounded-3xl transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-route"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-3">Menos Fugas e Acidentes</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Sem o impulso hormonal de procurar parceiros, cães e gatos ficam muito mais caseiros, reduzindo o risco de fugas para a rua, atropelamentos, brigas e contágio por doenças virais.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-slate-50 hover:bg-teal-50/50 border border-slate-100 hover:border-teal-200 p-7 rounded-3xl transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-paw"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-3">Controle Populacional</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Evita ninhadas indesejadas e contribui diretamente para a guarda responsável, reduzindo o abandono de animais nas ruas e aumentando a expectativa de vida do seu pet.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SEÇÃO COMO FUNCIONA O PROCEDIMENTO ==================== -->
+    <section id="procedimento" class="py-20 bg-gradient-to-b from-slate-50 to-teal-50/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-teal-600 font-bold text-sm uppercase tracking-wider">Segurança em Cada Detalhe</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Como Funciona o Procedimento</h2>
+                <p class="text-slate-600 mt-4 text-base sm:text-lg">
+                    Seguimos um protocolo rigoroso em 3 etapas para que você tenha total tranquilidade antes, durante e depois da cirurgia.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <!-- Etapa 1 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 relative">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="w-12 h-12 rounded-2xl bg-teal-600 text-white font-display font-bold text-xl flex items-center justify-center shadow-md shadow-teal-600/20">1</span>
+                        <i class="fa-solid fa-stethoscope text-3xl text-teal-200"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-3">Avaliação Pré-Operatória e Exames</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Antes de qualquer cirurgia, realizamos uma consulta clínica detalhada e exames laboratoriais (hemograma completo e perfil bioquímico) para verificar a saúde do coração, fígado e rins do pet.
+                    </p>
+                    <ul class="space-y-2 text-xs font-medium text-slate-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Exame físico completo</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Exames de sangue na própria clínica</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Orientações de jejum personalizadas</li>
+                    </ul>
+                </div>
+
+                <!-- Etapa 2 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 relative">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="w-12 h-12 rounded-2xl bg-teal-600 text-white font-display font-bold text-xl flex items-center justify-center shadow-md shadow-teal-600/20">2</span>
+                        <i class="fa-solid fa-heart-pulse text-3xl text-teal-200"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-3">Cirurgia Minimamente Invasiva</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Utilizamos técnica minimamente invasiva (incisão reduzida) com <strong>anestesia inalatória</strong> e monitoramento multiparamétrico contínuo conduzido por médico veterinário anestesista exclusivo.
+                    </p>
+                    <ul class="space-y-2 text-xs font-medium text-slate-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Anestesia inalatória de rápida metabolização</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Monitoramento cardíaco e de oxigenação</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Analgesia preventiva contra dor</li>
+                    </ul>
+                </div>
+
+                <!-- Etapa 3 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 relative">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="w-12 h-12 rounded-2xl bg-teal-600 text-white font-display font-bold text-xl flex items-center justify-center shadow-md shadow-teal-600/20">3</span>
+                        <i class="fa-solid fa-hand-holding-heart text-3xl text-teal-200"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-3">Recuperação Monitorada</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Após o procedimento, seu pet descansa em leito aquecido e individualizado sob supervisão da equipe de enfermagem até despertar completamente e receber alta segura no mesmo dia.
+                    </p>
+                    <ul class="space-y-2 text-xs font-medium text-slate-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Alta no mesmo dia com pet acordado</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Receita e suporte direto via WhatsApp</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Consulta de retorno para retirada de pontos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SEÇÃO PACOTES E VALORES ESTIMADOS ==================== -->
+    <section id="pacotes" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-teal-600 font-bold text-sm uppercase tracking-wider">Transparência e Cuidado Completo</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Pacotes de Castração</h2>
+                <p class="text-slate-600 mt-4 text-base sm:text-lg">
+                    Valores estimados com pacote completo sem surpresas. Todos os planos incluem avaliação, exames pré-operatórios e anestesia inalatória.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Pacote 1: Gatos Machos -->
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between hover:shadow-xl hover:border-teal-300 transition-all">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-xs font-bold">Felinos</span>
+                            <i class="fa-solid fa-cat text-2xl text-teal-600"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-slate-900">Gatos Machos</h3>
+                        <p class="text-xs text-slate-500 mt-1">Procedimento rápido e minimamente invasivo</p>
+                        
+                        <div class="my-6 pb-6 border-b border-slate-200">
+                            <span class="text-xs text-slate-500 block">Investimento estimado</span>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-sm font-semibold text-slate-600">R$</span>
+                                <span class="font-display font-extrabold text-3xl text-slate-900">390</span>
+                                <span class="text-xs text-slate-500">,00</span>
+                            </div>
+                            <span class="text-xs text-teal-700 font-medium mt-1 block">ou até 6x sem juros</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Consulta de avaliação prévia</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Hemograma pré-operatório</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Anestesia inalatória monitorada</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Medicação aplicada na clínica</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Retorno pós-operatório incluso</li>
+                        </ul>
+                    </div>
+
+                    <a href="#agendar" onclick="preselecionarPacote('Gato', 'Macho', 'Até 10kg')" class="w-full text-center py-3 px-4 rounded-xl bg-white hover:bg-teal-600 text-teal-700 hover:text-white font-semibold text-sm border border-teal-600 transition-colors">
+                        Selecionar Pacote
+                    </a>
+                </div>
+
+                <!-- Pacote 2: Gatas Fêmeas (Destaque) -->
+                <div class="bg-teal-900 text-white border-2 border-teal-500 rounded-3xl p-6 flex flex-col justify-between shadow-xl relative">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3.5 py-1 rounded-full shadow">
+                        Mais Procurado
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-teal-800 text-teal-200 text-xs font-bold">Felinos</span>
+                            <i class="fa-solid fa-cat text-2xl text-teal-300"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-white">Gatas Fêmeas</h3>
+                        <p class="text-xs text-teal-200 mt-1">Incisão reduzida com pontos internos</p>
+                        
+                        <div class="my-6 pb-6 border-b border-teal-800">
+                            <span class="text-xs text-teal-300 block">Investimento estimado</span>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-sm font-semibold text-teal-200">R$</span>
+                                <span class="font-display font-extrabold text-3xl text-white">490</span>
+                                <span class="text-xs text-teal-200">,00</span>
+                            </div>
+                            <span class="text-xs text-orange-300 font-medium mt-1 block">ou até 6x sem juros</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-teal-100 mb-8">
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-400 mt-0.5"></i> Consulta + Hemograma + Bioquímico</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-400 mt-0.5"></i> Anestesia inalatória + Anestesista</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-400 mt-0.5"></i> Técnica minimamente invasiva</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-400 mt-0.5"></i> Kit medicação pós-operatória</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-400 mt-0.5"></i> Retorno e revisão inclusos</li>
+                        </ul>
+                    </div>
+
+                    <a href="#agendar" onclick="preselecionarPacote('Gato', 'Fêmea', 'Até 10kg')" class="w-full text-center py-3 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm shadow-md transition-colors">
+                        Selecionar Pacote
+                    </a>
+                </div>
+
+                <!-- Pacote 3: Cães Pequeno/Médio Porte -->
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between hover:shadow-xl hover:border-teal-300 transition-all">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-xs font-bold">Caninos até 20kg</span>
+                            <i class="fa-solid fa-dog text-2xl text-teal-600"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-slate-900">Cães Pequeno/Médio</h3>
+                        <p class="text-xs text-slate-500 mt-1">Machos ou Fêmeas de até 20kg</p>
+                        
+                        <div class="my-6 pb-6 border-b border-slate-200">
+                            <span class="text-xs text-slate-500 block">A partir de</span>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-sm font-semibold text-slate-600">R$</span>
+                                <span class="font-display font-extrabold text-3xl text-slate-900">580</span>
+                                <span class="text-xs text-slate-500">,00</span>
+                            </div>
+                            <span class="text-xs text-teal-700 font-medium mt-1 block">ou até 6x sem juros</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Consulta + Exames pré-operatórios</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Anestesia inalatória multiparamétrica</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Analgesia e antibiótico injetável</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Prescrição completa para casa</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Retorno e retirada de pontos</li>
+                        </ul>
+                    </div>
+
+                    <a href="#agendar" onclick="preselecionarPacote('Cão', '', '10kg a 25kg')" class="w-full text-center py-3 px-4 rounded-xl bg-white hover:bg-teal-600 text-teal-700 hover:text-white font-semibold text-sm border border-teal-600 transition-colors">
+                        Selecionar Pacote
+                    </a>
+                </div>
+
+                <!-- Pacote 4: Cães Grande Porte -->
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between hover:shadow-xl hover:border-teal-300 transition-all">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-xs font-bold">Caninos +20kg</span>
+                            <i class="fa-solid fa-shield-dog text-2xl text-teal-600"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-slate-900">Cães Grande Porte</h3>
+                        <p class="text-xs text-slate-500 mt-1">Machos ou Fêmeas acima de 20kg</p>
+                        
+                        <div class="my-6 pb-6 border-b border-slate-200">
+                            <span class="text-xs text-slate-500 block">A partir de</span>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-sm font-semibold text-slate-600">R$</span>
+                                <span class="font-display font-extrabold text-3xl text-slate-900">740</span>
+                                <span class="text-xs text-slate-500">,00</span>
+                            </div>
+                            <span class="text-xs text-teal-700 font-medium mt-1 block">ou até 6x sem juros</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Check-up completo + Eletrocardiograma</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Anestesia inalatória sob medida</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Fluidoterapia intravenosa contínua</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Medicação pós-operatória inclusa</li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i> Acompanhamento até alta total</li>
+                        </ul>
+                    </div>
+
+                    <a href="#agendar" onclick="preselecionarPacote('Cão', '', 'Acima de 25kg')" class="w-full text-center py-3 px-4 rounded-xl bg-white hover:bg-teal-600 text-teal-700 hover:text-white font-semibold text-sm border border-teal-600 transition-colors">
+                        Selecionar Pacote
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-center text-xs text-slate-500 mt-8">
+                * Os valores acima são estimativas para animais saudáveis em idade eletiva. O orçamento exato é confirmado após a consulta de avaliação pré-operatória.
+            </p>
+        </div>
+    </section>
+
+    <!-- ==================== SEÇÃO PERGUNTAS FREQUENTES (FAQ) ==================== -->
+    <section id="faq" class="py-20 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <span class="text-teal-600 font-bold text-sm uppercase tracking-wider">Tire Suas Dúvidas</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Perguntas Frequentes (FAQ)</h2>
+                <p class="text-slate-600 mt-3 text-base">
+                    Preparamos respostas claras para as principais dúvidas dos tutores sobre o pré e pós-operatório.
+                </p>
+            </div>
+
+            <div class="space-y-4" id="faq-container">
+                <!-- FAQ 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                    <button type="button" class="faq-btn w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-display font-bold text-slate-800 hover:text-teal-700 transition-colors">
+                        <span>Qual é a idade ideal para castrar meu cão ou gato?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        Em geral, recomendamos a castração a partir dos <strong>5 a 6 meses de idade</strong>, preferencialmente antes do primeiro cio nas fêmeas (o que maximiza a prevenção contra tumores de mama). No entanto, animais adultos e idosos saudáveis também podem ser castrados com total segurança após a realização dos exames pré-operatórios.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                    <button type="button" class="faq-btn w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-display font-bold text-slate-800 hover:text-teal-700 transition-colors">
+                        <span>Como funciona o jejum antes da cirurgia?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        Para evitar vômitos e engasgos durante a anestesia, o pet deve fazer <strong>jejum alimentar de 8 horas</strong> (sem ração ou petiscos) e <strong>jejum hídrico de 2 a 4 horas</strong> (sem água) antes do horário agendado para a cirurgia. Filhotes muito jovens podem ter protocolos reduzidos conforme orientação do veterinário.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                    <button type="button" class="faq-btn w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-display font-bold text-slate-800 hover:text-teal-700 transition-colors">
+                        <span>Quanto tempo dura a recuperação pós-operatória?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        A recuperação completa leva em média de <strong>7 a 10 dias</strong>. Graças à anestesia inalatória e às técnicas minimamente invasivas, a maioria dos pets já volta a comer e caminhar normalmente no mesmo dia à noite. Durante a primeira semana, é importante evitar pulos, corridas intensas e escadas.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                    <button type="button" class="faq-btn w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-display font-bold text-slate-800 hover:text-teal-700 transition-colors">
+                        <span>É obrigatório usar roupa cirúrgica ou colar elizabetano?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        <strong>Sim!</strong> O uso da roupa cirúrgica (especialmente para fêmeas) ou do colar elizabetano (muito utilizado em machos) é indispensável nos primeiros 7 a 10 dias. Isso impede que o animal lamba ou morda os pontos, garantindo uma cicatrização limpa, rápida e livre de infecções.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SEÇÃO FORMULÁRIO DE AGENDAMENTO ==================== -->
+    <section id="agendar" class="py-20 bg-gradient-to-br from-teal-900 via-teal-800 to-slate-900 text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-10 items-start">
+                
+                <!-- Informações Laterais -->
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="inline-block px-3.5 py-1 rounded-full bg-teal-700/70 text-teal-200 text-xs font-bold uppercase tracking-wider border border-teal-600">
+                        Agendamento Online Rápido
+                    </span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-extrabold leading-tight">
+                        Agende a avaliação pré-castração do seu pet
+                    </h2>
+                    <p class="text-teal-100/90 text-base leading-relaxed">
+                        Preencha os dados ao lado para reservar o horário da consulta inicial. Nossa equipe confirmará o agendamento e enviará todas as orientações pelo WhatsApp.
+                    </p>
+
+                    <div class="space-y-4 pt-4">
+                        <div class="flex items-start gap-4 bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                            <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-300 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Atendimento Pontual</h4>
+                                <p class="text-xs text-teal-100/80 mt-0.5">Horários marcados para evitar espera e estresse do seu pet na recepção.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                            <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center shrink-0">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Confirmação Imediata</h4>
+                                <p class="text-xs text-teal-100/80 mt-0.5">Gere seu protocolo na hora e receba o checklist preparatório.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card do Formulário -->
+                <div class="lg:col-span-7 bg-white text-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl">
+                    <form id="booking-form" novalidate class="space-y-6">
+                        
+                        <!-- Bloco 1: Dados do Tutor -->
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-teal-800 flex items-center gap-2 pb-2 border-b border-slate-100 mb-4">
+                                <i class="fa-solid fa-user text-teal-600"></i> Dados do Tutor
+                            </h3>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="sm:col-span-2">
+                                    <label for="tutor-nome" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Nome Completo do Tutor *</label>
+                                    <input type="text" id="tutor-nome" name="tutorNome" required placeholder="Ex: Mariana Silva" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm">
+                                    <p class="error-msg hidden text-xs text-rose-600 mt-1">Por favor, informe o nome do tutor.</p>
+                                </div>
+
+                                <div>
+                                    <label for="tutor-telefone" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Telefone / WhatsApp *</label>
+                                    <input type="tel" id="tutor-telefone" name="tutorTelefone" required maxlength="15" placeholder="(11) 99999-9999" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm">
+                                    <p class="error-msg hidden text-xs text-rose-600 mt-1">Informe um telefone válido com DDD.</p>
+                                </div>
+
+                                <div>
+                                    <label for="tutor-email" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">E-mail *</label>
+                                    <input type="email" id="tutor-email" name="tutorEmail" required placeholder="mariana@email.com" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm">
+                                    <p class="error-msg hidden text-xs text-rose-600 mt-1">Informe um endereço de e-mail válido.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloco 2: Dados do Pet -->
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-teal-800 flex items-center gap-2 pb-2 border-b border-slate-100 mb-4">
+                                <i class="fa-solid fa-paw text-teal-600"></i> Informações do Pet
+                            </h3>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="pet-nome" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Nome do Pet *</label>
+                                    <input type="text" id="pet-nome" name="petNome" required placeholder="Ex: Thor / Luna" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm">
+                                    <p class="error-msg hidden text-xs text-rose-600 mt-1">Informe o nome do seu pet.</p>
+                                </div>
+
+                                <div>
+                                    <label for="pet-idade" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Idade Aproximada *</label>
+                                    <input type="text" id="pet-idade" name="petIdade" required placeholder="Ex: 8 meses / 2 anos" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm">
+                                    <p class="error-msg hidden text-xs text-rose-600 mt-1">Informe a idade aproximada do pet.</p>
+                                </div>
+
+                                <!-- Espécie -->
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Espécie *</label>
+                                    <div class="grid grid-cols-2 gap-2.5">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="petEspecie" value="Cão" class="peer sr-only" required>
+                                            <div class="py-2.5 px-3 rounded-xl border border-slate-300 text-center text-sm font-medium text-slate-600 peer-checked:bg-teal-50 peer-checked:border-teal-600 peer-checked:text-teal-800 transition-all">
+                                                <i class="fa-solid fa-dog mr-1"></i> Cão
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="petEspecie" value="Gato" class="peer sr-only" required>
+                                            <div class="py-2.5 px-3 rounded-xl border border-slate-300 text-center text-sm font-medium text-slate-600 peer-checked:bg-teal-50 peer-checked:border-teal-600 peer-checked:text-teal-800 transition-all">
+                                                <i class="fa-solid fa-cat mr-1"></i> Gato
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <p id="erro-especie" class="hidden text-xs text-rose-600 mt-1">Selecione a espécie.</p>
+                                </div>
+
+                                <!-- Sexo -->
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Sexo *</label>
+                                    <div class="grid grid-cols-2 gap-2.5">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="petSexo" value="Macho" class="peer sr-only" required>
+                                            <div class="py-2.5 px-3 rounded-xl border border-slate-300 text-center text-sm font-medium text-slate-600 peer-checked:bg-teal-50 peer-checked:border-teal-600 peer-checked:text-teal-800 transition-all">
+                                                <i class="fa-solid fa-mars mr-1"></i> Macho
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="petSexo" value="Fêmea" class="peer sr-only" required>
+                                            <div class="py-2.5 px-3 rounded-xl border border-slate-300 text-center text-sm font-medium text-slate-600 peer-checked:bg-teal-50 peer-checked:border-teal-600 peer-checked:text-teal-800 transition-all">
+                                                <i class="fa-solid fa-venus mr-1"></i> Fêmea
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <p id="erro-sexo" class="hidden text-xs text-rose-600 mt-1">Selecione o sexo.</p>
+                                </div>
+
+                                <!-- Porte / Peso -->
+                                <div class="sm:col-span-2">
+                                    <label for="pet-porte" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Porte / Peso Aproximado *</label>
+                                    <select id="pet-porte" name="petPorte" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm bg-white">
+                                        <option value="" disabled selected>Selecione o peso aproximado...</option>
+                                        <option value="Até 10kg">Pequeno Porte (até 10kg)</option>
+                                        <option value="10kg a 25kg">Médio Porte (10kg a 25kg)</option>
+                                        <option value="Acima de 25kg">Grande Porte (acima de 25kg)</option>
+                                    </select>
+                                    <p class="error-msg hidden text-xs text-rose-600 mt-1">Selecione o porte/peso do pet.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloco 3: Data e Preferência -->
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-teal-800 flex items-center gap-2 pb-2 border-b border-slate-100 mb-4">
+                                <i class="fa-regular fa-calendar-days text-teal-600"></i> Data e Horário Preferencial
+                            </h3>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="consulta-data" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Data Preferencial *</label>
+                                    <input type="date" id="consulta-data" name="consultaData" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm">
+                                    <p class="error-msg hidden text-xs text-rose-600 mt-1">Escolha uma data válida para a consulta.</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Período Preferencial *</label>
+                                    <div class="grid grid-cols-2 gap-2.5">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="consultaPeriodo" value="Manhã (08h às 12h)" class="peer sr-only" required>
+                                            <div class="py-2.5 px-3 rounded-xl border border-slate-300 text-center text-sm font-medium text-slate-600 peer-checked:bg-teal-50 peer-checked:border-teal-600 peer-checked:text-teal-800 transition-all">
+                                                <i class="fa-regular fa-sun mr-1"></i> Manhã
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="consultaPeriodo" value="Tarde (13h às 18h)" class="peer sr-only" required>
+                                            <div class="py-2.5 px-3 rounded-xl border border-slate-300 text-center text-sm font-medium text-slate-600 peer-checked:bg-teal-50 peer-checked:border-teal-600 peer-checked:text-teal-800 transition-all">
+                                                <i class="fa-solid fa-cloud-sun mr-1"></i> Tarde
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <p id="erro-periodo" class="hidden text-xs text-rose-600 mt-1">Selecione o período desejado.</p>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <label for="pet-obs" class="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Observações / Histórico de Saúde <span class="text-slate-400 font-normal">(Opcional)</span></label>
+                                    <textarea id="pet-obs" name="petObs" rows="3" placeholder="Informe se o pet possui alergias, toma alguma medicação contínua, se a fêmea está no cio ou outras observações importantes..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all text-sm resize-none"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-display font-bold text-base shadow-lg shadow-orange-500/30 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check-circle"></i>
+                            Confirmar Solicitação de Agendamento
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MODAL DE CONFIRMAÇÃO ==================== -->
+    <div id="confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 my-auto animate-[fadeIn_0.25s_ease-out]">
+            <!-- Cabeçalho do Modal -->
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 class="font-display font-extrabold text-2xl text-slate-900">Agendamento Solicitado!</h3>
+                <p class="text-sm text-slate-500 mt-1">Recebemos os dados para a avaliação pré-castração.</p>
+
+                <!-- Badge Protocolo -->
+                <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-teal-50 border border-teal-200 text-teal-900">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-teal-700">Protocolo:</span>
+                    <span id="modal-protocolo" class="font-mono font-bold text-base">#PC-2026-0000</span>
+                </div>
+            </div>
+
+            <!-- Resumo Detalhado -->
+            <div id="receipt-area" class="mt-6 bg-slate-50 rounded-2xl p-5 border border-slate-200/80 space-y-3 text-sm">
+                <div class="flex justify-between border-b border-slate-200 pb-2">
+                    <span class="text-slate-500">Tutor:</span>
+                    <span id="resumo-tutor" class="font-semibold text-slate-800 text-right"></span>
+                </div>
+                <div class="flex justify-between border-b border-slate-200 pb-2">
+                    <span class="text-slate-500">Contato:</span>
+                    <span id="resumo-contato" class="font-semibold text-slate-800 text-right"></span>
+                </div>
+                <div class="flex justify-between border-b border-slate-200 pb-2">
+                    <span class="text-slate-500">Paciente (Pet):</span>
+                    <span id="resumo-pet" class="font-semibold text-slate-800 text-right"></span>
+                </div>
+                <div class="flex justify-between border-b border-slate-200 pb-2">
+                    <span class="text-slate-500">Porte & Idade:</span>
+                    <span id="resumo-porte-idade" class="font-semibold text-slate-800 text-right"></span>
+                </div>
+                <div class="flex justify-between border-b border-slate-200 pb-2">
+                    <span class="text-slate-500">Data e Período:</span>
+                    <span id="resumo-data-periodo" class="font-semibold text-teal-700 text-right"></span>
+                </div>
+                <div id="resumo-obs-container" class="hidden pt-1">
+                    <span class="text-slate-500 block text-xs">Observações:</span>
+                    <p id="resumo-obs" class="text-slate-700 text-xs mt-1 bg-white p-2.5 rounded-lg border border-slate-200"></p>
+                </div>
+            </div>
+
+            <!-- Feedback de Cópia -->
+            <div id="copy-feedback" class="hidden mt-3 text-center text-xs font-semibold text-emerald-700 bg-emerald-50 py-2 rounded-xl border border-emerald-200">
+                <i class="fa-solid fa-check mr-1"></i> Comprovante copiado para a área de transferência!
+            </div>
+
+            <!-- Botões de Ação do Modal -->
+            <div class="mt-6 grid sm:grid-cols-2 gap-3">
+                <button type="button" id="btn-copiar-comprovante" class="w-full py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-regular fa-copy"></i> Copiar Comprovante
+                </button>
+                <button type="button" id="btn-imprimir-comprovante" class="w-full py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+                <button type="button" id="btn-novo-agendamento" class="sm:col-span-2 w-full py-3.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-colors">
+                    <i class="fa-solid fa-plus"></i> Agendar Outro Pet / Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== RODAPÉ ==================== -->
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+                <!-- Coluna Marca -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-paw text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="font-display font-bold text-lg text-white block leading-none">PetCare</span>
+                            <span class="text-xs text-teal-400 font-medium">Castração & Bem-Estar</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Clínica veterinária e centro cirúrgico especializado em castração segura, humanizada e minimamente invasiva para cães e gatos.
+                    </p>
+                    <div class="flex items-center gap-3 pt-1">
+                        <a href="#inicio" aria-label="Instagram" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-teal-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#inicio" aria-label="Facebook" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-teal-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#agendar" aria-label="WhatsApp" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-teal-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Links Rápidos -->
+                <div>
+                    <h4 class="font-display font-bold text-white text-base mb-4">Navegação Rápida</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#inicio" class="hover:text-teal-400 transition-colors">Início</a></li>
+                        <li><a href="#beneficios" class="hover:text-teal-400 transition-colors">Benefícios da Castração</a></li>
+                        <li><a href="#procedimento" class="hover:text-teal-400 transition-colors">Como Funciona o Procedimento</a></li>
+                        <li><a href="#pacotes" class="hover:text-teal-400 transition-colors">Pacotes e Valores Estimados</a></li>
+                        <li><a href="#faq" class="hover:text-teal-400 transition-colors">Dúvidas Frequentes</a></li>
+                        <li><a href="#agendar" class="hover:text-teal-400 transition-colors">Agendar Avaliação</a></li>
+                    </ul>
+                </div>
+
+                <!-- Endereço e Contato -->
+                <div>
+                    <h4 class="font-display font-bold text-white text-base mb-4">Onde Estamos</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot text-teal-500 mt-1"></i>
+                            <span>Av. Bem-Te-Vi, 1420 - Moema<br>São Paulo - SP, CEP 04524-030</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-teal-500"></i>
+                            <span>(11) 3456-7890</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-brands fa-whatsapp text-teal-500"></i>
+                            <span>(11) 98765-4321</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-regular fa-envelope text-teal-500"></i>
+                            <span>contato@petcarecastracao.com.br</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Horário de Funcionamento -->
+                <div>
+                    <h4 class="font-display font-bold text-white text-base mb-4">Horário de Atendimento</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li class="flex justify-between">
+                            <span>Segunda a Sexta:</span>
+                            <span class="text-white font-medium">08h às 19h</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Sábados:</span>
+                            <span class="text-white font-medium">08h às 15h</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Domingos e Feriados:</span>
+                            <span class="text-teal-400 font-medium">Plantão Pós-Op</span>
+                        </li>
+                    </ul>
+                    <div class="mt-5 p-3 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-slate-400">
+                        <i class="fa-solid fa-shield-cat text-teal-400 mr-1"></i> Responsável Técnico: Dra. Camila Mendes (CRMV-SP 34.892)
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+                <p>&copy; 2026 PetCare Castração & Bem-Estar. Todos os direitos reservados.</p>
+                <p>Feito com carinho para a saúde e bem-estar dos animais.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS INTERATIVOS ==================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Menu Mobile Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // 2. Accordion Perguntas Frequentes (FAQ)
+            const faqBtns = document.querySelectorAll('.faq-btn');
+            faqBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const content = btn.nextElementSibling;
+                    const icon = btn.querySelector('i');
+                    const isOpen = !content.classList.contains('hidden');
+
+                    // Fecha todos os outros itens
+                    document.querySelectorAll('.faq-content').forEach(item => item.classList.add('hidden'));
+                    document.querySelectorAll('.faq-btn i').forEach(ic => ic.classList.remove('rotate-180'));
+
+                    if (!isOpen) {
+                        content.classList.remove('hidden');
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+
+            // 3. Configurar data mínima no campo de data (hoje)
+            const dataInput = document.getElementById('consulta-data');
+            const hoje = new Date();
+            const yyyy = hoje.getFullYear();
+            const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dd = String(hoje.getDate()).padStart(2, '0');
+            dataInput.min = `${yyyy}-${mm}-${dd}`;
+
+            // 4. Máscara de Telefone / WhatsApp (Brasil)
+            const telefoneInput = document.getElementById('tutor-telefone');
+            telefoneInput.addEventListener('input', (e) => {
+                let valor = e.target.value.replace(/\D/g, '');
+                if (valor.length > 11) valor = valor.slice(0, 11);
+
+                if (valor.length > 10) {
+                    valor = valor.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+                } else if (valor.length > 6) {
+                    valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+                } else if (valor.length > 2) {
+                    valor = valor.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+                } else if (valor.length > 0) {
+                    valor = valor.replace(/^(\d*)/, '($1');
+                }
+                e.target.value = valor;
+            });
+
+            // 5. Validação e Submissão do Formulário de Agendamento
+            const form = document.getElementById('booking-form');
+            const modal = document.getElementById('confirmation-modal');
+            let ultimoComprovanteTexto = '';
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // Limpar erros anteriores
+                form.querySelectorAll('.error-msg').forEach(el => el.classList.add('hidden'));
+                form.querySelectorAll('input, select').forEach(el => el.classList.remove('border-rose-500'));
+                ['erro-especie', 'erro-sexo', 'erro-periodo'].forEach(id => document.getElementById(id).classList.add('hidden'));
+
+                // Validar Nome do Tutor
+                const tutorNome = document.getElementById('tutor-nome');
+                if (tutorNome.value.trim().length < 3) {
+                    mostrarErroInput(tutorNome);
+                    isValid = false;
+                }
+
+                // Validar Telefone
+                const tutorTelefone = document.getElementById('tutor-telefone');
+                const digitosTelefone = tutorTelefone.value.replace(/\D/g, '');
+                if (digitosTelefone.length < 10) {
+                    mostrarErroInput(tutorTelefone);
+                    isValid = false;
+                }
+
+                // Validar E-mail
+                const tutorEmail = document.getElementById('tutor-email');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(tutorEmail.value.trim())) {
+                    mostrarErroInput(tutorEmail);
+                    isValid = false;
+                }
+
+                // Validar Nome do Pet
+                const petNome = document.getElementById('pet-nome');
+                if (petNome.value.trim().length < 2) {
+                    mostrarErroInput(petNome);
+                    isValid = false;
+                }
+
+                // Validar Idade do Pet
+                const petIdade = document.getElementById('pet-idade');
+                if (petIdade.value.trim().length < 1) {
+                    mostrarErroInput(petIdade);
+                    isValid = false;
+                }
+
+                // Validar Radios (Espécie, Sexo, Período)
+                const especieSelecionada = form.querySelector('input[name="petEspecie"]:checked');
+                if (!especieSelecionada) {
+                    document.getElementById('erro-especie').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                const sexoSelecionado = form.querySelector('input[name="petSexo"]:checked');
+                if (!sexoSelecionado) {
+                    document.getElementById('erro-sexo').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                // Validar Porte
+                const petPorte = document.getElementById('pet-porte');
+                if (!petPorte.value) {
+                    mostrarErroInput(petPorte);
+                    isValid = false;
+                }
+
+                // Validar Data
+                if (!dataInput.value) {
+                    mostrarErroInput(dataInput);
+                    isValid = false;
+                }
+
+                const periodoSelecionado = form.querySelector('input[name="consultaPeriodo"]:checked');
+                if (!periodoSelecionado) {
+                    document.getElementById('erro-periodo').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    // Rolar suavemente até o primeiro erro
+                    const primeiroErro = form.querySelector('.border-rose-500, p:not(.hidden)[id^="erro-"]');
+                    if (primeiroErro) {
+                        primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+
+                // Gerar número de protocolo único
+                const randomNum = Math.floor(1000 + Math.random() * 9000);
+                const protocolo = `#PC-${yyyy}-${randomNum}`;
+
+                // Formatar Data para DD/MM/AAAA
+                const [ano, mes, dia] = dataInput.value.split('-');
+                const dataFormatada = `${dia}/${mes}/${ano}`;
+
+                const obsValor = document.getElementById('pet-obs').value.trim();
+
+                // Preencher Modal
+                document.getElementById('modal-protocolo').textContent = protocolo;
+                document.getElementById('resumo-tutor').textContent = tutorNome.value.trim();
+                document.getElementById('resumo-contato').textContent = `${tutorTelefone.value} | ${tutorEmail.value.trim()}`;
+                document.getElementById('resumo-pet').textContent = `${petNome.value.trim()} (${especieSelecionada.value} • ${sexoSelecionado.value})`;
+                document.getElementById('resumo-porte-idade').textContent = `${petPorte.value} • ${petIdade.value.trim()}`;
+                document.getElementById('resumo-data-periodo').textContent = `${dataFormatada} • ${periodoSelecionado.value}`;
+
+                const obsContainer = document.getElementById('resumo-obs-container');
+                if (obsValor) {
+                    document.getElementById('resumo-obs').textContent = obsValor;
+                    obsContainer.classList.remove('hidden');
+                } else {
+                    obsContainer.classList.add('hidden');
+                }
+
+                // Montar texto para cópia
+                ultimoComprovanteTexto = [
+                    `COMPROVANTE DE AGENDAMENTO - PETCARE CASTRAÇÃO & BEM-ESTAR`,
+                    `Protocolo: ${protocolo}`,
+                    `Tutor: ${tutorNome.value.trim()}`,
+                    `Contato: ${tutorTelefone.value} / ${tutorEmail.value.trim()}`,
+                    `Pet: ${petNome.value.trim()} (${especieSelecionada.value} - ${sexoSelecionado.value})`,
+                    `Porte/Idade: ${petPorte.value} - ${petIdade.value.trim()}`,
+                    `Data Preferencial: ${dataFormatada} (${periodoSelecionado.value})`,
+                    obsValor ? `Observações: ${obsValor}` : '',
+                    `Endereço: Av. Bem-Te-Vi, 1420 - Moema, São Paulo - SP`
+                ].filter(Boolean).join('\n');
+
+                // Exibir Modal
+                document.getElementById('copy-feedback').classList.add('hidden');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+
+            function mostrarErroInput(inputEl) {
+                inputEl.classList.add('border-rose-500');
+                const msg = inputEl.parentElement.querySelector('.error-msg');
+                if (msg) msg.classList.remove('hidden');
+            }
+
+            // 6. Ações do Modal (Copiar, Imprimir, Novo Agendamento)
+            document.getElementById('btn-copiar-comprovante').addEventListener('click', () => {
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = ultimoComprovanteTexto;
+                document.body.appendChild(tempTextarea);
+                tempTextarea.select();
+                try {
+                    document.execCommand('copy');
+                    document.getElementById('copy-feedback').classList.remove('hidden');
+                } catch (err) {
+                    console.error('Erro ao copiar comprovante:', err);
+                }
+                document.body.removeChild(tempTextarea);
+            });
+
+            document.getElementById('btn-imprimir-comprovante').addEventListener('click', () => {
+                window.print();
+            });
+
+            document.getElementById('btn-novo-agendamento').addEventListener('click', () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                form.reset();
+            });
+
+            // Fechar modal clicando fora do card
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }
+            });
+        });
+
+        // Função auxiliar para pré-selecionar dados ao clicar em um pacote
+        function preselecionarPacote(especie, sexo, porte) {
+            const form = document.getElementById('booking-form');
+            if (especie) {
+                const radioEspecie = form.querySelector(`input[name="petEspecie"][value="${especie}"]`);
+                if (radioEspecie) radioEspecie.checked = true;
+            }
+            if (sexo) {
+                const radioSexo = form.querySelector(`input[name="petSexo"][value="${sexo}"]`);
+                if (radioSexo) radioSexo.checked = true;
+            }
+            if (porte) {
+                const selectPorte = document.getElementById('pet-porte');
+                if (selectPorte) selectPorte.value = porte;
+            }
+        }
+    </script>
+</body>
+</html>

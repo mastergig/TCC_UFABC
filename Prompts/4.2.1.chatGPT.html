@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Castração e Saúde Animal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f7faf8;
+            color: #333;
+        }
+
+        header {
+            background: #16866b;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffe08a;
+        }
+
+        .banner {
+            min-height: 420px;
+            background: linear-gradient(
+                rgba(0,0,0,0.45),
+                rgba(0,0,0,0.45)
+            ), url("https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1600")
+            center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .banner h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .banner p {
+            font-size: 19px;
+            margin-bottom: 25px;
+        }
+
+        .botao {
+            background: #ffc857;
+            color: #333;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .botao:hover {
+            background: #f2ae27;
+            transform: scale(1.05);
+        }
+
+        section {
+            padding: 60px 8%;
+            text-align: center;
+        }
+
+        section h2 {
+            color: #16866b;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .sobre p {
+            max-width: 800px;
+            margin: auto;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .servicos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .card .icone {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #16866b;
+            margin-bottom: 12px;
+        }
+
+        .agendamento {
+            background: #e4f4ee;
+        }
+
+        form {
+            background: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        form label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+        }
+
+        form input,
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        form input:focus,
+        form select:focus,
+        form textarea:focus {
+            outline: 2px solid #16866b;
+        }
+
+        form button {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        footer {
+            background: #12634f;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        @media (max-width: 650px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px;
+            }
+
+            .banner h2 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🐾 PetCare</h1>
+
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#servicos">Serviços</a>
+            <a href="#agendamento">Agendamento</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="banner" id="inicio">
+            <h2>Cuidar também é amar!</h2>
+            <p>Especialistas em castração e saúde de cães e gatos.</p>
+            <a href="#agendamento" class="botao">
+                Agende uma consulta
+            </a>
+        </section>
+
+        <section class="sobre" id="sobre">
+            <h2>Sobre a PetCare</h2>
+            <p>
+                A PetCare é especializada no cuidado e bem-estar dos animais.
+                Nossa missão é oferecer atendimento veterinário de qualidade,
+                promovendo a saúde e a qualidade de vida dos seus melhores amigos.
+                Trabalhamos com orientação e procedimentos de castração
+                realizados por profissionais veterinários.
+            </p>
+        </section>
+
+        <section id="servicos">
+            <h2>Nossos Serviços</h2>
+
+            <div class="servicos">
+
+                <div class="card">
+                    <div class="icone">🐶</div>
+                    <h3>Castração de Cães</h3>
+                    <p>Procedimentos veterinários para cães, com avaliação e acompanhamento.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icone">🐱</div>
+                    <h3>Castração de Gatos</h3>
+                    <p>Cuidados especializados para a saúde e o bem-estar dos felinos.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icone">🩺</div>
+                    <h3>Consulta Veterinária</h3>
+                    <p>Avaliação da saúde do animal e orientações sobre os cuidados necessários.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icone">❤️</div>
+                    <h3>Pós-operatório</h3>
+                    <p>Orientações e acompanhamento para uma recuperação segura.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="agendamento" id="agendamento">
+            <h2>Agende uma Consulta</h2>
+            <p>Preencha os dados abaixo para solicitar seu agendamento.</p>
+
+            <form id="formAgendamento">
+
+                <label for="nome">Nome do responsável:</label>
+                <input type="text" id="nome" required
+                    placeholder="Digite seu nome">
+
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" required
+                    placeholder="(00) 00000-0000">
+
+                <label for="animal">Nome do animal:</label>
+                <input type="text" id="animal" required
+                    placeholder="Nome do seu pet">
+
+                <label for="tipo">Tipo de animal:</label>
+                <select id="tipo" required>
+                    <option value="">Selecione</option>
+                    <option value="Cachorro">Cachorro</option>
+                    <option value="Gato">Gato</option>
+                </select>
+
+                <label for="servico">Serviço desejado:</label>
+                <select id="servico" required>
+                    <option value="">Selecione</option>
+                    <option value="Castração">Castração</option>
+                    <option value="Consulta veterinária">Consulta veterinária</option>
+                    <option value="Pós-operatório">Pós-operatório</option>
+                </select>
+
+                <label for="data">Data desejada:</label>
+                <input type="date" id="data" required>
+
+                <label for="mensagem">Informações adicionais:</label>
+                <textarea id="mensagem" rows="4"
+                    placeholder="Conte um pouco sobre seu pet..."></textarea>
+
+                <button type="submit" class="botao">
+                    Solicitar Agendamento
+                </button>
+
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>🐾 PetCare - Cuidando de quem você ama!</p>
+        <p>© 2026 PetCare. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById("formAgendamento")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                const nome = document.getElementById("nome").value;
+                const animal = document.getElementById("animal").value;
+                const servico = document.getElementById("servico").value;
+
+                alert(
+                    "Olá, " + nome + "!\n\n" +
+                    "Sua solicitação de agendamento foi recebida.\n" +
+                    "Animal: " + animal + "\n" +
+                    "Serviço: " + servico + "\n\n" +
+                    "Entre em contato com a clínica para confirmar."
+                );
+
+                this.reset();
+            });
+    </script>
+
+</body>
+</html>

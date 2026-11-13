@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PowerFit Academia</title>
+<style>
+:root{--bg:#fff;--surface:#f4f4f2;--text:#16181d;--muted:#5b616e;--accent:#e8590c;--accent-text:#fff;--border:#dcdcd6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101216;--surface:#1a1d23;--text:#f2f2ee;--muted:#a0a6b3;--border:#2c3039}}
+:root[data-theme="dark"]{--bg:#101216;--surface:#1a1d23;--text:#f2f2ee;--muted:#a0a6b3;--border:#2c3039}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{padding:20px 0;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:.5px}.logo span{color:var(--accent)}
+.hero{padding:56px 0 48px}
+.hero h1{font-size:clamp(2.2rem,7vw,3.8rem);line-height:1.05;margin:0 0 16px;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--muted);font-size:1.1rem;max-width:520px;margin:0 0 24px}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-text);border:0;padding:14px 26px;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.08)}
+section{padding:40px 0}
+h2{font-size:1.7rem;margin:0 0 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card h3{margin:0 0 6px;font-size:1.05rem}.card p{margin:0;color:var(--muted);font-size:.95rem}
+.plan .price{font-size:2rem;font-weight:800;margin:8px 0}.plan .price small{font-size:.9rem;font-weight:400;color:var(--muted)}
+.plan ul{padding-left:18px;margin:0;color:var(--muted);font-size:.95rem}
+.plan.hl{border:2px solid var(--accent)}
+form{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;display:grid;gap:16px;grid-template-columns:1fr 1fr}
+.full{grid-column:1/-1}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400}.check input{width:auto;margin-top:4px}
+.err{color:#d6336c;font-size:.8rem;min-height:1em;margin-top:4px}
+.ok{display:none;background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:28px;text-align:center}
+.ok h3{margin:0 0 8px;font-size:1.4rem}
+footer{border-top:1px solid var(--border);padding:24px 0;color:var(--muted);font-size:.9rem;text-align:center}
+@media(max-width:600px){form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo">POWER<span>FIT</span></div><a class="btn" href="#inscricao">Inscreva-se</a></header>
+</div>
+<div class="wrap hero">
+<h1>Treine mais forte.<br><em>Viva melhor.</em></h1>
+<p>Equipamentos modernos, professores qualificados e aulas para todos os níveis. Comece sua transformação hoje.</p>
+<a class="btn" href="#inscricao">Quero me inscrever</a>
+</div>
+<section class="wrap">
+<h2>Modalidades</h2>
+<div class="grid">
+<div class="card"><h3>Musculação</h3><p>Área ampla com acompanhamento de instrutores.</p></div>
+<div class="card"><h3>Funcional</h3><p>Treinos dinâmicos em grupo para ganhar condicionamento.</p></div>
+<div class="card"><h3>Spinning</h3><p>Aulas intensas de bike com música e energia.</p></div>
+<div class="card"><h3>Yoga &amp; Pilates</h3><p>Flexibilidade, postura e bem-estar.</p></div>
+</div>
+</section>
+<section class="wrap">
+<h2>Planos</h2>
+<div class="grid">
+<div class="card plan"><h3>Mensal</h3><div class="price">R$ 129<small>/mês</small></div><ul><li>Musculação</li><li>Sem fidelidade</li></ul></div>
+<div class="card plan hl"><h3>Trimestral</h3><div class="price">R$ 109<small>/mês</small></div><ul><li>Musculação + aulas coletivas</li><li>Avaliação física grátis</li></ul></div>
+<div class="card plan"><h3>Anual</h3><div class="price">R$ 89<small>/mês</small></div><ul><li>Acesso total</li><li>Avaliação física + 1 aula de personal</li></ul></div>
+</div>
+</section>
+<section class="wrap" id="inscricao">
+<h2>Inscrição</h2>
+<form id="f" novalidate>
+<div><label for="nome">Nome completo</label><input id="nome" required autocomplete="name"><div class="err"></div></div>
+<div><label for="nasc">Data de nascimento</label><input id="nasc" type="date" required><div class="err"></div></div>
+<div><label for="email">E-mail</label><input id="email" type="email" required autocomplete="email"><div class="err"></div></div>
+<div><label for="tel">Telefone / WhatsApp</label><input id="tel" type="tel" placeholder="(11) 90000-0000" required autocomplete="tel"><div class="err"></div></div>
+<div><label for="plano">Plano</label><select id="plano" required><option value="">Selecione</option><option>Mensal</option><option>Trimestral</option><option>Anual</option></select><div class="err"></div></div>
+<div><label for="turno">Melhor horário para treinar</label><select id="turno" required><option value="">Selecione</option><option>Manhã</option><option>Tarde</option><option>Noite</option></select><div class="err"></div></div>
+<div class="full"><label for="obj">Objetivo</label><select id="obj"><option>Emagrecimento</option><option>Ganho de massa</option><option>Condicionamento</option><option>Saúde e bem-estar</option></select></div>
+<div class="full"><label for="obs">Observações (lesões, restrições etc.)</label><textarea id="obs" rows="3"></textarea></div>
+<div class="full"><label class="check"><input type="checkbox" id="termos" required> <span>Concordo com o uso dos meus dados para contato sobre a matrícula.</span></label><div class="err"></div></div>
+<div class="full"><button class="btn" type="submit" style="width:100%">Enviar inscrição</button></div>
+</form>
+<div class="ok" id="ok"><h3>Inscrição recebida! 💪</h3><p id="okmsg"></p></div>
+</section>
+<footer>PowerFit Academia · Seg–Sex 5h–23h · Sáb 8h–14h</footer>
+<script>
+var f=document.getElementById('f');
+f.addEventListener('submit',function(e){
+e.preventDefault();var ok=true;
+f.querySelectorAll('[required]').forEach(function(el){
+var err=el.closest('div').querySelector('.err');var bad=el.type==='checkbox'?!el.checked:!el.value.trim()||(el.type==='email'&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value));
+if(el.type==='tel'&&el.value.replace(/\D/g,'').length<10)bad=true;
+err.textContent=bad?'Verifique este campo.':'';if(bad)ok=false;});
+if(!ok)return;
+document.getElementById('okmsg').textContent='Obrigado, '+document.getElementById('nome').value.split(' ')[0]+'! Entraremos em contato em breve pelo WhatsApp para confirmar o plano '+document.getElementById('plano').value+'.';
+f.style.display='none';var o=document.getElementById('ok');o.style.display='block';o.scrollIntoView({behavior:'smooth',block:'center'});
+});
+</script>
+</body>
+</html>

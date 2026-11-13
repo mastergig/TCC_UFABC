@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bistrô Moderno | Cardápio Interativo</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    background:#f8f5f1;
+    color:#333;
+}
+
+header{
+    background:#2d2d2d;
+    color:#fff;
+    text-align:center;
+    padding:30px;
+}
+
+header h1{
+    font-size:2.5rem;
+}
+
+header p{
+    margin-top:10px;
+    color:#d6d6d6;
+}
+
+/* Abas */
+
+.tabs{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.tab-btn{
+    border:none;
+    background:none;
+    padding:18px 25px;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:600;
+    transition:.3s;
+}
+
+.tab-btn:hover{
+    background:#f0f0f0;
+}
+
+.tab-btn.active{
+    background:#c79a63;
+    color:#fff;
+}
+
+/* Conteúdo */
+
+.menu-content{
+    display:none;
+    max-width:1200px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.menu-content.active{
+    display:block;
+    animation:fadeIn .4s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.category-title{
+    text-align:center;
+    margin-bottom:30px;
+    color:#c79a63;
+    font-size:2rem;
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.item{
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 16px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.item:hover{
+    transform:translateY(-5px);
+}
+
+.item img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.item-info{
+    padding:20px;
+}
+
+.item-name{
+    font-size:1.2rem;
+    font-weight:bold;
+}
+
+.item-desc{
+    color:#666;
+    margin:10px 0;
+}
+
+.item-price{
+    color:#c79a63;
+    font-weight:bold;
+    font-size:1.1rem;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    background:#2d2d2d;
+    color:#fff;
+    margin-top:50px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Bistrô Moderno</h1>
+    <p>Sabores para todos os momentos do dia</p>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" data-tab="cafe">☕ Café da Manhã</button>
+    <button class="tab-btn" data-tab="almoco">🍽 Almoço Executivo</button>
+    <button class="tab-btn" data-tab="carte">🥩 À la Carte</button>
+    <button class="tab-btn" data-tab="bebidas">🥤 Bebidas</button>
+    <button class="tab-btn" data-tab="sobremesas">🍰 Sobremesas</button>
+</div>
+
+<!-- CAFÉ DA MANHÃ -->
+<section id="cafe" class="menu-content active">
+    <h2 class="category-title">Café da Manhã</h2>
+
+    <div class="menu-grid">
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Combo Especial</div>
+                <div class="item-desc">Pão artesanal, ovos mexidos e café expresso.</div>
+                <div class="item-price">R$ 32,90</div>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Panquecas Americanas</div>
+                <div class="item-desc">Servidas com frutas e mel.</div>
+                <div class="item-price">R$ 28,90</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ALMOÇO -->
+<section id="almoco" class="menu-content">
+    <h2 class="category-title">Almoço Executivo</h2>
+
+    <div class="menu-grid">
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Filé Grelhado</div>
+                <div class="item-desc">Arroz, legumes e molho da casa.</div>
+                <div class="item-price">R$ 49,90</div>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Salada Premium</div>
+                <div class="item-desc">Mix de folhas, frango e molho especial.</div>
+                <div class="item-price">R$ 42,90</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- A LA CARTE -->
+<section id="carte" class="menu-content">
+    <h2 class="category-title">À la Carte</h2>
+
+    <div class="menu-grid">
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Risoto de Camarão</div>
+                <div class="item-desc">Arroz arbóreo e redução de vinho branco.</div>
+                <div class="item-price">R$ 78,90</div>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Medalhão ao Molho Madeira</div>
+                <div class="item-desc">Com batatas douradas.</div>
+                <div class="item-price">R$ 84,90</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- BEBIDAS -->
+<section id="bebidas" class="menu-content">
+    <h2 class="category-title">Bebidas</h2>
+
+    <div class="menu-grid">
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6cf7?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Suco Natural</div>
+                <div class="item-desc">Laranja, limão ou abacaxi.</div>
+                <div class="item-price">R$ 12,90</div>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Drink Tropical</div>
+                <div class="item-desc">Frutas cítricas e hortelã.</div>
+                <div class="item-price">R$ 24,90</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- SOBREMESAS -->
+<section id="sobremesas" class="menu-content">
+    <h2 class="category-title">Sobremesas</h2>
+
+    <div class="menu-grid">
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Cheesecake de Frutas Vermelhas</div>
+                <div class="item-desc">Cobertura artesanal.</div>
+                <div class="item-price">R$ 22,90</div>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800" alt="">
+            <div class="item-info">
+                <div class="item-name">Brownie com Sorvete</div>
+                <div class="item-desc">Chocolate intenso e creme de baunilha.</div>
+                <div class="item-price">R$ 24,90</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    © 2026 Bistrô Moderno • Experiências gastronômicas únicas
+</footer>
+
+<script>
+const buttons = document.querySelectorAll(".tab-btn");
+const sections = document.querySelectorAll(".menu-content");
+
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+
+        buttons.forEach(btn => btn.classList.remove("active"));
+        sections.forEach(sec => sec.classList.remove("active"));
+
+        button.classList.add("active");
+
+        const target = button.getAttribute("data-tab");
+        document.getElementById(target).classList.add("active");
+    });
+});
+</script>
+
+</body>
+</html>

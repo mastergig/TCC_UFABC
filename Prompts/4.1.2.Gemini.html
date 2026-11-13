@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato | Fotografia Comercial Futurista</title>
+  <style>
+    :root {
+      --bg-color: #070913;
+      --card-bg: rgba(15, 23, 42, 0.65);
+      --border-color: rgba(56, 189, 248, 0.2);
+      --primary-neon: #00f0ff;
+      --secondary-neon: #7000ff;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --glow-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 20px;
+    }
+
+    /* Ambient Background Effects */
+    .bg-glow-1, .bg-glow-2 {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .bg-glow-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary-neon);
+      top: -50px;
+      left: -50px;
+    }
+    .bg-glow-2 {
+      width: 450px;
+      height: 450px;
+      background: var(--secondary-neon);
+      bottom: -50px;
+      right: -50px;
+    }
+
+    /* Main Container */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 48px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    /* Left Panel: Info */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--primary-neon);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+
+    .info-panel h1 {
+      font-size: 2.8rem;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 30%, var(--primary-neon));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .info-panel p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .features-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .features-list .icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--primary-neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-neon);
+      font-weight: bold;
+    }
+
+    /* Right Panel: Form */
+    .form-panel {
+      background: rgba(10, 15, 30, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 36px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-neon);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%2300f0ff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Interactive Neon Button */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      box-shadow: 0 4px 15px rgba(112, 0, 255, 0.4);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.8), 0 0 15px rgba(112, 0, 255, 0.6);
+      color: #000;
+      background: linear-gradient(135deg, #00f0ff, #00ffaa);
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-submit:hover::before {
+      left: 100%;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+        padding: 32px 24px;
+      }
+      .info-panel h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <main class="container">
+    <!-- Informações da Empresa -->
+    <section class="info-panel">
+      <div>
+        <span class="brand">LUMINA // VISION</span>
+        <h1>Fotografia High-Tech para o seu Negócio</h1>
+        <p>Elevamos a imagem da sua empresa a um novo patamar visual. Campanhas disruptivas, produtos em alta definição e inteligência criativa.</p>
+      </div>
+
+      <ul class="features-list">
+        <li>
+          <div class="icon-box">✓</div>
+          <span>Ensaios Comerciais & Catálogos</span>
+        </li>
+        <li>
+          <div class="icon-box">✓</div>
+          <span>Cobertura de Eventos Corporativos</span>
+        </li>
+        <li>
+          <div class="icon-box">✓</div>
+          <span>Edição & Pós-Produção Avançada</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Formulário de Captura Rápida -->
+    <section class="form-panel">
+      <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Mensagem enviada com sucesso!');">
+        <div class="form-group">
+          <label for="name">Nome / Empresa</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Sua empresa ou nome" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail Corporativo</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="seuemail@empresa.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="service">Tipo de Solução</label>
+          <select id="service" name="service" class="form-control" required>
+            <option value="" disabled selected>Selecione um serviço</option>
+            <option value="produto">Fotografia de Produtos</option>
+            <option value="corporativo">Retrato Corporativo / Equipe</option>
+            <option value="campanha">Campanha Publicitária</option>
+            <option value="outro">Outros Projetos</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Detalhes do Projeto</label>
+          <textarea id="message" name="message" class="form-control" placeholder="Conte-nos brevemente sobre sua necessidade..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Solicitar Orçamento</button>
+      </form>
+    </section>
+  </main>
+
+</body>
+</html>

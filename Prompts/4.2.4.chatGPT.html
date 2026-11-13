@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetShop especializado em castração animal e cuidados veterinários.">
+    <title>Amor Pet | Castração Responsável</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #65a88b;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffe3b3;
+        }
+
+        .hero {
+            background: #e5f3e9;
+            text-align: center;
+            padding: 70px 20px;
+        }
+
+        .hero h2 {
+            color: #36785c;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 750px;
+            margin: auto;
+            font-size: 18px;
+        }
+
+        .hero a {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 13px 28px;
+            background: #e99b57;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 55px 8%;
+        }
+
+        section h2 {
+            text-align: center;
+            color: #36785c;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .beneficios {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #65a88b;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 15px;
+        }
+
+        .agendamento {
+            background: #e5f3e9;
+        }
+
+        form {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo.completo {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid #65a88b;
+            border-color: #65a88b;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px;
+            background: #65a88b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #36785c;
+        }
+
+        footer {
+            background: #36785c;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* RESPONSIVIDADE */
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .beneficios {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo {
+                grid-column: auto;
+            }
+
+            section {
+                padding: 40px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <h1>🐾 Amor Pet</h1>
+
+        <nav aria-label="Menu principal">
+            <a href="#inicio">Início</a>
+            <a href="#cuidados">Cuidados</a>
+            <a href="#agendamento">Agendamento</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- SEÇÃO PRINCIPAL -->
+        <section class="hero" id="inicio">
+            <h2>Castração é um ato de amor!</h2>
+
+            <p>
+                A castração é uma importante medida de saúde e
+                responsabilidade. Ela ajuda a prevenir doenças,
+                evita crias indesejadas e contribui para o controle
+                da população de cães e gatos.
+                Cuide de quem sempre está ao seu lado!
+            </p>
+
+            <a href="#agendamento">Agende uma consulta</a>
+        </section>
+
+        <!-- CUIDADOS PÓS-OPERATÓRIOS -->
+        <section id="cuidados">
+            <h2>Cuidados após a castração</h2>
+
+            <div class="beneficios">
+
+                <article class="card">
+                    <h3>🏠 Repouso</h3>
+                    <p>
+                        Mantenha seu animal em um ambiente tranquilo,
+                        evitando corridas, saltos e brincadeiras
+                        durante o período de recuperação.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>💊 Medicação</h3>
+                    <p>
+                        Administre os medicamentos somente conforme
+                        a prescrição do médico-veterinário e respeite
+                        os horários recomendados.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>🩹 Higiene</h3>
+                    <p>
+                        Mantenha a região da cirurgia limpa e seca.
+                        Utilize roupa cirúrgica ou colar elizabetano
+                        conforme orientação veterinária.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- FORMULÁRIO DE AGENDAMENTO -->
+        <section class="agendamento" id="agendamento">
+
+            <h2>Agende sua consulta veterinária</h2>
+
+            <form action="#" method="post">
+
+                <div class="form-grid">
+
+                    <div class="campo">
+                        <label for="tutor">Nome do tutor:</label>
+                        <input type="text" id="tutor" name="tutor"
+                               placeholder="Seu nome completo" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" id="telefone" name="telefone"
+                               placeholder="(00) 00000-0000" required>
+                    </div>
+
+                    <div class="campo completo">
+                        <label for="email">E-mail:</label>
+                        <input type="email" id="email" name="email"
+                               placeholder="seuemail@email.com" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="animal">Nome do animal:</label>
+                        <input type="text" id="animal" name="animal"
+                               placeholder="Nome do pet" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="especie">Espécie:</label>
+                        <select id="especie" name="especie" required>
+                            <option value="">Selecione</option>
+                            <option value="cachorro">Cachorro</option>
+                            <option value="gato">Gato</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="idade">Idade do animal:</label>
+                        <input type="text" id="idade" name="idade"
+                               placeholder="Ex.: 2 anos" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="sexo">Sexo:</label>
+                        <select id="sexo" name="sexo" required>
+                            <option value="">Selecione</option>
+                            <option value="macho">Macho</option>
+                            <option value="femea">Fêmea</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="data">Data desejada:</label>
+                        <input type="date" id="data" name="data" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="horario">Horário desejado:</label>
+                        <select id="horario" name="horario" required>
+                            <option value="">Selecione</option>
+                            <option value="manha">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                        </select>
+                    </div>
+
+                    <div class="campo completo">
+                        <label for="observacoes">Informações adicionais:</label>
+                        <textarea id="observacoes" name="observacoes"
+                                  rows="4"
+                                  placeholder="Informe alergias, doenças ou dúvidas sobre o animal."></textarea>
+                    </div>
+
+                </div>
+
+                <button type="submit">
+                    Solicitar agendamento
+                </button>
+
+            </form>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 Amor Pet - Cuidando de quem você ama!</p>
+        <p>Atendimento veterinário com carinho e responsabilidade.</p>
+    </footer>
+
+</body>
+</html>

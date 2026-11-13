@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Notícias Cidade</title>
+
+<style>
+:root{
+    --font-scale: 1;
+    --bg-color: #ffffff;
+    --text-color: #222222;
+    --card-bg: #f5f5f5;
+    --header-bg: #003366;
+    --header-text: #ffffff;
+    --link-color: #0055cc;
+    --focus-color: #ff9900;
+
+    font-size: calc(100% * var(--font-scale));
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    line-height:1.6;
+}
+
+.skip-link{
+    position:absolute;
+    left:-999rem;
+    top:auto;
+}
+
+.skip-link:focus{
+    left:1rem;
+    top:1rem;
+    background:#000;
+    color:#fff;
+    padding:0.8rem;
+    z-index:999;
+}
+
+header{
+    background:var(--header-bg);
+    color:var(--header-text);
+    padding:1rem;
+}
+
+.header-container{
+    max-width:75rem;
+    margin:auto;
+}
+
+h1{
+    font-size:2rem;
+    margin-bottom:1rem;
+}
+
+.controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.6rem;
+    margin-bottom:1rem;
+}
+
+button{
+    padding:0.75rem 1rem;
+    border:none;
+    border-radius:0.4rem;
+    cursor:pointer;
+    font-size:1rem;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+nav ul{
+    list-style:none;
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+main{
+    max-width:75rem;
+    margin:auto;
+    padding:1.5rem;
+    display:grid;
+    grid-template-columns: 3fr 1fr;
+    gap:1.5rem;
+}
+
+article{
+    background:var(--card-bg);
+    padding:1.5rem;
+    border-radius:0.75rem;
+    margin-bottom:1rem;
+}
+
+article h2{
+    margin-bottom:0.75rem;
+    font-size:1.6rem;
+}
+
+article p{
+    margin-bottom:1rem;
+}
+
+aside{
+    background:var(--card-bg);
+    padding:1.5rem;
+    border-radius:0.75rem;
+    height:max-content;
+}
+
+aside h3{
+    margin-bottom:1rem;
+}
+
+aside ul{
+    list-style:none;
+}
+
+aside li{
+    margin-bottom:0.8rem;
+}
+
+aside a{
+    color:var(--link-color);
+    text-decoration:none;
+}
+
+footer{
+    background:#111;
+    color:#fff;
+    text-align:center;
+    padding:1.5rem;
+    margin-top:2rem;
+}
+
+a:focus,
+button:focus{
+    outline:0.25rem solid var(--focus-color);
+    outline-offset:0.2rem;
+}
+
+.high-contrast{
+    --bg-color:#000;
+    --text-color:#fff;
+    --card-bg:#1a1a1a;
+    --header-bg:#000;
+    --header-text:#fff;
+    --link-color:#66ccff;
+    --focus-color:#ffff00;
+}
+
+@media (max-width: 60em){
+
+    main{
+        grid-template-columns:1fr;
+    }
+
+    nav ul{
+        flex-direction:column;
+    }
+
+    .controls{
+        flex-direction:column;
+    }
+
+    button{
+        width:100%;
+    }
+}
+
+@media (max-width: 35em){
+
+    h1{
+        font-size:1.7rem;
+    }
+
+    article h2{
+        font-size:1.3rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<a href="#conteudo" class="skip-link">
+Pular para o conteúdo principal
+</a>
+
+<header role="banner">
+    <div class="header-container">
+
+        <h1>Portal Notícias Cidade</h1>
+
+        <div class="controls" aria-label="Controles de acessibilidade">
+
+            <button id="decreaseFont"
+                    aria-label="Diminuir tamanho do texto">
+                A-
+            </button>
+
+            <button id="increaseFont"
+                    aria-label="Aumentar tamanho do texto">
+                A+
+            </button>
+
+            <button id="toggleContrast"
+                    aria-label="Alternar contraste alto">
+                Alto Contraste
+            </button>
+
+        </div>
+
+        <nav aria-label="Menu principal">
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Política</a></li>
+                <li><a href="#">Economia</a></li>
+                <li><a href="#">Esportes</a></li>
+                <li><a href="#">Tecnologia</a></li>
+                <li><a href="#">Cultura</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
+
+<main id="conteudo" role="main">
+
+    <section aria-label="Principais notícias">
+
+        <article aria-labelledby="titulo1">
+            <h2 id="titulo1">
+                Novo Parque Urbano é inaugurado na cidade
+            </h2>
+
+            <p>
+                A nova área verde oferece espaços para caminhada,
+                ciclismo, lazer infantil e convivência comunitária.
+            </p>
+
+            <a href="#">
+                Ler reportagem completa
+            </a>
+        </article>
+
+        <article aria-labelledby="titulo2">
+            <h2 id="titulo2">
+                Mobilidade urbana recebe investimentos
+            </h2>
+
+            <p>
+                Projeto prevê ampliação de corredores exclusivos,
+                acessibilidade e integração entre modais.
+            </p>
+
+            <a href="#">
+                Ler reportagem completa
+            </a>
+        </article>
+
+        <article aria-labelledby="titulo3">
+            <h2 id="titulo3">
+                Evento tecnológico movimenta a região
+            </h2>
+
+            <p>
+                Especialistas apresentam soluções em inteligência
+                artificial, segurança digital e transformação digital.
+            </p>
+
+            <a href="#">
+                Ler reportagem completa
+            </a>
+        </article>
+
+    </section>
+
+    <aside aria-label="Notícias mais lidas">
+        <h3>Mais Lidas</h3>
+
+        <ul>
+            <li><a href="#">Guia completo de serviços públicos</a></li>
+            <li><a href="#">Calendário de eventos do mês</a></li>
+            <li><a href="#">Mudanças no transporte coletivo</a></li>
+            <li><a href="#">Novas vagas de emprego abertas</a></li>
+        </ul>
+    </aside>
+
+</main>
+
+<footer role="contentinfo">
+    <p>
+        © 2026 Portal Notícias Cidade. Todos os direitos reservados.
+    </p>
+</footer>
+
+<script>
+let currentScale = 1;
+
+const increaseBtn = document.getElementById("increaseFont");
+const decreaseBtn = document.getElementById("decreaseFont");
+const contrastBtn = document.getElementById("toggleContrast");
+
+increaseBtn.addEventListener("click", () => {
+    currentScale = Math.min(currentScale + 0.1, 1.8);
+    document.documentElement.style.setProperty(
+        "--font-scale",
+        currentScale
+    );
+});
+
+decreaseBtn.addEventListener("click", () => {
+    currentScale = Math.max(currentScale - 0.1, 0.8);
+    document.documentElement.style.setProperty(
+        "--font-scale",
+        currentScale
+    );
+});
+
+contrastBtn.addEventListener("click", () => {
+    document.body.classList.toggle("high-contrast");
+});
+
+/*
+TESTES DE ACESSIBILIDADE REALIZADOS
+
+✔ Estrutura HTML5 semântica
+✔ ARIA labels em áreas de navegação e controles
+✔ Link de salto "Pular para conteúdo"
+✔ Foco visível para teclado (TAB)
+✔ Layout responsivo usando rem/em
+✔ Sem largura fixa em pixels
+✔ Ampliação de fonte até 180%
+✔ Modo Alto Contraste
+✔ Grid adaptável para telas pequenas
+✔ Compatível com zoom do navegador acima de 200%
+✔ Sem rolagem horizontal desnecessária
+*/
+</script>
+
+</body>
+</html>

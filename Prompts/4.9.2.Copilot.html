@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portal comunitário de notícias locais acessível e responsivo">
+<title>Jornal da Comunidade</title>
+
+<style>
+:root{
+    --azul:#003c8f;
+    --azul-hover:#002b66;
+    --amarelo:#ffbf47;
+    --texto:#1f1f1f;
+    --fundo:#ffffff;
+    --cinza:#f3f5f7;
+    --borda:#d0d7de;
+    --largura-max:90rem;
+}
+
+*{box-sizing:border-box;}
+
+html{
+    font-size:100%;
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    color:var(--texto);
+    background:var(--fundo);
+    line-height:1.7;
+    overflow-wrap:break-word;
+}
+
+img{
+    max-width:100%;
+    height:auto;
+    display:block;
+}
+
+.skip-link{
+    position:absolute;
+    left:-999rem;
+}
+
+.skip-link:focus{
+    left:1rem;
+    top:1rem;
+    z-index:1000;
+    background:#000;
+    color:#fff;
+    padding:1rem;
+}
+
+:focus-visible{
+    outline:0.25rem solid var(--amarelo);
+    outline-offset:0.2rem;
+}
+
+header{
+    background:var(--azul);
+    color:#fff;
+}
+
+.container{
+    width:min(100%, var(--largura-max));
+    margin:auto;
+    padding:1rem 4%;
+}
+
+.header-flex{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+}
+
+nav ul{
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+nav a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.hero{
+    background:var(--cinza);
+    padding:2rem;
+    border-radius:1rem;
+    margin:1.5rem 0;
+}
+
+.search{
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+    margin-bottom:2rem;
+}
+
+.search label{
+    flex-basis:100%;
+}
+
+.search input{
+    flex:1 1 16rem;
+    font-size:1rem;
+    padding:0.9rem;
+}
+
+button{
+    padding:0.9rem 1.2rem;
+    border:none;
+    background:var(--azul);
+    color:#fff;
+    cursor:pointer;
+}
+
+button:hover{
+    background:var(--azul-hover);
+}
+
+.news-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));
+    gap:1.5rem;
+}
+
+article{
+    border:0.08rem solid var(--borda);
+    border-radius:0.75rem;
+    overflow:hidden;
+    background:#fff;
+}
+
+.article-content{
+    padding:1rem;
+}
+
+aside{
+    margin-top:2rem;
+    background:var(--cinza);
+    padding:1.5rem;
+    border-radius:1rem;
+}
+
+footer{
+    margin-top:2rem;
+    background:#e9ecef;
+    padding:2rem;
+    text-align:center;
+}
+
+@media (max-width:48rem){
+    .header-flex{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    h1{
+        font-size:1.8rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<a href="#conteudo" class="skip-link">Pular para o conteúdo principal</a>
+
+<header>
+    <div class="container header-flex">
+        <h1>Jornal da Comunidade</h1>
+
+        <nav aria-label="Menu principal">
+            <ul>
+                <li><a href="#destaques">Destaques</a></li>
+                <li><a href="#cidade">Cidade</a></li>
+                <li><a href="#esportes">Esportes</a></li>
+                <li><a href="#cultura">Cultura</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main id="conteudo" class="container">
+
+<section class="hero" aria-labelledby="manchete-principal">
+    <h2 id="manchete-principal">Notícias locais para toda a comunidade</h2>
+    <p>Portal projetado para pessoas idosas, usuários de leitores de tela, navegação por teclado e leitores que utilizam ampliação de texto ou zoom do navegador.</p>
+</section>
+
+<form class="search" role="search" aria-label="Pesquisa de notícias">
+    <label for="busca">Pesquisar notícias</label>
+    <input
+        id="busca"
+        type="search"
+        name="busca"
+        placeholder="Digite uma palavra-chave"
+        aria-describedby="ajuda-pesquisa">
+
+    <button type="submit">Buscar</button>
+
+    <small id="ajuda-pesquisa">Pesquise por bairros, eventos ou serviços públicos.</small>
+</form>
+
+<section id="destaques" aria-labelledby="titulo-destaques">
+    <h2 id="titulo-destaques">Destaques</h2>
+
+    <div class="news-grid">
+
+        <article>
+            <img src="https://via.placeholder.com/800x450" alt="Praça revitalizada com moradores caminhando">
+            <div class="article-content">
+                <h3>Nova praça é entregue à população</h3>
+                <p>Espaço recebeu iluminação, acessibilidade e novos equipamentos esportivos.</p>
+                <a href="#" aria-label="Ler notícia completa sobre a nova praça">Ler notícia completa</a>
+            </div>
+        </article>
+
+        <article>
+            <img src="https://via.placeholder.com/800x450" alt="Feira comunitária com barracas de produtores locais">
+            <div class="article-content">
+                <h3>Feira comunitária registra recorde de público</h3>
+                <p>Evento fortalece pequenos negócios e gera renda para famílias da região.</p>
+                <a href="#" aria-label="Ler notícia completa sobre a feira comunitária">Ler notícia completa</a>
+            </div>
+        </article>
+
+        <article>
+            <img src="https://via.placeholder.com/800x450" alt="Equipe esportiva local durante campeonato">
+            <div class="article-content">
+                <h3>Equipe local conquista campeonato regional</h3>
+                <p>Vitória movimenta torcedores e incentiva novos projetos esportivos.</p>
+                <a href="#" aria-label="Ler notícia completa sobre o campeonato regional">Ler notícia completa</a>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<aside aria-labelledby="servicos-publicos">
+    <h2 id="servicos-publicos">Serviços da Comunidade</h2>
+    <ul>
+        <li>Calendário de vacinação.</li>
+        <li>Obras e interdições de trânsito.</li>
+        <li>Agenda cultural gratuita.</li>
+        <li>Programação esportiva municipal.</li>
+    </ul>
+</aside>
+
+</main>
+
+<footer>
+    <p>© 2026 Jornal da Comunidade • Portal acessível conforme WCAG 2.1 AA.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine Lumière — Experiência Cinematográfica</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel (Clássico Cinema) & Inter (UI Moderna) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- QRCode.js para geração real de QR Code no ingresso -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        cinema: {
+                            950: '#09090b',
+                            900: '#121216',
+                            800: '#1c1c22',
+                            700: '#27272f',
+                            gold: '#d4af37',
+                            goldLight: '#f3d06b',
+                            red: '#dc2626',
+                            redDark: '#991b1b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+
+        /* Efeito de Tela de Cinema Curva e Iluminada */
+        .cinema-screen {
+            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(212,175,55,0.4) 100%);
+            box-shadow: 0 18px 45px -5px rgba(212, 175, 55, 0.45), 0 4px 15px rgba(255, 255, 255, 0.3);
+            transform: perspective(300px) rotateX(-8deg);
+        }
+
+        /* Estilo dos Assentos */
+        .seat {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .seat:not(.occupied):hover {
+            transform: scale(1.15) translateY(-2px);
+        }
+        .seat.selected {
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.7);
+        }
+
+        /* Efeito de Picote do Ingresso Digital */
+        .ticket-divider {
+            background-image: linear-gradient(to right, #3f3f46 50%, rgba(255,255,255,0) 0%);
+            background-position: bottom;
+            background-size: 14px 2px;
+            background-repeat: repeat-x;
+        }
+
+        /* Animação suave */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-cinema-950 text-zinc-100 font-sans antialiased selection:bg-cinema-gold selection:text-cinema-950 min-h-screen flex flex-col">
+
+    <!-- Notificação Toast Flutuante (Substitui alert()) -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Cabeçalho / Navegação -->
+    <header class="sticky top-0 z-40 bg-cinema-950/90 backdrop-blur-md border-b border-zinc-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="resetToHome(event)" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cinema-gold to-amber-700 flex items-center justify-center text-cinema-950 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="film" class="w-6 h-6 stroke-[2.2]"></i>
+                </div>
+                <div>
+                    <span class="font-display text-xl sm:text-2xl font-bold tracking-wider text-white">CINE <span class="text-cinema-gold">LUMIÈRE</span></span>
+                    <p class="text-[11px] uppercase tracking-[0.2em] text-zinc-400 hidden sm:block">Cinema Boutique & Arte</p>
+                </div>
+            </a>
+
+            <!-- Info Localização e Meus Ingressos -->
+            <div class="flex items-center gap-3 sm:gap-6">
+                <div class="hidden md:flex items-center gap-2 text-xs text-zinc-400 bg-cinema-900 px-3 py-2 rounded-lg border border-zinc-800">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-cinema-red"></i>
+                    <span>Rua Augusta, 1420 — Consolação, SP</span>
+                </div>
+                <button onclick="openMyTicketsModal()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cinema-800 hover:bg-cinema-700 border border-zinc-700/80 text-sm font-medium text-zinc-200 transition-all">
+                    <i data-lucide="ticket" class="w-4 h-4 text-cinema-gold"></i>
+                    <span>Meus Ingressos</span>
+                    <span id="saved-tickets-badge" class="hidden bg-cinema-red text-white text-xs font-bold px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow">
+        <!-- Hero Banner Destaque -->
+        <section id="hero-section" class="relative overflow-hidden border-b border-zinc-800/80">
+            <div class="absolute inset-0 bg-gradient-to-r from-cinema-950 via-cinema-950/90 to-cinema-950/30 z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-cinema-950 via-transparent to-cinema-950/60 z-10"></div>
+            <!-- Imagem de fundo cinematográfica -->
+            <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1920&q=80" 
+                 onerror="this.src='https://placehold.co/1920x600/121216/d4af37?text=Cine+Lumiere'"
+                 alt="Sala de Cinema Cine Lumière" 
+                 class="absolute inset-0 w-full h-full object-cover opacity-45">
+
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cinema-gold/15 border border-cinema-gold/30 text-cinema-gold text-xs font-semibold uppercase tracking-wider mb-4">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        <span>Projeção Laser 4K & Som Dolby Atmos</span>
+                    </div>
+                    <h1 class="font-display text-3xl sm:text-5xl font-bold text-white leading-tight mb-4">
+                        A magia do cinema clássico com conforto contemporâneo.
+                    </h1>
+                    <p class="text-zinc-300 text-base sm:text-lg mb-8 leading-relaxed">
+                        Escolha seu filme, reserve suas poltronas numeradas sem filas e apresente seu ingresso digital diretamente na entrada da sala.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-zinc-300">
+                        <div class="flex items-center gap-2 bg-cinema-900/90 px-4 py-2 rounded-xl border border-zinc-800">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>Inteira: <strong class="text-white">R$ 36,00</strong></span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-cinema-900/90 px-4 py-2 rounded-xl border border-zinc-800">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cinema-gold"></span>
+                            <span>Meia-entrada: <strong class="text-white">R$ 18,00</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Programação e Filtros -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <!-- Barra de Filtros por Dia da Semana e Gênero -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+                <div>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+                        <span class="w-1.5 h-8 bg-cinema-red rounded-full"></span>
+                        Programação em Cartaz
+                    </h2>
+                    <p class="text-zinc-400 text-sm mt-1">Selecione o dia para visualizar as sessões e horários disponíveis</p>
+                </div>
+
+                <!-- Filtro por Dia da Semana -->
+                <div id="day-filters" class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar">
+                    <!-- Preenchido via JS -->
+                </div>
+            </div>
+
+            <!-- Filtro Secundário por Gênero -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 border-b border-zinc-800/80" id="genre-filters">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <!-- Grid de Filmes -->
+            <div id="movies-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Cards dos filmes injetados via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-cinema-900 border-t border-zinc-800/80 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-400">
+            <div class="flex items-center gap-2">
+                <i data-lucide="film" class="w-5 h-5 text-cinema-gold"></i>
+                <span class="font-display font-bold text-white">CINE LUMIÈRE</span>
+                <span>— Todos os direitos reservados © 2026</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <span>Bilheteria aberta 30 min antes da 1ª sessão</span>
+                <span class="text-cinema-gold">Meia-entrada mediante documento</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL DE RESERVA EM ETAPAS (1: Assentos -> 2: Dados -> 3: Ingresso QR) -->
+    <!-- ===================================================================== -->
+    <div id="booking-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/85 backdrop-blur-sm">
+        <div class="min-h-screen px-4 py-6 flex items-center justify-center">
+            <div class="relative w-full max-w-4xl bg-cinema-900 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden animate-fade-in">
+                
+                <!-- Topo do Modal com Stepper e Botão Fechar -->
+                <div class="bg-cinema-950 px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div id="modal-movie-badge" class="px-2.5 py-1 rounded text-xs font-bold bg-cinema-gold text-cinema-950">SALA 01</div>
+                        <div>
+                            <h3 id="modal-movie-title" class="font-bold text-white text-base sm:text-lg leading-tight">Título do Filme</h3>
+                            <p id="modal-session-info" class="text-xs text-zinc-400">Quinta, 12 Nov • 19:30 • Legendado</p>
+                        </div>
+                    </div>
+
+                    <button onclick="closeBookingModal()" class="p-2 rounded-xl bg-cinema-800 hover:bg-cinema-700 text-zinc-400 hover:text-white transition-colors" aria-label="Fechar janela">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Indicador de Progresso (Stepper) -->
+                <div class="bg-cinema-900/60 px-6 py-3 border-b border-zinc-800/80">
+                    <div class="flex items-center justify-between max-w-xl mx-auto text-xs sm:text-sm">
+                        <div id="step-indicator-1" class="flex items-center gap-2 font-semibold text-cinema-gold">
+                            <span class="w-6 h-6 rounded-full bg-cinema-gold text-cinema-950 flex items-center justify-center font-bold">1</span>
+                            <span>Assentos</span>
+                        </div>
+                        <div class="flex-grow h-0.5 mx-3 bg-zinc-800" id="step-line-1"></div>
+                        <div id="step-indicator-2" class="flex items-center gap-2 font-medium text-zinc-500">
+                            <span class="w-6 h-6 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center font-bold">2</span>
+                            <span>Dados & Ingresso</span>
+                        </div>
+                        <div class="flex-grow h-0.5 mx-3 bg-zinc-800" id="step-line-2"></div>
+                        <div id="step-indicator-3" class="flex items-center gap-2 font-medium text-zinc-500">
+                            <span class="w-6 h-6 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center font-bold">3</span>
+                            <span>Comprovante QR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ETAPA 1: SELEÇÃO DE ASSENTOS E TIPO DE INGRESSO -->
+                <div id="booking-step-1" class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <!-- Mapa da Sala (7 colunas) -->
+                        <div class="lg:col-span-7 flex flex-col items-center bg-cinema-950/70 p-5 rounded-2xl border border-zinc-800/80">
+                            <!-- Tela do Cinema -->
+                            <div class="w-4/5 h-3 rounded-t-full cinema-screen mb-2"></div>
+                            <span class="text-[11px] uppercase tracking-[0.3em] text-zinc-500 mb-6">Tela de Projeção</span>
+
+                            <!-- Grade de Assentos -->
+                            <div id="seats-container" class="flex flex-col gap-2.5 w-full max-w-md items-center select-none overflow-x-auto py-2">
+                                <!-- Gerado dinamicamente via JS -->
+                            </div>
+
+                            <!-- Legenda dos Assentos -->
+                            <div class="flex flex-wrap items-center justify-center gap-5 mt-6 pt-4 border-t border-zinc-800/80 w-full text-xs text-zinc-400">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-4 h-4 rounded-t-md bg-zinc-700 border border-zinc-600 inline-block"></span>
+                                    <span>Disponível</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-4 h-4 rounded-t-md bg-cinema-gold border border-cinema-goldLight inline-block shadow-sm"></span>
+                                    <span class="text-white font-medium">Selecionado</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-4 h-4 rounded-t-md bg-zinc-900 border border-zinc-800 opacity-50 inline-block relative"></span>
+                                    <span>Ocupado</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resumo dos Assentos Escolhidos & Escolha Inteira/Meia (5 colunas) -->
+                        <div class="lg:col-span-5 flex flex-col justify-between bg-cinema-800/40 p-5 rounded-2xl border border-zinc-800">
+                            <div>
+                                <h4 class="font-semibold text-white text-base mb-1 flex items-center gap-2">
+                                    <i data-lucide="armchair" class="w-4 h-4 text-cinema-gold"></i>
+                                    Assentos Selecionados
+                                </h4>
+                                <p class="text-xs text-zinc-400 mb-4">Clique no mapa ao lado para escolher até 8 poltronas.</p>
+
+                                <div id="selected-seats-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                                    <!-- Lista de assentos com seletor Inteira/Meia -->
+                                    <div class="text-center py-8 px-4 border border-dashed border-zinc-700 rounded-xl text-zinc-500 text-sm">
+                                        Nenhum assento selecionado ainda.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t border-zinc-700/80">
+                                <div class="flex items-center justify-between text-sm text-zinc-400 mb-1">
+                                    <span>Quantidade:</span>
+                                    <span id="summary-count" class="text-white font-medium">0 ingressos</span>
+                                </div>
+                                <div class="flex items-center justify-between text-lg font-bold text-white mb-4">
+                                    <span>Total:</span>
+                                    <span id="summary-total" class="text-cinema-gold">R$ 0,00</span>
+                                </div>
+                                <button id="btn-to-step-2" onclick="goToStep(2)" disabled
+                                        class="w-full py-3.5 px-5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all bg-zinc-800 text-zinc-500 cursor-not-allowed">
+                                    <span>Continuar para Dados</span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ETAPA 2: FORMULÁRIO DE DADOS DO ESPECTADOR -->
+                <div id="booking-step-2" class="p-6 hidden animate-fade-in">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <form id="customer-form" onsubmit="confirmBooking(event)" class="lg:col-span-7 space-y-4">
+                            <h4 class="font-semibold text-white text-lg mb-2">Seus Dados para o Ingresso</h4>
+                            <p class="text-xs text-zinc-400 mb-4">Essas informações serão vinculadas ao seu comprovante digital.</p>
+
+                            <div>
+                                <label for="cust-name" class="block text-xs font-medium text-zinc-300 mb-1.5">Nome Completo *</label>
+                                <input type="text" id="cust-name" required placeholder="Ex: Marina Silva"
+                                       class="w-full px-4 py-3 rounded-xl bg-cinema-950 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-cinema-gold text-sm">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="cust-email" class="block text-xs font-medium text-zinc-300 mb-1.5">E-mail *</label>
+                                    <input type="email" id="cust-email" required placeholder="marina@email.com"
+                                           class="w-full px-4 py-3 rounded-xl bg-cinema-950 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-cinema-gold text-sm">
+                                </div>
+                                <div>
+                                    <label for="cust-cpf" class="block text-xs font-medium text-zinc-300 mb-1.5">CPF (para validação na entrada) *</label>
+                                    <input type="text" id="cust-cpf" required placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)"
+                                           class="w-full px-4 py-3 rounded-xl bg-cinema-950 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-cinema-gold text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-medium text-zinc-300 mb-2">Forma de Pagamento na Reserva</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="payment" value="PIX Instantâneo" checked class="peer sr-only">
+                                        <div class="p-3.5 rounded-xl bg-cinema-950 border border-zinc-700 peer-checked:border-cinema-gold peer-checked:bg-cinema-gold/10 flex items-center gap-3 transition-all">
+                                            <i data-lucide="qr-code" class="w-5 h-5 text-cinema-gold"></i>
+                                            <span class="text-sm font-medium text-white">PIX (Aprovação Imediata)</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="payment" value="Cartão de Crédito" class="peer sr-only">
+                                        <div class="p-3.5 rounded-xl bg-cinema-950 border border-zinc-700 peer-checked:border-cinema-gold peer-checked:bg-cinema-gold/10 flex items-center gap-3 transition-all">
+                                            <i data-lucide="credit-card" class="w-5 h-5 text-cinema-gold"></i>
+                                            <span class="text-sm font-medium text-white">Cartão de Crédito</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 flex items-center gap-3">
+                                <button type="button" onclick="goToStep(1)" class="px-5 py-3.5 rounded-xl bg-cinema-800 hover:bg-cinema-700 text-zinc-300 text-sm font-medium flex items-center gap-2 transition-colors">
+                                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                                    <span>Voltar</span>
+                                </button>
+                                <button type="submit" class="flex-grow py-3.5 px-6 rounded-xl bg-gradient-to-r from-cinema-red to-red-700 hover:from-red-500 hover:to-cinema-red text-white font-semibold text-sm shadow-lg shadow-red-600/25 flex items-center justify-center gap-2 transition-all">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                                    <span>Confirmar Reserva & Gerar Ingresso</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Card de Resumo do Pedido -->
+                        <div class="lg:col-span-5 bg-cinema-950 p-5 rounded-2xl border border-zinc-800 flex flex-col justify-between">
+                            <div>
+                                <h5 class="text-xs uppercase tracking-wider text-zinc-400 font-semibold mb-3">Resumo da Sessão</h5>
+                                <div class="flex gap-3.5 pb-4 border-b border-zinc-800">
+                                    <img id="checkout-poster" src="" alt="Poster" class="w-16 h-24 object-cover rounded-lg border border-zinc-700">
+                                    <div>
+                                        <h6 id="checkout-movie" class="font-bold text-white text-sm">Filme</h6>
+                                        <p id="checkout-datetime" class="text-xs text-cinema-gold mt-1">Data e Hora</p>
+                                        <p id="checkout-room" class="text-xs text-zinc-400 mt-0.5">Sala & Áudio</p>
+                                    </div>
+                                </div>
+
+                                <div id="checkout-items" class="py-4 space-y-2 text-xs text-zinc-300 border-b border-zinc-800">
+                                    <!-- Itens detalhados -->
+                                </div>
+                            </div>
+
+                            <div class="pt-4">
+                                <div class="flex justify-between items-center text-base font-bold text-white">
+                                    <span>Total a Pagar</span>
+                                    <span id="checkout-total" class="text-xl text-cinema-gold">R$ 0,00</span>
+                                </div>
+                                <p class="text-[11px] text-zinc-500 mt-2">Taxa de conveniência isenta para reservas online no Cine Lumière.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ETAPA 3: INGRESSO DIGITAL COM QR CODE -->
+                <div id="booking-step-3" class="p-6 hidden animate-fade-in">
+                    <div class="text-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="check" class="w-6 h-6 stroke-[2.5]"></i>
+                        </div>
+                        <h4 class="font-display text-2xl font-bold text-white">Reserva Confirmada!</h4>
+                        <p class="text-sm text-zinc-400">Apresente o QR Code abaixo na entrada da sala.</p>
+                    </div>
+
+                    <!-- Cartão do Ingresso Digital -->
+                    <div id="digital-ticket-card" class="max-w-md mx-auto bg-gradient-to-b from-zinc-900 to-cinema-950 border border-cinema-gold/40 rounded-2xl overflow-hidden shadow-2xl shadow-amber-500/10">
+                        <!-- Cabeçalho Dourado do Ingresso -->
+                        <div class="bg-gradient-to-r from-cinema-gold via-amber-400 to-cinema-gold px-5 py-3 flex items-center justify-between text-cinema-950">
+                            <span class="font-display font-extrabold text-sm tracking-wider">CINE LUMIÈRE</span>
+                            <span id="ticket-code-badge" class="font-mono text-xs font-bold bg-cinema-950/15 px-2 py-0.5 rounded">#LUM-0000</span>
+                        </div>
+
+                        <div class="p-5">
+                            <div class="flex gap-4 mb-4">
+                                <img id="ticket-poster" src="" alt="Poster" class="w-20 h-28 object-cover rounded-xl border border-zinc-700 shadow-md">
+                                <div class="flex flex-col justify-center">
+                                    <span id="ticket-room-tag" class="text-[11px] font-bold uppercase tracking-wider text-cinema-gold mb-1">SALA 01 • LEGENDADO</span>
+                                    <h5 id="ticket-movie-title" class="font-bold text-white text-lg leading-snug">Título do Filme</h5>
+                                    <p id="ticket-customer-name" class="text-xs text-zinc-400 mt-1.5 flex items-center gap-1.5">
+                                        <i data-lucide="user" class="w-3.5 h-3.5 text-zinc-500"></i>
+                                        <span>Nome do Cliente</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Informações em Grid -->
+                            <div class="grid grid-cols-3 gap-2 bg-cinema-900/90 p-3 rounded-xl border border-zinc-800 text-center mb-4">
+                                <div>
+                                    <span class="block text-[10px] uppercase text-zinc-500">Data</span>
+                                    <strong id="ticket-date" class="text-xs sm:text-sm text-white">12/11</strong>
+                                </div>
+                                <div class="border-x border-zinc-800">
+                                    <span class="block text-[10px] uppercase text-zinc-500">Horário</span>
+                                    <strong id="ticket-time" class="text-xs sm:text-sm text-cinema-gold">19:30</strong>
+                                </div>
+                                <div>
+                                    <span class="block text-[10px] uppercase text-zinc-500">Assentos</span>
+                                    <strong id="ticket-seats" class="text-xs sm:text-sm text-white">D5, D6</strong>
+                                </div>
+                            </div>
+
+                            <!-- Picote do Ingresso -->
+                            <div class="h-4 ticket-divider my-2"></div>
+
+                            <!-- Área do QR Code -->
+                            <div class="flex flex-col items-center justify-center pt-2">
+                                <div class="bg-white p-3 rounded-xl shadow-inner">
+                                    <div id="qrcode-container"></div>
+                                </div>
+                                <span id="ticket-hash" class="font-mono text-[11px] text-zinc-500 mt-2.5 tracking-widest">LUM-2026-XXXX</span>
+                                <span id="ticket-paid-amount" class="text-xs text-emerald-400 font-medium mt-1">Pago via PIX • R$ 0,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações Pós-Reserva -->
+                    <div class="max-w-md mx-auto mt-6 flex flex-col sm:flex-row gap-3">
+                        <button onclick="copyTicketCode()" class="flex-1 py-3 px-4 rounded-xl bg-cinema-800 hover:bg-cinema-700 border border-zinc-700 text-white text-sm font-medium flex items-center justify-center gap-2 transition-colors">
+                            <i data-lucide="copy" class="w-4 h-4 text-cinema-gold"></i>
+                            <span>Copiar Código</span>
+                        </button>
+                        <button onclick="closeBookingModal()" class="flex-1 py-3 px-4 rounded-xl bg-cinema-gold hover:bg-cinema-goldLight text-cinema-950 text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+                            <span>Concluir</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL MEUS INGRESSOS SALVOS                                            -->
+    <!-- ===================================================================== -->
+    <div id="my-tickets-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/85 backdrop-blur-sm">
+        <div class="min-h-screen px-4 py-8 flex items-center justify-center">
+            <div class="relative w-full max-w-2xl bg-cinema-900 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden animate-fade-in">
+                <div class="bg-cinema-950 px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="ticket" class="w-5 h-5 text-cinema-gold"></i>
+                        <h3 class="font-display font-bold text-white text-lg">Meus Ingressos Agendados</h3>
+                    </div>
+                    <button onclick="closeMyTicketsModal()" class="p-2 rounded-xl bg-cinema-800 hover:bg-cinema-700 text-zinc-400 hover:text-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div id="saved-tickets-list" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <!-- Lista de ingressos salvos -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- LÓGICA DA APLICAÇÃO (JAVASCRIPT)                                      -->
+    <!-- ===================================================================== -->
+    <script>
+        // Preços base
+        const PRICE_FULL = 36.00;
+        const PRICE_HALF = 18.00;
+
+        // Dias da semana disponíveis (Baseado na data atual: Quinta, 12 Nov 2026)
+        const DAYS_OF_WEEK = [
+            { id: 'qui', label: 'Hoje', dayName: 'Quinta', dateStr: '12 Nov' },
+            { id: 'sex', label: 'Amanhã', dayName: 'Sexta', dateStr: '13 Nov' },
+            { id: 'sab', label: 'Sábado', dayName: 'Sábado', dateStr: '14 Nov' },
+            { id: 'dom', label: 'Domingo', dayName: 'Domingo', dateStr: '15 Nov' },
+            { id: 'seg', label: 'Segunda', dayName: 'Segunda', dateStr: '16 Nov' }
+        ];
+
+        // Catálogo de Filmes em Cartaz no Cine Lumière
+        const MOVIES = [
+            {
+                id: 'mov-1',
+                title: 'O Último Projetor de Paris',
+                originalTitle: 'Le Dernier Projecteur',
+                genre: 'Drama',
+                duration: '2h 14min',
+                rating: '12',
+                director: 'Claire Moreau',
+                poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
+                synopsis: 'Em um cinema histórico de Montmartre prestes a fechar as portas, um velho projecionista descobre rolos de filme inéditos que conectam três gerações de apaixonados pela sétima arte.',
+                sessions: {
+                    qui: [
+                        { id: 's1', time: '16:15', room: 'Sala Lumière 01', format: 'Legendado' },
+                        { id: 's2', time: '19:30', room: 'Sala Lumière 01', format: 'Legendado' },
+                        { id: 's3', time: '22:00', room: 'Sala Lumière 02', format: 'Legendado' }
+                    ],
+                    sex: [
+                        { id: 's4', time: '17:00', room: 'Sala Lumière 01', format: 'Legendado' },
+                        { id: 's5', time: '20:15', room: 'Sala Lumière 01', format: 'Legendado' }
+                    ],
+                    sab: [
+                        { id: 's6', time: '15:00', room: 'Sala Lumière 01', format: 'Legendado' },
+                        { id: 's7', time: '18:30', room: 'Sala Lumière 01', format: 'Legendado' },
+                        { id: 's8', time: '21:45', room: 'Sala Lumière 01', format: 'Legendado' }
+                    ],
+                    dom: [
+                        { id: 's9', time: '16:00', room: 'Sala Lumière 01', format: 'Legendado' },
+                        { id: 's10', time: '19:30', room: 'Sala Lumière 01', format: 'Legendado' }
+                    ],
+                    seg: [
+                        { id: 's11', time: '19:00', room: 'Sala Lumière 02', format: 'Legendado' }
+                    ]
+                }
+            },
+            {
+                id: 'mov-2',
+                title: 'Horizonte de Néon',
+                originalTitle: 'Neon Horizon',
+                genre: 'Ficção Científica',
+                duration: '2h 28min',
+                rating: '14',
+                director: 'Kenji Takahashi',
+                poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+                synopsis: 'Em 2089, uma investigadora de memórias sintéticas precisa decifrar o último sonho de um arquiteto desaparecido antes que toda a rede neural da metrópole colapse.',
+                sessions: {
+                    qui: [
+                        { id: 's12', time: '15:30', room: 'Sala IMAX Gold', format: 'Dublado' },
+                        { id: 's13', time: '18:45', room: 'Sala IMAX Gold', format: 'Legendado' },
+                        { id: 's14', time: '21:50', room: 'Sala IMAX Gold', format: 'Legendado' }
+                    ],
+                    sex: [
+                        { id: 's15', time: '16:00', room: 'Sala IMAX Gold', format: 'Legendado' },
+                        { id: 's16', time: '19:15', room: 'Sala IMAX Gold', format: 'Legendado' },
+                        { id: 's17', time: '22:30', room: 'Sala IMAX Gold', format: 'Legendado' }
+                    ],
+                    sab: [
+                        { id: 's18', time: '14:30', room: 'Sala IMAX Gold', format: 'Dublado' },
+                        { id: 's19', time: '18:00', room: 'Sala IMAX Gold', format: 'Legendado' },
+                        { id: 's20', time: '21:15', room: 'Sala IMAX Gold', format: 'Legendado' }
+                    ],
+                    dom: [
+                        { id: 's21', time: '17:15', room: 'Sala IMAX Gold', format: 'Legendado' },
+                        { id: 's22', time: '20:30', room: 'Sala IMAX Gold', format: 'Legendado' }
+                    ],
+                    seg: [
+                        { id: 's23', time: '20:00', room: 'Sala IMAX Gold', format: 'Legendado' }
+                    ]
+                }
+            },
+            {
+                id: 'mov-3',
+                title: 'Sinfonia Noturna',
+                originalTitle: 'Nocturne in Blue',
+                genre: 'Suspense',
+                duration: '1h 58min',
+                rating: '16',
+                director: 'Henrique Vasconcelos',
+                poster: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80',
+                synopsis: 'Durante uma tempestade que isola o Teatro Municipal de São Paulo, um maestro recebe uma partitura anônima que parece prever cada movimento dos músicos nos bastidores.',
+                sessions: {
+                    qui: [
+                        { id: 's24', time: '17:40', room: 'Sala Lumière 02', format: 'Nacional' },
+                        { id: 's25', time: '20:40', room: 'Sala Lumière 02', format: 'Nacional' }
+                    ],
+                    sex: [
+                        { id: 's26', time: '18:10', room: 'Sala Lumière 02', format: 'Nacional' },
+                        { id: 's27', time: '21:10', room: 'Sala Lumière 02', format: 'Nacional' }
+                    ],
+                    sab: [
+                        { id: 's28', time: '16:40', room: 'Sala Lumière 02', format: 'Nacional' },
+                        { id: 's29', time: '19:50', room: 'Sala Lumière 02', format: 'Nacional' }
+                    ],
+                    dom: [
+                        { id: 's30', time: '18:20', room: 'Sala Lumière 02', format: 'Nacional' }
+                    ],
+                    seg: [
+                        { id: 's31', time: '21:00', room: 'Sala Lumière 01', format: 'Nacional' }
+                    ]
+                }
+            },
+            {
+                id: 'mov-4',
+                title: 'O Pequeno Guardião das Estrelas',
+                originalTitle: 'The Starlight Keeper',
+                genre: 'Animação',
+                duration: '1h 42min',
+                rating: 'L',
+                director: 'Sofia Castellanos',
+                poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
+                synopsis: 'Quando uma constelação inteira cai sobre um vilarejo nas montanhas, um garoto curioso e sua raposa mecânica embarcam numa jornada encantadora para devolver as estrelas ao céu.',
+                sessions: {
+                    qui: [
+                        { id: 's32', time: '14:15', room: 'Sala Lumière 02', format: 'Dublado' }
+                    ],
+                    sex: [
+                        { id: 's33', time: '14:30', room: 'Sala Lumière 02', format: 'Dublado' }
+                    ],
+                    sab: [
+                        { id: 's34', time: '13:30', room: 'Sala Lumière 02', format: 'Dublado' },
+                        { id: 's35', time: '15:45', room: 'Sala Lumière 01', format: 'Dublado' }
+                    ],
+                    dom: [
+                        { id: 's36', time: '14:00', room: 'Sala Lumière 01', format: 'Dublado' },
+                        { id: 's37', time: '16:15', room: 'Sala Lumière 02', format: 'Dublado' }
+                    ],
+                    seg: []
+                }
+            },
+            {
+                id: 'mov-5',
+                title: 'Cartas de Outono em Lisboa',
+                originalTitle: 'Cartas de Outono',
+                genre: 'Romance',
+                duration: '2h 05min',
+                rating: '10',
+                director: 'Tiago Almeida',
+                poster: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=600&q=80',
+                synopsis: 'Dois desconhecidos trocam livros usados em um sebo no Chiado e passam a se corresponder através de anotações nas margens das páginas, sem imaginar que já se cruzam todos os dias.',
+                sessions: {
+                    qui: [
+                        { id: 's38', time: '19:00', room: 'Sala Lumière 01', format: 'Original' }
+                    ],
+                    sex: [
+                        { id: 's39', time: '19:45', room: 'Sala Lumière 02', format: 'Original' }
+                    ],
+                    sab: [
+                        { id: 's40', time: '17:30', room: 'Sala Lumière 02', format: 'Original' },
+                        { id: 's41', time: '20:45', room: 'Sala Lumière 02', format: 'Original' }
+                    ],
+                    dom: [
+                        { id: 's42', time: '19:00', room: 'Sala Lumière 02', format: 'Original' }
+                    ],
+                    seg: [
+                        { id: 's43', time: '18:30', room: 'Sala Lumière 01', format: 'Original' }
+                    ]
+                }
+            }
+        ];
+
+        // Estado da Aplicação
+        let state = {
+            selectedDay: 'qui',
+            selectedGenre: 'Todos',
+            activeMovie: null,
+            activeSession: null,
+            selectedSeats: [], // Ex: [{ id: 'D5', type: 'inteira' }]
+            occupiedSeatsBySession: {}, // Armazena assentos ocupados por ID de sessão
+            savedTickets: [],
+            lastGeneratedCode: ''
+        };
+
+        // Inicialização ao carregar a página
+        window.onload = function() {
+            initOccupiedSeats();
+            loadSavedTickets();
+            renderDayFilters();
+            renderGenreFilters();
+            renderMovies();
+            lucide.createIcons();
+        };
+
+        // Gera assentos ocupados iniciais realistas para cada sessão (determinístico pelo ID)
+        function initOccupiedSeats() {
+            const rows = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const cols = [1, 2, 3, 4, 5, 6, 7, 8];
+
+            MOVIES.forEach(movie => {
+                Object.values(movie.sessions).flat().forEach((session, idx) => {
+                    const occupied = new Set();
+                    // Simula ocupação variada (entre 15% e 40% da sala)
+                    rows.forEach((r, rIdx) => {
+                        cols.forEach(c => {
+                            const hash = (session.id.charCodeAt(1) + rIdx * 7 + c * 3 + idx) % 11;
+                            if (hash === 0 || hash === 4) {
+                                occupied.add(`${r}${c}`);
+                            }
+                        });
+                    });
+                    state.occupiedSeatsBySession[session.id] = Array.from(occupied);
+                });
+            });
+        }
+
+        // Carrega ingressos salvos no LocalStorage
+        function loadSavedTickets() {
+            try {
+                const stored = localStorage.getItem('cine_lumiere_tickets');
+                if (stored) {
+                    state.savedTickets = JSON.parse(stored);
+                    updateSavedTicketsBadge();
+                }
+            } catch (e) {
+                console.warn('Não foi possível acessar localStorage:', e);
+            }
+        }
+
+        function updateSavedTicketsBadge() {
+            const badge = document.getElementById('saved-tickets-badge');
+            if (state.savedTickets.length > 0) {
+                badge.textContent = state.savedTickets.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // Renderiza botões de filtro por dia da semana
+        function renderDayFilters() {
+            const container = document.getElementById('day-filters');
+            container.innerHTML = DAYS_OF_WEEK.map(day => {
+                const isSelected = state.selectedDay === day.id;
+                return `
+                    <button onclick="selectDay('${day.id}')" 
+                        class="flex flex-col items-center min-w-[84px] px-4 py-2.5 rounded-xl border transition-all ${
+                            isSelected 
+                            ? 'bg-cinema-gold text-cinema-950 border-cinema-gold font-bold shadow-lg shadow-amber-500/20' 
+                            : 'bg-cinema-900 text-zinc-300 border-zinc-800 hover:border-zinc-600'
+                        }">
+                        <span class="text-[11px] uppercase tracking-wider ${isSelected ? 'text-cinema-950/80' : 'text-zinc-400'}">${day.label}</span>
+                        <span class="text-sm font-bold mt-0.5">${day.dateStr}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Renderiza filtros por gênero
+        function renderGenreFilters() {
+            const genres = ['Todos', ...new Set(MOVIES.map(m => m.genre))];
+            const container = document.getElementById('genre-filters');
+            container.innerHTML = genres.map(genre => {
+                const isSelected = state.selectedGenre === genre;
+                return `
+                    <button onclick="selectGenre('${genre}')"
+                        class="px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                            isSelected
+                            ? 'bg-cinema-red text-white shadow-md shadow-red-600/25'
+                            : 'bg-cinema-900 text-zinc-400 hover:text-white border border-zinc-800'
+                        }">
+                        ${genre}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectDay(dayId) {
+            state.selectedDay = dayId;
+            renderDayFilters();
+            renderMovies();
+        }
+
+        function selectGenre(genre) {
+            state.selectedGenre = genre;
+            renderGenreFilters();
+            renderMovies();
+        }
+
+        // Retorna cor do selo de classificação indicativa (Padrão Brasileiro)
+        function getRatingBadgeStyle(rating) {
+            const map = {
+                'L': 'bg-emerald-600 text-white',
+                '10': 'bg-sky-600 text-white',
+                '12': 'bg-amber-500 text-zinc-950',
+                '14': 'bg-orange-600 text-white',
+                '16': 'bg-red-600 text-white',
+                '18': 'bg-zinc-950 text-white border border-zinc-600'
+            };
+            return map[rating] || 'bg-zinc-700 text-white';
+        }
+
+        // Renderiza os cards dos filmes e horários disponíveis
+        function renderMovies() {
+            const grid = document.getElementById('movies-grid');
+            const filteredMovies = MOVIES.filter(movie => {
+                const matchesGenre = state.selectedGenre === 'Todos' || movie.genre === state.selectedGenre;
+                return matchesGenre;
+            });
+
+            if (filteredMovies.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-cinema-900/50 rounded-2xl border border-zinc-800">
+                        <p class="text-zinc-400">Nenhum filme encontrado para este filtro.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredMovies.map(movie => {
+                const daySessions = movie.sessions[state.selectedDay] || [];
+
+                const sessionsHTML = daySessions.length > 0
+                    ? daySessions.map(session => `
+                        <button onclick="openBookingModal('${movie.id}', '${session.id}')"
+                            class="group/btn flex flex-col items-start px-3.5 py-2 rounded-xl bg-cinema-950 hover:bg-cinema-gold border border-zinc-700/90 hover:border-cinema-gold transition-all text-left">
+                            <span class="text-sm font-bold text-white group-hover/btn:text-cinema-950">${session.time}</span>
+                            <span class="text-[10px] text-zinc-400 group-hover/btn:text-cinema-950/80 font-medium">${session.format} • ${session.room.replace('Sala ', '')}</span>
+                        </button>
+                    `).join('')
+                    : `<p class="text-xs text-zinc-500 italic py-2">Sem sessões programadas para este dia.</p>`;
+
+                return `
+                    <article class="bg-cinema-900 rounded-2xl border border-zinc-800/90 overflow-hidden flex flex-col justify-between hover:border-zinc-700 transition-all shadow-xl group animate-fade-in">
+                        <div>
+                            <!-- Poster & Badges -->
+                            <div class="relative h-64 overflow-hidden bg-cinema-950">
+                                <img src="${movie.poster}" 
+                                     onerror="this.src='https://placehold.co/600x400/1c1c22/d4af37?text=${encodeURIComponent(movie.title)}'"
+                                     alt="${movie.title}" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-cinema-900 via-cinema-900/20 to-transparent"></div>
+                                
+                                <!-- Classificação Indicativa -->
+                                <span class="absolute top-3 right-3 w-8 h-8 rounded-lg ${getRatingBadgeStyle(movie.rating)} font-extrabold text-xs flex items-center justify-center shadow-lg">
+                                    ${movie.rating}
+                                </span>
+
+                                <!-- Gênero e Duração -->
+                                <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs">
+                                    <span class="px-2.5 py-1 rounded-md bg-cinema-950/85 backdrop-blur-sm text-cinema-gold font-semibold border border-cinema-gold/30">
+                                        ${movie.genre}
+                                    </span>
+                                    <span class="px-2.5 py-1 rounded-md bg-cinema-950/85 backdrop-blur-sm text-zinc-300 flex items-center gap-1">
+                                        <i data-lucide="clock" class="w-3.5 h-3.5 text-zinc-400"></i>
+                                        ${movie.duration}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Informações do Filme -->
+                            <div class="p-5 pb-3">
+                                <h3 class="font-bold text-lg text-white group-hover:text-cinema-gold transition-colors line-clamp-1">${movie.title}</h3>
+                                <p class="text-xs text-zinc-500 mb-3">Dir. ${movie.director}</p>
+                                <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-3">
+                                    ${movie.synopsis}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Horários Disponíveis -->
+                        <div class="p-5 pt-3 border-t border-zinc-800/70 bg-cinema-900/50">
+                            <span class="block text-[11px] uppercase tracking-wider text-zinc-400 font-semibold mb-2.5 flex items-center gap-1.5">
+                                <i data-lucide="calendar-clock" class="w-3.5 h-3.5 text-cinema-red"></i>
+                                Horários Disponíveis (${DAYS_OF_WEEK.find(d => d.id === state.selectedDay).dateStr})
+                            </span>
+                            <div class="flex flex-wrap gap-2">
+                                ${sessionsHTML}
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // =====================================================================
+        // CONTROLE DO MODAL DE AGENDAMENTO E ASSENTOS
+        // =====================================================================
+        function openBookingModal(movieId, sessionId) {
+            const movie = MOVIES.find(m => m.id === movieId);
+            const session = movie.sessions[state.selectedDay].find(s => s.id === sessionId);
+            const dayObj = DAYS_OF_WEEK.find(d => d.id === state.selectedDay);
+
+            state.activeMovie = movie;
+            state.activeSession = session;
+            state.selectedSeats = [];
+
+            // Preenche cabeçalho do modal
+            document.getElementById('modal-movie-badge').textContent = session.room.toUpperCase();
+            document.getElementById('modal-movie-title').textContent = movie.title;
+            document.getElementById('modal-session-info').textContent = `${dayObj.dayName}, ${dayObj.dateStr} • ${session.time} • ${session.format}`;
+
+            // Reseta para Etapa 1
+            goToStep(1);
+            renderSeatsMap();
+            updateSelectedSeatsUI();
+
+            document.getElementById('booking-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Navegação entre etapas do modal
+        function goToStep(stepNumber) {
+            [1, 2, 3].forEach(num => {
+                const stepEl = document.getElementById(`booking-step-${num}`);
+                const indEl = document.getElementById(`step-indicator-${num}`);
+                if (num === stepNumber) {
+                    stepEl.classList.remove('hidden');
+                    indEl.classList.remove('text-zinc-500');
+                    indEl.classList.add('text-cinema-gold', 'font-semibold');
+                    indEl.querySelector('span').className = 'w-6 h-6 rounded-full bg-cinema-gold text-cinema-950 flex items-center justify-center font-bold';
+                } else {
+                    stepEl.classList.add('hidden');
+                    if (num < stepNumber) {
+                        indEl.classList.add('text-emerald-400');
+                        indEl.querySelector('span').className = 'w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center font-bold';
+                    } else {
+                        indEl.classList.remove('text-cinema-gold', 'text-emerald-400');
+                        indEl.classList.add('text-zinc-500');
+                        indEl.querySelector('span').className = 'w-6 h-6 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center font-bold';
+                    }
+                }
+            });
+
+            if (stepNumber === 2) {
+                populateCheckoutSummary();
+            }
+            lucide.createIcons();
+        }
+
+        // Renderiza o mapa interativo da sala de cinema (Fileiras A-F, Colunas 1-8 com corredor central)
+        function renderSeatsMap() {
+            const container = document.getElementById('seats-container');
+            const rows = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const cols = [1, 2, 3, 4, 5, 6, 7, 8];
+            const occupiedList = state.occupiedSeatsBySession[state.activeSession.id] || [];
+
+            container.innerHTML = rows.map(row => {
+                const seatsHTML = cols.map(col => {
+                    const seatId = `${row}${col}`;
+                    const isOccupied = occupiedList.includes(seatId);
+                    const isSelected = state.selectedSeats.some(s => s.id === seatId);
+
+                    // Adiciona corredor central entre poltrona 4 e 5
+                    const aisleMargin = col === 4 ? 'mr-4 sm:mr-6' : '';
+
+                    let seatClasses = 'bg-zinc-700 hover:bg-zinc-600 text-zinc-200 border-zinc-600 cursor-pointer';
+                    if (isOccupied) {
+                        seatClasses = 'occupied bg-zinc-900/90 text-zinc-700 border-zinc-800 cursor-not-allowed';
+                    } else if (isSelected) {
+                        seatClasses = 'selected bg-cinema-gold text-cinema-950 font-bold border-cinema-goldLight cursor-pointer';
+                    }
+
+                    return `
+                        <button type="button"
+                            ${isOccupied ? 'disabled' : `onclick="toggleSeat('${seatId}')"`}
+                            title="${isOccupied ? `Assento ${seatId} (Ocupado)` : `Assento ${seatId}`}"
+                            class="seat w-7 h-7 sm:w-8 sm:h-8 rounded-t-lg border text-[10px] sm:text-xs flex items-center justify-center ${aisleMargin} ${seatClasses}">
+                            ${col}
+                        </button>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <span class="w-4 text-xs font-bold text-zinc-500 text-right">${row}</span>
+                        <div class="flex items-center gap-1.5 sm:gap-2">
+                            ${seatsHTML}
+                        </div>
+                        <span class="w-4 text-xs font-bold text-zinc-500 text-left">${row}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Seleciona ou desmarca um assento
+        function toggleSeat(seatId) {
+            const existingIndex = state.selectedSeats.findIndex(s => s.id === seatId);
+            if (existingIndex > -1) {
+                state.selectedSeats.splice(existingIndex, 1);
+            } else {
+                if (state.selectedSeats.length >= 8) {
+                    showToast('Limite máximo de 8 assentos por reserva.', 'warning');
+                    return;
+                }
+                state.selectedSeats.push({ id: seatId, type: 'inteira' });
+            }
+            // Ordena assentos alfabeticamente (ex: B3, B4, D5)
+            state.selectedSeats.sort((a, b) => a.id.localeCompare(b.id));
+            renderSeatsMap();
+            updateSelectedSeatsUI();
+        }
+
+        // Altera o tipo de ingresso (Inteira / Meia) para um assento específico
+        function changeTicketType(seatId, newType) {
+            const seat = state.selectedSeats.find(s => s.id === seatId);
+            if (seat) {
+                seat.type = newType;
+                updateSelectedSeatsUI();
+            }
+        }
+
+        // Calcula total em R$
+        function calculateTotal() {
+            return state.selectedSeats.reduce((acc, seat) => {
+                return acc + (seat.type === 'inteira' ? PRICE_FULL : PRICE_HALF);
+            }, 0);
+        }
+
+        function formatBRL(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Atualiza a lista lateral de assentos selecionados e botões
+        function updateSelectedSeatsUI() {
+            const listContainer = document.getElementById('selected-seats-list');
+            const countEl = document.getElementById('summary-count');
+            const totalEl = document.getElementById('summary-total');
+            const nextBtn = document.getElementById('btn-to-step-2');
+
+            const count = state.selectedSeats.length;
+            const total = calculateTotal();
+
+            countEl.textContent = `${count} ${count === 1 ? 'ingresso' : 'ingressos'}`;
+            totalEl.textContent = formatBRL(total);
+
+            if (count === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-8 px-4 border border-dashed border-zinc-700 rounded-xl text-zinc-500 text-sm">
+                        Clique nos assentos disponíveis no mapa ao lado para selecioná-los.
+                    </div>
+                `;
+                nextBtn.disabled = true;
+                nextBtn.className = 'w-full py-3.5 px-5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all bg-zinc-800 text-zinc-500 cursor-not-allowed';
+            } else {
+                listContainer.innerHTML = state.selectedSeats.map(seat => `
+                    <div class="flex items-center justify-between bg-cinema-950 p-3 rounded-xl border border-zinc-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-cinema-gold/20 border border-cinema-gold/40 text-cinema-gold font-bold text-xs flex items-center justify-center">
+                                ${seat.id}
+                            </span>
+                            <div>
+                                <span class="block text-xs font-semibold text-white">Poltrona ${seat.id}</span>
+                                <span class="text-[11px] text-zinc-400">${seat.type === 'inteira' ? formatBRL(PRICE_FULL) : formatBRL(PRICE_HALF)}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <select onchange="changeTicketType('${seat.id}', this.value)"
+                                class="bg-cinema-900 border border-zinc-700 text-xs text-white rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cinema-gold">
+                                <option value="inteira" ${seat.type === 'inteira' ? 'selected' : ''}>Inteira (R$ 36)</option>
+                                <option value="meia" ${seat.type === 'meia' ? 'selected' : ''}>Meia (R$ 18)</option>
+                            </select>
+                            <button onclick="toggleSeat('${seat.id}')" class="p-1.5 text-zinc-500 hover:text-cinema-red transition-colors" title="Remover assento">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                nextBtn.disabled = false;
+                nextBtn.className = 'w-full py-3.5 px-5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all bg-cinema-gold hover:bg-cinema-goldLight text-cinema-950 shadow-lg shadow-amber-500/20 cursor-pointer';
+            }
+            lucide.createIcons();
+        }
+
+        // Preenche o resumo na Etapa 2
+        function populateCheckoutSummary() {
+            const dayObj = DAYS_OF_WEEK.find(d => d.id === state.selectedDay);
+            document.getElementById('checkout-poster').src = state.activeMovie.poster;
+            document.getElementById('checkout-movie').textContent = state.activeMovie.title;
+            document.getElementById('checkout-datetime').textContent = `${dayObj.dayName}, ${dayObj.dateStr} às ${state.activeSession.time}`;
+            document.getElementById('checkout-room').textContent = `${state.activeSession.room} • ${state.activeSession.format}`;
+
+            const itemsContainer = document.getElementById('checkout-items');
+            itemsContainer.innerHTML = state.selectedSeats.map(s => `
+                <div class="flex justify-between items-center">
+                    <span>Poltrona <strong class="text-white">${s.id}</strong> (${s.type === 'inteira' ? 'Inteira' : 'Meia-entrada'})</span>
+                    <span>${formatBRL(s.type === 'inteira' ? PRICE_FULL : PRICE_HALF)}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('checkout-total').textContent = formatBRL(calculateTotal());
+        }
+
+        // Máscara simples para CPF
+        function maskCPF(input) {
+            let v = input.value.replace(/\D/g, '');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            input.value = v;
+        }
+
+        // Confirma o agendamento, marca assentos como ocupados e gera Ingresso com QR Code
+        function confirmBooking(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('cust-name').value.trim();
+            const email = document.getElementById('cust-email').value.trim();
+            const cpf = document.getElementById('cust-cpf').value.trim();
+            const payment = document.querySelector('input[name="payment"]:checked').value;
+
+            if (!name || !email || cpf.length < 11) {
+                showToast('Por favor, preencha todos os campos corretamente.', 'error');
+                return;
+            }
+
+            // Marca assentos como ocupados nesta sessão
+            const currentOccupied = state.occupiedSeatsBySession[state.activeSession.id] || [];
+            state.selectedSeats.forEach(s => {
+                if (!currentOccupied.includes(s.id)) {
+                    currentOccupied.push(s.id);
+                }
+            });
+            state.occupiedSeatsBySession[state.activeSession.id] = currentOccupied;
+
+            // Gera código único do ingresso
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
+            const ticketCode = `LUM-2026-${randomNum}`;
+            state.lastGeneratedCode = ticketCode;
+
+            const dayObj = DAYS_OF_WEEK.find(d => d.id === state.selectedDay);
+            const seatsStr = state.selectedSeats.map(s => s.id).join(', ');
+            const totalPaid = formatBRL(calculateTotal());
+
+            const ticketData = {
+                code: ticketCode,
+                movieTitle: state.activeMovie.title,
+                poster: state.activeMovie.poster,
+                room: state.activeSession.room,
+                format: state.activeSession.format,
+                date: dayObj.dateStr,
+                dayName: dayObj.dayName,
+                time: state.activeSession.time,
+                seats: seatsStr,
+                customerName: name,
+                customerCPF: cpf,
+                paymentMethod: payment,
+                totalPaid: totalPaid
+            };
+
+            // Salva no histórico do usuário
+            state.savedTickets.unshift(ticketData);
+            try {
+                localStorage.setItem('cine_lumiere_tickets', JSON.stringify(state.savedTickets));
+            } catch (e) {}
+            updateSavedTicketsBadge();
+
+            // Preenche visual do ingresso na Etapa 3
+            renderDigitalTicket(ticketData);
+            goToStep(3);
+            showToast('Agendamento confirmado! Seu ingresso digital foi gerado.', 'success');
+        }
+
+        // Renderiza os dados e o QR Code real no Ingresso Digital
+        function renderDigitalTicket(ticket) {
+            document.getElementById('ticket-code-badge').textContent = `#${ticket.code.split('-').pop()}`;
+            document.getElementById('ticket-poster').src = ticket.poster;
+            document.getElementById('ticket-room-tag').textContent = `${ticket.room} • ${ticket.format}`;
+            document.getElementById('ticket-movie-title').textContent = ticket.movieTitle;
+            document.getElementById('ticket-customer-name').querySelector('span').textContent = ticket.customerName;
+            document.getElementById('ticket-date').textContent = ticket.date;
+            document.getElementById('ticket-time').textContent = ticket.time;
+            document.getElementById('ticket-seats').textContent = ticket.seats;
+            document.getElementById('ticket-hash').textContent = ticket.code;
+            document.getElementById('ticket-paid-amount').textContent = `Confirmado (${ticket.paymentMethod}) • ${ticket.totalPaid}`;
+
+            // Gera QR Code usando QRCode.js
+            const qrContainer = document.getElementById('qrcode-container');
+            qrContainer.innerHTML = '';
+            const qrPayload = JSON.stringify({
+                cinema: 'Cine Lumiere',
+                ticket: ticket.code,
+                filme: ticket.movieTitle,
+                sessao: `${ticket.date} ${ticket.time}`,
+                assentos: ticket.seats,
+                titular: ticket.customerName
+            });
+
+            new QRCode(qrContainer, {
+                text: qrPayload,
+                width: 140,
+                height: 140,
+                colorDark: '#09090b',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        }
+
+        // Copia o código do ingresso usando execCommand (compatível com iframe)
+        function copyTicketCode() {
+            const tempInput = document.createElement('input');
+            tempInput.value = state.lastGeneratedCode;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(`Código ${state.lastGeneratedCode} copiado!`, 'success');
+        }
+
+        // =====================================================================
+        // MODAL "MEUS INGRESSOS"
+        // =====================================================================
+        function openMyTicketsModal() {
+            const container = document.getElementById('saved-tickets-list');
+            if (state.savedTickets.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <i data-lucide="ticket" class="w-12 h-12 text-zinc-700 mx-auto mb-3"></i>
+                        <h4 class="text-white font-semibold mb-1">Nenhum ingresso encontrado</h4>
+                        <p class="text-xs text-zinc-400">Escolha um filme em cartaz e agende sua sessão para visualizar seus ingressos aqui.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = state.savedTickets.map(t => `
+                    <div class="bg-cinema-950 border border-zinc-800 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex gap-3.5">
+                            <img src="${t.poster}" alt="${t.movieTitle}" class="w-14 h-20 object-cover rounded-lg border border-zinc-700">
+                            <div>
+                                <span class="text-[10px] font-mono text-cinema-gold bg-cinema-gold/10 px-2 py-0.5 rounded border border-cinema-gold/20">${t.code}</span>
+                                <h5 class="font-bold text-white text-sm mt-1">${t.movieTitle}</h5>
+                                <p class="text-xs text-zinc-400 mt-0.5">${t.dayName}, ${t.date} às <strong class="text-white">${t.time}</strong> • ${t.room}</p>
+                                <p class="text-xs text-zinc-300 mt-1">Assentos: <strong class="text-cinema-gold">${t.seats}</strong> (${t.totalPaid})</p>
+                            </div>
+                        </div>
+                        <button onclick="viewSavedTicket('${t.code}')" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-cinema-800 hover:bg-cinema-gold hover:text-cinema-950 text-xs font-semibold text-white transition-colors flex items-center justify-center gap-1.5">
+                            <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
+                            <span>Ver QR Code</span>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('my-tickets-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeMyTicketsModal() {
+            document.getElementById('my-tickets-modal').classList.add('hidden');
+        }
+
+        function viewSavedTicket(code) {
+            const ticket = state.savedTickets.find(t => t.code === code);
+            if (!ticket) return;
+            closeMyTicketsModal();
+
+            state.lastGeneratedCode = ticket.code;
+            document.getElementById('modal-movie-badge').textContent = ticket.room.toUpperCase();
+            document.getElementById('modal-movie-title').textContent = ticket.movieTitle;
+            document.getElementById('modal-session-info').textContent = `${ticket.dayName}, ${ticket.date} • ${ticket.time} • ${ticket.format}`;
+
+            renderDigitalTicket(ticket);
+            goToStep(3);
+            document.getElementById('booking-modal').classList.remove('hidden');
+        }
+
+        function resetToHome(e) {
+            e.preventDefault();
+            closeBookingModal();
+            closeMyTicketsModal();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Sistema de Notificações Toast Elegantes
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const styles = {
+                success: 'bg-emerald-950/95 border-emerald-500/50 text-emerald-200',
+                error: 'bg-red-950/95 border-red-500/50 text-red-200',
+                warning: 'bg-amber-950/95 border-amber-500/50 text-amber-200',
+                info: 'bg-zinc-900/95 border-zinc-700 text-zinc-200'
+            };
+
+            toast.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-xl backdrop-blur-md text-xs sm:text-sm font-medium flex items-center gap-2.5 animate-fade-in ${styles[type] || styles.info}`;
+            toast.innerHTML = `<span>${message}</span>`;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>

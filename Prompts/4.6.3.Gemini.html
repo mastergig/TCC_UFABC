@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineLocal - Em Cartaz</title>
+    <style>
+        /* Reset e Variáveis */
+        :root {
+            --bg-color: #121214;
+            --card-bg: #1e1e24;
+            --primary-color: #e50914;
+            --primary-hover: #f40612;
+            --text-main: #f3f3f3;
+            --text-muted: #a8a8b3;
+            --border-color: #29292e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #09090a;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Container Principal */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+        }
+
+        /* Grid de Filmes */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .movie-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            background-color: #2c2c34;
+        }
+
+        .movie-info {
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .movie-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .movie-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .badge {
+            background-color: #323238;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .movie-genre {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .movie-synopsis {
+            font-size: 0.9rem;
+            color: #d1d1d6;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        /* Horários */
+        .sessions-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .sessions-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .session-btn {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--primary-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .session-btn:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* Modal / Formulário */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: var(--text-main);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .selected-info {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .total-box {
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+            font-weight: bold;
+        }
+
+        .total-price {
+            color: #04d361;
+            font-size: 1.2rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Mensagem de Sucesso */
+        .confirmation-box {
+            text-align: center;
+            display: none;
+        }
+
+        .confirmation-box h4 {
+            color: #04d361;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .confirmation-box p {
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>🎬 CineLocal</h1>
+            <p>A melhor experiência de cinema do seu bairro</p>
+        </div>
+        <p>Ingresso: <strong>R$ 30,00</strong> (Meia: R$ 15,00)</p>
+    </header>
+
+    <main>
+        <h2 class="section-title">Filmes em Cartaz</h2>
+        <div class="movies-grid" id="movies-container">
+            <!-- Os cards dos filmes serão inseridos via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Modal de Agendamento -->
+    <div class="modal-overlay" id="booking-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            
+            <div id="form-container">
+                <div class="modal-header">
+                    <h3>Reservar Ingresso</h3>
+                    <p class="selected-info" id="modal-movie-details"></p>
+                </div>
+
+                <form id="booking-form">
+                    <div class="form-group">
+                        <label for="customer-name">Nome Completo</label>
+                        <input type="text" id="customer-name" required placeholder="Ex: João Silva">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-email">E-mail para envio do voucher</label>
+                        <input type="email" id="customer-email" required placeholder="joao@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ticket-type">Tipo de Ingresso</label>
+                        <select id="ticket-type">
+                            <option value="30">Inteira (R$ 30,00)</option>
+                            <option value="15">Meia-entrada (R$ 15,00)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ticket-qty">Quantidade</label>
+                        <input type="number" id="ticket-qty" min="1" max="10" value="1" required>
+                    </div>
+
+                    <div class="total-box">
+                        <span>Total a pagar no local:</span>
+                        <span class="total-price" id="total-price">R$ 30,00</span>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Confirmar Agendamento</button>
+                </form>
+            </div>
+
+            <!-- Tela de Confirmação -->
+            <div class="confirmation-box" id="confirmation-box">
+                <h4>✅ Reserva Confirmada!</h4>
+                <p id="confirmation-message"></p>
+                <button class="submit-btn" id="finish-btn">Concluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos filmes em cartaz
+        const movies = [
+            {
+                id: 1,
+                title: "A Jornada das Estrelas Perdidas",
+                genre: "Ficção Científica • 2h 15m",
+                rating: "12 anos",
+                poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80",
+                synopsis: "Uma equipe de exploradores atravessa um buraco de minhoca recém-descoberto em busca de um novo lar para a humanidade.",
+                sessions: ["14:30", "17:45", "21:00"]
+            },
+            {
+                id: 2,
+                title: "O Segredo do Vale",
+                genre: "Suspense / Mistério • 1h 50m",
+                rating: "14 anos",
+                poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?auto=format&fit=crop&w=500&q=80",
+                synopsis: "Quando um detetive retorna à sua cidade natal, segredos enterrados há décadas começam a ameaçar os moradores.",
+                sessions: ["16:00", "19:15", "22:00"]
+            },
+            {
+                id: 3,
+                title: "Aventuras no Reino Encantado",
+                genre: "Animação / Família • 1h 35m",
+                rating: "Livre",
+                poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80",
+                synopsis: "Dois irmãos descobrem um portal mágico no quintal de casa e precisam ajudar criaturas fantásticas a salvar a floresta.",
+                sessions: ["13:30", "15:45", "18:00"]
+            }
+        ];
+
+        // Elementos do DOM
+        const moviesContainer = document.getElementById('movies-container');
+        const modal = document.getElementById('booking-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalDetails = document.getElementById('modal-movie-details');
+        const bookingForm = document.getElementById('booking-form');
+        const ticketTypeSelect = document.getElementById('ticket-type');
+        const ticketQtyInput = document.getElementById('ticket-qty');
+        const totalPriceEl = document.getElementById('total-price');
+        const formContainer = document.getElementById('form-container');
+        const confirmationBox = document.getElementById('confirmation-box');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const finishBtn = document.getElementById('finish-btn');
+
+        let currentBooking = { movieTitle: '', sessionTime: '' };
+
+        // 1. Renderizar os filmes na tela
+        function renderMovies() {
+            moviesContainer.innerHTML = movies.map(movie => `
+                <article class="movie-card">
+                    <img src="${movie.poster}" alt="Pôster de ${movie.title}" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-header">
+                            <h3 class="movie-title">${movie.title}</h3>
+                            <span class="badge">${movie.rating}</span>
+                        </div>
+                        <p class="movie-genre">${movie.genre}</p>
+                        <p class="movie-synopsis">${movie.synopsis}</p>
+                        <div>
+                            <span class="sessions-label">Escolha o horário da sessão:</span>
+                            <div class="sessions-list">
+                                ${movie.sessions.map(time => `
+                                    <button class="session-btn" onclick="openBookingModal('${movie.title}', '${time}')">
+                                        ${time}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // 2. Abrir modal com dados do filme e horário escolhidos
+        function openBookingModal(title, time) {
+            currentBooking = { movieTitle: title, sessionTime: time };
+            modalDetails.innerHTML = `<strong>Filme:</strong> ${title} <br> <strong>Sessão:</strong> Hoje às ${time}`;
+            
+            // Resetar estado do modal
+            bookingForm.reset();
+            formContainer.style.display = 'block';
+            confirmationBox.style.display = 'none';
+            updateTotal();
+            
+            modal.classList.add('active');
+        }
+
+        // 3. Fechar modal
+        function closeBookingModal() {
+            modal.classList.remove('active');
+        }
+
+        // 4. Calcular valor total dinamicamente
+        function updateTotal() {
+            const price = parseFloat(ticketTypeSelect.value);
+            const qty = parseInt(ticketQtyInput.value) || 1;
+            const total = price * qty;
+            totalPriceEl.textContent = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Event Listeners
+        ticketTypeSelect.addEventListener('change', updateTotal);
+        ticketQtyInput.addEventListener('input', updateTotal);
+        closeModalBtn.addEventListener('click', closeBookingModal);
+        finishBtn.addEventListener('click', closeBookingModal);
+
+        // Fechar ao clicar fora da caixa do modal
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeBookingModal();
+        });
+
+        // 5. Processar envio do formulário
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('customer-name').value;
+            const email = document.getElementById('customer-email').value;
+            const qty = ticketQtyInput.value;
+            const total = totalPriceEl.textContent;
+
+            formContainer.style.display = 'none';
+            confirmationBox.style.display = 'block';
+
+            confirmationMessage.innerHTML = `
+                Olá, <strong>${name}</strong>!<br><br>
+                Seus <strong>${qty} ingresso(s)</strong> para <strong>${currentBooking.movieTitle}</strong> na sessão das <strong>${currentBooking.sessionTime}</strong> foram reservados.<br><br>
+                Enviamos o código da reserva para <strong>${email}</strong>. Apresente-o na bilheteria (Total: ${total}).
+            `;
+        });
+
+        // Inicializar página
+        renderMovies();
+    </script>
+</body>
+</html>

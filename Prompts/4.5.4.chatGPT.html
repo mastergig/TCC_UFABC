@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubra os melhores destinos turísticos do Brasil.">
+    <title>Rota Brasil | Descubra o Brasil</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8f5;
+            color: #26352e;
+            line-height: 1.6;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            background: #ffffff;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px #00000010;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #16865b;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #35463d;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #16865b;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 27px;
+            cursor: pointer;
+        }
+
+        /* DESTAQUE PRINCIPAL */
+
+        .hero {
+            min-height: 440px;
+            padding: 70px 8%;
+            display: flex;
+            align-items: center;
+            background:
+                linear-gradient(90deg,
+                rgba(0,0,0,.72),
+                rgba(0,0,0,.12)),
+                url("https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=1600")
+                center/cover;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 55px);
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        .hero a {
+            display: inline-block;
+            background: #20a36c;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero a:hover {
+            background: #147b50;
+        }
+
+        /* PESQUISA */
+
+        .search-section {
+            padding: 40px 7% 20px;
+            text-align: center;
+        }
+
+        .search-section h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 22px auto;
+            display: flex;
+        }
+
+        .search-box input {
+            flex: 1;
+            min-width: 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 7px 0 0 7px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 15px 22px;
+            border: none;
+            background: #16865b;
+            color: white;
+            border-radius: 0 7px 7px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ARTIGOS */
+
+        .articles {
+            padding: 30px 7% 70px;
+        }
+
+        .articles h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px #00000010;
+            transition: transform .3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .article-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .article-content {
+            padding: 22px;
+        }
+
+        .category {
+            display: inline-block;
+            color: #16865b;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .article-content h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .article-content p {
+            color: #68746d;
+            font-size: 15px;
+            margin-bottom: 18px;
+        }
+
+        .read-more {
+            text-decoration: none;
+            color: #16865b;
+            font-weight: bold;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .empty-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            color: #68746d;
+            grid-column: 1 / -1;
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            background: #173d30;
+            color: white;
+            padding: 35px 7%;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 5px;
+            color: #d5e4dc;
+        }
+
+        /* RESPONSIVIDADE */
+
+        @media (max-width: 900px) {
+            .article-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 15px 5%;
+                position: relative;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 65px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                z-index: 10;
+                box-shadow: 0 5px 10px #00000015;
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            nav a {
+                padding: 15px 7%;
+                border-top: 1px solid #eee;
+            }
+
+            .hero {
+                min-height: 380px;
+                padding: 50px 7%;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-section {
+                padding: 30px 5% 10px;
+            }
+
+            .search-section h2 {
+                font-size: 23px;
+            }
+
+            .articles {
+                padding: 25px 5% 50px;
+            }
+
+            .articles h2 {
+                font-size: 24px;
+            }
+
+            .article-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .article-card img {
+                height: 210px;
+            }
+
+            .search-box button {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <div class="logo">🌎 Rota Brasil</div>
+
+        <button class="menu-toggle"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+                onclick="toggleMenu()">☰</button>
+
+        <nav id="menu">
+            <a href="#">Início</a>
+            <a href="#destinos">Destinos</a>
+            <a href="#sobre">Sobre</a>
+        </nav>
+    </header>
+
+    <!-- DESTAQUE -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Descubra as maravilhas do Brasil!</h1>
+
+            <p>
+                Explore praias paradisíacas, cachoeiras,
+                montanhas e cidades históricas.
+                Sua próxima aventura começa aqui!
+            </p>
+
+            <a href="#destinos">Explorar destinos</a>
+        </div>
+    </section>
+
+    <!-- PESQUISA -->
+    <section class="search-section">
+        <h2>Encontre seu próximo destino</h2>
+
+        <p>Pesquise por cidade, estado ou região brasileira.</p>
+
+        <div class="search-box">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Ex: Bonito, Bahia, Nordeste..."
+                aria-label="Pesquisar destinos">
+
+            <button onclick="searchArticles()">Pesquisar</button>
+        </div>
+    </section>
+
+    <!-- ARTIGOS -->
+    <main class="articles" id="destinos">
+
+        <h2>Destinos em destaque</h2>
+
+        <div class="article-grid" id="articleGrid">
+
+            <!-- FERNANDO DE NORONHA -->
+            <article class="article-card">
+                <img
+                    src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=800"
+                    alt="Paisagem tropical de praia">
+
+                <div class="article-content">
+                    <span class="category">Nordeste</span>
+
+                    <h3>Fernando de Noronha</h3>
+
+                    <p>
+                        Conheça praias de águas cristalinas,
+                        vida marinha exuberante e paisagens
+                        naturais inesquecíveis.
+                    </p>
+
+                    <a href="#" class="read-more">Ler guia →</a>
+                </div>
+            </article>
+
+            <!-- BONITO -->
+            <article class="article-card">
+                <img
+                    src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800"
+                    alt="Paisagem natural com montanhas e água">
+
+                <div class="article-content">
+                    <span class="category">Centro-Oeste</span>
+
+                    <h3>Bonito - Mato Grosso do Sul</h3>
+
+                    <p>
+                        Descubra rios transparentes, grutas,
+                        cachoeiras e experiências incríveis
+                        de ecoturismo.
+                    </p>
+
+                    <a href="#" class="read-more">Ler guia →</a>
+                </div>
+            </article>
+
+            <!-- CHAPADA DIAMANTINA -->
+            <article class="article-card">
+                <img
+                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800"
+                    alt="Montanhas e natureza">
+
+                <div class="article-content">
+                    <span class="category">Nordeste</span>
+
+                    <h3>Chapada Diamantina</h3>
+
+                    <p>
+                        Trilhas, montanhas, grutas e cachoeiras
+                        fazem deste destino um paraíso
+                        para os aventureiros.
+                    </p>
+
+                    <a href="#" class="read-more">Ler guia →</a>
+                </div>
+            </article>
+
+            <!-- LENÇÓIS MARANHENSES -->
+            <article class="article-card">
+                <img
+                    src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800"
+                    alt="Paisagem de dunas e natureza">
+
+                <div class="article-content">
+                    <span class="category">Nordeste</span>
+
+                    <h3>Lençóis Maranhenses</h3>
+
+                    <p>
+                        Um cenário impressionante de dunas
+                        de areia branca e lagoas de águas
+                        cristalinas.
+                    </p>
+
+                    <a href="#" class="read-more">Ler guia →</a>
+                </div>
+            </article>
+
+            <!-- PARATY -->
+            <article class="article-card">
+                <img
+                    src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800"
+                    alt="Cidade histórica e paisagem turística">
+
+                <div class="article-content">
+                    <span class="category">Sudeste</span>
+
+                    <h3>Paraty - Rio de Janeiro</h3>
+
+                    <p>
+                        Ruas históricas, arquitetura colonial,
+                        praias e passeios de barco pela
+                        Costa Verde.
+                    </p>
+
+                    <a href="#" class="read-more">Ler guia →</a>
+                </div>
+            </article>
+
+            <!-- FOZ DO IGUAÇU -->
+            <article class="article-card">
+                <img
+                    src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=800"
+                    alt="Grande cachoeira em meio à natureza">
+
+                <div class="article-content">
+                    <span class="category">Sul</span>
+
+                    <h3>Foz do Iguaçu</h3>
+
+                    <p>
+                        Visite as impressionantes Cataratas
+                        do Iguaçu e conheça uma das maiores
+                        atrações naturais do mundo.
+                    </p>
+
+                    <a href="#" class="read-more">Ler guia →</a>
+                </div>
+            </article>
+
+            <p class="empty-message" id="emptyMessage">
+                Nenhum destino encontrado. Tente outra pesquisa!
+            </p>
+
+        </div>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer id="sobre">
+        <h2>🌎 Rota Brasil</h2>
+
+        <p>Inspirando novas viagens e descobertas pelo Brasil.</p>
+
+        <p>© 2026 Rota Brasil - Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        // Abrir e fechar menu mobile
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            const button = document.querySelector(".menu-toggle");
+
+            menu.classList.toggle("active");
+
+            button.setAttribute(
+                "aria-expanded",
+                menu.classList.contains("active")
+            );
+        }
+
+        // Pesquisa de destinos
+        function searchArticles() {
+
+            const input = document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+
+            const cards = document.querySelectorAll(".article-card");
+
+            let found = 0;
+
+            cards.forEach(card => {
+
+                const content = card.innerText
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+
+                if (content.includes(input)) {
+                    card.style.display = "block";
+                    found++;
+                } else {
+                    card.style.display = "none";
+                }
+
+            });
+
+            document.getElementById("emptyMessage")
+                .style.display = found === 0 ? "block" : "none";
+        }
+
+        // Pesquisa automática ao digitar
+        document.getElementById("searchInput")
+            .addEventListener("input", searchArticles);
+
+        // Pesquisar ao pressionar Enter
+        document.getElementById("searchInput")
+            .addEventListener("keydown", event => {
+                if (event.key === "Enter") {
+                    searchArticles();
+                }
+            });
+
+        // Fechar menu após selecionar uma opção
+        document.querySelectorAll("nav a").forEach(link => {
+            link.addEventListener("click", () => {
+                document.getElementById("menu")
+                    .classList.remove("active");
+
+                document.querySelector(".menu-toggle")
+                    .setAttribute("aria-expanded", "false");
+            });
+        });
+
+    </script>
+
+</body>
+</html>

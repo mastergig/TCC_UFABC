@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PetShop Vida Feliz - Castração Consciente</title>
+
+<style>
+:root{
+    --primary:#4CAF50;
+    --secondary:#81C784;
+    --accent:#FFB74D;
+    --light:#F9FFF9;
+    --dark:#333;
+    --white:#fff;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height:1.6;
+}
+
+/* CABEÇALHO */
+header{
+    background: var(--primary);
+    color: white;
+    padding:20px 8%;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:1.8rem;
+    font-weight:bold;
+}
+
+.nav-links{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#e8ffe8;
+}
+
+/* HERO */
+.hero{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    min-height:70vh;
+    background: linear-gradient(rgba(76,175,80,.85), rgba(76,175,80,.85)),
+                url("https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1500&q=80");
+    background-size:cover;
+    background-position:center;
+    color:white;
+    padding:40px 5%;
+}
+
+.hero-content{
+    max-width:850px;
+}
+
+.hero h1{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:1.2rem;
+    margin-bottom:25px;
+}
+
+.btn{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    padding:15px 30px;
+    border-radius:8px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:#ff9800;
+}
+
+/* INFORMAÇÕES */
+.info-section{
+    padding:70px 8%;
+    text-align:center;
+}
+
+.info-section h2{
+    color:var(--primary);
+    margin-bottom:40px;
+    font-size:2rem;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    color:var(--primary);
+    margin-bottom:15px;
+}
+
+/* FORMULÁRIO */
+.form-section{
+    background:#eefaf0;
+    padding:70px 8%;
+}
+
+.form-section h2{
+    text-align:center;
+    color:var(--primary);
+    margin-bottom:35px;
+}
+
+.form-container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.full-width{
+    grid-column:1 / -1;
+}
+
+label{
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+input,
+select,
+textarea{
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:1rem;
+}
+
+textarea{
+    resize:vertical;
+    min-height:120px;
+}
+
+button{
+    background:var(--primary);
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    background:#3b9440;
+}
+
+/* RODAPÉ */
+footer{
+    background:#2c2c2c;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+/* RESPONSIVO */
+@media (max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .hero h1{
+        font-size:2.1rem;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-container{
+        padding:20px;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">🐾 PetShop Vida Feliz</div>
+
+        <ul class="nav-links">
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#cuidados">Cuidados</a></li>
+            <li><a href="#agendamento">Agendamento</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="hero" id="sobre">
+    <div class="hero-content">
+        <h1>Castração Consciente: Mais Saúde e Qualidade de Vida</h1>
+
+        <p>
+            A castração ajuda na prevenção de doenças, reduz comportamentos
+            indesejados e contribui para

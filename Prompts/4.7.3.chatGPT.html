@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerFit Academia</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        header {
+            background: #171717;
+            color: white;
+            padding: 25px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            color: #f5b400;
+            font-size: 28px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #f5b400;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, #111, #444);
+            color: white;
+            text-align: center;
+            padding: 90px 20px;
+        }
+
+        .banner h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .banner p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        .botao {
+            display: inline-block;
+            background: #f5b400;
+            color: #171717;
+            padding: 13px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        section {
+            padding: 55px 8%;
+        }
+
+        .titulo {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 35px;
+        }
+
+        .modalidades {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .modalidade {
+            background: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px #0001;
+        }
+
+        .modalidade h3 {
+            color: #c58f00;
+            margin-bottom: 12px;
+        }
+
+        .planos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 12px #0002;
+        }
+
+        .card h3 {
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .preco {
+            font-size: 28px;
+            font-weight: bold;
+            color: #c58f00;
+            margin-bottom: 20px;
+        }
+
+        .card ul {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .card li {
+            padding: 9px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .vip {
+            border: 3px solid #f5b400;
+            transform: scale(1.03);
+        }
+
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 550px;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #171717;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #eee;
+        }
+
+        .inscricao {
+            background: #222;
+            color: white;
+        }
+
+        .formulario {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            color: #222;
+            padding: 35px;
+            border-radius: 10px;
+        }
+
+        .formulario label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+        }
+
+        .formulario input,
+        .formulario select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .formulario button {
+            width: 100%;
+            margin-top: 25px;
+            font-size: 16px;
+        }
+
+        footer {
+            background: #171717;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+            }
+
+            nav a {
+                margin: 5px;
+                display: inline-block;
+            }
+
+            .banner h2 {
+                font-size: 30px;
+            }
+
+            .vip {
+                transform: none;
+            }
+
+            .formulario {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>POWERFIT</h1>
+
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#modalidades">Modalidades</a>
+            <a href="#planos">Planos</a>
+            <a href="#inscricao">Inscreva-se</a>
+        </nav>
+    </header>
+
+    <section class="banner" id="inicio">
+        <h2>SUPERE SEUS LIMITES!</h2>
+        <p>Transforme seu corpo e conquiste uma vida mais saudável.</p>
+        <a href="#inscricao" class="botao">QUERO ME INSCREVER</a>
+    </section>
+
+    <section id="modalidades">
+        <h2 class="titulo">Nossas Modalidades</h2>
+
+        <div class="modalidades">
+
+            <div class="modalidade">
+                <h3>Musculação</h3>
+                <p>Equipamentos modernos e acompanhamento profissional.</p>
+            </div>
+
+            <div class="modalidade">
+                <h3>Treino Funcional</h3>
+                <p>Exercícios dinâmicos para melhorar força e resistência.</p>
+            </div>
+
+            <div class="modalidade">
+                <h3>Natação</h3>
+                <p>Aulas para iniciantes e praticantes de todos os níveis.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="planos">
+        <h2 class="titulo">Conheça Nossos Planos</h2>
+
+        <div class="planos">
+
+            <div class="card">
+                <h3>Plano Mensal</h3>
+                <p class="preco">R$ 89/mês</p>
+                <ul>
+                    <li>Musculação</li>
+                    <li>Treino funcional</li>
+                    <li>Acesso em horário comercial</li>
+                </ul>
+                <a href="#inscricao" class="botao">Escolher Plano</a>
+            </div>
+
+            <div class="card">
+                <h3>Plano Semestral</h3>
+                <p class="preco">R$ 79/mês</p>
+                <ul>
+                    <li>Musculação</li>
+                    <li>Treino funcional</li>
+                    <li>Acompanhamento físico</li>
+                    <li>Desconto de fidelidade</li>
+                </ul>
+                <a href="#inscricao" class="botao">Escolher Plano</a>
+            </div>
+
+            <div class="card vip">
+                <h3>Plano VIP</h3>
+                <p class="preco">R$ 119/mês</p>
+                <ul>
+                    <li>Acesso total</li>
+                    <li>Musculação + Natação</li>
+                    <li>Treino funcional</li>
+                    <li>Acompanhamento personalizado</li>
+                </ul>
+                <a href="#inscricao" class="botao">Escolher Plano</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+        <h2 class="titulo">Compare Nossos Planos</h2>
+
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Benefícios</th>
+                        <th>Mensal</th>
+                        <th>Semestral</th>
+                        <th>VIP</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Musculação</td>
+                        <td>Sim</td>
+                        <td>Sim</td>
+                        <td>Sim</td>
+                    </tr>
+
+                    <tr>
+                        <td>Treino Funcional</td>
+                        <td>Sim</td>
+                        <td>Sim</td>
+                        <td>Sim</td>
+                    </tr>
+
+                    <tr>
+                        <td>Natação</td>
+                        <td>Não</td>
+                        <td>Não</td>
+                        <td>Sim</td>
+                    </tr>
+
+                    <tr>
+                        <td>Acompanhamento Personalizado</td>
+                        <td>Não</td>
+                        <td>Sim</td>
+                        <td>Sim</td>
+                    </tr>
+
+                    <tr>
+                        <td>Valor Mensal</td>
+                        <td>R$ 89</td>
+                        <td>R$ 79</td>
+                        <td>R$ 119</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="inscricao" id="inscricao">
+        <h2 class="titulo">Faça Sua Inscrição!</h2>
+
+        <form class="formulario" id="formInscricao">
+
+            <label for="nome">Nome completo:</label>
+            <input type="text" id="nome" required
+                   placeholder="Digite seu nome">
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" required
+                   placeholder="Digite seu e-mail">
+
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" required
+                   placeholder="(00) 00000-0000">
+
+            <label for="plano">Escolha seu plano:</label>
+            <select id="plano" required>
+                <option value="">Selecione um plano</option>
+                <option value="Mensal">Plano Mensal - R$ 89</option>
+                <option value="Semestral">Plano Semestral - R$ 79/mês</option>
+                <option value="VIP">Plano VIP - R$ 119/mês</option>
+            </select>
+
+            <button type="submit" class="botao">
+                FINALIZAR INSCRIÇÃO
+            </button>
+
+        </form>
+    </section>
+
+    <footer>
+        <p>POWERFIT ACADEMIA - Sua evolução começa aqui!</p>
+        <p>© 2026 - Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        const formulario = document.getElementById("formInscricao");
+
+        formulario.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById("nome").value;
+            const plano = document.getElementById("plano").value;
+
+            alert(
+                "Parabéns, " + nome +
+                "! Sua solicitação de inscrição no Plano " +
+                plano + " foi recebida!"
+            );
+
+            formulario.reset();
+        });
+    </script>
+
+</body>
+</html>

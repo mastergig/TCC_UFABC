@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IRONFLOW Academia — Musculação, Funcional e Natação</title>
+<meta name="description" content="Academia completa com musculação, treino funcional e natação. Escolha seu plano e faça sua pré-inscrição.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b12; --bg2:#12121d; --card:#171726; --line:rgba(255,255,255,.09);
+  --txt:#f4f4fa; --mut:#a3a3bd;
+  --lime:#c6ff00; --orange:#ff5a1f; --pink:#ff2e93; --cyan:#00e5ff; --violet:#7c4dff;
+  --accent:var(--lime);          /* muda conforme o plano escolhido */
+  --accent-ink:#0b0b12;
+  --r:18px;
+  --display:'Anton','Impact',sans-serif;
+  --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
+img,svg{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1160px,92%);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.02em;text-transform:uppercase;line-height:1.02}
+.eyebrow{display:inline-block;font-weight:800;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);margin-bottom:.9rem}
+.section{padding:clamp(4rem,9vw,7rem) 0}
+.section-head{max-width:640px;margin-bottom:3rem}
+.section-head h2{font-size:clamp(2.2rem,5.5vw,3.8rem)}
+.section-head p{color:var(--mut);margin-top:1rem;font-size:1.05rem}
+
+/* ---------- Botões ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;cursor:pointer;font:800 .95rem var(--body);letter-spacing:.06em;text-transform:uppercase;padding:1rem 1.8rem;border-radius:999px;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-primary{background:var(--lime);color:#0b0b12;box-shadow:0 0 0 0 rgba(198,255,0,.5);animation:pulse 2.4s infinite}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03)}
+.btn-ghost{background:transparent;color:var(--txt);border:2px solid var(--line)}
+.btn-ghost:hover{border-color:var(--lime);color:var(--lime)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(198,255,0,.55)}70%{box-shadow:0 0 0 18px rgba(198,255,0,0)}100%{box-shadow:0 0 0 0 rgba(198,255,0,0)}}
+
+/* ---------- Header ---------- */
+header{position:fixed;inset:0 0 auto 0;z-index:50;backdrop-filter:blur(14px);background:rgba(11,11,18,.65);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{font-family:var(--display);font-size:1.7rem;letter-spacing:.05em}
+.logo span{color:var(--lime)}
+.nav ul{display:flex;gap:2rem;list-style:none;font-weight:600;font-size:.9rem;color:var(--mut)}
+.nav ul a:hover{color:var(--lime)}
+.nav .btn{padding:.7rem 1.3rem;font-size:.8rem;animation:none}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100vh;display:grid;align-items:center;padding:110px 0 4rem;isolation:isolate;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-20%;z-index:-2;
+  background:
+   radial-gradient(40% 40% at 20% 30%,rgba(255,90,31,.55),transparent 70%),
+   radial-gradient(35% 35% at 80% 20%,rgba(124,77,255,.55),transparent 70%),
+   radial-gradient(40% 40% at 70% 85%,rgba(255,46,147,.45),transparent 70%),
+   radial-gradient(30% 30% at 25% 90%,rgba(198,255,0,.35),transparent 70%);
+  animation:drift 16s ease-in-out infinite alternate;filter:saturate(1.2)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,11,18,.2),var(--bg) 98%),repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,255,255,.025) 38px 40px)}
+@keyframes drift{from{transform:translate3d(-3%,-2%,0) rotate(0)}to{transform:translate3d(3%,3%,0) rotate(6deg)}}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:3rem;align-items:center}
+.hero h1{font-size:clamp(3.2rem,10vw,7.4rem)}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--lime),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .outline{color:transparent;-webkit-text-stroke:2px var(--txt)}
+.hero p.lead{margin:1.6rem 0 2.2rem;font-size:clamp(1rem,2vw,1.2rem);color:#d6d6ea;max-width:520px}
+.cta-row{display:flex;flex-wrap:wrap;gap:1rem}
+.hero-stats{display:flex;gap:2.2rem;margin-top:3rem;flex-wrap:wrap}
+.hero-stats b{display:block;font-family:var(--display);font-size:2.2rem;color:var(--lime);font-weight:400}
+.hero-stats span{font-size:.8rem;color:var(--mut);text-transform:uppercase;letter-spacing:.12em}
+.hero-card{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:28px;padding:2rem;backdrop-filter:blur(10px);transform:rotate(2deg);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.hero-card .tag{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:.72rem;letter-spacing:.15em;padding:.35rem .8rem;border-radius:999px;text-transform:uppercase}
+.hero-card h3{font-size:2.3rem;margin:1rem 0 .4rem}
+.hero-card .price{font-family:var(--display);font-size:3.6rem;color:var(--lime);line-height:1}
+.hero-card .price small{font:600 1rem var(--body);color:var(--mut)}
+.hero-card ul{list-style:none;margin:1.2rem 0 1.6rem;display:grid;gap:.5rem;font-size:.95rem;color:#dcdcf0}
+.hero-card li::before{content:"✓";color:var(--lime);font-weight:800;margin-right:.6rem}
+.hero-card .btn{width:100%}
+
+/* ---------- Marquee ---------- */
+.marquee{background:var(--lime);color:#0b0b12;overflow:hidden;white-space:nowrap;transform:skewY(-1.5deg);margin:2rem 0}
+.marquee div{display:inline-block;padding:.9rem 0;font-family:var(--display);font-size:1.5rem;letter-spacing:.06em;animation:scroll 26s linear infinite}
+.marquee span{margin:0 1.6rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- Modalidades ---------- */
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.mod{--c:var(--lime);position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:2.2rem 1.8rem 2rem;overflow:hidden;transition:transform .3s,border-color .3s}
+.mod::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 70% at 100% 0%,color-mix(in srgb,var(--c) 40%,transparent),transparent 60%);opacity:.55;transition:opacity .3s}
+.mod:hover{transform:translateY(-8px);border-color:var(--c)}
+.mod:hover::before{opacity:1}
+.mod>*{position:relative}
+.mod .ico{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;background:var(--c);color:#0b0b12;margin-bottom:1.4rem}
+.mod .ico svg{width:34px;height:34px}
+.mod h3{font-size:2rem;margin-bottom:.7rem}
+.mod p{color:#c4c4dc;font-size:.97rem}
+.mod ul{list-style:none;margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.mod li{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.35rem .75rem;border-radius:999px;border:1px solid color-mix(in srgb,var(--c) 60%,transparent);color:var(--c)}
+.mod.m1{--c:#ff5a1f}.mod.m2{--c:#c6ff00}.mod.m3{--c:#00e5ff}
+
+/* ---------- Diferenciais ---------- */
+.perks{background:var(--bg2);border-block:1px solid var(--line)}
+.perk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.perk{padding:1.4rem 0;border-top:3px solid var(--lime)}
+.perk:nth-child(2){border-color:var(--orange)}.perk:nth-child(3){border-color:var(--cyan)}.perk:nth-child(4){border-color:var(--pink)}
+.perk b{display:block;font-family:var(--display);font-weight:400;font-size:1.5rem;text-transform:uppercase;margin:.6rem 0 .3rem}
+.perk p{color:var(--mut);font-size:.92rem}
+
+/* ---------- Planos ---------- */
+.plans-note{color:var(--mut);font-size:.85rem;margin-top:1.2rem;text-align:center}
+.table-scroll{overflow-x:auto;border-radius:var(--r);border:1px solid var(--line);background:var(--card);-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:720px}
+th,td{padding:1.05rem 1.2rem;text-align:center;border-bottom:1px solid var(--line);font-size:.95rem}
+td:first-child,th:first-child{text-align:left;color:#d0d0e6;font-weight:600;position:sticky;left:0;background:var(--card);z-index:2;min-width:200px}
+thead th{vertical-align:bottom;padding-top:2.2rem;background:var(--card);border-bottom:2px solid var(--line)}
+thead th:first-child{font-family:var(--display);font-weight:400;font-size:1.5rem;color:var(--mut);text-transform:uppercase}
+.pname{font-family:var(--display);font-size:1.7rem;text-transform:uppercase;letter-spacing:.03em}
+.pprice{font-family:var(--display);font-size:2.8rem;line-height:1.1;margin:.2rem 0}
+.pprice small{display:block;font:600 .78rem var(--body);color:var(--mut);letter-spacing:.04em}
+.col-mensal{--pc:var(--cyan)}.col-semestral{--pc:var(--orange)}.col-anual{--pc:var(--lime)}
+.pprice{color:var(--pc)}
+th[data-plan],td[data-plan]{position:relative;transition:background .3s}
+td[data-plan].active,th[data-plan].active{background:color-mix(in srgb,var(--pc) 14%,var(--card))}
+th[data-plan].active{box-shadow:inset 0 4px 0 var(--pc)}
+.badge{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);background:var(--lime);color:#0b0b12;font-size:.65rem;font-weight:800;letter-spacing:.14em;padding:.35rem .8rem;border-radius:999px;white-space:nowrap;text-transform:uppercase}
+.badge.hot{background:var(--pink);color:#fff}
+.ok{color:var(--pc);font-weight:800;font-size:1.2rem}
+.no{color:#585872}
+tbody tr:last-child td{border-bottom:0;padding:1.4rem 1.2rem}
+.choose{width:100%;padding:.85rem 1rem;font-size:.82rem;background:transparent;color:var(--pc);border:2px solid var(--pc);animation:none}
+.choose:hover,.choose.sel{background:var(--pc);color:#0b0b12;transform:translateY(-2px)}
+
+/* ---------- Formulário ---------- */
+.enroll{position:relative;isolation:isolate;overflow:hidden}
+.enroll::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(50% 60% at 85% 20%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 70%),radial-gradient(40% 50% at 10% 90%,rgba(124,77,255,.3),transparent 70%);transition:background .5s}
+.enroll-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:3rem;align-items:start}
+.summary{position:sticky;top:100px;border-radius:24px;padding:2.2rem;background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 85%,#000),color-mix(in srgb,var(--accent) 35%,#0b0b12));color:var(--accent-ink);transition:background .5s;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.summary small{font-weight:800;letter-spacing:.2em;text-transform:uppercase;font-size:.72rem;opacity:.75}
+.summary h3{font-size:3.2rem;margin:.4rem 0}
+.summary .sp{font-family:var(--display);font-size:3.4rem;line-height:1}
+.summary .sp span{font:700 1rem var(--body)}
+.summary .total{margin:.6rem 0 1.2rem;font-weight:700;font-size:.95rem;opacity:.85}
+.summary ul{list-style:none;display:grid;gap:.5rem;font-weight:600;font-size:.95rem;border-top:2px solid rgba(0,0,0,.2);padding-top:1.2rem}
+.summary li::before{content:"●";margin-right:.6rem;font-size:.6rem;vertical-align:middle}
+.formbox{background:rgba(23,23,38,.85);border:1px solid var(--line);border-radius:24px;padding:clamp(1.5rem,4vw,2.6rem);backdrop-filter:blur(8px)}
+.formbox h2{font-size:2.4rem;margin-bottom:.4rem}
+.formbox>p{color:var(--mut);margin-bottom:1.8rem}
+.field{display:grid;gap:.45rem;margin-bottom:1.2rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+label,.legend{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#c9c9e2}
+input,select,textarea{width:100%;font:500 1rem var(--body);color:var(--txt);background:#0f0f1a;border:2px solid var(--line);border-radius:12px;padding:.9rem 1rem;transition:border-color .2s,box-shadow .2s;appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' fill='none' stroke='%23a3a3bd' stroke-width='2'%3E%3Cpath d='m1 1 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.6rem}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+input:user-invalid{border-color:var(--pink)}
+.plan-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.plan-pick input{position:absolute;opacity:0;pointer-events:none}
+.plan-pick label{--pc:var(--lime);cursor:pointer;text-transform:none;letter-spacing:0;font-size:.9rem;display:block;text-align:center;padding:1rem .5rem;border:2px solid var(--line);border-radius:14px;background:#0f0f1a;transition:.25s;position:relative}
+.plan-pick label b{display:block;font-family:var(--display);font-weight:400;font-size:1.3rem;text-transform:uppercase;color:var(--pc)}
+.plan-pick label span{color:var(--mut);font-size:.8rem}
+.plan-pick label:hover{border-color:var(--pc)}
+.plan-pick input:checked+label{background:color-mix(in srgb,var(--pc) 18%,#0f0f1a);border-color:var(--pc);box-shadow:0 0 0 4px color-mix(in srgb,var(--pc) 22%,transparent);transform:translateY(-3px)}
+.plan-pick input:checked+label::after{content:"✓";position:absolute;top:-10px;right:-8px;width:24px;height:24px;border-radius:50%;background:var(--pc);color:#0b0b12;display:grid;place-items:center;font-weight:800;font-size:.8rem}
+.plan-pick input:focus-visible+label{outline:3px solid #fff;outline-offset:3px}
+.check{display:flex;gap:.7rem;align-items:flex-start;font-size:.85rem;color:var(--mut);text-transform:none;letter-spacing:0;font-weight:500;margin:.4rem 0 1.4rem;cursor:pointer}
+.check input{width:20px;height:20px;margin-top:.15rem;accent-color:var(--accent);flex:none}
+.submit{width:100%;background:var(--accent);color:var(--accent-ink);font-size:1.05rem;padding:1.15rem;animation:none;transition:background .4s,transform .2s}
+.submit:hover{transform:translateY(-3px)}
+.success{display:none;text-align:center;padding:2rem 0}
+.success .big{font-family:var(--display);font-size:3rem;color:var(--accent)}
+.formbox.done form,.formbox.done>h2,.formbox.done>p{display:none}
+.formbox.done .success{display:block}
+
+/* ---------- Footer ---------- */
+footer{border-top:1px solid var(--line);padding:3rem 0;color:var(--mut);font-size:.9rem}
+.foot{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.foot b{color:var(--txt)}
+
+/* ---------- Reveal ---------- */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- Responsivo ---------- */
+@media (max-width:980px){
+  .hero-grid,.enroll-grid{grid-template-columns:1fr}
+  .hero-card{transform:none;max-width:460px}
+  .mod-grid{grid-template-columns:1fr}
+  .perk-grid{grid-template-columns:1fr 1fr}
+  .summary{position:static}
+  .nav ul{display:none}
+}
+@media (max-width:560px){
+  .row2,.plan-pick{grid-template-columns:1fr}
+  .perk-grid{grid-template-columns:1fr}
+  .hero-stats{gap:1.4rem}
+  .btn{width:100%}
+  .nav .btn{width:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#topo" class="logo">IRON<span>FLOW</span></a>
+    <ul>
+      <li><a href="#modalidades">Modalidades</a></li>
+      <li><a href="#diferenciais">Diferenciais</a></li>
+      <li><a href="#planos">Planos</a></li>
+      <li><a href="#matricula">Matrícula</a></li>
+    </ul>
+    <a href="#matricula" class="btn btn-primary">Matricule-se</a>
+  </div>
+</header>
+
+<main id="topo">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Academia completa · Seu corpo, seu ritmo</span>
+        <h1>Mais força.<br><em>Mais energia.</em><br><span class="outline">Mais você.</span></h1>
+        <p class="lead">Musculação, treino funcional e natação em um só lugar. Professores atentos, estrutura de ponta e planos que cabem no seu bolso. Sua primeira aula experimental é por nossa conta.</p>
+        <div class="cta-row">
+          <a href="#planos" class="btn btn-primary">Ver planos</a>
+          <a href="#modalidades" class="btn btn-ghost">Conhecer modalidades</a>
+        </div>
+        <div class="hero-stats">
+          <div><b>3</b><span>Modalidades</span></div>
+          <div><b>+2.500</b><span>Alunos ativos</span></div>
+          <div><b>6h–23h</b><span>Seg a sex</span></div>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Oferta em destaque">
+        <span class="tag">Mais escolhido</span>
+        <h3>Plano Anual</h3>
+        <div class="price">R$ 89<small>/mês</small></div>
+        <ul>
+          <li>Todas as modalidades liberadas</li>
+          <li>Avaliação física + 2 reavaliações</li>
+          <li>Sem taxa de matrícula</li>
+        </ul>
+        <a href="#matricula" class="btn btn-primary" data-pick="anual">Quero este plano</a>
+      </aside>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div>
+    <span>MUSCULAÇÃO</span><span>★</span><span>TREINO FUNCIONAL</span><span>★</span><span>NATAÇÃO</span><span>★</span><span>SEM TAXA DE MATRÍCULA</span><span>★</span><span>AULA EXPERIMENTAL GRÁTIS</span><span>★</span>
+    <span>MUSCULAÇÃO</span><span>★</span><span>TREINO FUNCIONAL</span><span>★</span><span>NATAÇÃO</span><span>★</span><span>SEM TAXA DE MATRÍCULA</span><span>★</span><span>AULA EXPERIMENTAL GRÁTIS</span><span>★</span>
+  </div></div>
+
+  <!-- MODALIDADES -->
+  <section class="section" id="modalidades">
+    <div class="wrap">
+      <div class="section-head rv">
+        <span class="eyebrow">Modalidades</span>
+        <h2>Escolha seu jeito de evoluir</h2>
+        <p>Do ganho de massa ao condicionamento total: três frentes de treino, uma única mensalidade.</p>
+      </div>
+      <div class="mod-grid">
+        <article class="mod m1 rv">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9v6M5 6v12M19 6v12M22 9v6M5 12h14"/></svg></div>
+          <h3>Musculação</h3>
+          <p>Ambiente amplo com equipamentos de última geração, pesos livres e acompanhamento individual para hipertrofia, força e definição.</p>
+          <ul><li>Hipertrofia</li><li>Emagrecimento</li><li>Força</li></ul>
+        </article>
+        <article class="mod m2 rv">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+          <h3>Treino Funcional</h3>
+          <p>Aulas em grupo de alta energia, com circuitos dinâmicos que melhoram mobilidade, resistência e queima calórica. Todos os níveis.</p>
+          <ul><li>HIIT</li><li>Circuito</li><li>Mobilidade</li></ul>
+        </article>
+        <article class="mod m3 rv">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="6" r="2"/><path d="m6 9 4-2 4 3"/></svg></div>
+          <h3>Natação</h3>
+          <p>Piscina aquecida e raias por nível: do primeiro mergulho ao treino de performance. Baixo impacto, alto resultado.</p>
+          <ul><li>Iniciante</li><li>Aperfeiçoamento</li><li>Hidroginástica</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAIS -->
+  <section class="section perks" id="diferenciais">
+    <div class="wrap">
+      <div class="perk-grid">
+        <div class="perk rv"><b>Avaliação física</b><p>Bioimpedância e plano de treino personalizado desde o primeiro dia.</p></div>
+        <div class="perk rv"><b>Professores presentes</b><p>Equipe formada e atenta, sempre no salão para corrigir sua execução.</p></div>
+        <div class="perk rv"><b>Vestiários premium</b><p>Armários, chuveiros amplos e área de descanso para depois do treino.</p></div>
+        <div class="perk rv"><b>App de treinos</b><p>Acompanhe cargas, frequência e evolução direto no celular.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section class="section" id="planos">
+    <div class="wrap">
+      <div class="section-head rv">
+        <span class="eyebrow">Planos</span>
+        <h2>Quanto mais tempo, menos você paga</h2>
+        <p>Compare os planos lado a lado e escolha o que combina com a sua meta. Todos incluem acesso às três modalidades.</p>
+      </div>
+      <div class="table-scroll rv">
+        <table id="plansTable">
+          <caption class="sr" style="position:absolute;left:-9999px">Comparativo dos planos Mensal, Semestral e Anual</caption>
+          <thead>
+            <tr>
+              <th scope="col">Compare</th>
+              <th scope="col" data-plan="mensal" class="col-mensal">
+                <div class="pname">Mensal</div>
+                <div class="pprice">R$ 129<small>por mês · sem fidelidade</small></div>
+              </th>
+              <th scope="col" data-plan="semestral" class="col-semestral">
+                <span class="badge hot">Economize 15%</span>
+                <div class="pname">Semestral</div>
+                <div class="pprice">R$ 109<small>por mês · 6 meses</small></div>
+              </th>
+              <th scope="col" data-plan="anual" class="col-anual active">
+                <span class="badge">Melhor custo-benefício</span>
+                <div class="pname">Anual</div>
+                <div class="pprice">R$ 89<small>por mês · 12 meses</small></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Musculação</td><td data-plan="mensal" class="col-mensal"><span class="ok">✓</span></td><td data-plan="semestral" class="col-semestral"><span class="ok">✓</span></td><td data-plan="anual" class="col-anual active"><span class="ok">✓</span></td></tr>
+            <tr><td>Treino funcional</td><td data-plan="mensal" class="col-mensal"><span class="ok">✓</span></td><td data-plan="semestral" class="col-semestral"><span class="ok">✓</span></td><td data-plan="anual" class="col-anual active"><span class="ok">✓</span></td></tr>
+            <tr><td>Natação (2x/semana)</td><td data-plan="mensal" class="col-mensal"><span class="ok">✓</span></td><td data-plan="semestral" class="col-semestral"><span class="ok">✓</span></td><td data-plan="anual" class="col-anual active"><span class="ok">✓ ilimitada</span></td></tr>
+            <tr><td>Avaliação física</td><td data-plan="mensal" class="col-mensal">1x</td><td data-plan="semestral" class="col-semestral">2x</td><td data-plan="anual" class="col-anual active">3x</td></tr>
+            <tr><td>Taxa de matrícula</td><td data-plan="mensal" class="col-mensal">R$ 99</td><td data-plan="semestral" class="col-semestral">R$ 49</td><td data-plan="anual" class="col-anual active"><strong>Grátis</strong></td></tr>
+            <tr><td>Convidado por mês</td><td data-plan="mensal" class="col-mensal"><span class="no">—</span></td><td data-plan="semestral" class="col-semestral">1</td><td data-plan="anual" class="col-anual active">4</td></tr>
+            <tr><td>Congelamento do plano</td><td data-plan="mensal" class="col-mensal"><span class="no">—</span></td><td data-plan="semestral" class="col-semestral">15 dias</td><td data-plan="anual" class="col-anual active">60 dias</td></tr>
+            <tr><td>Camiseta oficial</td><td data-plan="mensal" class="col-mensal"><span class="no">—</span></td><td data-plan="semestral" class="col-semestral"><span class="no">—</span></td><td data-plan="anual" class="col-anual active"><span class="ok">✓</span></td></tr>
+            <tr><td>Total do período</td><td data-plan="mensal" class="col-mensal"><strong>R$ 129</strong></td><td data-plan="semestral" class="col-semestral"><strong>R$ 654</strong></td><td data-plan="anual" class="col-anual active"><strong>R$ 1.068</strong></td></tr>
+            <tr>
+              <td></td>
+              <td data-plan="mensal" class="col-mensal"><button class="btn choose" data-pick="mensal" type="button">Escolher Mensal</button></td>
+              <td data-plan="semestral" class="col-semestral"><button class="btn choose" data-pick="semestral" type="button">Escolher Semestral</button></td>
+              <td data-plan="anual" class="col-anual active"><button class="btn choose sel" data-pick="anual" type="button">Escolher Anual</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="plans-note">Valores ilustrativos. Ajuste preços e benefícios conforme a sua unidade. Role a tabela para o lado em telas pequenas.</p>
+    </div>
+  </section>
+
+  <!-- MATRÍCULA -->
+  <section class="section enroll" id="matricula">
+    <div class="wrap enroll-grid">
+      <aside class="summary rv" aria-live="polite">
+        <small>Plano escolhido</small>
+        <h3 id="sumName">Anual</h3>
+        <div class="sp" id="sumPrice">R$ 89<span>/mês</span></div>
+        <div class="total" id="sumTotal">Total de R$ 1.068 em 12 meses</div>
+        <ul id="sumList">
+          <li>Musculação, funcional e natação</li>
+          <li>Sem taxa de matrícula</li>
+          <li>3 avaliações físicas</li>
+          <li>Camiseta oficial de brinde</li>
+        </ul>
+      </aside>
+
+      <div class="formbox rv" id="formbox">
+        <h2>Faça sua pré-inscrição</h2>
+        <p>Preencha em 1 minuto. Nossa equipe entra em contato para agendar sua aula experimental e finalizar a matrícula.</p>
+        <form id="enrollForm" novalidate>
+          <div class="field">
+            <span class="legend" id="lgPlan">Plano</span>
+            <div class="plan-pick" role="radiogroup" aria-labelledby="lgPlan">
+              <div>
+                <input type="radio" name="plano" id="p-mensal" value="mensal">
+                <label for="p-mensal" style="--pc:var(--cyan)"><b>Mensal</b><span>R$ 129/mês</span></label>
+              </div>
+              <div>
+                <input type="radio" name="plano" id="p-semestral" value="semestral">
+                <label for="p-semestral" style="--pc:var(--orange)"><b>Semestral</b><span>R$ 109/mês</span></label>
+              </div>
+              <div>
+                <input type="radio" name="plano" id="p-anual" value="anual" checked>
+                <label for="p-anual" style="--pc:var(--lime)"><b>Anual</b><span>R$ 89/mês</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field"><label for="nome">Nome completo</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como devemos te chamar?" required></div>
+          <div class="row2">
+            <div class="field"><label for="whats">WhatsApp</label><input id="whats" name="whats" type="tel" autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000" required minlength="10"></div>
+            <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="modalidade">Modalidade de interesse</label>
+              <select id="modalidade" name="modalidade" required>
+                <option value="" disabled selected>Selecione</option>
+                <option>Musculação</option><option>Treino funcional</option><option>Natação</option><option>Quero experimentar todas</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="turno">Melhor horário</label>
+              <select id="turno" name="turno">
+                <option>Manhã (6h–12h)</option><option>Tarde (12h–18h)</option><option>Noite (18h–23h)</option>
+              </select>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" id="lgpd" required> Autorizo o contato por WhatsApp e e-mail sobre minha pré-inscrição, conforme a LGPD.</label>
+          <button class="btn submit" type="submit" id="submitBtn">Quero começar — Plano Anual</button>
+        </form>
+
+        <div class="success" role="status">
+          <div class="big">Pré-inscrição enviada!</div>
+          <p id="okMsg" style="color:var(--mut);margin-top:.8rem"></p>
+          <button class="btn btn-ghost" type="button" id="again" style="margin-top:1.6rem">Fazer outra inscrição</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div><div class="logo">IRON<span>FLOW</span></div><p>Academia de musculação, funcional e natação.</p></div>
+    <div><b>Horários</b><br>Seg a sex: 6h às 23h<br>Sáb: 8h às 16h · Dom: 8h às 12h</div>
+    <div><b>Contato</b><br>(11) 0000-0000<br>contato@ironflow.exemplo</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var PLANS = {
+    mensal:   {name:'Mensal',   price:'R$ 129', total:'Sem fidelidade · cancele quando quiser', accent:'#00e5ff', perks:['Musculação, funcional e natação (2x/sem)','Taxa de matrícula de R$ 99','1 avaliação física','Sem fidelidade']},
+    semestral:{name:'Semestral',price:'R$ 109', total:'Total de R$ 654 em 6 meses · economia de 15%', accent:'#ff5a1f', perks:['Musculação, funcional e natação (2x/sem)','Taxa de matrícula de R$ 49','2 avaliações físicas','1 convidado por mês']},
+    anual:    {name:'Anual',    price:'R$ 89',  total:'Total de R$ 1.068 em 12 meses', accent:'#c6ff00', perks:['Musculação, funcional e natação ilimitada','Sem taxa de matrícula','3 avaliações físicas','Camiseta oficial de brinde']}
+  };
+  var root = document.documentElement;
+  var current = 'anual';
+
+  function setPlan(key, scroll){
+    var p = PLANS[key]; if(!p) return;
+    current = key;
+    root.style.setProperty('--accent', p.accent);
+    // tabela: destaca coluna
+    document.querySelectorAll('[data-plan]').forEach(function(el){ el.classList.toggle('active', el.dataset.plan === key); });
+    document.querySelectorAll('.choose').forEach(function(b){ b.classList.toggle('sel', b.dataset.pick === key); });
+    // radio
+    var r = document.getElementById('p-' + key); if(r) r.checked = true;
+    // resumo
+    document.getElementById('sumName').textContent = p.name;
+    document.getElementById('sumPrice').innerHTML = p.price + '<span>/mês</span>';
+    document.getElementById('sumTotal').textContent = p.total;
+    document.getElementById('sumList').innerHTML = p.perks.map(function(t){return '<li>'+t+'</li>';}).join('');
+    document.getElementById('submitBtn').textContent = 'Quero começar — Plano ' + p.name;
+    if(scroll) document.getElementById('matricula').scrollIntoView({behavior:'smooth'});
+  }
+
+  document.querySelectorAll('[data-pick]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      var isLink = el.tagName === 'A';
+      if(isLink) e.preventDefault();
+      setPlan(el.dataset.pick, true);
+    });
+  });
+  document.querySelectorAll('input[name="plano"]').forEach(function(r){
+    r.addEventListener('change', function(){ setPlan(r.value, false); });
+  });
+
+  // máscara simples de telefone
+  var tel = document.getElementById('whats');
+  tel.addEventListener('input', function(){
+    var d = tel.value.replace(/\D/g,'').slice(0,11);
+    var out = d;
+    if(d.length > 10) out = '('+d.slice(0,2)+') '+d.slice(2,7)+'-'+d.slice(7);
+    else if(d.length > 6) out = '('+d.slice(0,2)+') '+d.slice(2,6)+'-'+d.slice(6);
+    else if(d.length > 2) out = '('+d.slice(0,2)+') '+d.slice(2);
+    tel.value = out;
+  });
+
+  // envio (sem backend: apenas confirmação visual)
+  var form = document.getElementById('enrollForm'), box = document.getElementById('formbox');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    var nome = form.nome.value.trim().split(' ')[0];
+    document.getElementById('okMsg').textContent = 'Obrigado, ' + nome + '! Recebemos seu interesse no Plano ' + PLANS[current].name + ' (' + PLANS[current].price + '/mês). Entraremos em contato pelo WhatsApp em breve.';
+    box.classList.add('done');
+  });
+  document.getElementById('again').addEventListener('click', function(){
+    form.reset(); setPlan('anual', false); box.classList.remove('done');
+  });
+
+  // reveal on scroll
+  var els = document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+    },{threshold:.12});
+    els.forEach(function(el){ io.observe(el); });
+  } else { els.forEach(function(el){ el.classList.add('in'); }); }
+
+  setPlan('anual', false);
+})();
+</script>
+</body>
+</html>

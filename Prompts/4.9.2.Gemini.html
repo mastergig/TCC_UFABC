@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gazeta do Bairro — Jornal comunitário acessível com notícias locais, saúde, cultura e serviços públicos da nossa região.">
+  <title>Gazeta do Bairro — Notícias Locais e Utilidade Pública</title>
+
+  <!-- Fonte legível e clara (Atkinson Hyperlegible / Inter) com fallback seguro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. VARIÁVEIS DE DESIGN E TOKENS DE ACESSIBILIDADE (WCAG 2.1 AA)
+       Todas as medidas estruturais e tipográficas usam unidades relativas.
+       ========================================================================== */
+    :root {
+      /* Escala tipográfica dinâmica controlada pelo usuário (padrão 100% = 1rem) */
+      --font-scale: 1;
+
+      /* Paleta Padrão: Off-white suave e texto escuro com contraste > 13:1 */
+      --bg-page: #FAF9F6;
+      --bg-surface: #FFFFFF;
+      --bg-surface-alt: #F1EFEA;
+      --bg-toolbar: #111827;
+      --text-toolbar: #FFFFFF;
+
+      --text-primary: #111827;     /* Contraste > 15:1 sobre #FFFFFF */
+      --text-secondary: #374151;   /* Contraste > 9.5:1 sobre #FFFFFF */
+      --text-muted: #4B5563;       /* Contraste > 7.0:1 sobre #FFFFFF */
+
+      --brand-primary: #003B73;    /* Azul institucional profundo (Contraste > 11:1) */
+      --brand-accent: #8A1C1C;     /* Bordô editorial (Contraste > 8.5:1) */
+      --link-color: #004494;       /* Azul link WCAG AAA (> 9:1) */
+      --link-hover: #002756;
+
+      --border-color: #9CA3AF;     /* Contraste > 3:1 para elementos de interface */
+      --border-strong: #111827;
+
+      /* Indicador de Foco altamente visível */
+      --focus-ring: #D97706;
+      --focus-outline: #004494;
+
+      /* Estados de feedback */
+      --status-success-bg: #ECFDF5;
+      --status-success-border: #047857;
+      --status-success-text: #064E3B;
+
+      --status-error-bg: #FEF2F2;
+      --status-error-border: #B91C1C;
+      --status-error-text: #7F1D1D;
+
+      /* Tipografia */
+      --font-sans: 'Atkinson Hyperlegible', 'Inter', system-ui, -apple-system, sans-serif;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.625rem;
+      --radius-lg: 0.875rem;
+
+      /* Largura máxima fluida */
+      --container-max: 78rem;
+    }
+
+    /* ==========================================================================
+       2. MODO DE ALTO CONTRASTE (FUNDO PRETO, TEXTO BRANCO/AMARELO)
+       ========================================================================== */
+    html[data-contrast="high"] {
+      --bg-page: #000000;
+      --bg-surface: #000000;
+      --bg-surface-alt: #0A0A0A;
+      --bg-toolbar: #000000;
+      --text-toolbar: #FFFF00;
+
+      --text-primary: #FFFFFF;
+      --text-secondary: #F3F4F6;
+      --text-muted: #FFFF00;
+
+      --brand-primary: #FFFF00;
+      --brand-accent: #00FFFF;
+      --link-color: #FFFF00;
+      --link-hover: #00FFFF;
+
+      --border-color: #FFFFFF;
+      --border-strong: #FFFF00;
+
+      --focus-ring: #00FFFF;
+      --focus-outline: #FFFF00;
+
+      --status-success-bg: #000000;
+      --status-success-border: #00FF00;
+      --status-success-text: #00FF00;
+
+      --status-error-bg: #000000;
+      --status-error-border: #FFFF00;
+      --status-error-text: #FFFF00;
+    }
+
+    /* ==========================================================================
+       3. RESET E PROTEÇÃO CONTRA QUEBRA EM ZOOM DE 200%
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      /* Permite que o tamanho base acompanhe as preferências do navegador + controle interno */
+      font-size: calc(100% * var(--font-scale));
+      scroll-behavior: smooth;
+      overflow-x: clip;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.65;
+      overflow-x: clip;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+    }
+
+    img, svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Classe utilitária para leitores de tela */
+    .sr-only {
+      position: absolute;
+      width: 0.0625rem;
+      height: 0.0625rem;
+      padding: 0;
+      margin: -0.0625rem;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ==========================================================================
+       4. INDICADORES DE FOCO (:focus-visible) E SKIP LINK
+       ========================================================================== */
+    :focus-visible {
+      outline: 0.2rem solid var(--focus-outline);
+      outline-offset: 0.2rem;
+      box-shadow: 0 0 0 0.35rem var(--focus-ring);
+      border-radius: var(--radius-sm);
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -10rem;
+      left: 1rem;
+      z-index: 1000;
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 1.125rem;
+      padding: 0.875rem 1.25rem;
+      border-radius: var(--radius-md);
+      text-decoration: underline;
+      border: 0.15rem solid #FFFFFF;
+      transition: top 0.15s ease;
+    }
+
+    html[data-contrast="high"] .skip-link {
+      background-color: #FFFF00;
+      color: #000000;
+      border-color: #000000;
+    }
+
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    /* ==========================================================================
+       5. LAYOUT FLUIDO PRINCIPAL
+       ========================================================================== */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-inline: auto;
+      padding-inline: clamp(1rem, 3vw, 2rem);
+    }
+
+    /* ==========================================================================
+       6. BARRA SUPERIOR DE ACESSIBILIDADE
+       ========================================================================== */
+    .a11y-bar {
+      background-color: var(--bg-toolbar);
+      color: var(--text-toolbar);
+      border-bottom: 0.125rem solid var(--border-color);
+      padding-block: 0.625rem;
+    }
+
+    .a11y-bar__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .a11y-bar__label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .a11y-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Botões com área mínima garantida de 2.75rem x 2.75rem (~44px) */
+    .btn-a11y {
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+      padding: 0.5rem 0.875rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      background-color: #1F2937;
+      border: 0.125rem solid #FFFFFF;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+    }
+
+    .btn-a11y:hover {
+      background-color: #374151;
+    }
+
+    .btn-a11y[aria-pressed="true"] {
+      background-color: #FFFF00;
+      color: #000000;
+      border-color: #FFFF00;
+    }
+
+    html[data-contrast="high"] .btn-a11y {
+      background-color: #000000;
+      color: #FFFF00;
+      border-color: #FFFF00;
+    }
+
+    html[data-contrast="high"] .btn-a11y[aria-pressed="true"] {
+      background-color: #FFFF00;
+      color: #000000;
+    }
+
+    /* ==========================================================================
+       7. CABEÇALHO DO JORNAL E NAVEGAÇÃO
+       ========================================================================== */
+    .site-header {
+      background-color: var(--bg-surface);
+      border-bottom: 0.2rem solid var(--border-strong);
+      padding-top: 1.25rem;
+    }
+
+    .masthead {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 0.0625rem solid var(--border-color);
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--brand-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tagline {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .edition-meta {
+      background-color: var(--bg-surface-alt);
+      border: 0.0625rem solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.625rem 1rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+
+    .edition-meta strong {
+      display: block;
+      color: var(--brand-accent);
+    }
+
+    /* Navegação Principal */
+    .main-nav {
+      padding-block: 0.75rem;
+    }
+
+    .nav-toggle {
+      display: none;
+      min-height: 2.875rem;
+      padding: 0.625rem 1rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      border: 0.125rem solid var(--brand-primary);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    html[data-contrast="high"] .nav-toggle {
+      background-color: #FFFF00;
+      color: #000000;
+      border-color: #FFFF00;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+      padding: 0.5rem 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--link-color);
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
+      text-decoration-thickness: 0.1em;
+      border-radius: var(--radius-sm);
+      border: 0.125rem solid transparent;
+    }
+
+    .nav-link:hover {
+      background-color: var(--bg-surface-alt);
+      color: var(--link-hover);
+      border-color: var(--border-color);
+    }
+
+    .nav-link[aria-current="page"] {
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+
+    html[data-contrast="high"] .nav-link[aria-current="page"] {
+      background-color: #FFFF00;
+      color: #000000;
+    }
+
+    /* Menu colapsável apenas em telas muito estreitas ou zoom extremo */
+    @media (max-width: 40rem) {
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      .nav-list {
+        display: none;
+        flex-direction: column;
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        border-top: 0.0625rem solid var(--border-color);
+      }
+
+      .nav-list.is-open {
+        display: flex;
+      }
+
+      .nav-link {
+        width: 100%;
+      }
+    }
+
+    /* ==========================================================================
+       8. CONTEÚDO PRINCIPAL E GRADE FLUIDA (2 COLUNAS -> EMPILHAMENTO)
+       ========================================================================== */
+    .main-content {
+      padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    /* Banner de Filtro Ativo */
+    .filter-banner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      background-color: var(--bg-surface-alt);
+      border: 0.125rem solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-secondary {
+      min-height: 2.75rem;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border: 0.125rem solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-surface-alt);
+    }
+
+    /* Grade Editorial: Artigos à esquerda, Utilidade Pública à direita.
+       Quebra naturalmente quando o espaço fica apertado (ex: zoom 200%). */
+    .editorial-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(min(100%, 20rem), 1fr);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-items: start;
+    }
+
+    @media (max-width: 56rem) {
+      .editorial-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       9. MANCHETE PRINCIPAL (FEATURED STORY)
+       ========================================================================== */
+    .hero-article {
+      background-color: var(--bg-surface);
+      border: 0.125rem solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .hero-media {
+      background-color: #E5E7EB;
+      border-bottom: 0.125rem solid var(--border-color);
+    }
+
+    html[data-contrast="high"] .hero-media {
+      background-color: #111111;
+    }
+
+    .hero-body {
+      padding: clamp(1.25rem, 3vw, 2rem);
+    }
+
+    .category-badge {
+      display: inline-block;
+      background-color: var(--brand-accent);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    html[data-contrast="high"] .category-badge {
+      background-color: #00FFFF;
+      color: #000000;
+    }
+
+    .hero-title {
+      margin: 0 0 0.875rem 0;
+      font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .hero-excerpt {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin: 0 0 1.25rem 0;
+      max-width: 65ch;
+    }
+
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+    }
+
+    .read-more-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+      padding: 0.625rem 1.125rem;
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+      border-radius: var(--radius-sm);
+      border: 0.125rem solid var(--brand-primary);
+    }
+
+    .read-more-link:hover {
+      background-color: var(--link-hover);
+    }
+
+    html[data-contrast="high"] .read-more-link {
+      background-color: #FFFF00;
+      color: #000000;
+      border-color: #FFFF00;
+    }
+
+    /* ==========================================================================
+       10. GRADE FLUIDA DE NOTÍCIAS SECUNDÁRIAS
+       ========================================================================== */
+    .section-heading {
+      font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 0 0 1.25rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 0.2rem solid var(--brand-primary);
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+      gap: 1.5rem;
+    }
+
+    .news-card {
+      background-color: var(--bg-surface);
+      border: 0.125rem solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .news-card__title {
+      margin: 0.5rem 0 0.75rem 0;
+      font-size: 1.25rem;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .news-card__title a {
+      color: var(--link-color);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    .news-card__title a:hover {
+      color: var(--link-hover);
+    }
+
+    .news-card__summary {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .news-card__footer {
+      padding-top: 0.75rem;
+      border-top: 0.0625rem solid var(--border-color);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* ==========================================================================
+       11. BARRA LATERAL (<aside>): UTILIDADE PÚBLICA E BOLETIM
+       ========================================================================== */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .sidebar-box {
+      background-color: var(--bg-surface);
+      border: 0.125rem solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 1.375rem;
+    }
+
+    .sidebar-title {
+      margin: 0 0 1rem 0;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--brand-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .notice-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .notice-item {
+      background-color: var(--bg-surface-alt);
+      border-left: 0.3rem solid var(--brand-accent);
+      padding: 0.875rem 1rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .notice-item h3 {
+      margin: 0 0 0.375rem 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .notice-item p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    /* Formulário Acessível */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    .form-hint {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .form-input {
+      min-height: 2.875rem;
+      padding: 0.625rem 0.875rem;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--text-primary);
+      background-color: var(--bg-page);
+      border: 0.125rem solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      width: 100%;
+    }
+
+    .form-input[aria-invalid="true"] {
+      border-color: var(--status-error-border);
+      border-width: 0.1875rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      min-height: 3rem;
+      padding: 0.75rem 1.25rem;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      border: 0.125rem solid var(--brand-primary);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--link-hover);
+    }
+
+    html[data-contrast="high"] .btn-submit {
+      background-color: #FFFF00;
+      color: #000000;
+      border-color: #FFFF00;
+    }
+
+    .form-status {
+      margin-top: 1rem;
+      padding: 0.875rem;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 0.125rem solid transparent;
+    }
+
+    .form-status:empty {
+      display: none;
+    }
+
+    .form-status--success {
+      background-color: var(--status-success-bg);
+      border-color: var(--status-success-border);
+      color: var(--status-success-text);
+    }
+
+    .form-status--error {
+      background-color: var(--status-error-bg);
+      border-color: var(--status-error-border);
+      color: var(--status-error-text);
+    }
+
+    /* ==========================================================================
+       12. MODAL DE LEITURA COMPLETA ACESSÍVEL (DIALOG NATIVO)
+       ========================================================================== */
+    dialog.article-dialog {
+      width: min(92vw, 46rem);
+      max-height: 88vh;
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border: 0.2rem solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.35);
+    }
+
+    dialog.article-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    .dialog-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 0.125rem solid var(--border-color);
+      background-color: var(--bg-surface-alt);
+    }
+
+    .dialog-title {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+      line-height: 1.3;
+    }
+
+    .dialog-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    .dialog-body p {
+      margin-top: 0;
+      margin-bottom: 1.125rem;
+      max-width: 65ch;
+    }
+
+    /* ==========================================================================
+       13. RODAPÉ INSTITUCIONAL E DECLARAÇÃO DE ACESSIBILIDADE
+       ========================================================================== */
+    .site-footer {
+      background-color: var(--bg-surface);
+      border-top: 0.2rem solid var(--border-strong);
+      padding-block: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+      gap: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-heading {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--brand-primary);
+    }
+
+    .footer-text {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-bottom {
+      padding-top: 1.25rem;
+      border-top: 0.0625rem solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .footer-link {
+      color: var(--link-color);
+      font-weight: 700;
+      text-decoration: underline;
+      min-height: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Link obrigatório de salto rápido para usuários de teclado e leitores de tela -->
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+  <!-- Região dinâmica invisível para anunciar mudanças de tamanho de texto, contraste e filtros -->
+  <div id="a11y-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Barra de Ferramentas de Acessibilidade -->
+  <div class="a11y-bar" role="region" aria-label="Ferramentas de Acessibilidade">
+    <div class="container a11y-bar__inner">
+      <span class="a11y-bar__label" id="a11y-toolbar-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <circle cx="12" cy="5" r="2"/>
+          <path d="M5 9h14M12 9v6m0 0-3 6m3-6 3 6"/>
+        </svg>
+        Acessibilidade de Leitura:
+      </span>
+
+      <div class="a11y-controls" role="group" aria-labelledby="a11y-toolbar-title">
+        <button type="button" class="btn-a11y" id="btn-font-decrease" aria-label="Diminuir tamanho do texto">
+          A-
+        </button>
+        <button type="button" class="btn-a11y" id="btn-font-reset" aria-label="Restaurar tamanho padrão do texto">
+          A (100%)
+        </button>
+        <button type="button" class="btn-a11y" id="btn-font-increase" aria-label="Aumentar tamanho do texto">
+          A+
+        </button>
+        <button type="button" class="btn-a11y" id="btn-contrast" aria-pressed="false" aria-label="Alternar modo de alto contraste">
+          Alto Contraste
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cabeçalho Principal -->
+  <header class="site-header">
+    <div class="container">
+      <div class="masthead">
+        <div class="brand-group">
+          <p class="brand-title">Gazeta do Bairro</p>
+          <p class="brand-tagline">Jornalismo Comunitário, Independente e Acessível para Todos</p>
+        </div>
+
+        <div class="edition-meta" aria-label="Informações da edição">
+          <strong>Edição Nº 418 — Quinta-feira</strong>
+          <time datetime="2026-11-12">12 de novembro de 2026</time> • Circulação Gratuita
+        </div>
+      </div>
+
+      <!-- Navegação por Categorias -->
+      <nav class="main-nav" aria-label="Categorias de notícias">
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle-btn"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+          Menu de Seções
+        </button>
+
+        <ul class="nav-list" id="primary-menu">
+          <li><a href="#todas" class="nav-link" data-category="Todas" aria-current="page">Todas as Notícias</a></li>
+          <li><a href="#cidade" class="nav-link" data-category="Cidade">Cidade</a></li>
+          <li><a href="#saude" class="nav-link" data-category="Saúde & Bem-Estar">Saúde &amp; Bem-Estar</a></li>
+          <li><a href="#cultura" class="nav-link" data-category="Cultura">Cultura</a></li>
+          <li><a href="#servicos" class="nav-link" data-category="Serviços Públicos">Serviços Públicos</a></li>
+          <li><a href="#opiniao" class="nav-link" data-category="Opinião">Opinião</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main id="conteudo-principal" class="main-content" tabindex="-1">
+    <div class="container">
+      <!-- H1 claro e descritivo -->
+      <h1 class="sr-only">Destaques e Notícias Comunitárias da Gazeta do Bairro</h1>
+
+      <!-- Indicador visual quando uma categoria está filtrada -->
+      <div id="filter-status-bar" class="filter-banner" hidden>
+        <p id="filter-status-text" style="margin: 0; font-weight: 700;"></p>
+        <button type="button" class="btn-secondary" id="btn-clear-filter">Mostrar todas as notícias</button>
+      </div>
+
+      <div class="editorial-grid">
+        <!-- Coluna de Notícias -->
+        <div class="news-column">
+          <!-- Manchete Principal -->
+          <article class="hero-article" aria-labelledby="hero-heading">
+            <div class="hero-media">
+              <!-- Ilustração vetorial acessível com role="img" e descrição clara -->
+              <svg
+                viewBox="0 0 800 320"
+                role="img"
+                aria-labelledby="hero-svg-title hero-svg-desc"
+                style="width: 100%; height: auto;"
+              >
+                <title id="hero-svg-title">Ilustração da Praça das Acácias reformada com rampas acessíveis e árvores</title>
+                <desc id="hero-svg-desc">Cena diurna mostrando a Praça das Acácias com calçadas largas, piso tátil amarelo, bancos de madeira, árvores frondosas e moradores caminhando.</desc>
+                <rect width="800" height="320" fill="#DBEAFE"/>
+                <circle cx="690" cy="70" r="36" fill="#F59E0B"/>
+                <!-- Fundo de prédios comunitários -->
+                <rect x="60" y="110" width="120" height="130" rx="6" fill="#93C5FD"/>
+                <rect x="210" y="90" width="140" height="150" rx="6" fill="#60A5FA"/>
+                <rect x="520" y="105" width="150" height="135" rx="6" fill="#93C5FD"/>
+                <!-- Gramado e passeio acessível -->
+                <rect x="0" y="220" width="800" height="100" fill="#15803D"/>
+                <polygon points="120,320 680,320 590,220 210,220" fill="#F3F4F6"/>
+                <!-- Piso tátil de alerta e direcional -->
+                <line x1="400" y1="220" x2="400" y2="320" stroke="#D97706" stroke-width="10" stroke-dasharray="12 8"/>
+                <!-- Árvores -->
+                <rect x="135" y="175" width="14" height="55" fill="#78350F"/>
+                <circle cx="142" cy="155" r="38" fill="#166534"/>
+                <rect x="635" y="170" width="14" height="60" fill="#78350F"/>
+                <circle cx="642" cy="148" r="42" fill="#166534"/>
+                <!-- Banco comunitário -->
+                <rect x="260" y="245" width="75" height="14" rx="3" fill="#92400E"/>
+                <rect x="268" y="259" width="8" height="18" fill="#451A03"/>
+                <rect x="319" y="259" width="8" height="18" fill="#451A03"/>
+              </svg>
+            </div>
+
+            <div class="hero-body">
+              <span class="category-badge">Cidade</span>
+              <h2 id="hero-heading" class="hero-title">
+                Praça das Acácias é reinaugurada com piso tátil, rampas suaves e nova iluminação em LED
+              </h2>
+              <p class="hero-excerpt">
+                Após quatro meses de obras acompanhadas pela associação de moradores, o principal ponto de encontro do bairro ganha calçadas niveladas, bancos ergonômicos com apoio de braço e academia ao ar livre adaptada para idosos.
+              </p>
+              <div class="article-meta">
+                <span>Por <strong>Mariana Ribeiro</strong></span>
+                <span>Tempo de leitura: 3 minutos</span>
+              </div>
+              <a
+                href="#ler-manchete"
+                class="read-more-link"
+                data-article-id="hero"
+                aria-label="Ler reportagem completa: Praça das Acácias é reinaugurada com piso tátil e nova iluminação"
+              >
+                Ler reportagem completa
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Seção de Notícias Secundárias -->
+          <section aria-labelledby="recent-news-heading">
+            <h2 id="recent-news-heading" class="section-heading">Últimas Notícias da Comunidade</h2>
+
+            <div class="news-grid" id="news-grid">
+              <!-- Card 1 -->
+              <article class="news-card" data-category="Saúde & Bem-Estar">
+                <div>
+                  <span class="category-badge">Saúde &amp; Bem-Estar</span>
+                  <h3 class="news-card__title">
+                    <a href="#noticia-1" data-article-id="art-1">
+                      UBS Jardim Esperança amplia horário de vacinação contra gripe e atualização cadastral aos sábados
+                    </a>
+                  </h3>
+                  <p class="news-card__summary">
+                    Atendimento especial ocorrerá das 8h às 16h para facilitar o acesso de trabalhadores e pessoas idosas acompanhadas por familiares.
+                  </p>
+                </div>
+                <div class="news-card__footer">
+                  <span>Por Carlos Andrade</span>
+                  <time datetime="2026-11-12">Hoje, 08:30</time>
+                </div>
+              </article>
+
+              <!-- Card 2 -->
+              <article class="news-card" data-category="Serviços Públicos">
+                <div>
+                  <span class="category-badge">Serviços Públicos</span>
+                  <h3 class="news-card__title">
+                    <a href="#noticia-2" data-article-id="art-2">
+                      Linha circular 402 ganha dois ônibus com piso baixo e aviso sonoro de paradas
+                    </a>
+                  </h3>
+                  <p class="news-card__summary">
+                    Veículos já circulam no itinerário entre o Terminal Norte, o Centro Comercial e o Hospital Regional com intervalos de 15 minutos.
+                  </p>
+                </div>
+                <div class="news-card__footer">
+                  <span>Por Redação Local</span>
+                  <time datetime="2026-11-11">Ontem</time>
+                </div>
+              </article>
+
+              <!-- Card 3 -->
+              <article class="news-card" data-category="Cultura">
+                <div>
+                  <span class="category-badge">Cultura</span>
+                  <h3 class="news-card__title">
+                    <a href="#noticia-3" data-article-id="art-3">
+                      Biblioteca Comunitária recebe acervo de livros com letras ampliadas e audiolivros gratuitos
+                    </a>
+                  </h3>
+                  <p class="news-card__summary">
+                    Mais de 180 obras da literatura brasileira estão disponíveis para empréstimo domiciliar sem burocracia para moradores cadastrados.
+                  </p>
+                </div>
+                <div class="news-card__footer">
+                  <span>Por Helena Costa</span>
+                  <time datetime="2026-11-10">10/11/2026</time>
+                </div>
+              </article>
+
+              <!-- Card 4 -->
+              <article class="news-card" data-category="Opinião">
+                <div>
+                  <span class="category-badge">Opinião</span>
+                  <h3 class="news-card__title">
+                    <a href="#noticia-4" data-article-id="art-4">
+                      Calçadas acessíveis não são favor: são o direito básico de ir e vir em qualquer idade
+                    </a>
+                  </h3>
+                  <p class="news-card__summary">
+                    Conselheiro comunitário reflete sobre como a manutenção das rampas e podas de árvores transforma a autonomia de quem vive no bairro.
+                  </p>
+                </div>
+                <div class="news-card__footer">
+                  <span>Por Prof. Antônio Silveira</span>
+                  <time datetime="2026-11-09">09/11/2026</time>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- Coluna Lateral: Utilidade Pública e Assinatura -->
+        <aside class="sidebar" aria-label="Utilidade Pública e Boletim Comunitário">
+          <!-- Bloco 1: Utilidade Pública -->
+          <section class="sidebar-box" aria-labelledby="public-service-heading">
+            <h2 id="public-service-heading" class="sidebar-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4m0 4h.01"/>
+              </svg>
+              Utilidade Pública
+            </h2>
+
+            <ul class="notice-list">
+              <li class="notice-item">
+                <h3>Posto de Saúde (UBS Central)</h3>
+                <p>Segunda a sexta, das 7h às 19h. Farmácia popular aberta até 18h30. Telefone: (11) 3456-7890.</p>
+              </li>
+              <li class="notice-item">
+                <h3>Coleta Seletiva e Reciclagem</h3>
+                <p>Caminhão da coleta passa às terças e sextas-feiras, a partir das 8h. Separe papel, vidro e plásticos limpos.</p>
+              </li>
+              <li class="notice-item">
+                <h3>Roda de Conversa &amp; Ginástica Sênior</h3>
+                <p>Quartas-feiras, às 9h, no Salão Comunitário da Rua das Flores, 210. Participação gratuita.</p>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Bloco 2: Formulário de Boletim Comunitário -->
+          <section class="sidebar-box" aria-labelledby="newsletter-heading">
+            <h2 id="newsletter-heading" class="sidebar-title">Receba o Boletim Semanal</h2>
+            <p style="margin-top: 0; color: var(--text-secondary);">
+              Cadastre seu e-mail para receber o resumo das notícias e avisos de utilidade pública toda sexta-feira.
+            </p>
+
+            <form id="newsletter-form" novalidate>
+              <div class="form-group">
+                <label for="subscriber-name" class="form-label">Seu nome completo (obrigatório)</label>
+                <input
+                  type="text"
+                  id="subscriber-name"
+                  name="name"
+                  class="form-input"
+                  autocomplete="name"
+                  required
+                  aria-required="true"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="subscriber-email" class="form-label">Seu endereço de e-mail (obrigatório)</label>
+                <p id="email-hint" class="form-hint">Exemplo: maria.silva@provedor.com.br</p>
+                <input
+                  type="email"
+                  id="subscriber-email"
+                  name="email"
+                  class="form-input"
+                  autocomplete="email"
+                  aria-describedby="email-hint"
+                  required
+                  aria-required="true"
+                >
+              </div>
+
+              <button type="submit" class="btn-submit">Inscrever-se no Boletim</button>
+
+              <!-- Área de status acessível com role="status" e aria-live -->
+              <div id="newsletter-status" class="form-status" role="status" aria-live="polite"></div>
+            </form>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Acessível para Leitura Completa dos Artigos -->
+  <dialog id="article-modal" class="article-dialog" aria-labelledby="modal-article-title">
+    <div class="dialog-header">
+      <div>
+        <span id="modal-article-category" class="category-badge">Categoria</span>
+        <h2 id="modal-article-title" class="dialog-title">Título da Reportagem</h2>
+      </div>
+      <button type="button" class="btn-secondary" id="btn-close-modal" aria-label="Fechar janela de leitura">
+        Fechar (Esc)
+      </button>
+    </div>
+    <div id="modal-article-body" class="dialog-body"></div>
+  </dialog>
+
+  <!-- Rodapé -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h2 class="footer-heading">Gazeta do Bairro</h2>
+          <p class="footer-text">
+            Veículo comunitário sem fins lucrativos dedicado à informação local, cidadania e inclusão social.
+          </p>
+          <p class="footer-text">
+            <strong>Redação:</strong> Rua das Flores, 210 — Sala 4, Centro Comunitário.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Fale com a Redação</h2>
+          <p class="footer-text">Envie sugestões de pauta ou avisos do seu quarteirão:</p>
+          <p class="footer-text"><strong>Telefone / WhatsApp:</strong> (11) 98765-4321</p>
+          <p class="footer-text"><strong>E-mail:</strong> redacao@gazetadobairro.org.br</p>
+        </div>
+
+        <div>
+          <h2 class="footer-heading">Declaração de Acessibilidade</h2>
+          <p class="footer-text">
+            Este portal foi desenvolvido em conformidade com as diretrizes <strong>WCAG 2.1 Nível AA</strong>, suportando ampliação de texto até 200%, alto contraste, leitores de tela e navegação integral por teclado.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Gazeta do Bairro — Todos os direitos reservados à comunidade.</span>
+        <a href="#conteudo-principal" class="footer-link">Voltar ao topo do conteúdo &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ========================================================================
+         1. CONTROLES DE ACESSIBILIDADE (TAMANHO DA FONTE E ALTO CONTRASTE)
+         ======================================================================== */
+      const rootEl = document.documentElement;
+      const announcer = document.getElementById('a11y-announcer');
+      const btnDecrease = document.getElementById('btn-font-decrease');
+      const btnReset = document.getElementById('btn-font-reset');
+      const btnIncrease = document.getElementById('btn-font-increase');
+      const btnContrast = document.getElementById('btn-contrast');
+
+      let currentScale = 1.0;
+      const MIN_SCALE = 0.85;
+      const MAX_SCALE = 1.5; // Somado ao zoom do navegador, garante legibilidade total
+      const STEP = 0.125;
+
+      function announce(message) {
+        announcer.textContent = '';
+        window.setTimeout(() => {
+          announcer.textContent = message;
+        }, 50);
+      }
+
+      function applyFontScale(scale) {
+        currentScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, Number(scale.toFixed(3))));
+        rootEl.style.setProperty('--font-scale', currentScale);
+        const pct = Math.round(currentScale * 100);
+        btnReset.textContent = `A (${pct}%)`;
+        announce(`Tamanho do texto ajustado para ${pct} por cento.`);
+      }
+
+      btnDecrease.addEventListener('click', () => applyFontScale(currentScale - STEP));
+      btnReset.addEventListener('click', () => applyFontScale(1.0));
+      btnIncrease.addEventListener('click', () => applyFontScale(currentScale + STEP));
+
+      btnContrast.addEventListener('click', () => {
+        const isHigh = rootEl.getAttribute('data-contrast') === 'high';
+        if (isHigh) {
+          rootEl.removeAttribute('data-contrast');
+          btnContrast.setAttribute('aria-pressed', 'false');
+          announce('Modo de alto contraste desativado. Cores padrão restauradas.');
+        } else {
+          rootEl.setAttribute('data-contrast', 'high');
+          btnContrast.setAttribute('aria-pressed', 'true');
+          announce('Modo de alto contraste ativado.');
+        }
+      });
+
+      /* ========================================================================
+         2. MENU RESPONSIVO ACESSÍVEL (TECLADO E TOQUE)
+         ======================================================================== */
+      const navToggleBtn = document.getElementById('nav-toggle-btn');
+      const primaryMenu = document.getElementById('primary-menu');
+
+      navToggleBtn.addEventListener('click', () => {
+        const expanded = navToggleBtn.getAttribute('aria-expanded') === 'true';
+        navToggleBtn.setAttribute('aria-expanded', String(!expanded));
+        primaryMenu.classList.toggle('is-open', !expanded);
+      });
+
+      /* ========================================================================
+         3. FILTRO DE CATEGORIAS COM FEEDBACK VIA ARIA-CURRENT E ARIA-LIVE
+         ======================================================================== */
+      const navLinks = document.querySelectorAll('.nav-link');
+      const newsCards = document.querySelectorAll('.news-card');
+      const filterBanner = document.getElementById('filter-status-bar');
+      const filterStatusText = document.getElementById('filter-status-text');
+      const btnClearFilter = document.getElementById('btn-clear-filter');
+
+      function filterByCategory(category) {
+        navLinks.forEach((link) => {
+          if (link.dataset.category === category) {
+            link.setAttribute('aria-current', 'page');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        });
+
+        let visibleCount = 0;
+        newsCards.forEach((card) => {
+          const matches = category === 'Todas' || card.dataset.category === category;
+          card.hidden = !matches;
+          if (matches) visibleCount++;
+        });
+
+        if (category === 'Todas') {
+          filterBanner.hidden = true;
+          announce('Exibindo todas as notícias da comunidade.');
+        } else {
+          filterBanner.hidden = false;
+          filterStatusText.textContent = `Filtrando por seção: ${category} (${visibleCount} notícia${visibleCount === 1 ? '' : 's'} encontrada${visibleCount === 1 ? '' : 's'})`;
+          announce(`Filtro aplicado: seção ${category}. ${visibleCount} notícia encontrada.`);
+        }
+
+        // Fecha menu mobile após escolha
+        navToggleBtn.setAttribute('aria-expanded', 'false');
+        primaryMenu.classList.remove('is-open');
+      }
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          filterByCategory(link.dataset.category);
+        });
+      });
+
+      btnClearFilter.addEventListener('click', () => {
+        filterByCategory('Todas');
+        document.querySelector('.nav-link[data-category="Todas"]').focus();
+      });
+
+      /* ========================================================================
+         4. LEITURA COMPLETA EM DIALOG ACESSÍVEL (GERENCIAMENTO DE FOCO)
+         ======================================================================== */
+      const articlesData = {
+        hero: {
+          category: 'Cidade',
+          title: 'Praça das Acácias é reinaugurada com piso tátil, rampas suaves e nova iluminação em LED',
+          paragraphs: [
+            'Por Mariana Ribeiro — 12 de novembro de 2026',
+            'Após quatro meses de revitalização planejada em conjunto com a Associação de Moradores e o Conselho Municipal da Pessoa Idosa, a Praça das Acácias foi entregue oficialmente à comunidade nesta quinta-feira.',
+            'Todo o perímetro recebeu calçadas niveladas com inclinação máxima de 8%, piso tátil direcional e de alerta em alto contraste, além de 18 novos bancos com encosto anatômico e apoios laterais que facilitam o ato de sentar e levantar.',
+            'A iluminação antiga foi substituída por luminárias em LED de luz neutra, aumentando a segurança durante as caminhadas no início da manhã e no fim da tarde.'
+          ]
+        },
+        'art-1': {
+          category: 'Saúde & Bem-Estar',
+          title: 'UBS Jardim Esperança amplia horário de vacinação contra gripe e atualização cadastral aos sábados',
+          paragraphs: [
+            'Por Carlos Andrade — 12 de novembro de 2026',
+            'A Unidade Básica de Saúde Jardim Esperança abrirá excepcionalmente nos próximos três sábados, das 8h às 16h, para aplicar doses contra gripe, atualizar a caderneta de vacinação e renovar receitas de uso contínuo.',
+            'Para ser atendido, basta apresentar documento com foto e o cartão do SUS. Moradores com dificuldade de locomoção podem solicitar visita domiciliar da equipe de enfermagem pelo telefone (11) 3456-7890.'
+          ]
+        },
+        'art-2': {
+          category: 'Serviços Públicos',
+          title: 'Linha circular 402 ganha dois ônibus com piso baixo e aviso sonoro de paradas',
+          paragraphs: [
+            'Por Redação Local — 11 de novembro de 2026',
+            'Dois novos ônibus equipados com suspensão a ar, embarque em nível, espaço reservado para cadeira de rodas e painel interno com letras ampliadas e anúncio sonoro dos pontos já estão operando na linha Circular 402.',
+            'A medida reduz o tempo de espera nos horários de pico e garante maior autonomia para passageiros com deficiência visual ou mobilidade reduzida.'
+          ]
+        },
+        'art-3': {
+          category: 'Cultura',
+          title: 'Biblioteca Comunitária recebe acervo de livros com letras ampliadas e audiolivros gratuitos',
+          paragraphs: [
+            'Por Helena Costa — 10 de novembro de 2026',
+            'Graças a uma campanha de doação apoiada por escolas e livrarias da região, a Biblioteca Comunitária do bairro agora conta com uma estante exclusiva de livros impressos em corpo 16 e 18, além de leitores digitais de audiolivros.',
+            'O espaço funciona de segunda a sexta, das 9h às 18h, com mesas de leitura iluminadas e lupas de aumento disponíveis para consulta local.'
+          ]
+        },
+        'art-4': {
+          category: 'Opinião',
+          title: 'Calçadas acessíveis não são favor: são o direito básico de ir e vir em qualquer idade',
+          paragraphs: [
+            'Por Prof. Antônio Silveira — 09 de novembro de 2026',
+            'Quando uma calçada está esburacada ou bloqueada por entulho, não é apenas um problema estético: é uma barreira que impede um idoso de ir à padaria, uma mãe de empurrar um carrinho de bebê ou uma pessoa cega de caminhar com segurança.',
+            'Cuidar da frente da nossa casa, manter as rampas livres e cobrar manutenção contínua do poder público são atitudes simples que tornam nosso bairro verdadeiramente humano e acolhedor para todas as gerações.'
+          ]
+        }
+      };
+
+      const modal = document.getElementById('article-modal');
+      const modalCategory = document.getElementById('modal-article-category');
+      const modalTitle = document.getElementById('modal-article-title');
+      const modalBody = document.getElementById('modal-article-body');
+      const btnCloseModal = document.getElementById('btn-close-modal');
+      let lastTriggerElement = null;
+
+      function openArticleModal(articleId, triggerEl) {
+        const data = articlesData[articleId];
+        if (!data) return;
+
+        lastTriggerElement = triggerEl;
+        modalCategory.textContent = data.category;
+        modalTitle.textContent = data.title;
+        modalBody.innerHTML = data.paragraphs.map((text) => `<p>${text}</p>`).join('');
+
+        if (typeof modal.showModal === 'function') {
+          modal.showModal();
+          btnCloseModal.focus();
+        }
+      }
+
+      document.querySelectorAll('[data-article-id]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          openArticleModal(link.dataset.articleId, link);
+        });
+      });
+
+      btnCloseModal.addEventListener('click', () => {
+        modal.close();
+      });
+
+      modal.addEventListener('close', () => {
+        if (lastTriggerElement) {
+          lastTriggerElement.focus();
+        }
+      });
+
+      /* ========================================================================
+         5. VALIDAÇÃO ACESSÍVEL DO FORMULÁRIO DE BOLETIM
+         ======================================================================== */
+      const newsletterForm = document.getElementById('newsletter-form');
+      const nameInput = document.getElementById('subscriber-name');
+      const emailInput = document.getElementById('subscriber-email');
+      const newsletterStatus = document.getElementById('newsletter-status');
+
+      newsletterForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const nameValue = nameInput.value.trim();
+        const emailValue = emailInput.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        nameInput.removeAttribute('aria-invalid');
+        emailInput.removeAttribute('aria-invalid');
+        newsletterStatus.className = 'form-status';
+
+        if (!nameValue) {
+          nameInput.setAttribute('aria-invalid', 'true');
+          newsletterStatus.classList.add('form-status--error');
+          newsletterStatus.textContent = 'Erro: Por favor, informe seu nome completo antes de enviar.';
+          nameInput.focus();
+          return;
+        }
+
+        if (!emailValue || !emailRegex.test(emailValue)) {
+          emailInput.setAttribute('aria-invalid', 'true');
+          newsletterStatus.classList.add('form-status--error');
+          newsletterStatus.textContent = 'Erro: Por favor, informe um endereço de e-mail válido (exemplo: nome@email.com).';
+          emailInput.focus();
+          return;
+        }
+
+        newsletterStatus.classList.add('form-status--success');
+        newsletterStatus.textContent = `Inscrição confirmada, ${nameValue}! O boletim semanal será enviado para ${emailValue}.`;
+        newsletterForm.reset();
+      });
+    })();
+  </script>
+</body>
+</html>

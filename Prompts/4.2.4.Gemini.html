@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare &amp; Amor | Campanha de Castração Consciente</title>
+    <meta name="description" content="Agende a castração do seu cão ou gato com carinho, segurança e acompanhamento veterinário completo na PetCare & Amor.">
+
+    <!-- Fontes Google Fonts: Nunito (acolhedora para títulos) e Plus Jakarta Sans (legível para textos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           VARIÁVEIS DE DESIGN E PALETA ACOLHEDORA (PASSO 3)
+           ========================================================================== */
+        :root {
+            /* Cores Principais */
+            --color-sage-primary: #3b7a6b;       /* Verde-sálvia profundo e acolhedor */
+            --color-sage-dark: #2a594e;          /* Verde-sálvia escuro para hover e contraste */
+            --color-sage-light: #e7f3ef;         /* Verde-água bem suave para fundos de destaque */
+            --color-sage-muted: #cce3dc;         /* Bordas suaves e detalhes */
+
+            /* Cores Secundárias / Destaque */
+            --color-peach-primary: #e07a5f;      /* Terracota / Pêssego acolhedor para CTAs */
+            --color-peach-dark: #c96247;         /* Hover dos botões principais */
+            --color-peach-light: #fdf0ec;        /* Fundo pêssego bem suave */
+
+            /* Fundos e Superfícies */
+            --color-bg-cream: #fcfaf7;           /* Fundo creme/off-white quente */
+            --color-surface-white: #ffffff;      /* Superfície limpa para cards e formulários */
+
+            /* Textos */
+            --color-text-main: #2b3532;          /* Cinza-esverdeado escuro (melhor leitura que preto puro) */
+            --color-text-muted: #586662;         /* Texto secundário suave */
+            --color-text-light: #ffffff;
+
+            /* Estados e Feedback */
+            --color-success: #2e7d5b;
+            --color-success-bg: #e6f5ee;
+            --color-error: #c83e3e;
+
+            /* Tipografia */
+            --font-heading: 'Nunito', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+
+            /* Espaçamentos, Bordas e Sombras */
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 9999px;
+
+            --shadow-soft: 0 10px 30px -5px rgba(43, 53, 50, 0.06);
+            --shadow-card: 0 6px 20px -4px rgba(59, 122, 107, 0.08);
+            --shadow-btn: 0 8px 20px -4px rgba(224, 122, 95, 0.35);
+
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --container-max: 1140px;
+        }
+
+        /* ==========================================================================
+           RESET E ESTILOS BASE (MOBILE-FIRST)
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg-cream);
+            color: var(--color-text-main);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img, svg {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* Títulos e Textos */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            color: var(--color-text-main);
+            line-height: 1.25;
+            font-weight: 800;
+        }
+
+        .section-padding {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background-color: var(--color-sage-light);
+            color: var(--color-sage-primary);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.875rem;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-pill);
+            margin-bottom: 0.85rem;
+            letter-spacing: 0.02em;
+        }
+
+        .section-title {
+            font-size: 1.85rem;
+            margin-bottom: 0.85rem;
+            color: var(--color-sage-dark);
+        }
+
+        .section-subtitle {
+            color: var(--color-text-muted);
+            font-size: 1.025rem;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.9rem 1.75rem;
+            border-radius: var(--radius-pill);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--color-peach-primary);
+            color: var(--color-text-light);
+            box-shadow: var(--shadow-btn);
+        }
+
+        .btn-primary:hover, .btn-primary:focus-visible {
+            background-color: var(--color-peach-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-surface-white);
+            color: var(--color-sage-primary);
+            border: 2px solid var(--color-sage-muted);
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus-visible {
+            background-color: var(--color-sage-light);
+            border-color: var(--color-sage-primary);
+        }
+
+        /* ==========================================================================
+           PASSO 1A: CABEÇALHO (HEADER) E NAVEGAÇÃO
+           ========================================================================== */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(252, 250, 247, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(59, 122, 107, 0.1);
+            padding: 0.85rem 0;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.35rem;
+            color: var(--color-sage-dark);
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--color-sage-primary), var(--color-sage-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(59, 122, 107, 0.25);
+            flex-shrink: 0;
+        }
+
+        .brand-logo span em {
+            font-style: normal;
+            color: var(--color-peach-primary);
+        }
+
+        /* Menu Mobile e Desktop */
+        .nav-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background-color: var(--color-sage-light);
+            border: 1px solid var(--color-sage-muted);
+            color: var(--color-sage-dark);
+            cursor: pointer;
+        }
+
+        .main-nav {
+            position: fixed;
+            top: 71px;
+            left: 0;
+            right: 0;
+            background-color: var(--color-surface-white);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--color-sage-muted);
+            box-shadow: var(--shadow-soft);
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-nav.is-open {
+            display: flex;
+        }
+
+        .nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.6rem 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-main);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover {
+            background-color: var(--color-sage-light);
+            color: var(--color-sage-primary);
+        }
+
+        .nav-cta {
+            width: 100%;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================================================
+           PASSO 1B: SEÇÃO HERO / CONSCIENTIZAÇÃO DA CASTRAÇÃO
+           ========================================================================== */
+        .hero-section {
+            padding: 2.5rem 0 4rem 0;
+            background: radial-gradient(circle at top right, var(--color-sage-light) 0%, transparent 55%),
+                        radial-gradient(circle at bottom left, var(--color-peach-light) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            order: 1;
+        }
+
+        .hero-title {
+            font-size: 2.15rem;
+            color: var(--color-sage-dark);
+            margin-bottom: 1.1rem;
+        }
+
+        .hero-title span {
+            color: var(--color-peach-primary);
+            position: relative;
+        }
+
+        .hero-description {
+            font-size: 1.06rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 2.25rem;
+        }
+
+        /* Lista de Pilares da Conscientização */
+        .awareness-pillars {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+        }
+
+        .pillar-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            background-color: var(--color-surface-white);
+            padding: 1rem 1.15rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(59, 122, 107, 0.08);
+        }
+
+        .pillar-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background-color: var(--color-sage-light);
+            color: var(--color-sage-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .pillar-icon.peach {
+            background-color: var(--color-peach-light);
+            color: var(--color-peach-primary);
+        }
+
+        .pillar-text h3 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+            color: var(--color-sage-dark);
+        }
+
+        .pillar-text p {
+            font-size: 0.88rem;
+            color: var(--color-text-muted);
+            line-height: 1.45;
+        }
+
+        /* Cartão Ilustrativo do Hero */
+        .hero-visual {
+            order: 2;
+        }
+
+        .hero-card {
+            background-color: var(--color-surface-white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--color-sage-muted);
+            position: relative;
+        }
+
+        .hero-illustration {
+            width: 100%;
+            border-radius: var(--radius-md);
+            background: linear-gradient(145deg, var(--color-sage-light), var(--color-peach-light));
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+            margin-top: 1.25rem;
+        }
+
+        .stat-box {
+            background-color: var(--color-bg-cream);
+            padding: 0.9rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid rgba(59, 122, 107, 0.12);
+        }
+
+        .stat-number {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--color-sage-primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           PASSO 1C: GRADE INFORMATIVA DE CUIDADOS PÓS-OPERATÓRIOS
+           ========================================================================== */
+        .postop-section {
+            background-color: var(--color-surface-white);
+            border-top: 1px solid rgba(59, 122, 107, 0.08);
+            border-bottom: 1px solid rgba(59, 122, 107, 0.08);
+        }
+
+        .care-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.35rem;
+        }
+
+        .care-card {
+            background-color: var(--color-bg-cream);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            border: 1px solid rgba(59, 122, 107, 0.12);
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .care-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--color-sage-primary);
+            box-shadow: var(--shadow-card);
+        }
+
+        .care-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.15rem;
+        }
+
+        .care-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background-color: var(--color-sage-light);
+            color: var(--color-sage-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .care-card:nth-child(even) .care-icon-wrap {
+            background-color: var(--color-peach-light);
+            color: var(--color-peach-primary);
+        }
+
+        .care-step-badge {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.78rem;
+            color: var(--color-sage-primary);
+            background-color: var(--color-surface-white);
+            padding: 0.3rem 0.75rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--color-sage-muted);
+        }
+
+        .care-card h3 {
+            font-size: 1.2rem;
+            color: var(--color-sage-dark);
+            margin-bottom: 0.6rem;
+        }
+
+        .care-card p {
+            font-size: 0.94rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .care-tip {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--color-sage-primary);
+            background-color: var(--color-surface-white);
+            padding: 0.65rem 0.9rem;
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--color-sage-primary);
+        }
+
+        .care-card:nth-child(even) .care-tip {
+            color: var(--color-peach-dark);
+            border-left-color: var(--color-peach-primary);
+        }
+
+        /* ==========================================================================
+           PASSO 2: FORMULÁRIO DE AGENDAMENTO ONLINE
+           ========================================================================== */
+        .booking-section {
+            background: linear-gradient(180deg, var(--color-bg-cream) 0%, var(--color-sage-light) 100%);
+        }
+
+        .booking-wrapper {
+            background-color: var(--color-surface-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--color-sage-muted);
+            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .booking-banner {
+            background: linear-gradient(135deg, var(--color-sage-primary), var(--color-sage-dark));
+            color: var(--color-text-light);
+            padding: 1.75rem 1.5rem;
+            text-align: center;
+        }
+
+        .booking-banner h2 {
+            color: var(--color-text-light);
+            font-size: 1.65rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .booking-banner p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        .booking-form {
+            padding: 1.75rem 1.35rem;
+        }
+
+        .form-fieldset {
+            border: none;
+            margin-bottom: 2rem;
+            padding-bottom: 1.75rem;
+            border-bottom: 1px dashed var(--color-sage-muted);
+        }
+
+        .form-fieldset:last-of-type {
+            border-bottom: none;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0;
+        }
+
+        .fieldset-legend {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--color-sage-dark);
+            margin-bottom: 1.25rem;
+            width: 100%;
+        }
+
+        .legend-step {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--color-peach-primary);
+            color: white;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.15rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--color-text-main);
+        }
+
+        .required-mark {
+            color: var(--color-peach-primary);
+            margin-left: 2px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-family: var(--font-body);
+            font-size: 0.98rem;
+            color: var(--color-text-main);
+            background-color: var(--color-bg-cream);
+            border: 1.5px solid var(--color-sage-muted);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-smooth);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            background-color: var(--color-surface-white);
+            border-color: var(--color-sage-primary);
+            box-shadow: 0 0 0 4px rgba(59, 122, 107, 0.14);
+        }
+
+        input.has-error,
+        select.has-error {
+            border-color: var(--color-error);
+            background-color: #fff8f8;
+        }
+
+        .field-error-msg {
+            font-size: 0.8rem;
+            color: var(--color-error);
+            font-weight: 500;
+            display: none;
+        }
+
+        .field-error-msg.visible {
+            display: block;
+        }
+
+        /* Botões de Seleção Visual (Espécie e Sexo) */
+        .radio-pill-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .radio-pill-label {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-pill-label input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .radio-pill-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            background-color: var(--color-bg-cream);
+            border: 1.5px solid var(--color-sage-muted);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            color: var(--color-text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .radio-pill-label input:checked + .radio-pill-box {
+            background-color: var(--color-sage-light);
+            border-color: var(--color-sage-primary);
+            color: var(--color-sage-dark);
+            box-shadow: 0 2px 8px rgba(59, 122, 107, 0.12);
+        }
+
+        .radio-pill-label input:focus-visible + .radio-pill-box {
+            box-shadow: 0 0 0 4px rgba(59, 122, 107, 0.18);
+        }
+
+        .form-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .privacy-note {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            text-align: center;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem 2rem;
+            font-size: 1.08rem;
+        }
+
+        /* ==========================================================================
+           FEEDBACK INTERATIVO DE CONFIRMAÇÃO
+           ========================================================================== */
+        .confirmation-panel {
+            display: none;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            animation: fadeInScale 0.4s ease forwards;
+        }
+
+        .confirmation-panel.is-visible {
+            display: block;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .success-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background-color: var(--color-success-bg);
+            color: var(--color-success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem auto;
+        }
+
+        .confirmation-panel h3 {
+            font-size: 1.65rem;
+            color: var(--color-sage-dark);
+            margin-bottom: 0.65rem;
+        }
+
+        .confirmation-summary {
+            background-color: var(--color-bg-cream);
+            border: 1px solid var(--color-sage-muted);
+            border-radius: var(--radius-md);
+            padding: 1.35rem;
+            margin: 1.5rem auto;
+            max-width: 540px;
+            text-align: left;
+            font-size: 0.94rem;
+        }
+
+        .confirmation-summary p {
+            margin-bottom: 0.45rem;
+            color: var(--color-text-main);
+        }
+
+        .confirmation-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ==========================================================================
+           RODAPÉ (FOOTER)
+           ========================================================================== */
+        .site-footer {
+            background-color: var(--color-sage-dark);
+            color: rgba(255, 255, 255, 0.88);
+            padding: 3rem 0 1.75rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .footer-brand {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-desc {
+            font-size: 0.92rem;
+            color: rgba(255, 255, 255, 0.78);
+            max-width: 360px;
+        }
+
+        .footer-title {
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            color: #ffffff;
+            margin-bottom: 0.85rem;
+        }
+
+        .footer-info li {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .footer-bottom {
+            padding-top: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ==========================================================================
+           MEDIA QUERIES PARA TABLET E DESKTOP (RESPONSIVIDADE FLUIDA)
+           ========================================================================== */
+        @media (min-width: 768px) {
+            .section-padding {
+                padding: 5.25rem 0;
+            }
+
+            .section-title {
+                font-size: 2.35rem;
+            }
+
+            /* Header Desktop */
+            .nav-toggle {
+                display: none;
+            }
+
+            .main-nav {
+                position: static;
+                display: flex !important;
+                flex-direction: row;
+                align-items: center;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                gap: 1.5rem;
+            }
+
+            .nav-list {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .nav-cta {
+                width: auto;
+            }
+
+            /* Hero Tablet/Desktop */
+            .hero-title {
+                font-size: 2.75rem;
+            }
+
+            .hero-actions {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .awareness-pillars {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Grade Pós-Operatória 2 colunas */
+            .care-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Formulário em 2 colunas */
+            .booking-form {
+                padding: 2.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.35rem;
+            }
+
+            .btn-submit {
+                width: auto;
+                min-width: 290px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1.4fr 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1.15fr 0.85fr;
+                gap: 3.5rem;
+            }
+
+            .hero-title {
+                font-size: 3.05rem;
+            }
+
+            /* Grade Pós-Operatória 3 colunas em telas grandes */
+            .care-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================================================
+         PASSO 1A: CABEÇALHO E NAVEGAÇÃO
+         ====================================================================== -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="#inicio" class="brand-logo" aria-label="PetCare & Amor - Página Inicial">
+                <span class="brand-icon" aria-hidden="true">
+                    <!-- Ícone SVG Patinha e Coração -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="4" r="2"/>
+                        <circle cx="18" cy="8" r="2"/>
+                        <circle cx="20" cy="16" r="2"/>
+                        <path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/>
+                    </svg>
+                </span>
+                <span>PetCare <em>&amp;</em> Amor</span>
+            </a>
+
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Abrir menu de navegação">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
+                <ul class="nav-list">
+                    <li><a href="#conscientizacao" class="nav-link">Por que Castrar?</a></li>
+                    <li><a href="#pos-operatorio" class="nav-link">Cuidados Pós-Operatórios</a></li>
+                    <li><a href="#agendamento" class="nav-link">Agendamento</a></li>
+                </ul>
+                <a href="#agendamento" class="btn btn-primary nav-cta">Agendar Castração</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="inicio">
+        <!-- ======================================================================
+             PASSO 1B: SEÇÃO PRINCIPAL (CONSCIENTIZAÇÃO DA CASTRAÇÃO)
+             ====================================================================== -->
+        <section id="conscientizacao" class="hero-section">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <span class="section-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        Campanha de Posse Responsável
+                    </span>
+                    <h1 class="hero-title">Castrar é um gesto de <span>amor, saúde</span> e proteção para toda a vida.</h1>
+                    <p class="hero-description">
+                        Na <strong>PetCare &amp; Amor</strong>, realizamos procedimentos cirúrgicos seguros com anestesia monitorada e equipe especializada. A castração aumenta a expectativa de vida do seu melhor amigo e ajuda a combater o abandono nas ruas.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#agendamento" class="btn btn-primary">
+                            Agendar Avaliação Agora
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                        <a href="#pos-operatorio" class="btn btn-secondary">Ver Cuidados Pós-Cirúrgicos</a>
+                    </div>
+
+                    <!-- 4 Pilares da Conscientização -->
+                    <div class="awareness-pillars">
+                        <article class="pillar-item">
+                            <div class="pillar-icon" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div class="pillar-text">
+                                <h3>Prevenção de Doenças</h3>
+                                <p>Reduz drasticamente riscos de tumores de mama, infecções uterinas (piometra) e doenças prostáticas.</p>
+                            </div>
+                        </article>
+
+                        <article class="pillar-item">
+                            <div class="pillar-icon peach" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                            </div>
+                            <div class="pillar-text">
+                                <h3>Mais Longevidade</h3>
+                                <p>Pets castrados vivem em média de 2 a 5 anos a mais, com mais tranquilidade e qualidade de vida.</p>
+                            </div>
+                        </article>
+
+                        <article class="pillar-item">
+                            <div class="pillar-icon peach" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            </div>
+                            <div class="pillar-text">
+                                <h3>Bem-Estar Comportamental</h3>
+                                <p>Diminui fugas, brigas por território, marcação excessiva de urina e estresse durante o cio.</p>
+                            </div>
+                        </article>
+
+                        <article class="pillar-item">
+                            <div class="pillar-icon" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            </div>
+                            <div class="pillar-text">
+                                <h3>Controle Populacional</h3>
+                                <p>Evita ninhadas indesejadas e contribui diretamente para reduzir o número de animais em situação de rua.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Coluna Visual Acolhedora (Ilustração Vetorial Personalizada) -->
+                <div class="hero-visual">
+                    <div class="hero-card">
+                        <div class="hero-illustration">
+                            <!-- Ilustração SVG Acolhedora de Cão e Gato protegidos -->
+                            <svg width="240" height="200" viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração acolhedora de um cãozinho e um gatinho cuidados com amor">
+                                <circle cx="120" cy="100" r="82" fill="#ffffff" fill-opacity="0.85"/>
+                                <!-- Coração central -->
+                                <path d="M120 48C115 41 105 41 100 47C95 53 97 62 120 77C143 62 145 53 140 47C135 41 125 41 120 48Z" fill="#e07a5f"/>
+                                <!-- Cachorrinho à esquerda -->
+                                <ellipse cx="86" cy="124" rx="34" ry="30" fill="#d9a066"/>
+                                <path d="M56 105C46 112 45 130 53 136C59 140 64 128 65 116Z" fill="#a8703b"/>
+                                <path d="M116 105C126 112 127 130 119 136C113 140 108 128 107 116Z" fill="#a8703b"/>
+                                <circle cx="76" cy="118" r="3.5" fill="#2b3532"/>
+                                <circle cx="96" cy="118" r="3.5" fill="#2b3532"/>
+                                <ellipse cx="86" cy="127" rx="5.5" ry="4" fill="#2b3532"/>
+                                <path d="M80 134Q86 140 92 134" stroke="#2b3532" stroke-width="2.5" stroke-linecap="round"/>
+                                <!-- Gatinho à direita -->
+                                <ellipse cx="154" cy="127" rx="28" ry="25" fill="#586662"/>
+                                <polygon points="131,111 136,88 148,105" fill="#586662"/>
+                                <polygon points="177,111 172,88 160,105" fill="#586662"/>
+                                <polygon points="134,108 137,94 145,105" fill="#fdf0ec"/>
+                                <polygon points="174,108 171,94 163,105" fill="#fdf0ec"/>
+                                <circle cx="145" cy="123" r="3" fill="#ffffff"/>
+                                <circle cx="163" cy="123" r="3" fill="#ffffff"/>
+                                <polygon points="151,129 157,129 154,133" fill="#e07a5f"/>
+                                <path d="M149 136Q154 140 159 136" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                                <!-- Bigodes -->
+                                <line x1="124" y1="128" x2="137" y2="130" stroke="#cce3dc" stroke-width="1.8" stroke-linecap="round"/>
+                                <line x1="171" y1="130" x2="184" y2="128" stroke="#cce3dc" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                            <p style="font-family: var(--font-heading); font-weight: 700; color: var(--color-sage-dark); margin-top: 0.5rem;">
+                                Cirurgia minimamente invasiva e recuperação rápida
+                            </p>
+                        </div>
+
+                        <div class="hero-stats-grid">
+                            <div class="stat-box">
+                                <span class="stat-number">+95%</span>
+                                <span class="stat-label">Redução de tumor mamário quando castrada cedo</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-number">100%</span>
+                                <span class="stat-label">Monitoramento anestésico e pós-operatório</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             PASSO 1C: GRADE INFORMATIVA DE CUIDADOS PÓS-OPERATÓRIOS
+             ====================================================================== -->
+        <section id="pos-operatorio" class="postop-section section-padding">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-badge">Guia de Recuperação Segura</span>
+                    <h2 class="section-title">Cuidados Pós-Operatórios Essenciais</h2>
+                    <p class="section-subtitle">
+                        O sucesso da cirurgia continua em casa com a sua dedicação. Preparamos um guia prático com os 6 cuidados fundamentais para uma cicatrização tranquila e sem dor.
+                    </p>
+                </header>
+
+                <div class="care-grid">
+                    <!-- Card 1 -->
+                    <article class="care-card">
+                        <div>
+                            <div class="care-card-header">
+                                <div class="care-icon-wrap" aria-hidden="true">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <span class="care-step-badge">Cuidado 01</span>
+                            </div>
+                            <h3>Colar Elizabetano ou Roupa Cirúrgica</h3>
+                            <p>Mantenha o colar protetor ou a roupinha cirúrgica 24 horas por dia até a retirada dos pontos. Isso impede que o pet lamba, morda ou puxe a sutura.</p>
+                        </div>
+                        <div class="care-tip">Dica: Nunca retire o acessório sem supervisão direta, mesmo por alguns minutos.</div>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article class="care-card">
+                        <div>
+                            <div class="care-card-header">
+                                <div class="care-icon-wrap" aria-hidden="true">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+                                </div>
+                                <span class="care-step-badge">Cuidado 02</span>
+                            </div>
+                            <h3>Repouso em Ambiente Calmo</h3>
+                            <p>Reserve um cantinho limpo, silencioso e acolhedor. Evite escadas, pulos em sofás ou camas, corridas e brincadeiras agitadas nos primeiros 7 a 10 dias.</p>
+                        </div>
+                        <div class="care-tip">Dica: Mantenha outros animais separados nos primeiros dias se houver agitação.</div>
+                    </article>
+
+                    <!-- Card 3 -->
+                    <article class="care-card">
+                        <div>
+                            <div class="care-card-header">
+                                <div class="care-icon-wrap" aria-hidden="true">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
+                                <span class="care-step-badge">Cuidado 03</span>
+                            </div>
+                            <h3>Medicação nos Horários Certos</h3>
+                            <p>Administre os analgésicos, anti-inflamatórios e antibióticos prescritos pelo veterinário rigorosamente nos horários indicados para evitar dor e infecções.</p>
+                        </div>
+                        <div class="care-tip">Dica: Programe alarmes no celular para não pular nenhuma dose.</div>
+                    </article>
+
+                    <!-- Card 4 -->
+                    <article class="care-card">
+                        <div>
+                            <div class="care-card-header">
+                                <div class="care-icon-wrap" aria-hidden="true">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                </div>
+                                <span class="care-step-badge">Cuidado 04</span>
+                            </div>
+                            <h3>Higienização Diária dos Pontos</h3>
+                            <p>Limpe suavemente a região da incisão com soro fisiológico e antisséptico recomendado, usando gaze limpa. Observe se há vermelhidão, inchaço ou secreção.</p>
+                        </div>
+                        <div class="care-tip">Dica: Não dê banhos até a liberação formal da equipe veterinária.</div>
+                    </article>
+
+                    <!-- Card 5 -->
+                    <article class="care-card">
+                        <div>
+                            <div class="care-card-header">
+                                <div class="care-icon-wrap" aria-hidden="true">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                                </div>
+                                <span class="care-step-badge">Cuidado 05</span>
+                            </div>
+                            <h3>Alimentação Leve e Hidratação</h3>
+                            <p>Ofereça água fresca à vontade e pequenas porções de ração ou alimento úmido após o retorno completo da anestesia, respeitando o apetite gradual do pet.</p>
+                        </div>
+                        <div class="care-tip">Dica: É normal o pet ficar mais sonolento nas primeiras 24 horas.</div>
+                    </article>
+
+                    <!-- Card 6 -->
+                    <article class="care-card">
+                        <div>
+                            <div class="care-card-header">
+                                <div class="care-icon-wrap" aria-hidden="true">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+                                </div>
+                                <span class="care-step-badge">Cuidado 06</span>
+                            </div>
+                            <h3>Retorno e Acompanhamento</h3>
+                            <p>Compareça à consulta de retorno entre 7 e 10 dias após o procedimento para avaliação da cicatrização e retirada segura dos pontos com nosso veterinário.</p>
+                        </div>
+                        <div class="care-tip">Dica: O retorno pós-cirúrgico na PetCare &amp; Amor já está incluso!</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             PASSO 2: FORMULÁRIO DE AGENDAMENTO ONLINE
+             ====================================================================== -->
+        <section id="agendamento" class="booking-section section-padding">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-badge">Atendimento Humanizado</span>
+                    <h2 class="section-title">Agende a Castração do Seu Pet</h2>
+                    <p class="section-subtitle">
+                        Preencha os dados abaixo para solicitar a pré-avaliação clínica e reservar a data ideal. Nossa equipe entrará em contato via WhatsApp para confirmar todos os detalhes do pré-operatório.
+                    </p>
+                </header>
+
+                <div class="booking-wrapper">
+                    <div class="booking-banner">
+                        <h2>Pré-Agendamento Online</h2>
+                        <p>Inclui consulta pré-anestésica, procedimento cirúrgico e retorno de retirada de pontos.</p>
+                    </div>
+
+                    <!-- Formulário Principal -->
+                    <form id="castrationForm" class="booking-form" novalidate>
+                        <!-- Bloco 1: Dados do Tutor -->
+                        <fieldset class="form-fieldset">
+                            <legend class="fieldset-legend">
+                                <span class="legend-step">1</span>
+                                Dados do Tutor Responsável
+                            </legend>
+
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="tutorName">Nome completo do tutor <span class="required-mark">*</span></label>
+                                    <input type="text" id="tutorName" name="tutorName" placeholder="Ex: Mariana Silva Oliveira" required autocomplete="name">
+                                    <span class="field-error-msg" id="error-tutorName">Por favor, informe seu nome completo.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tutorPhone">Telefone / WhatsApp <span class="required-mark">*</span></label>
+                                    <input type="tel" id="tutorPhone" name="tutorPhone" placeholder="(11) 99999-9999" required autocomplete="tel">
+                                    <span class="field-error-msg" id="error-tutorPhone">Informe um telefone ou WhatsApp válido com DDD.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tutorCpf">CPF do tutor <span class="required-mark">*</span></label>
+                                    <input type="text" id="tutorCpf" name="tutorCpf" placeholder="000.000.000-00" maxlength="14" required>
+                                    <span class="field-error-msg" id="error-tutorCpf">Por favor, informe um CPF válido (11 dígitos).</span>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="tutorEmail">E-mail para envio das orientações <span class="required-mark">*</span></label>
+                                    <input type="email" id="tutorEmail" name="tutorEmail" placeholder="mariana@exemplo.com.br" required autocomplete="email">
+                                    <span class="field-error-msg" id="error-tutorEmail">Por favor, insira um endereço de e-mail válido.</span>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Bloco 2: Dados do Animal -->
+                        <fieldset class="form-fieldset">
+                            <legend class="fieldset-legend">
+                                <span class="legend-step">2</span>
+                                Dados do Animal
+                            </legend>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="petName">Nome do pet <span class="required-mark">*</span></label>
+                                    <input type="text" id="petName" name="petName" placeholder="Ex: Thor, Luna, Pipoca..." required>
+                                    <span class="field-error-msg" id="error-petName">Informe o nome do seu pet.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="preferredDate">Data preferencial para o procedimento <span class="required-mark">*</span></label>
+                                    <input type="date" id="preferredDate" name="preferredDate" required>
+                                    <span class="field-error-msg" id="error-preferredDate">Selecione uma data futura válida.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Espécie <span class="required-mark">*</span></label>
+                                    <div class="radio-pill-group" role="radiogroup" aria-label="Espécie do animal">
+                                        <label class="radio-pill-label">
+                                            <input type="radio" name="petSpecies" value="Cão" checked>
+                                            <span class="radio-pill-box">🐶 Cão</span>
+                                        </label>
+                                        <label class="radio-pill-label">
+                                            <input type="radio" name="petSpecies" value="Gato">
+                                            <span class="radio-pill-box">🐱 Gato</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Sexo <span class="required-mark">*</span></label>
+                                    <div class="radio-pill-group" role="radiogroup" aria-label="Sexo do animal">
+                                        <label class="radio-pill-label">
+                                            <input type="radio" name="petSex" value="Fêmea" checked>
+                                            <span class="radio-pill-box">♀ Fêmea</span>
+                                        </label>
+                                        <label class="radio-pill-label">
+                                            <input type="radio" name="petSex" value="Macho">
+                                            <span class="radio-pill-box">♂ Macho</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="petAge">Idade aproximada <span class="required-mark">*</span></label>
+                                    <select id="petAge" name="petAge" required>
+                                        <option value="">Selecione a faixa etária</option>
+                                        <option value="4 a 6 meses">4 a 6 meses (Filhote)</option>
+                                        <option value="6 meses a 1 ano">6 meses a 1 ano</option>
+                                        <option value="1 a 3 anos">1 a 3 anos (Jovem Adulto)</option>
+                                        <option value="3 a 7 anos">3 a 7 anos (Adulto)</option>
+                                        <option value="Acima de 7 anos">Acima de 7 anos (Sênior - requer exames extras)</option>
+                                    </select>
+                                    <span class="field-error-msg" id="error-petAge">Selecione a idade aproximada do pet.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="petWeight">Peso aproximado (kg) <span class="required-mark">*</span></label>
+                                    <input type="number" id="petWeight" name="petWeight" step="0.1" min="0.5" max="90" placeholder="Ex: 8.5" required>
+                                    <span class="field-error-msg" id="error-petWeight">Informe o peso aproximado (entre 0,5 kg e 90 kg).</span>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="petNotes">Observações de saúde, vacinas ou alergias (opcional)</label>
+                                    <textarea id="petNotes" name="petNotes" rows="3" placeholder="Conte-nos se o pet possui alguma alergia medicamentosa, cio recente, uso de remédios contínuos ou comportamento tímido..."></textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary btn-submit">
+                                Confirmar Solicitação de Agendamento
+                            </button>
+                            <p class="privacy-note">
+                                Seus dados são protegidos e utilizados exclusivamente pela equipe veterinária da <strong>PetCare &amp; Amor</strong>.
+                            </p>
+                        </div>
+                    </form>
+
+                    <!-- Painel de Feedback Interativo após o Envio -->
+                    <div id="confirmationPanel" class="confirmation-panel" role="status" aria-live="polite">
+                        <div class="success-circle" aria-hidden="true">
+                            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <h3>Agendamento Solicitado com Carinho!</h3>
+                        <p style="color: var(--color-text-muted); max-width: 520px; margin: 0 auto;">
+                            Recebemos os dados do seu pet. Nossa recepção veterinária enviará uma mensagem no seu WhatsApp em instantes com as instruções de jejum pré-operatório.
+                        </p>
+
+                        <div class="confirmation-summary" id="confirmationSummary">
+                            <!-- Preenchido dinamicamente via JavaScript -->
+                        </div>
+
+                        <button type="button" id="newBookingBtn" class="btn btn-secondary">
+                            Agendar Outro Pet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================================================================
+         RODAPÉ
+         ====================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e07a5f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="4" r="2"/>
+                            <circle cx="18" cy="8" r="2"/>
+                            <circle cx="20" cy="16" r="2"/>
+                            <path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/>
+                        </svg>
+                        PetCare &amp; Amor
+                    </div>
+                    <p class="footer-desc">
+                        Clínica Veterinária e PetShop dedicados à saúde preventiva, bem-estar e castração segura de cães e gatos.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Atendimento</h4>
+                    <ul class="footer-info">
+                        <li>Segunda a Sexta: 08h às 19h</li>
+                        <li>Sábados: 08h às 15h</li>
+                        <li>Plantão Pós-Operatório 24h para clientes</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Contato &amp; Localização</h4>
+                    <ul class="footer-info">
+                        <li>Rua das Acácias, 420 - Jardim Botânico</li>
+                        <li>WhatsApp: (11) 98765-4321</li>
+                        <li>contato@petcareeamor.com.br</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 PetCare &amp; Amor — Todos os direitos reservados. Castrar é um ato de responsabilidade.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================================
+         JAVASCRIPT PARA INTERATIVIDADE, MÁSCARAS E VALIDAÇÃO DO FORMULÁRIO
+         ====================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Controle do Menu Mobile
+            const navToggle = document.getElementById('navToggle');
+            const mainNav = document.getElementById('mainNav');
+            const navLinks = mainNav.querySelectorAll('a');
+
+            navToggle.addEventListener('click', () => {
+                const isOpen = mainNav.classList.toggle('is-open');
+                navToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mainNav.classList.remove('is-open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            // 2. Definir data mínima no calendário para amanhã
+            const dateInput = document.getElementById('preferredDate');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const minDateStr = tomorrow.toISOString().split('T')[0];
+            dateInput.setAttribute('min', minDateStr);
+
+            // 3. Máscaras amigáveis para Telefone e CPF
+            const phoneInput = document.getElementById('tutorPhone');
+            phoneInput.addEventListener('input', (e) => {
+                let digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+                if (digits.length > 6) {
+                    e.target.value = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+                } else if (digits.length > 2) {
+                    e.target.value = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+                } else if (digits.length > 0) {
+                    e.target.value = `(${digits}`;
+                }
+            });
+
+            const cpfInput = document.getElementById('tutorCpf');
+            cpfInput.addEventListener('input', (e) => {
+                let digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+                if (digits.length > 9) {
+                    e.target.value = `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+                } else if (digits.length > 6) {
+                    e.target.value = `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+                } else if (digits.length > 3) {
+                    e.target.value = `${digits.slice(0, 3)}.${digits.slice(3)}`;
+                } else {
+                    e.target.value = digits;
+                }
+            });
+
+            // 4. Validação e Submissão do Formulário
+            const form = document.getElementById('castrationForm');
+            const confirmationPanel = document.getElementById('confirmationPanel');
+            const confirmationSummary = document.getElementById('confirmationSummary');
+            const newBookingBtn = document.getElementById('newBookingBtn');
+
+            function setFieldError(inputEl, errorId, hasError) {
+                const errorEl = document.getElementById(errorId);
+                if (hasError) {
+                    inputEl.classList.add('has-error');
+                    if (errorEl) errorEl.classList.add('visible');
+                } else {
+                    inputEl.classList.remove('has-error');
+                    if (errorEl) errorEl.classList.remove('visible');
+                }
+            }
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // Validação Nome Tutor
+                const tutorName = document.getElementById('tutorName');
+                const nameInvalid = tutorName.value.trim().length < 3;
+                setFieldError(tutorName, 'error-tutorName', nameInvalid);
+                if (nameInvalid) isValid = false;
+
+                // Validação Telefone (mínimo 10 dígitos)
+                const phoneDigits = phoneInput.value.replace(/\D/g, '');
+                const phoneInvalid = phoneDigits.length < 10;
+                setFieldError(phoneInput, 'error-tutorPhone', phoneInvalid);
+                if (phoneInvalid) isValid = false;
+
+                // Validação CPF (11 dígitos)
+                const cpfDigits = cpfInput.value.replace(/\D/g, '');
+                const cpfInvalid = cpfDigits.length !== 11;
+                setFieldError(cpfInput, 'error-tutorCpf', cpfInvalid);
+                if (cpfInvalid) isValid = false;
+
+                // Validação E-mail
+                const tutorEmail = document.getElementById('tutorEmail');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const emailInvalid = !emailRegex.test(tutorEmail.value.trim());
+                setFieldError(tutorEmail, 'error-tutorEmail', emailInvalid);
+                if (emailInvalid) isValid = false;
+
+                // Validação Nome do Pet
+                const petName = document.getElementById('petName');
+                const petNameInvalid = petName.value.trim().length < 2;
+                setFieldError(petName, 'error-petName', petNameInvalid);
+                if (petNameInvalid) isValid = false;
+
+                // Validação Data Preferencial
+                const dateInvalid = !dateInput.value || dateInput.value < minDateStr;
+                setFieldError(dateInput, 'error-preferredDate', dateInvalid);
+                if (dateInvalid) isValid = false;
+
+                // Validação Idade
+                const petAge = document.getElementById('petAge');
+                const ageInvalid = !petAge.value;
+                setFieldError(petAge, 'error-petAge', ageInvalid);
+                if (ageInvalid) isValid = false;
+
+                // Validação Peso
+                const petWeight = document.getElementById('petWeight');
+                const weightVal = parseFloat(petWeight.value);
+                const weightInvalid = isNaN(weightVal) || weightVal < 0.5 || weightVal > 90;
+                setFieldError(petWeight, 'error-petWeight', weightInvalid);
+                if (weightInvalid) isValid = false;
+
+                if (!isValid) {
+                    const firstError = form.querySelector('.has-error');
+                    if (firstError) firstError.focus();
+                    return;
+                }
+
+                // Coletar dados válidos para exibir no resumo de confirmação
+                const species = form.querySelector('input[name="petSpecies"]:checked').value;
+                const sex = form.querySelector('input[name="petSex"]:checked').value;
+                const notes = document.getElementById('petNotes').value.trim();
+                const [year, month, day] = dateInput.value.split('-');
+                const formattedDate = `${day}/${month}/${year}`;
+
+                confirmationSummary.innerHTML = `
+                    <p><strong>Tutor:</strong> ${tutorName.value.trim()} (${phoneInput.value})</p>
+                    <p><strong>Pet:</strong> ${petName.value.trim()} — ${species} (${sex})</p>
+                    <p><strong>Porte / Idade:</strong> ${weightVal.toFixed(1)} kg • ${petAge.value}</p>
+                    <p><strong>Data Preferencial:</strong> ${formattedDate}</p>
+                    ${notes ? `<p><strong>Observações registradas:</strong> ${notes}</p>` : ''}
+                `;
+
+                form.style.display = 'none';
+                confirmationPanel.classList.add('is-visible');
+                confirmationPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+
+            // Permitir novo agendamento
+            newBookingBtn.addEventListener('click', () => {
+                form.reset();
+                form.style.display = 'block';
+                confirmationPanel.classList.remove('is-visible');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>

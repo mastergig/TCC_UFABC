@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiros Brasil | Destinos, Cultura e Ecoturismo</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display (Editorial) & Inter (Leitura limpa) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Configuração Customizada do Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brasil: {
+                            emerald: '#065f46',    // Verde Esmeralda Mata Atlântica
+                            emeraldLight: '#10b981',
+                            turquoise: '#0e7490',  // Azul Turquesa Litoral
+                            turquoiseLight: '#06b6d4',
+                            sand: '#faf8f5',       // Areia / Off-white Editorial
+                            sandDark: '#f2ede4',
+                            terracotta: '#c2410c', // Terracota / Barro
+                            gold: '#d97706',       // Dourado Solar
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos personalizados complementares */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .editorial-shadow {
+            box-shadow: 0 10px 30px -10px rgba(6, 95, 70, 0.12);
+        }
+        .dark .editorial-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        /* Barra de rolagem customizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #065f46;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #047857;
+        }
+    </style>
+</head>
+<body class="bg-brasil-sand text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-brasil-emerald selection:text-white">
+
+    <!-- Notificação Toast Flutuante (Substitui alert) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- HEADER & NAVEGAÇÃO -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-stone-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#" onclick="resetFilters()" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brasil-emerald to-brasil-turquoise flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-compass text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-2xl tracking-tight text-brasil-emerald dark:text-emerald-400">Roteiros</span>
+                        <span class="font-serif font-bold text-2xl tracking-tight text-brasil-terracotta dark:text-amber-500">Brasil</span>
+                        <p class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 -mt-1">Expedições & Cultura</p>
+                    </div>
+                </a>
+
+                <!-- Links de Regiões (Desktop) -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <button onclick="filterByRegion('Todas')" class="region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-brasil-emerald dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 transition" data-region="Todas">Explorar Tudo</button>
+                    <button onclick="filterByRegion('Nordeste')" class="region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brasil-emerald dark:hover:text-emerald-400 hover:bg-stone-100 dark:hover:bg-slate-800 transition" data-region="Nordeste">Nordeste</button>
+                    <button onclick="filterByRegion('Sudeste')" class="region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brasil-emerald dark:hover:text-emerald-400 hover:bg-stone-100 dark:hover:bg-slate-800 transition" data-region="Sudeste">Sudeste</button>
+                    <button onclick="filterByRegion('Sul')" class="region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brasil-emerald dark:hover:text-emerald-400 hover:bg-stone-100 dark:hover:bg-slate-800 transition" data-region="Sul">Sul</button>
+                    <button onclick="filterByRegion('Norte')" class="region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brasil-emerald dark:hover:text-emerald-400 hover:bg-stone-100 dark:hover:bg-slate-800 transition" data-region="Norte">Norte</button>
+                    <button onclick="filterByRegion('Centro-Oeste')" class="region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brasil-emerald dark:hover:text-emerald-400 hover:bg-stone-100 dark:hover:bg-slate-800 transition" data-region="Centro-Oeste">Centro-Oeste</button>
+                </nav>
+
+                <!-- Busca, Favoritos e Tema -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Barra de Busca Desktop -->
+                    <div class="relative hidden md:block">
+                        <input type="text" id="search-input" placeholder="Buscar destino, estado..." 
+                            class="w-56 lg:w-64 pl-9 pr-4 py-2 text-sm rounded-full bg-stone-100 dark:bg-slate-800 border border-transparent focus:border-brasil-emerald dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+                    </div>
+
+                    <!-- Botão Favoritos -->
+                    <button id="favorites-toggle-btn" onclick="toggleFavoritesFilter()" title="Ver Roteiros Salvos"
+                        class="relative p-2.5 rounded-full bg-stone-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-amber-100 dark:hover:bg-slate-700 transition">
+                        <i class="fa-regular fa-bookmark text-base"></i>
+                        <span id="favorites-count" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brasil-terracotta text-white text-[10px] font-bold flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Botão Dark Mode -->
+                    <button id="theme-toggle" title="Alternar Tema"
+                        class="p-2.5 rounded-full bg-stone-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-stone-200 dark:hover:bg-slate-700 transition">
+                        <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
+                    </button>
+
+                    <!-- Menu Mobile Button -->
+                    <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-stone-100 dark:hover:bg-slate-800">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de Busca Mobile e Menu Expansível -->
+            <div id="mobile-menu" class="hidden lg:hidden pb-4 border-t border-stone-200 dark:border-slate-800 pt-3 space-y-3">
+                <div class="relative">
+                    <input type="text" id="mobile-search-input" placeholder="Buscar destino, estado ou palavra-chave..." 
+                        class="w-full pl-9 pr-4 py-2 text-sm rounded-xl bg-stone-100 dark:bg-slate-800 border border-stone-200 dark:border-slate-700 focus:outline-none">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                    <button onclick="filterByRegion('Todas')" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-brasil-emerald text-white">Todas Regiões</button>
+                    <button onclick="filterByRegion('Nordeste')" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-100 dark:bg-slate-800">Nordeste</button>
+                    <button onclick="filterByRegion('Sudeste')" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-100 dark:bg-slate-800">Sudeste</button>
+                    <button onclick="filterByRegion('Sul')" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-100 dark:bg-slate-800">Sul</button>
+                    <button onclick="filterByRegion('Norte')" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-100 dark:bg-slate-800">Norte</button>
+                    <button onclick="filterByRegion('Centro-Oeste')" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-100 dark:bg-slate-800">Centro-Oeste</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION (DESTAQUE PRINCIPAL) -->
+    <section id="hero-section" class="relative overflow-hidden bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl min-h-[480px] md:min-h-[560px] flex items-end group">
+                <!-- Imagem de Fundo Hero (Lençóis Maranhenses) -->
+                <img src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=1600&q=85" 
+                     onerror="this.src='https://placehold.co/1600x900/065f46/ffffff?text=Lencois+Maranhenses+-+Brasil'"
+                     alt="Dunas e lagoas cristalinas dos Lençóis Maranhenses" 
+                     class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000">
+                
+                <!-- Gradiente Editorial -->
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+
+                <!-- Conteúdo Hero -->
+                <div class="relative z-10 p-6 sm:p-10 md:p-14 max-w-3xl text-white">
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-brasil-gold text-white shadow-sm">
+                            <i class="fa-solid fa-star mr-1"></i> Destaque da Edição
+                        </span>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-md text-white">
+                            Nordeste • Maranhão
+                        </span>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-brasil-turquoise/80 backdrop-blur-md text-white">
+                            Ecoturismo & Aventura
+                        </span>
+                    </div>
+
+                    <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 drop-shadow-sm">
+                        Lençóis Maranhenses: Onde o Deserto Encontra Águas Cristalinas
+                    </h1>
+
+                    <p class="text-slate-200 text-base sm:text-lg mb-8 line-clamp-3 leading-relaxed">
+                        Explore um fenômeno geológico único no mundo: 155 mil hectares de dunas de areia branca esculpidas pelos ventos, intercaladas por milhares de lagoas de água doce azul-turquesa e verde-esmeralda.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <button onclick="openArticleModal('lencois-maranhenses')" 
+                            class="px-7 py-3.5 rounded-full bg-brasil-emerald hover:bg-emerald-700 text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-emerald-900/40 transition-all flex items-center gap-2 cursor-pointer">
+                            <span>Ler Artigo Completo</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <div class="flex items-center gap-3 text-xs sm:text-sm text-slate-300">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" 
+                                 onerror="this.src='https://placehold.co/100x100/0e7490/ffffff?text=CM'"
+                                 alt="Autora" class="w-9 h-9 rounded-full object-cover border-2 border-white/50">
+                            <div>
+                                <p class="font-medium text-white">Por Camila Mendes</p>
+                                <p class="text-slate-300 text-xs">8 min de leitura • Atualizado em 2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BARRA DE FILTROS POR CATEGORIA E STATUS -->
+    <section class="border-b border-stone-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 sticky top-20 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                
+                <!-- Abas de Categorias -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 no-scrollbar" id="category-tabs">
+                    <button onclick="filterByCategory('Todos')" data-category="Todos"
+                        class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-brasil-emerald text-white shadow-sm transition">
+                        Todos os Roteiros
+                    </button>
+                    <button onclick="filterByCategory('Praias & Ilhas')" data-category="Praias & Ilhas"
+                        class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-stone-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-umbrella-beach mr-1.5 text-brasil-turquoise"></i>Praias & Ilhas
+                    </button>
+                    <button onclick="filterByCategory('Ecoturismo & Aventura')" data-category="Ecoturismo & Aventura"
+                        class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-stone-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-mountain-sun mr-1.5 text-brasil-emeraldLight"></i>Ecoturismo & Aventura
+                    </button>
+                    <button onclick="filterByCategory('Cultura & História')" data-category="Cultura & História"
+                        class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-stone-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-landmark mr-1.5 text-brasil-terracotta"></i>Cultura & História
+                    </button>
+                    <button onclick="filterByCategory('Cidades & Gastronomia')" data-category="Cidades & Gastronomia"
+                        class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-stone-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-wine-glass mr-1.5 text-brasil-gold"></i>Cidades & Gastronomia
+                    </button>
+                </div>
+
+                <!-- Contador de Resultados e Limpar Filtros -->
+                <div class="flex items-center justify-between md:justify-end gap-3 text-xs text-slate-500 dark:text-slate-400">
+                    <span id="results-counter">Exibindo 8 destinos incríveis</span>
+                    <button id="clear-filters-btn" onclick="resetFilters()" class="hidden text-brasil-terracotta font-semibold hover:underline">
+                        Limpar filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTEÚDO PRINCIPAL: GRID DE ARTIGOS + SIDEBAR -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- COLUNA ESQUERDA: GRID DE ARTIGOS (8 colunas em desktop) -->
+            <div class="lg:col-span-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 id="section-heading" class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                        Guias & Crônicas de Viagem
+                    </h2>
+                    <div class="h-0.5 flex-1 bg-stone-200 dark:bg-slate-800 ml-4"></div>
+                </div>
+
+                <!-- Grid de Cards -->
+                <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Os cards serão renderizados dinamicamente via JavaScript -->
+                </div>
+
+                <!-- Estado Vazio (Quando nenhum artigo corresponde ao filtro) -->
+                <div id="empty-state" class="hidden text-center py-16 px-6 bg-white dark:bg-slate-900 rounded-3xl border border-stone-200 dark:border-slate-800">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-stone-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 text-2xl">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-2">Nenhum roteiro encontrado</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
+                        Não encontramos destinos com os filtros selecionados. Que tal explorar todas as regiões do Brasil?
+                    </p>
+                    <button onclick="resetFilters()" class="px-6 py-2.5 rounded-full bg-brasil-emerald text-white text-sm font-medium hover:bg-emerald-700 transition">
+                        Ver Todos os Destinos
+                    </button>
+                </div>
+            </div>
+
+            <!-- COLUNA DIREITA: SIDEBAR EDITORIAL (4 colunas em desktop) -->
+            <aside class="lg:col-span-4 space-y-8">
+                
+                <!-- Widget 1: Seletor Rápido por Estado / Mapa Interativo Simplificado -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 editorial-shadow border border-stone-200/80 dark:border-slate-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-map text-brasil-emerald"></i> Explore por Estado
+                        </h3>
+                        <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 text-brasil-emerald dark:text-emerald-400">8 UFs</span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        Clique em uma sigla estadual para filtrar os roteiros disponíveis naquela região:
+                    </p>
+                    <div class="grid grid-cols-4 gap-2" id="state-selector">
+                        <button onclick="filterByState('MA')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">MA</span>
+                            <span class="block text-[10px] text-slate-400">Nordeste</span>
+                        </button>
+                        <button onclick="filterByState('PE')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">PE</span>
+                            <span class="block text-[10px] text-slate-400">Nordeste</span>
+                        </button>
+                        <button onclick="filterByState('BA')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">BA</span>
+                            <span class="block text-[10px] text-slate-400">Nordeste</span>
+                        </button>
+                        <button onclick="filterByState('MS')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">MS</span>
+                            <span class="block text-[10px] text-slate-400">C-Oeste</span>
+                        </button>
+                        <button onclick="filterByState('RS')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">RS</span>
+                            <span class="block text-[10px] text-slate-400">Sul</span>
+                        </button>
+                        <button onclick="filterByState('MG')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">MG</span>
+                            <span class="block text-[10px] text-slate-400">Sudeste</span>
+                        </button>
+                        <button onclick="filterByState('PA')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">PA</span>
+                            <span class="block text-[10px] text-slate-400">Norte</span>
+                        </button>
+                        <button onclick="filterByState('RJ')" class="state-btn py-2.5 rounded-xl border border-stone-200 dark:border-slate-700 hover:border-brasil-emerald hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-center transition group">
+                            <span class="block font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brasil-emerald">RJ</span>
+                            <span class="block text-[10px] text-slate-400">Sudeste</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Widget 2: Destinos em Alta -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 editorial-shadow border border-stone-200/80 dark:border-slate-800">
+                    <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-white mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-fire text-brasil-terracotta"></i> Destinos em Alta
+                    </h3>
+                    <div class="space-y-4" id="trending-list">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+
+                <!-- Widget 3: Newsletter Editorial -->
+                <div class="relative overflow-hidden rounded-3xl p-7 bg-gradient-to-br from-brasil-emerald via-emerald-800 to-brasil-turquoise text-white shadow-xl">
+                    <div class="relative z-10">
+                        <span class="inline-block px-3 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wider uppercase mb-3">
+                            Passaporte Semanal
+                        </span>
+                        <h3 class="font-serif text-2xl font-bold mb-2">
+                            Receba roteiros secretos no seu e-mail
+                        </h3>
+                        <p class="text-emerald-100 text-sm mb-5 leading-relaxed">
+                            Dicas de hospedagem boutique, épocas ideais para viajar e guias em PDF gratuitos toda quinta-feira.
+                        </p>
+                        <form id="newsletter-form" onsubmit="handleNewsletterSubmit(event)" class="space-y-3">
+                            <input type="text" id="newsletter-name" required placeholder="Seu primeiro nome" 
+                                class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/25 text-white placeholder-emerald-200 text-sm focus:outline-none focus:bg-white/20">
+                            <input type="email" id="newsletter-email" required placeholder="seu@email.com.br" 
+                                class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/25 text-white placeholder-emerald-200 text-sm focus:outline-none focus:bg-white/20">
+                            <button type="submit" 
+                                class="w-full py-3 rounded-xl bg-brasil-gold hover:bg-amber-600 text-white font-semibold text-sm shadow-md transition cursor-pointer">
+                                Assinar Gratuitamente
+                            </button>
+                        </form>
+                        <p class="text-[11px] text-emerald-200/80 mt-3 text-center">
+                            Sem spam. Cancele sua inscrição quando quiser.
+                        </p>
+                    </div>
+                    <!-- Elemento decorativo -->
+                    <i class="fa-solid fa-leaf absolute -bottom-6 -right-6 text-9xl text-white/5 rotate-12 pointer-events-none"></i>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- MODAL DE LEITURA COMPLETA DO ARTIGO -->
+    <div id="article-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-950/75 backdrop-blur-sm transition-opacity">
+        <div class="min-h-screen px-2 sm:px-4 py-6 sm:py-10 flex items-start justify-center">
+            <div class="relative w-full max-w-4xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-stone-200 dark:border-slate-800 my-auto">
+                
+                <!-- Barra Superior Fixa do Modal -->
+                <div class="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-stone-200 dark:border-slate-800">
+                    <div class="flex items-center gap-2 text-xs font-semibold text-brasil-emerald dark:text-emerald-400 uppercase tracking-wider">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span id="modal-breadcrumb">Região • Estado</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="modal-like-btn" onclick="toggleLikeCurrentArticle()" 
+                            class="px-3.5 py-1.5 rounded-full text-xs font-semibold border border-stone-200 dark:border-slate-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition">
+                            <i class="fa-regular fa-heart text-rose-500"></i>
+                            <span id="modal-likes-count">0</span>
+                        </button>
+                        <button id="modal-fav-btn" onclick="toggleFavoriteCurrentArticle()" 
+                            class="px-3.5 py-1.5 rounded-full text-xs font-semibold border border-stone-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition">
+                            <i class="fa-regular fa-bookmark text-brasil-gold"></i>
+                            <span id="modal-fav-text">Salvar</span>
+                        </button>
+                        <button onclick="closeArticleModal()" title="Fechar Leitura"
+                            class="w-9 h-9 rounded-full bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition ml-1">
+                            <i class="fa-solid fa-xmark text-base"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Dinâmico do Artigo -->
+                <div id="modal-content-body" class="pb-12">
+                    <!-- Preenchido via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER COMPLETO -->
+    <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                
+                <!-- Sobre -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brasil-emerald to-brasil-turquoise flex items-center justify-center text-white">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <span class="font-serif font-bold text-xl text-white">Roteiros <span class="text-amber-500">Brasil</span></span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Curadoria independente de viagens pelo território brasileiro. Celebramos a biodiversidade, a arquitetura histórica e a hospitalidade única de cada canto do país.
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#instagram" onclick="showToast('Seguindo @roteirosbrasil no Instagram!', 'info'); return false;" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-brasil-emerald flex items-center justify-center text-white transition">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#youtube" onclick="showToast('Canal Roteiros Brasil no YouTube!', 'info'); return false;" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-brasil-emerald flex items-center justify-center text-white transition">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#pinterest" onclick="showToast('Inspirações no Pinterest!', 'info'); return false;" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-brasil-emerald flex items-center justify-center text-white transition">
+                            <i class="fa-brands fa-pinterest-p"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Regiões -->
+                <div>
+                    <h4 class="font-serif font-bold text-white text-lg mb-4">Regiões do Brasil</h4>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><button onclick="filterByRegion('Nordeste'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Nordeste & Litoral</button></li>
+                        <li><button onclick="filterByRegion('Sudeste'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Sudeste Histórico</button></li>
+                        <li><button onclick="filterByRegion('Sul'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Sul & Serras</button></li>
+                        <li><button onclick="filterByRegion('Norte'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Amazônia & Norte</button></li>
+                        <li><button onclick="filterByRegion('Centro-Oeste'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Centro-Oeste & Águas</button></li>
+                    </ul>
+                </div>
+
+                <!-- Categorias -->
+                <div>
+                    <h4 class="font-serif font-bold text-white text-lg mb-4">Estilos de Viagem</h4>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><button onclick="filterByCategory('Praias & Ilhas'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Praias & Ilhas Paradisíacas</button></li>
+                        <li><button onclick="filterByCategory('Ecoturismo & Aventura'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Ecoturismo & Trilhas</button></li>
+                        <li><button onclick="filterByCategory('Cultura & História'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Cidades Coloniais & História</button></li>
+                        <li><button onclick="filterByCategory('Cidades & Gastronomia'); window.scrollTo(0, 500);" class="hover:text-emerald-400 transition">Enoturismo & Gastronomia</button></li>
+                    </ul>
+                </div>
+
+                <!-- Institucional -->
+                <div>
+                    <h4 class="font-serif font-bold text-white text-lg mb-4">Editorial</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#" onclick="showToast('Turismo sustentável é nosso pilar principal.', 'info'); return false;" class="hover:text-white transition">Manifesto Turismo Responsável</a></li>
+                        <li><a href="#" onclick="showToast('Envie sua pauta para editorial@roteirosbrasil.com.br', 'info'); return false;" class="hover:text-white transition">Escreva para o Blog</a></li>
+                        <li><a href="#" onclick="showToast('Todos os guias são verificados in loco.', 'info'); return false;" class="hover:text-white transition">Política Editorial</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 Roteiros Brasil. Todos os direitos reservados.</p>
+                <p>Feito com <i class="fa-solid fa-heart text-brasil-terracotta mx-1"></i> para exploradores da nossa terra.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT: DADOS DOS ARTIGOS E LÓGICA INTERATIVA -->
+    <script>
+        // Banco de Dados Completo de Artigos sobre Pontos Turísticos Brasileiros
+        const articlesData = [
+            {
+                id: 'lencois-maranhenses',
+                title: 'Lençóis Maranhenses: Onde o Deserto Encontra Águas Cristalinas',
+                subtitle: 'Uma travessia inesquecível pelas dunas douradas e lagoas de água doce de Barreirinhas, Atins e Santo Amaro.',
+                state: 'MA',
+                city: 'Barreirinhas & Santo Amaro',
+                region: 'Nordeste',
+                category: 'Ecoturismo & Aventura',
+                readTime: '8 min',
+                date: '14 Out 2026',
+                author: {
+                    name: 'Camila Mendes',
+                    role: 'Repórter de Ecoturismo',
+                    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 342,
+                trending: true,
+                excerpt: 'Mais de 155 mil hectares de dunas esculpidas pelos ventos alísios guardam milhares de lagoas formadas pelas chuvas tropicais.',
+                content: [
+                    {
+                        heading: 'Um Ecossistema Único no Planeta',
+                        text: 'Apesar da aparência desértica, os Lençóis Maranhenses recebem cerca de 1.600 mm de chuva todos os anos entre janeiro e maio. A água fica retida entre os vales das dunas graças ao lençol freático raso, criando piscinas naturais de temperatura agradável que variam entre tons de azul-turquesa e verde-esmeralda.'
+                    },
+                    {
+                        heading: 'As Três Portas de Entrada: Barreirinhas, Atins e Santo Amaro',
+                        text: 'Barreirinhas oferece a maior infraestrutura de pousadas e passeios clássicos, como a Lagoa Azul e a Lagoa Bonita. Já Atins, vilarejo rústico onde o Rio Preguiças encontra o mar, atrai praticantes de kitesurf e viajantes em busca de charme pé na areia. Santo Amaro, por sua vez, brinda os visitantes com as lagoas mais preservadas e próximas da cidade.'
+                    },
+                    {
+                        heading: 'O Pôr do Sol no Topo das Dunas',
+                        text: 'Nenhuma fotografia prepara o viajante para o silêncio absoluto do fim de tarde no topo de uma duna de 40 metros. À medida que o sol mergulha no horizonte, a areia ganha tons dourados e alaranjados enquanto a brisa constante refresca a caminhada.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Junho a Setembro (lagoas cheias e dias ensolarados sem chuvas).',
+                    howToGet: 'Voo até São Luís (SLZ) seguido de transfer 4x4 ou van (aprox. 4h até Barreirinhas).',
+                    whatToPack: 'Protetor solar biodegradável, óculos escuros, chapéu com presilha, sandálias papete e roupas leves com proteção UV.'
+                },
+                comments: [
+                    { author: 'Rafael Costa', date: '2 dias atrás', text: 'Fui em julho passado seguindo o roteiro por Santo Amaro e foi a experiência mais surreal da minha vida!' },
+                    { author: 'Mariana Oliveira', date: '1 semana atrás', text: 'Dica extra: não deixem de provar o camarão grelhado do Canto do Atins!' }
+                ]
+            },
+            {
+                id: 'fernando-de-noronha',
+                title: 'Fernando de Noronha: Santuário Marinho e Praias Premiada',
+                subtitle: 'Mergulho com golfinhos, trilhas vulcânicas e o azul profundo do arquipélago pernambucano.',
+                state: 'PE',
+                city: 'Fernando de Noronha',
+                region: 'Nordeste',
+                category: 'Praias & Ilhas',
+                readTime: '9 min',
+                date: '02 Nov 2026',
+                author: {
+                    name: 'Lucas Albuquerque',
+                    role: 'Fotógrafo Subaquático',
+                    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 418,
+                trending: true,
+                excerpt: 'Eleita repetidas vezes como lar das praias mais bonitas do mundo, Noronha combina rigorosa preservação ambiental com biodiversidade marinha exuberante.',
+                content: [
+                    {
+                        heading: 'Baía do Sancho e Baía dos Porcos',
+                        text: 'Acessada por uma escadaria encravada em uma fenda rochosa, a Baía do Sancho revela uma enseada protegida por falésias cobertas de vegetação nativa. Logo ao lado, a Baía dos Porcos oferece a vista icônica do Morro Dois Irmãos emoldurado por piscinas naturais repletas de peixes coloridos.'
+                    },
+                    {
+                        heading: 'Vida Marinha em Abundância',
+                        text: 'Com visibilidade subaquática que ultrapassa 40 metros, Fernando de Noronha é o destino número um do Brasil para mergulho autônomo e snorkeling. Tartarugas-verdes, raias-chita, tubarões-limão e golfinhos-rotadores fazem parte do cotidiano da ilha.'
+                    },
+                    {
+                        heading: 'Preservação e Turismo Consciente',
+                        text: 'O controle rigoroso de visitantes por meio da Taxa de Preservação Ambiental garante que o arquipélago mantenha suas trilhas limpas e sua fauna protegida, proporcionando uma conexão genuína com a natureza atlântica.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Agosto a Novembro (mar calmo estilo piscina no Mar de Dentro) ou Dezembro a Março (ideal para surfe).',
+                    howToGet: 'Voos diretos saindo de Recife (REC) ou Natal (NAT) com duração média de 1h15.',
+                    whatToPack: 'Máscara e snorkel próprios, sapatilha aquática para pedras vulcânicas e garrafa reutilizável.'
+                },
+                comments: [
+                    { author: 'Fernanda Lima', date: '5 dias atrás', text: 'Nadar ao lado de tartarugas na Praia do Sueste é emocionante demais.' }
+                ]
+            },
+            {
+                id: 'chapada-diamantina',
+                title: 'Chapada Diamantina: Cachoeiras Monumentais e Grutas Encantadas',
+                subtitle: 'No coração da Bahia, cânions vertiginosos e poços de luz azul desafiam os amantes de trekking.',
+                state: 'BA',
+                city: 'Lençóis, Mucugê & Vale do Pati',
+                region: 'Nordeste',
+                category: 'Ecoturismo & Aventura',
+                readTime: '10 min',
+                date: '25 Out 2026',
+                author: {
+                    name: 'Camila Mendes',
+                    role: 'Repórter de Ecoturismo',
+                    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 289,
+                trending: true,
+                excerpt: 'Antiga região de garimpo de diamantes, a Chapada guarda hoje tesouros naturais como a Cachoeira da Fumaça e o Poço Azul.',
+                content: [
+                    {
+                        heading: 'O Espetáculo do Poço Encantado e Poço Azul',
+                        text: 'Em cavernas calcárias inundadas por águas extremamente puras, um feixe de luz solar incide em ângulo perfeito durante determinados meses do ano, iluminando o fundo rochoso a mais de 30 metros de profundidade com um azul neon hipnotizante.'
+                    },
+                    {
+                        heading: 'Trekking no Vale do Pati',
+                        text: 'Considerado um dos trekkings mais bonitos da América do Sul, o Vale do Pati convida o viajante a atravessar campos rupestres, mirantes como o do Castelo e dormir na casa de moradores locais, vivenciando a hospitalidade sertaneja.'
+                    },
+                    {
+                        heading: 'Morro do Pai Inácio e Lençóis',
+                        text: 'A cidade histórica de Lençóis serve como base perfeita com suas ruas de pedra, casarões coloniais coloridos e restaurantes acolhedores após um dia intenso de trilhas até o topo do Morro do Pai Inácio.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Abril a Outubro (período mais seco, ideal para trilhas e incidência de luz nos poços).',
+                    howToGet: 'Voos regionais até Lençóis (LEC) ou viagem rodoviária de 6h a partir de Salvador.',
+                    whatToPack: 'Bota de trekking já amaciada, mochila de ataque, lanterna de cabeça e corta-vento.'
+                },
+                comments: [
+                    { author: 'Thiago Nogueira', date: '3 dias atrás', text: 'O Vale do Pati mudou minha forma de enxergar viagens no Brasil. Indispensável!' }
+                ]
+            },
+            {
+                id: 'bonito-ms',
+                title: 'Bonito: Flutuação em Rios de Transparência Surreal',
+                subtitle: 'Como a capital brasileira do ecoturismo tornou-se referência mundial em sustentabilidade e águas cristalinas.',
+                state: 'MS',
+                city: 'Bonito & Jardim',
+                region: 'Centro-Oeste',
+                category: 'Ecoturismo & Aventura',
+                readTime: '7 min',
+                date: '19 Out 2026',
+                author: {
+                    name: 'Pedro Vasconcelos',
+                    role: 'Especialista em Biodiversidade',
+                    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 256,
+                trending: false,
+                excerpt: 'Rios ricos em calcário transformam a flutuação no Rio da Prata e no Rio Sucuri na sensação de voar sobre um aquário natural.',
+                content: [
+                    {
+                        heading: 'O Segredo da Água Cristalina',
+                        text: 'A Serra da Bodoquena é formada por rochas calcárias. O carbonato de cálcio presente na água calcifica qualquer partícula de impureza, fazendo-a decantar no fundo do rio. O resultado é uma visibilidade absoluta onde dourados, piraputangas e curimbatás nadam serenamente ao seu lado.'
+                    },
+                    {
+                        heading: 'Gruta do Lago Azul e Abismo Anhumas',
+                        text: 'Cartão-postal da região, a Gruta do Lago Azul impressiona pelas estalactites milenares e pela cor intensa de suas águas subterrâneas. Para os mais aventureiros, o rapel de 72 metros no Abismo Anhumas revela uma caverna monumental.'
+                    },
+                    {
+                        heading: 'Organização Exemplar',
+                        text: 'Todos os passeios em Bonito operam com sistema de voucher único e limite diário de visitantes, garantindo preservação impecável e segurança total para famílias e viajantes solo.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Maio a Setembro (estação seca, água ainda mais cristalina) ou Dezembro a Março (cachoeiras cheias e mata vibrante).',
+                    howToGet: 'Voos diretos para Bonito (BYO) ou desembarque em Campo Grande (CGR) + 3h30 de carro.',
+                    whatToPack: 'Roupas de banho, repelente, câmera à prova d’água e agasalho leve para as noites de inverno.'
+                },
+                comments: []
+            },
+            {
+                id: 'gramado-serra-gaucha',
+                title: 'Gramado e Serra Gaúcha: Arquitetura Alpina, Vinhos e Gastronomia',
+                subtitle: 'O charme europeu nas montanhas do Rio Grande do Sul, entre hortênsias, vinícolas premiadas e cafés coloniais.',
+                state: 'RS',
+                city: 'Gramado, Canela & Bento Gonçalves',
+                region: 'Sul',
+                category: 'Cidades & Gastronomia',
+                readTime: '7 min',
+                date: '08 Nov 2026',
+                author: {
+                    name: 'Helena Bier',
+                    role: 'Colunista de Gastronomia',
+                    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 315,
+                trending: true,
+                excerpt: 'Influenciada pela imigração alemã e italiana, a Serra Gaúcha encanta em todas as estações com lareiras aconchegantes, fondues e o Vale dos Vinhedos.',
+                content: [
+                    {
+                        heading: 'O Encanto de Gramado e Canela',
+                        text: 'Caminhar pela Avenida Borges de Medeiros ou contornar o Lago Negro cercado por araucárias e hortênsias transmite a atmosfera de um vilarejo bávaro. A poucos minutos, em Canela, a Cascata do Caracol despenca 131 metros em meio à Mata Atlântica.'
+                    },
+                    {
+                        heading: 'Enoturismo no Vale dos Vinhedos',
+                        text: 'Estendendo o roteiro até Bento Gonçalves e Garibaldi, o viajante mergulha na cultura do vinho brasileiro. Vinícolas familiares e grandes caves oferecem degustações harmonizadas de espumantes premiados internacionalmente.'
+                    },
+                    {
+                        heading: 'Mesa Farta: Café Colonial e Sequência de Fondue',
+                        text: 'A gastronomia é protagonista: dos chocolates artesanais de Gramado aos tradicionais cafés coloniais com dezenas de pães, cucas, geleias e embutidos preparados segundo receitas centenárias.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Junho a Agosto (frio serrano e clima de lareira) ou Novembro a Janeiro (Natal Luz e florada das hortênsias).',
+                    howToGet: 'Aeroporto de Porto Alegre (POA) ou Caxias do Sul (CXJ), seguido de 2h de estrada cênica pela Rota Romântica.',
+                    whatToPack: 'Casacos térmicos no inverno, calçados confortáveis para caminhadas urbanas e espaço na mala para vinhos e chocolates.'
+                },
+                comments: [
+                    { author: 'Carlos Eduardo', date: '4 dias atrás', text: 'Alugar um carro para fazer a Rota Romântica passando por Nova Petrópolis vale cada minuto!' }
+                ]
+            },
+            {
+                id: 'ouro-preto-mg',
+                title: 'Ouro Preto: O Tesouro Barroco nas Montanhas de Minas',
+                subtitle: 'Ladeiras de pedra-sabão, obras-primas de Aleijadinho e o sabor acolhedor da culinária mineira.',
+                state: 'MG',
+                city: 'Ouro Preto & Mariana',
+                region: 'Sudeste',
+                category: 'Cultura & História',
+                readTime: '8 min',
+                date: '11 Out 2026',
+                author: {
+                    name: 'Arthur Guimarães',
+                    role: 'Historiador & Viajante',
+                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1555992336-03a23c7b20ee?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 214,
+                trending: false,
+                excerpt: 'Primeiro sítio brasileiro declarado Patrimônio Mundial pela UNESCO, Ouro Preto preserva intacta a memória do Ciclo do Ouro no século XVIII.',
+                content: [
+                    {
+                        heading: 'O Gênio de Aleijadinho e Mestre Ataíde',
+                        text: 'A Igreja de São Francisco de Assis sintetiza o apogeu do barroco e rococó mineiro. O medalhão esculpido em pedra-sabão na fachada por Antônio Francisco Lisboa, o Aleijadinho, dialoga com o teto ilusionista pintado por Mestre Ataíde.'
+                    },
+                    {
+                        heading: 'Museus e Minas Subterrâneas',
+                        text: 'Na Praça Tiradentes, o Museu da Inconfidência narra os movimentos libertários do Brasil colonial. A poucos quilômetros, a Mina da Passagem permite descer em um antigo trolley até galerias subterrâneas com lagos cristalinos.'
+                    },
+                    {
+                        heading: 'Fogão a Lenha e Queijo Canastra',
+                        text: 'Entre uma ladeira e outra, o aroma de café coado na hora, pão de queijo quente, feijão tropeiro e doce de leite artesanal convida a desacelerar sem pressa.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Abril a Setembro (clima seco e céu azul profundo contrastando com os telhados coloniais).',
+                    howToGet: 'Aproximadamente 100 km de Belo Horizonte (1h45 de carro ou ônibus pela BR-356).',
+                    whatToPack: 'Tênis com boa aderência (as ladeiras de pedra podem ser escorregadias) e agasalho para as noites frescas.'
+                },
+                comments: []
+            },
+            {
+                id: 'alter-do-chao',
+                title: 'Alter do Chão: As Praias de Água Doce do Caribe Amazônico',
+                subtitle: 'No coração do Pará, o encontro do Rio Tapajós cria bancos de areia branca cercados pela floresta.',
+                state: 'PA',
+                city: 'Alter do Chão (Santarém)',
+                region: 'Norte',
+                category: 'Praias & Ilhas',
+                readTime: '8 min',
+                date: '29 Out 2026',
+                author: {
+                    name: 'Pedro Vasconcelos',
+                    role: 'Especialista em Biodiversidade',
+                    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1505832018823-50331d70d237?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 278,
+                trending: false,
+                excerpt: 'Durante o verão amazônico, a baixa do Rio Tapajós revela a Ilha do Amor e igarapés encantados da Floresta Nacional do Tapajós.',
+                content: [
+                    {
+                        heading: 'Ilha do Amor e Serra da Piraoca',
+                        text: 'Em frente à vila de Alter do Chão, uma curta travessia de catraia leva à Ilha do Amor. Subir a trilha da Serra da Piraoca revela uma vista panorâmica de 360 graus onde o azul-esverdeado do Tapajós se funde ao verde infinito da Amazônia.'
+                    },
+                    {
+                        heading: 'Floresta Nacional do Tapajós e Canal do Jari',
+                        text: 'Navegar pelo Canal do Jari permite observar vitórias-régias gigantes, preguiças, macacos e botos-cor-de-rosa em seu habitat natural. Na comunidade de Jamaraquá, trilhas guiadas por ribeirinhos revelam árvores centenárias como a sumaúma.'
+                    },
+                    {
+                        heading: 'Sabores Tapajônicos',
+                        text: 'A culinária paraense brilha com peixes frescos como tambaqui na brasa, pirarucu, tacacá e frutas amazônicas como cupuaçu e taperebá.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Agosto a Dezembro (época da vazante do rio, quando surgem as extensas praias de areia branca).',
+                    howToGet: 'Voo até Santarém (STM), seguido de 40 minutos de carro até a vila de Alter do Chão.',
+                    whatToPack: 'Roupas leves e respiráveis, chapéu, repelente natural e sacola estanque para passeios de barco.'
+                },
+                comments: []
+            },
+            {
+                id: 'rio-de-janeiro',
+                title: 'Rio de Janeiro: Entre o Cristo Redentor, o Mar e a Floresta',
+                subtitle: 'Muito além dos cartões-postais: a harmonia singular entre montanhas de granito, mata atlântica e cultura carioca.',
+                state: 'RJ',
+                city: 'Rio de Janeiro',
+                region: 'Sudeste',
+                category: 'Cultura & História',
+                readTime: '7 min',
+                date: '05 Nov 2026',
+                author: {
+                    name: 'Arthur Guimarães',
+                    role: 'Historiador & Viajante',
+                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80'
+                },
+                coverImage: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1200&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1544989164-31dc3c645987?auto=format&fit=crop&w=800&q=80'
+                ],
+                likes: 390,
+                trending: true,
+                excerpt: 'Eleito Patrimônio Cultural da Humanidade pela UNESCO na categoria Paisagem Cultural Urbana, o Rio une natureza monumental e boemia.',
+                content: [
+                    {
+                        heading: 'Do Corcovado ao Pão de Açúcar',
+                        text: 'Subir de trem histórico pela Floresta da Tijuca até os pés do Cristo Redentor, uma das Sete Maravilhas do Mundo Moderno, oferece a leitura geográfica perfeita da Cidade Maravilhosa. No fim da tarde, o bondinho do Pão de Açúcar garante o pôr do sol mais aplaudido do país.'
+                    },
+                    {
+                        heading: 'Floresta da Tijuca e Trilhas Urbanas',
+                        text: 'Poucas metrópoles no mundo possuem uma floresta tropical replantada dentro de seus limites urbanos. Trilhas como a Pedra Bonita e o Morro Dois Irmãos recompensam os caminhantes com vistas inesquecíveis de Ipanema, Leblon e da Lagoa Rodrigo de Freitas.'
+                    },
+                    {
+                        heading: 'Santa Teresa e a Alma Boêmia',
+                        text: 'Os bondinhos amarelos de Santa Teresa conduzem a ateliês de arte, casarões históricos e rodas de samba autênticas na Pedra do Sal e na Lapa.'
+                    }
+                ],
+                tips: {
+                    bestTime: 'Abril a Outubro (temperaturas amenas, menor índice de chuvas e céu limpo para mirantes).',
+                    howToGet: 'Aeroportos Galeão (GIG) para voos internacionais/nacionais e Santos Dumont (SDU) no centro da cidade.',
+                    whatToPack: 'Roupas leves de praia, tênis para trilhas, óculos de sol e traje casual elegante para jantares.'
+                },
+                comments: [
+                    { author: 'Beatriz Ramos', date: '1 dia atrás', text: 'Ver o nascer do sol na Vista Chinesa e depois tomar café no Jardim Botânico é meu programa favorito!' }
+                ]
+            }
+        ];
+
+        // Estado da Aplicação
+        let state = {
+            selectedRegion: 'Todas',
+            selectedCategory: 'Todos',
+            selectedState: null,
+            searchQuery: '',
+            onlyFavorites: false,
+            favorites: JSON.parse(localStorage.getItem('roteiros_brasil_favs') || '[]'),
+            likedArticles: JSON.parse(localStorage.getItem('roteiros_brasil_likes') || '[]'),
+            currentModalArticleId: null
+        };
+
+        // Inicialização quando o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            updateFavoritesBadge();
+            renderArticles();
+            renderTrendingSidebar();
+            setupSearchListeners();
+            setupMobileMenu();
+        });
+
+        // Gerenciamento de Tema Claro / Escuro
+        function initTheme() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const savedTheme = localStorage.getItem('roteiros_brasil_theme');
+
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('roteiros_brasil_theme', isDark ? 'dark' : 'light');
+                themeIcon.className = isDark ? 'fa-solid fa-sun text-base' : 'fa-solid fa-moon text-base';
+            });
+        }
+
+        // Menu Mobile
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+
+        // Listeners de Busca em Tempo Real
+        function setupSearchListeners() {
+            const desktopInput = document.getElementById('search-input');
+            const mobileInput = document.getElementById('mobile-search-input');
+
+            const handleSearch = (e) => {
+                state.searchQuery = e.target.value.trim().toLowerCase();
+                if (desktopInput && e.target !== desktopInput) desktopInput.value = e.target.value;
+                if (mobileInput && e.target !== mobileInput) mobileInput.value = e.target.value;
+                renderArticles();
+            };
+
+            desktopInput.addEventListener('input', handleSearch);
+            mobileInput.addEventListener('input', handleSearch);
+        }
+
+        // Filtros Interativos
+        function filterByRegion(region) {
+            state.selectedRegion = region;
+            state.selectedState = null;
+            state.onlyFavorites = false;
+            updateNavUI();
+            renderArticles();
+        }
+
+        function filterByCategory(category) {
+            state.selectedCategory = category;
+            state.onlyFavorites = false;
+            updateCategoryUI();
+            renderArticles();
+        }
+
+        function filterByState(uf) {
+            state.selectedState = state.selectedState === uf ? null : uf;
+            state.selectedRegion = 'Todas';
+            state.onlyFavorites = false;
+            updateNavUI();
+            renderArticles();
+            
+            if (state.selectedState) {
+                showToast(`Filtrando destinos em ${uf}`, 'info');
+            }
+        }
+
+        function toggleFavoritesFilter() {
+            state.onlyFavorites = !state.onlyFavorites;
+            const btn = document.getElementById('favorites-toggle-btn');
+            if (state.onlyFavorites) {
+                btn.classList.add('ring-2', 'ring-brasil-terracotta', 'bg-amber-50', 'dark:bg-slate-700');
+                showToast('Exibindo seus roteiros salvos', 'info');
+            } else {
+                btn.classList.remove('ring-2', 'ring-brasil-terracotta', 'bg-amber-50', 'dark:bg-slate-700');
+            }
+            renderArticles();
+        }
+
+        function resetFilters() {
+            state.selectedRegion = 'Todas';
+            state.selectedCategory = 'Todos';
+            state.selectedState = null;
+            state.searchQuery = '';
+            state.onlyFavorites = false;
+
+            document.getElementById('search-input').value = '';
+            document.getElementById('mobile-search-input').value = '';
+            document.getElementById('favorites-toggle-btn').classList.remove('ring-2', 'ring-brasil-terracotta', 'bg-amber-50', 'dark:bg-slate-700');
+
+            updateNavUI();
+            updateCategoryUI();
+            renderArticles();
+        }
+
+        // Atualização Visual dos Botões de Navegação e Categoria
+        function updateNavUI() {
+            document.querySelectorAll('.region-nav-btn').forEach(btn => {
+                const isSelected = btn.dataset.region === state.selectedRegion && !state.selectedState;
+                if (isSelected) {
+                    btn.className = 'region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-brasil-emerald dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 transition';
+                } else {
+                    btn.className = 'region-nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brasil-emerald dark:hover:text-emerald-400 hover:bg-stone-100 dark:hover:bg-slate-800 transition';
+                }
+            });
+
+            document.querySelectorAll('.state-btn').forEach(btn => {
+                const ufText = btn.querySelector('span').textContent;
+                if (state.selectedState === ufText) {
+                    btn.classList.add('border-brasil-emerald', 'bg-emerald-50', 'dark:bg-emerald-950');
+                } else {
+                    btn.classList.remove('border-brasil-emerald', 'bg-emerald-50', 'dark:bg-emerald-950');
+                }
+            });
+        }
+
+        function updateCategoryUI() {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                const isSelected = btn.dataset.category === state.selectedCategory;
+                if (isSelected) {
+                    btn.className = 'cat-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-brasil-emerald text-white shadow-sm transition';
+                } else {
+                    btn.className = 'cat-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-stone-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition';
+                }
+            });
+        }
+
+        // Renderização do Grid de Artigos
+        function renderArticles() {
+            const grid = document.getElementById('articles-grid');
+            const emptyState = document.getElementById('empty-state');
+            const counter = document.getElementById('results-counter');
+            const clearBtn = document.getElementById('clear-filters-btn');
+            const heading = document.getElementById('section-heading');
+
+            // Filtragem combinada
+            const filtered = articlesData.filter(article => {
+                const matchRegion = state.selectedRegion === 'Todas' || article.region === state.selectedRegion;
+                const matchCategory = state.selectedCategory === 'Todos' || article.category === state.selectedCategory;
+                const matchState = !state.selectedState || article.state === state.selectedState;
+                const matchFav = !state.onlyFavorites || state.favorites.includes(article.id);
+                const matchSearch = !state.searchQuery || 
+                    article.title.toLowerCase().includes(state.searchQuery) ||
+                    article.city.toLowerCase().includes(state.searchQuery) ||
+                    article.state.toLowerCase().includes(state.searchQuery) ||
+                    article.region.toLowerCase().includes(state.searchQuery) ||
+                    article.excerpt.toLowerCase().includes(state.searchQuery);
+
+                return matchRegion && matchCategory && matchState && matchFav && matchSearch;
+            });
+
+            // Atualizar título e contador
+            if (state.onlyFavorites) {
+                heading.textContent = 'Seus Roteiros Salvos';
+            } else if (state.selectedState) {
+                heading.textContent = `Destinos em ${state.selectedState}`;
+            } else if (state.selectedRegion !== 'Todas') {
+                heading.textContent = `Região ${state.selectedRegion}`;
+            } else {
+                heading.textContent = 'Guias & Crônicas de Viagem';
+            }
+
+            counter.textContent = `Exibindo ${filtered.length} ${filtered.length === 1 ? 'destino' : 'destinos'}`;
+            
+            const hasActiveFilter = state.selectedRegion !== 'Todas' || state.selectedCategory !== 'Todos' || state.selectedState || state.searchQuery || state.onlyFavorites;
+            clearBtn.classList.toggle('hidden', !hasActiveFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(article => {
+                const isFav = state.favorites.includes(article.id);
+                const isLiked = state.likedArticles.includes(article.id);
+
+                return `
+                <article class="group bg-white dark:bg-slate-900 rounded-3xl overflow-hidden editorial-shadow border border-stone-200/80 dark:border-slate-800 flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+                    <div>
+                        <!-- Imagem de Capa com Badges -->
+                        <div class="relative h-60 overflow-hidden cursor-pointer" onclick="openArticleModal('${article.id}')">
+                            <img src="${article.coverImage}" 
+                                 onerror="this.src='https://placehold.co/800x600/065f46/ffffff?text=${encodeURIComponent(article.city)}'"
+                                 alt="${article.title}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+                            
+                            <!-- Badge Região / Estado -->
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 backdrop-blur-sm shadow-sm">
+                                <i class="fa-solid fa-location-dot text-brasil-terracotta mr-1"></i> ${article.city} (${article.state})
+                            </span>
+
+                            <!-- Botão Salvar Rápido -->
+                            <button onclick="event.stopPropagation(); toggleFavorite('${article.id}')" title="Salvar Roteiro"
+                                class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:scale-110 flex items-center justify-center shadow-sm transition">
+                                <i class="${isFav ? 'fa-solid text-brasil-gold' : 'fa-regular'} fa-bookmark text-sm"></i>
+                            </button>
+
+                            <!-- Categoria -->
+                            <span class="absolute bottom-3 left-4 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-brasil-emerald/90 text-white">
+                                ${article.category}
+                            </span>
+                        </div>
+
+                        <!-- Corpo do Card -->
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-2.5">
+                                <span><i class="fa-regular fa-clock mr-1"></i> ${article.readTime}</span>
+                                <span>•</span>
+                                <span>${article.region}</span>
+                            </div>
+
+                            <h3 onclick="openArticleModal('${article.id}')" 
+                                class="font-serif text-xl font-bold text-slate-900 dark:text-white mb-2.5 group-hover:text-brasil-emerald dark:group-hover:text-emerald-400 transition cursor-pointer line-clamp-2">
+                                ${article.title}
+                            </h3>
+
+                            <p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-3 leading-relaxed">
+                                ${article.excerpt}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Rodapé do Card -->
+                    <div class="px-6 pb-6 pt-3 border-t border-stone-100 dark:border-slate-800/80 flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <img src="${article.author.avatar}" 
+                                 onerror="this.src='https://placehold.co/80x80/0e7490/ffffff?text=Autor'"
+                                 alt="${article.author.name}" class="w-7 h-7 rounded-full object-cover">
+                            <span class="text-xs font-medium text-slate-700 dark:text-slate-300">${article.author.name}</span>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleLike('${article.id}')" class="text-xs text-slate-500 hover:text-rose-500 flex items-center gap-1 transition">
+                                <i class="${isLiked ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart"></i>
+                                <span>${article.likes}</span>
+                            </button>
+                            <button onclick="openArticleModal('${article.id}')" class="text-xs font-semibold text-brasil-emerald dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer">
+                                Ler guia <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                `;
+            }).join('');
+        }
+
+        // Renderizar Sidebar "Destinos em Alta"
+        function renderTrendingSidebar() {
+            const container = document.getElementById('trending-list');
+            const trending = articlesData.filter(a => a.trending).slice(0, 4);
+
+            container.innerHTML = trending.map((item, idx) => `
+                <div onclick="openArticleModal('${item.id}')" class="flex items-center gap-3.5 group cursor-pointer">
+                    <div class="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0">
+                        <img src="${item.coverImage}" 
+                             onerror="this.src='https://placehold.co/150x150/065f46/ffffff?text=${idx+1}'"
+                             alt="${item.city}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-1 left-1 w-5 h-5 rounded-full bg-slate-900/80 text-white text-[10px] font-bold flex items-center justify-center">
+                            ${idx + 1}
+                        </span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <span class="text-[11px] font-semibold text-brasil-turquoise dark:text-cyan-400 uppercase tracking-wider">
+                            ${item.city} • ${item.state}
+                        </span>
+                        <h4 class="font-serif font-bold text-sm text-slate-800 dark:text-slate-100 group-hover:text-brasil-emerald dark:group-hover:text-emerald-400 transition line-clamp-2">
+                            ${item.title}
+                        </h4>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Abrir Leitor de Artigo Completo (Modal)
+        function openArticleModal(articleId) {
+            const article = articlesData.find(a => a.id === articleId);
+            if (!article) return;
+
+            state.currentModalArticleId = articleId;
+            const modal = document.getElementById('article-modal');
+            const body = document.getElementById('modal-content-body');
+            const breadcrumb = document.getElementById('modal-breadcrumb');
+
+            breadcrumb.textContent = `${article.region} • ${article.city} (${article.state})`;
+            updateModalActionButtons();
+
+            body.innerHTML = `
+                <!-- Imagem de Capa Full -->
+                <div class="relative h-72 sm:h-96 w-full">
+                    <img src="${article.coverImage}" 
+                         onerror="this.src='https://placehold.co/1200x600/065f46/ffffff?text=${encodeURIComponent(article.title)}'"
+                         alt="${article.title}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-white">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-brasil-emerald text-white mb-3 inline-block">
+                            ${article.category}
+                        </span>
+                        <h1 class="font-serif text-2xl sm:text-4xl font-bold leading-tight">
+                            ${article.title}
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Metadados do Autor e Subtítulo -->
+                <div class="px-6 sm:px-12 pt-8">
+                    <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-stone-200 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <img src="${article.author.avatar}" 
+                                 onerror="this.src='https://placehold.co/100x100/0e7490/ffffff?text=Autor'"
+                                 alt="${article.author.name}" class="w-11 h-11 rounded-full object-cover border-2 border-brasil-emerald">
+                            <div>
+                                <p class="font-semibold text-sm text-slate-900 dark:text-white">${article.author.name}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">${article.author.role}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+                            <span><i class="fa-regular fa-calendar mr-1"></i> ${article.date}</span>
+                            <span><i class="fa-regular fa-clock mr-1"></i> ${article.readTime} de leitura</span>
+                        </div>
+                    </div>
+
+                    <p class="font-serif italic text-lg sm:text-xl text-slate-700 dark:text-slate-300 my-6 leading-relaxed">
+                        "${article.subtitle}"
+                    </p>
+
+                    <!-- Texto Editorial Dividido em Subtítulos -->
+                    <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-base">
+                        ${article.content.map(section => `
+                            <div>
+                                <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2.5">
+                                    ${section.heading}
+                                </h2>
+                                <p>${section.text}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Box de Dicas Práticas -->
+                    <div class="my-10 p-6 sm:p-8 rounded-3xl bg-brasil-sandDark dark:bg-slate-800/80 border border-stone-200 dark:border-slate-700">
+                        <h3 class="font-serif text-xl font-bold text-brasil-emerald dark:text-emerald-400 mb-5 flex items-center gap-2">
+                            <i class="fa-solid fa-suitcase-rolling"></i> Dicas Práticas para sua Viagem
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm">
+                                <span class="text-xs font-bold uppercase tracking-wider text-brasil-gold block mb-1">
+                                    <i class="fa-regular fa-sun mr-1"></i> Melhor Época
+                                </span>
+                                <p class="text-sm text-slate-700 dark:text-slate-300">${article.tips.bestTime}</p>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm">
+                                <span class="text-xs font-bold uppercase tracking-wider text-brasil-turquoise block mb-1">
+                                    <i class="fa-solid fa-plane-arrival mr-1"></i> Como Chegar
+                                </span>
+                                <p class="text-sm text-slate-700 dark:text-slate-300">${article.tips.howToGet}</p>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm">
+                                <span class="text-xs font-bold uppercase tracking-wider text-brasil-terracotta block mb-1">
+                                    <i class="fa-solid fa-bag-shopping mr-1"></i> O que Levar
+                                </span>
+                                <p class="text-sm text-slate-700 dark:text-slate-300">${article.tips.whatToPack}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Galeria de Fotos Secundárias -->
+                    <div class="my-8">
+                        <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-white mb-4">
+                            Registros da Expedição
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            ${article.gallery.map((imgUrl, i) => `
+                                <div class="rounded-2xl overflow-hidden h-56 shadow-md">
+                                    <img src="${imgUrl}" 
+                                         onerror="this.src='https://placehold.co/600x400/0e7490/ffffff?text=Foto+${i+1}'"
+                                         alt="Galeria ${article.city}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Seção Interativa de Comentários -->
+                    <div class="mt-12 pt-8 border-t border-stone-200 dark:border-slate-800">
+                        <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-white mb-6">
+                            Relatos dos Viajantes (<span id="modal-comments-count">${article.comments.length}</span>)
+                        </h3>
+
+                        <!-- Formulário de Novo Comentário -->
+                        <form onsubmit="handleAddComment(event)" class="mb-8 bg-stone-50 dark:bg-slate-800/50 p-5 rounded-2xl border border-stone-200 dark:border-slate-700">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                                <input type="text" id="comment-author-input" required placeholder="Seu nome" 
+                                    class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-700 text-sm focus:outline-none focus:border-brasil-emerald">
+                            </div>
+                            <textarea id="comment-text-input" rows="3" required placeholder="Compartilhe sua experiência ou dúvida sobre este destino..." 
+                                class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-700 text-sm focus:outline-none focus:border-brasil-emerald mb-3"></textarea>
+                            <button type="submit" 
+                                class="px-5 py-2.5 rounded-xl bg-brasil-emerald hover:bg-emerald-700 text-white text-sm font-semibold transition cursor-pointer">
+                                Publicar Comentário
+                            </button>
+                        </form>
+
+                        <!-- Lista de Comentários -->
+                        <div id="modal-comments-list" class="space-y-4">
+                            ${renderCommentsHTML(article.comments)}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeArticleModal() {
+            const modal = document.getElementById('article-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            state.currentModalArticleId = null;
+        }
+
+        // Fechar modal ao clicar fora ou pressionar ESC
+        document.getElementById('article-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'article-modal') closeArticleModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && state.currentModalArticleId) closeArticleModal();
+        });
+
+        // Renderizar HTML dos comentários
+        function renderCommentsHTML(comments) {
+            if (comments.length === 0) {
+                return `<p class="text-sm text-slate-500 dark:text-slate-400 italic">Seja o primeiro a deixar uma dica sobre este destino!</p>`;
+            }
+            return comments.map(c => `
+                <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/40 border border-stone-200/70 dark:border-slate-800">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="font-semibold text-sm text-slate-900 dark:text-white">${escapeHTML(c.author)}</span>
+                        <span class="text-xs text-slate-400">${c.date}</span>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHTML(c.text)}</p>
+                </div>
+            `).join('');
+        }
+
+        // Adicionar novo comentário
+        function handleAddComment(e) {
+            e.preventDefault();
+            if (!state.currentModalArticleId) return;
+
+            const authorInput = document.getElementById('comment-author-input');
+            const textInput = document.getElementById('comment-text-input');
+            const article = articlesData.find(a => a.id === state.currentModalArticleId);
+
+            if (article && authorInput.value.trim() && textInput.value.trim()) {
+                article.comments.unshift({
+                    author: authorInput.value.trim(),
+                    date: 'Agora mesmo',
+                    text: textInput.value.trim()
+                });
+
+                document.getElementById('modal-comments-list').innerHTML = renderCommentsHTML(article.comments);
+                document.getElementById('modal-comments-count').textContent = article.comments.length;
+
+                authorInput.value = '';
+                textInput.value = '';
+                showToast('Comentário adicionado com sucesso!', 'success');
+            }
+        }
+
+        // Curtidas e Favoritos
+        function toggleFavorite(articleId) {
+            const idx = state.favorites.indexOf(articleId);
+            if (idx === -1) {
+                state.favorites.push(articleId);
+                showToast('Roteiro salvo nos seus favoritos!', 'success');
+            } else {
+                state.favorites.splice(idx, 1);
+                showToast('Roteiro removido dos favoritos.', 'info');
+            }
+            localStorage.setItem('roteiros_brasil_favs', JSON.stringify(state.favorites));
+            updateFavoritesBadge();
+            renderArticles();
+            if (state.currentModalArticleId === articleId) updateModalActionButtons();
+        }
+
+        function toggleFavoriteCurrentArticle() {
+            if (state.currentModalArticleId) toggleFavorite(state.currentModalArticleId);
+        }
+
+        function toggleLike(articleId) {
+            const article = articlesData.find(a => a.id === articleId);
+            if (!article) return;
+
+            const idx = state.likedArticles.indexOf(articleId);
+            if (idx === -1) {
+                state.likedArticles.push(articleId);
+                article.likes += 1;
+            } else {
+                state.likedArticles.splice(idx, 1);
+                article.likes -= 1;
+            }
+            localStorage.setItem('roteiros_brasil_likes', JSON.stringify(state.likedArticles));
+            renderArticles();
+            if (state.currentModalArticleId === articleId) updateModalActionButtons();
+        }
+
+        function toggleLikeCurrentArticle() {
+            if (state.currentModalArticleId) toggleLike(state.currentModalArticleId);
+        }
+
+        function updateModalActionButtons() {
+            const article = articlesData.find(a => a.id === state.currentModalArticleId);
+            if (!article) return;
+
+            const isFav = state.favorites.includes(article.id);
+            const isLiked = state.likedArticles.includes(article.id);
+
+            const likeBtn = document.getElementById('modal-like-btn');
+            const favBtn = document.getElementById('modal-fav-btn');
+
+            likeBtn.innerHTML = `<i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart text-rose-500"></i> <span>${article.likes}</span>`;
+            favBtn.innerHTML = `<i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-bookmark text-brasil-gold"></i> <span>${isFav ? 'Salvo' : 'Salvar'}</span>`;
+        }
+
+        function updateFavoritesBadge() {
+            document.getElementById('favorites-count').textContent = state.favorites.length;
+        }
+
+        // Formulário da Newsletter
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('newsletter-name').value.trim();
+            const email = document.getElementById('newsletter-email').value.trim();
+
+            if (name && email) {
+                showToast(`Bem-vindo(a) a bordo, ${name}! Enviamos um guia de boas-vindas para ${email}.`, 'success');
+                e.target.reset();
+            }
+        }
+
+        // Sistema de Notificação Toast Elegante
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgColor = type === 'success' ? 'bg-brasil-emerald' : 'bg-slate-800';
+            const icon = type === 'success' ? 'fa-circle-check' : 'fa-compass';
+
+            toast.className = `${bgColor} text-white px-4 py-3 rounded-2xl shadow-xl text-sm font-medium flex items-center gap-2.5 transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto max-w-sm`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-amber-400"></i> <span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Utilitário de Segurança contra XSS nos comentários
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

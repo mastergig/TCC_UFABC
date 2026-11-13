@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bistrô Aurora | Nosso Cardápio</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8f6f1;
+            color: #302b25;
+        }
+
+        header {
+            background: #283d32;
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        header h1 {
+            font-family: Georgia, serif;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #d5d8cf;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .intro h2 {
+            font-family: Georgia, serif;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .intro p {
+            color: #777;
+        }
+
+        /* Abas de navegação */
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .tab-button {
+            border: 1px solid #c8bda9;
+            background: transparent;
+            color: #51483c;
+            padding: 13px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .tab-button:hover,
+        .tab-button.active {
+            background: #283d32;
+            color: white;
+            border-color: #283d32;
+        }
+
+        /* Produtos */
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            font-family: Georgia, serif;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .product-info p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 42px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18px;
+        }
+
+        .price {
+            color: #527653;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .order-button {
+            background: #283d32;
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .order-button:hover {
+            background: #496d51;
+        }
+
+        footer {
+            background: #283d32;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 60px;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 32px;
+            }
+
+            .tab-button {
+                flex: 1 1 40%;
+            }
+
+            .intro h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>☕ Bistrô Aurora</h1>
+        <p>Sabores especiais para todos os momentos do seu dia.</p>
+    </header>
+
+    <main class="container">
+
+        <section class="intro">
+            <h2>Nosso Cardápio</h2>
+            <p>Explore nossas opções e descubra seu próximo prato favorito.</p>
+        </section>
+
+        <!-- Navegação por categorias -->
+
+        <nav class="tabs" aria-label="Categorias do cardápio">
+            <button class="tab-button active" data-category="cafe">
+                ☕ Café da Manhã
+            </button>
+
+            <button class="tab-button" data-category="executivo">
+                🍽 Almoço Executivo
+            </button>
+
+            <button class="tab-button" data-category="alacarte">
+                🥩 À la Carte
+            </button>
+
+            <button class="tab-button" data-category="bebidas">
+                🥤 Bebidas
+            </button>
+
+            <button class="tab-button" data-category="sobremesas">
+                🍰 Sobremesas
+            </button>
+        </nav>
+
+        <!-- Produtos inseridos dinamicamente pelo JavaScript -->
+
+        <section class="menu-grid" id="menu-grid" aria-live="polite">
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Bistrô Aurora - Todos os direitos reservados.</p>
+        <p>Rua dos Sabores, 123 - São Paulo/SP</p>
+    </footer>
+
+    <script>
+
+        // Banco de dados fictício do cardápio
+
+        const menu = {
+
+            cafe: [
+                {
+                    nome: "Café Colonial",
+                    descricao: "Café coado, pães artesanais, manteiga e geleia.",
+                    preco: 28.90,
+                    imagem: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600"
+                },
+                {
+                    nome: "Panquecas Americanas",
+                    descricao: "Panquecas com mel, frutas frescas e manteiga.",
+                    preco: 32.90,
+                    imagem: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=600"
+                },
+                {
+                    nome: "Ovos Benedict",
+                    descricao: "Pão artesanal, ovos pochê e molho holandês.",
+                    preco: 35.90,
+                    imagem: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600"
+                }
+            ],
+
+            executivo: [
+                {
+                    nome: "Filé de Frango",
+                    descricao: "Frango grelhado, arroz, feijão e salada.",
+                    preco: 34.90,
+                    imagem: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=600"
+                },
+                {
+                    nome: "Strogonoff de Carne",
+                    descricao: "Strogonoff artesanal, arroz branco e batata palha.",
+                    preco: 39.90,
+                    imagem: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600"
+                },
+                {
+                    nome: "Salmão Grelhado",
+                    descricao: "Salmão com legumes salteados e arroz integral.",
+                    preco: 49.90,
+                    imagem: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600"
+                }
+            ],
+
+            alacarte: [
+                {
+                    nome: "Risoto de Cogumelos",
+                    descricao: "Arroz arbóreo, cogumelos frescos e parmesão.",
+                    preco: 54.90,
+                    imagem: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600"
+                },
+                {
+                    nome: "Picanha Especial",
+                    descricao: "Picanha grelhada com batatas rústicas.",
+                    preco: 69.90,
+                    imagem: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600"
+                },
+                {
+                    nome: "Massa ao Pesto",
+                    descricao: "Massa artesanal com pesto de manjericão.",
+                    preco: 46.90,
+                    imagem: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600"
+                }
+            ],
+
+            bebidas: [
+                {
+                    nome: "Suco Natural",
+                    descricao: "Suco de laranja preparado na hora.",
+                    preco: 12.90,
+                    imagem: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=600"
+                },
+                {
+                    nome: "Café Espresso",
+                    descricao: "Café espresso com grãos selecionados.",
+                    preco: 7.90,
+                    imagem: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600"
+                },
+                {
+                    nome: "Limonada Suíça",
+                    descricao: "Limão fresco batido com gelo.",
+                    preco: 14.90,
+                    imagem: "https://images.unsplash.com/photo-1513558161293-cdaf765edfd47?w=600"
+                }
+            ],
+
+            sobremesas: [
+                {
+                    nome: "Petit Gâteau",
+                    descricao: "Bolinho de chocolate com sorvete de creme.",
+                    preco: 24.90,
+                    imagem: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600"
+                },
+                {
+                    nome: "Cheesecake",
+                    descricao: "Cheesecake artesanal com calda de frutas vermelhas.",
+                    preco: 22.90,
+                    imagem: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600"
+                },
+                {
+                    nome: "Brownie",
+                    descricao: "Brownie de chocolate com nozes.",
+                    preco: 19.90,
+                    imagem: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600"
+                }
+            ]
+        };
+
+        const menuGrid = document.getElementById("menu-grid");
+        const tabs = document.querySelectorAll(".tab-button");
+
+        // Formata o preço em Real brasileiro
+
+        function formatarPreco(valor) {
+            return valor.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+        }
+
+        // Exibe os produtos da categoria selecionada
+
+        function carregarCategoria(categoria) {
+
+            menuGrid.innerHTML = "";
+
+            const produtos = menu[categoria];
+
+            produtos.forEach(produto => {
+
+                const card = document.createElement("article");
+                card.classList.add("product-card");
+
+                const imagem = document.createElement("img");
+                imagem.src = produto.imagem;
+                imagem.alt = produto.nome;
+                imagem.loading = "lazy";
+
+                const info = document.createElement("div");
+                info.classList.add("product-info");
+
+                const titulo = document.createElement("h3");
+                titulo.textContent = produto.nome;
+
+                const descricao = document.createElement("p");
+                descricao.textContent = produto.descricao;
+
+                const footer = document.createElement("div");
+                footer.classList.add("product-footer");
+
+                const preco = document.createElement("span");
+                preco.classList.add("price");
+                preco.textContent = formatarPreco(produto.preco);
+
+                const botao = document.createElement("button");
+                botao.classList.add("order-button");
+                botao.textContent = "Pedir";
+                botao.setAttribute("aria-label", `Pedir ${produto.nome}`);
+
+                botao.addEventListener("click", () => {
+                    alert(`${produto.nome} foi selecionado!`);
+                });
+
+                footer.appendChild(preco);
+                footer.appendChild(botao);
+
+                info.appendChild(titulo);
+                info.appendChild(descricao);
+                info.appendChild(footer);
+
+                card.appendChild(imagem);
+                card.appendChild(info);
+
+                menuGrid.appendChild(card);
+
+            });
+        }
+
+        // Alternância entre as abas sem recarregar a página
+
+        tabs.forEach(botao => {
+
+            botao.addEventListener("click", () => {
+
+                // Remove o destaque da aba anterior
+                tabs.forEach(tab => {
+                    tab.classList.remove("active");
+                    tab.setAttribute("aria-pressed", "false");
+                });
+
+                // Ativa a categoria selecionada
+                botao.classList.add("active");
+                botao.setAttribute("aria-pressed", "true");
+
+                // Carrega os produtos correspondentes
+                carregarCategoria(botao.dataset.category);
+
+            });
+
+        });
+
+        // Carrega inicialmente o café da manhã
+
+        carregarCategoria("cafe");
+
+        tabs.forEach(tab => {
+            tab.setAttribute(
+                "aria-pressed",
+                tab.classList.contains("active") ? "true" : "false"
+            );
+        });
+
+    </script>
+
+</body>
+</html>

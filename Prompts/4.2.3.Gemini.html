@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento de Castração</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .form-container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 420px;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #1e293b;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #475569;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      color: #1e293b;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      padding: 6px 0;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .radio-option input {
+      width: auto;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0284c7;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #0369a1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Agendamento de Castração</h2>
+    <form action="#" method="POST">
+      
+      <div class="form-group">
+        <label for="tutor">Nome do Tutor</label>
+        <input type="text" id="tutor" name="tutor" placeholder="Ex: Maria Silva" required>
+      </div>
+
+      <div class="form-group">
+        <label for="pet">Nome do Pet</label>
+        <input type="text" id="pet" name="pet" placeholder="Ex: Thor" required>
+      </div>
+
+      <div class="form-group">
+        <label>Espécie</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="especie" value="cao" required> Cão
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="especie" value="gato" required> Gato
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="peso">Peso Aproximado (kg)</label>
+        <input type="number" id="peso" name="peso" step="0.1" min="0.5" max="100" placeholder="Ex: 12.5" required>
+      </div>
+
+      <div class="form-group">
+        <label for="data">Data de Preferência</label>
+        <input type="date" id="data" name="data" required>
+      </div>
+
+      <button type="submit">Solicitar Agendamento</button>
+    </form>
+  </div>
+
+</body>
+</html>

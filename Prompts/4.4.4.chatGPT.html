@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bistrô Sabor & Arte</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f8f5ef;
+            color: #333;
+        }
+
+        header {
+            background: #493426;
+            color: white;
+            text-align: center;
+            padding: 35px 15px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #e6d4c1;
+        }
+
+        nav {
+            background: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 8px #0001;
+        }
+
+        nav button {
+            border: none;
+            background: #eee5da;
+            color: #493426;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav button:hover,
+        nav button.ativo {
+            background: #a45d36;
+            color: white;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .categoria {
+            margin-bottom: 40px;
+        }
+
+        .categoria h2 {
+            color: #75472e;
+            border-bottom: 2px solid #d5b89b;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .prato {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px #0000000d;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .prato h3 {
+            color: #493426;
+            margin-bottom: 8px;
+        }
+
+        .descricao {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .alergenos {
+            display: block;
+            color: #a45d36;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .preco {
+            color: #568044;
+            font-weight: bold;
+            font-size: 19px;
+            white-space: nowrap;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        footer {
+            background: #493426;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .prato {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .preco {
+                margin-top: 5px;
+            }
+
+            nav button {
+                padding: 10px 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🍽️ Bistrô Sabor & Arte</h1>
+        <p>Uma experiência especial em cada refeição!</p>
+    </header>
+
+    <!-- Navegação por categorias -->
+    <nav aria-label="Categorias do cardápio">
+        <button class="ativo" data-filtro="todos">Todos</button>
+        <button data-filtro="cafe">Café da Manhã</button>
+        <button data-filtro="executivo">Executivo</button>
+        <button data-filtro="alacarte">À la Carte</button>
+        <button data-filtro="bebidas">Bebidas</button>
+        <button data-filtro="sobremesas">Sobremesas</button>
+    </nav>
+
+    <main>
+
+        <!-- CAFÉ DA MANHÃ -->
+        <section class="categoria" data-categoria="cafe">
+            <h2>☕ Café da Manhã</h2>
+
+            <article class="prato">
+                <div>
+                    <h3>Ovos Benedict</h3>
+                    <p class="descricao">
+                        Ovos poché sobre muffin inglês com molho holandês.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: ovos, leite e glúten.
+                    </span>
+                </div>
+                <span class="preco">R$ 32,00</span>
+            </article>
+
+            <article class="prato">
+                <div>
+                    <h3>Panquecas Americanas</h3>
+                    <p class="descricao">
+                        Panquecas fofinhas acompanhadas de mel e frutas.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: leite, ovos e glúten.
+                    </span>
+                </div>
+                <span class="preco">R$ 25,00</span>
+            </article>
+        </section>
+
+        <!-- EXECUTIVO -->
+        <section class="categoria" data-categoria="executivo">
+            <h2>🍛 Pratos Executivos</h2>
+
+            <article class="prato">
+                <div>
+                    <h3>Filé de Frango Grelhado</h3>
+                    <p class="descricao">
+                        Filé de frango, arroz, feijão e salada fresca.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: pode conter derivados de leite.
+                    </span>
+                </div>
+                <span class="preco">R$ 35,00</span>
+            </article>
+
+            <article class="prato">
+                <div>
+                    <h3>Contra-filé Acebolado</h3>
+                    <p class="descricao">
+                        Contra-filé grelhado com arroz, feijão e batatas fritas.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: pode conter glúten.
+                    </span>
+                </div>
+                <span class="preco">R$ 42,00</span>
+            </article>
+        </section>
+
+        <!-- À LA CARTE -->
+        <section class="categoria" data-categoria="alacarte">
+            <h2>🍝 À la Carte</h2>
+
+            <article class="prato">
+                <div>
+                    <h3>Filé ao Molho Madeira</h3>
+                    <p class="descricao">
+                        Filé mignon com molho madeira e risoto de parmesão.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: leite e derivados.
+                    </span>
+                </div>
+                <span class="preco">R$ 68,00</span>
+            </article>
+
+            <article class="prato">
+                <div>
+                    <h3>Risoto de Camarão</h3>
+                    <p class="descricao">
+                        Arroz arbóreo com camarões frescos e parmesão.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: crustáceos e leite.
+                    </span>
+                </div>
+                <span class="preco">R$ 59,00</span>
+            </article>
+        </section>
+
+        <!-- BEBIDAS -->
+        <section class="categoria" data-categoria="bebidas">
+            <h2>🥤 Bebidas</h2>
+
+            <article class="prato">
+                <div>
+                    <h3>Suco Natural de Laranja</h3>
+                    <p class="descricao">
+                        Suco natural preparado na hora.
+                    </p>
+                    <span class="alergenos">
+                        Alérgenos: não identificados nos ingredientes.
+                    </span>
+                </div>
+                <span class="preco">R$ 12,00</span>
+            </article>
+
+            <article class="prato">
+                <div>
+                    <h3>Café Expresso</h3>
+                    <p class="descricao">
+                        Café selecionado com aroma intenso.
+                    </p>
+                    <span class="alergenos">
+                        Alérgenos: não identificados nos ingredientes.
+                    </span>
+                </div>
+                <span class="preco">R$ 7,00</span>
+            </article>
+        </section>
+
+        <!-- SOBREMESAS -->
+        <section class="categoria" data-categoria="sobremesas">
+            <h2>🍰 Sobremesas</h2>
+
+            <article class="prato">
+                <div>
+                    <h3>Petit Gâteau</h3>
+                    <p class="descricao">
+                        Bolinho de chocolate com recheio cremoso e sorvete.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: leite, ovos e glúten.
+                    </span>
+                </div>
+                <span class="preco">R$ 24,00</span>
+            </article>
+
+            <article class="prato">
+                <div>
+                    <h3>Pudim de Leite</h3>
+                    <p class="descricao">
+                        Pudim tradicional com calda de caramelo.
+                    </p>
+                    <span class="alergenos">
+                        ⚠ Alérgenos: leite e ovos.
+                    </span>
+                </div>
+                <span class="preco">R$ 15,00</span>
+            </article>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Bistrô Sabor & Arte - Todos os direitos reservados.</p>
+        <p>Rua das Flores, 123 - São Paulo/SP</p>
+    </footer>
+
+    <!-- JAVASCRIPT: FILTRO DAS CATEGORIAS -->
+    <script>
+        // Seleciona todos os botões de navegação
+        const botoes = document.querySelectorAll("nav button");
+
+        // Seleciona todas as seções do cardápio
+        const secoes = document.querySelectorAll(".categoria");
+
+        // Adiciona um evento de clique para cada botão
+        botoes.forEach(botao => {
+
+            botao.addEventListener("click", function() {
+
+                // Identifica a categoria selecionada
+                const filtro = this.dataset.filtro;
+
+                // Percorre todas as seções
+                secoes.forEach(secao => {
+
+                    // Verifica se deve exibir a seção
+                    if (
+                        filtro === "todos" ||
+                        secao.dataset.categoria === filtro
+                    ) {
+                        secao.classList.remove("oculto");
+                    } else {
+                        secao.classList.add("oculto");
+                    }
+
+                });
+
+                // Atualiza o botão ativo
+                botoes.forEach(btn => {
+                    btn.classList.remove("ativo");
+                });
+
+                this.classList.add("ativo");
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>

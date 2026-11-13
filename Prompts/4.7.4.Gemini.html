@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRONPULSE FITNESS | Performance & Alta Tecnologia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0B0D10',
+                        charcoal: '#161920',
+                        graphite: '#1E222B',
+                        volt: '#C8FF00',
+                        voltHover: '#B3E600',
+                        ember: '#FF5500'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos customizados complementares para animações e barra de rolagem */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0D10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #272B36;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C8FF00;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Estilo customizado para inputs de data no modo escuro */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-gray-100 font-sans antialiased selection:bg-volt selection:text-obsidian overflow-x-hidden">
+
+    <!-- =====================================================================
+         CABEÇALHO / NAVBAR FIXO
+    ====================================================================== -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-obsidian/85 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logotipo -->
+                <a href="#inicio" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-volt flex items-center justify-center text-obsidian font-display font-black text-xl shadow-[0_0_20px_rgba(200,255,0,0.3)] group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-display font-black text-xl tracking-wider text-white leading-none">IRON<span class="text-volt">PULSE</span></span>
+                        <span class="text-[10px] tracking-[0.28em] text-gray-400 uppercase font-semibold mt-0.5">Fitness Club</span>
+                    </div>
+                </a>
+
+                <!-- Links de Navegação Desktop -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-sm font-medium text-gray-300 hover:text-volt transition-colors">Sobre</a>
+                    <a href="#diferenciais" class="text-sm font-medium text-gray-300 hover:text-volt transition-colors">Diferenciais</a>
+                    <a href="#modalidades" class="text-sm font-medium text-gray-300 hover:text-volt transition-colors">Modalidades</a>
+                    <a href="#planos" class="text-sm font-medium text-gray-300 hover:text-volt transition-colors">Planos</a>
+                </nav>
+
+                <!-- CTA & Menu Mobile Button -->
+                <div class="flex items-center gap-3">
+                    <a href="#matricula" class="hidden sm:inline-flex items-center gap-2 bg-volt hover:bg-voltHover text-obsidian font-display font-bold text-xs sm:text-sm uppercase tracking-wider px-5 py-3 rounded-xl shadow-[0_0_20px_rgba(200,255,0,0.25)] hover:shadow-[0_0_28px_rgba(200,255,0,0.45)] transition-all transform hover:-translate-y-0.5">
+                        <span>Matricule-se</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                    <button id="mobile-menu-btn" aria-label="Abrir Menu" class="md:hidden p-3 rounded-xl bg-charcoal text-gray-200 hover:text-volt border border-white/10">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-charcoal border-b border-white/10 px-4 pt-2 pb-6 space-y-2">
+            <a href="#inicio" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-200 hover:bg-graphite hover:text-volt">Sobre</a>
+            <a href="#diferenciais" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-200 hover:bg-graphite hover:text-volt">Diferenciais Técnicos</a>
+            <a href="#modalidades" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-200 hover:bg-graphite hover:text-volt">Modalidades</a>
+            <a href="#planos" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-200 hover:bg-graphite hover:text-volt">Planos e Preços</a>
+            <div class="pt-2">
+                <a href="#matricula" class="mobile-link flex items-center justify-center gap-2 w-full bg-volt text-obsidian font-display font-bold text-sm uppercase tracking-wider px-5 py-3.5 rounded-xl">
+                    <span>Matricule-se Agora</span>
+                    <i class="fa-solid fa-bolt"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- =====================================================================
+             PASSO 1: APRESENTAÇÃO (HERO), DIFERENCIAIS TÉCNICOS E GALERIA
+        ====================================================================== -->
+        
+        <!-- 1.1 Seção Hero / Apresentação da Academia -->
+        <section id="inicio" class="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden">
+            <!-- Imagem de Fundo com Overlay Gradiente -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&q=80" 
+                     alt="Interior moderno da academia IRONPULSE FITNESS" 
+                     onerror="this.src='https://placehold.co/1920x1080/0B0D10/C8FF00?text=IRONPULSE+FITNESS'"
+                     class="w-full h-full object-cover object-center opacity-35">
+                <div class="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/90 to-obsidian/60"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-obsidian/80"></div>
+            </div>
+
+            <!-- Efeito Glow Decorativo -->
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-volt/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal/90 border border-volt/30 text-volt text-xs font-semibold uppercase tracking-widest mb-6">
+                        <span class="w-2 h-2 rounded-full bg-volt animate-ping"></span>
+                        <span>Engenharia Humana & Alta Performance</span>
+                    </div>
+
+                    <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight leading-[1.08] mb-6">
+                        ELEVE SEU TREINO AO <span class="text-transparent bg-clip-text bg-gradient-to-r from-volt to-emerald-400">NÍVEL MÁXIMO</span> DE PERFORMANCE.
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg lg:text-xl leading-relaxed mb-8 max-w-2xl">
+                        Esqueça as academias convencionais. Na <strong class="text-white">IRONPULSE FITNESS</strong> você treina com biomecânica importada de última geração, monitoramento biométrico em tempo real e infraestrutura 24 horas nos principais polos de São Paulo.
+                    </p>
+
+                    <!-- Botões de Ação -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-14">
+                        <a href="#planos" class="inline-flex items-center justify-center gap-3 bg-volt hover:bg-voltHover text-obsidian font-display font-extrabold text-sm uppercase tracking-wider px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(200,255,0,0.3)] transition-all transform hover:-translate-y-0.5">
+                            <span>Ver Planos</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </a>
+                        <button type="button" onclick="openTrialModal()" class="inline-flex items-center justify-center gap-3 bg-charcoal/90 hover:bg-graphite text-white font-display font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl border border-white/15 hover:border-volt/50 transition-all">
+                            <i class="fa-regular fa-calendar-check text-volt"></i>
+                            <span>Agendar Aula Experimental</span>
+                        </button>
+                    </div>
+
+                    <!-- Estatísticas Rápidas -->
+                    <div class="grid grid-cols-3 gap-4 sm:gap-8 pt-8 border-t border-white/10">
+                        <div>
+                            <div class="font-display font-black text-2xl sm:text-4xl text-white">05 <span class="text-volt">+</span></div>
+                            <p class="text-xs sm:text-sm text-gray-400 mt-1">Unidades Premium em SP</p>
+                        </div>
+                        <div>
+                            <div class="font-display font-black text-2xl sm:text-4xl text-white">100<span class="text-volt">%</span></div>
+                            <p class="text-xs sm:text-sm text-gray-400 mt-1">Equipamentos Importados</p>
+                        </div>
+                        <div>
+                            <div class="font-display font-black text-2xl sm:text-4xl text-white">24<span class="text-volt">H</span></div>
+                            <p class="text-xs sm:text-sm text-gray-400 mt-1">Acesso Livre Todos os Dias</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1.2 Seção de Diferenciais Técnicos -->
+        <section id="diferenciais" class="py-20 lg:py-28 bg-charcoal/40 border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <span class="text-volt font-display font-bold text-xs uppercase tracking-[0.25em]">Infraestrutura de Ponta</span>
+                    <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase mt-2 mb-4">
+                        DIFERENCIAIS TÉCNICOS <span class="text-volt">IRONPULSE</span>
+                    </h2>
+                    <p class="text-gray-400 text-sm sm:text-base">
+                        Cada metro quadrado foi projetado para maximizar ganhos de força, recuperação muscular e segurança articular.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1 -->
+                    <div class="reveal bg-charcoal rounded-2xl p-7 border border-white/5 hover:border-volt/40 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-2xl bg-graphite group-hover:bg-volt/15 border border-white/10 group-hover:border-volt/40 flex items-center justify-center text-volt text-2xl mb-6 transition-colors">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-3">Biomecânica de Última Geração</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Linhas completas <span class="text-gray-200 font-medium">Technogym Artis & Hammer Strength</span> com ajuste milimétrico de torque e isolação articular.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="reveal bg-charcoal rounded-2xl p-7 border border-white/5 hover:border-volt/40 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-2xl bg-graphite group-hover:bg-volt/15 border border-white/10 group-hover:border-volt/40 flex items-center justify-center text-volt text-2xl mb-6 transition-colors">
+                            <i class="fa-solid fa-dna"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-3">Bioimpedância 3D InBody</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Escaneamento corporal completo que mapeia massa magra segmentada, gordura visceral e taxa metabólica basal com precisão clínica.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="reveal bg-charcoal rounded-2xl p-7 border border-white/5 hover:border-volt/40 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-2xl bg-graphite group-hover:bg-volt/15 border border-white/10 group-hover:border-volt/40 flex items-center justify-center text-volt text-2xl mb-6 transition-colors">
+                            <i class="fa-solid fa-wind"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-3">Climatização & Filtragem HEPA</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Renovação constante de ar com filtragem hospitalar HEPA H13 e controle térmico inteligente mantido rigorosamente a 20°C.
+                        </p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="reveal bg-charcoal rounded-2xl p-7 border border-white/5 hover:border-volt/40 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-2xl bg-graphite group-hover:bg-volt/15 border border-white/10 group-hover:border-volt/40 flex items-center justify-center text-volt text-2xl mb-6 transition-colors">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-3">App Exclusivo & Telemetria</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Periodização inteligente, histórico de cargas, reserva de aulas com 1 toque e integração nativa com Apple Watch e Garmin.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1.3 Galeria Interativa de Modalidades -->
+        <section id="modalidades" class="py-20 lg:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 reveal">
+                    <div>
+                        <span class="text-volt font-display font-bold text-xs uppercase tracking-[0.25em]">Treinamento Completo</span>
+                        <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase mt-2">
+                            GALERIA DE <span class="text-volt">MODALIDADES</span>
+                        </h2>
+                    </div>
+
+                    <!-- Filtros Interativos por Categoria -->
+                    <div id="modality-filters" class="flex flex-wrap gap-2">
+                        <button data-filter="all" class="filter-btn active px-4 py-2.5 rounded-xl text-xs font-display font-bold uppercase tracking-wider bg-volt text-obsidian transition-all">
+                            Todas (06)
+                        </button>
+                        <button data-filter="forca" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-display font-bold uppercase tracking-wider bg-charcoal text-gray-300 hover:text-white border border-white/10 transition-all">
+                            Força & Alta Intensidade
+                        </button>
+                        <button data-filter="cardio" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-display font-bold uppercase tracking-wider bg-charcoal text-gray-300 hover:text-white border border-white/10 transition-all">
+                            Cardio & Aquático
+                        </button>
+                        <button data-filter="lutas" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-display font-bold uppercase tracking-wider bg-charcoal text-gray-300 hover:text-white border border-white/10 transition-all">
+                            Lutas
+                        </button>
+                        <button data-filter="mente" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-display font-bold uppercase tracking-wider bg-charcoal text-gray-300 hover:text-white border border-white/10 transition-all">
+                            Mente & Corpo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid de Cards das Modalidades -->
+                <div id="modalities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                    
+                    <!-- Modalidade 1: Musculação High-Tech -->
+                    <article data-category="forca" class="modality-card group bg-charcoal rounded-2xl overflow-hidden border border-white/5 hover:border-volt/50 transition-all duration-300 flex flex-col">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Musculação High-Tech" 
+                                 onerror="this.src='https://placehold.co/800x500/161920/C8FF00?text=Musculacao+High-Tech'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-obsidian/85 backdrop-blur-sm text-volt text-[11px] font-bold uppercase tracking-wider border border-volt/30">
+                                Força
+                            </span>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-ember/90 text-white text-[11px] font-bold uppercase tracking-wider">
+                                Intensidade: Alta
+                            </span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-display font-extrabold text-xl text-white mb-2 group-hover:text-volt transition-colors">Musculação High-Tech</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                    Salão amplo com halteres até 60kg, plataformas olímpicas Eleiko e máquinas conectadas que registram repetições e cadência.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-300">
+                                <span><i class="fa-regular fa-clock text-volt mr-1.5"></i>Livre 24h / Seg-Dom</span>
+                                <span class="text-volt font-semibold">60 min</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Modalidade 2: Cross Training -->
+                    <article data-category="forca" class="modality-card group bg-charcoal rounded-2xl overflow-hidden border border-white/5 hover:border-volt/50 transition-all duration-300 flex flex-col">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Cross Training" 
+                                 onerror="this.src='https://placehold.co/800x500/161920/C8FF00?text=Cross+Training'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-obsidian/85 backdrop-blur-sm text-volt text-[11px] font-bold uppercase tracking-wider border border-volt/30">
+                                Força & HIIT
+                            </span>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-ember/90 text-white text-[11px] font-bold uppercase tracking-wider">
+                                Intensidade: Máxima
+                            </span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-display font-extrabold text-xl text-white mb-2 group-hover:text-volt transition-colors">Cross Training</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                    Box oficial equipado com rigs modulares, Concept2 Rowers, SkiErgs e piso de absorção de impacto acústico de alta densidade.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-300">
+                                <span><i class="fa-regular fa-clock text-volt mr-1.5"></i>Turmas de 06h às 22h</span>
+                                <span class="text-volt font-semibold">55 min</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Modalidade 3: Spinning / Indoor Cycle -->
+                    <article data-category="cardio" class="modality-card group bg-charcoal rounded-2xl overflow-hidden border border-white/5 hover:border-volt/50 transition-all duration-300 flex flex-col">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Spinning Indoor Cycle" 
+                                 onerror="this.src='https://placehold.co/800x500/161920/C8FF00?text=Indoor+Cycle'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-obsidian/85 backdrop-blur-sm text-volt text-[11px] font-bold uppercase tracking-wider border border-volt/30">
+                                Cardio
+                            </span>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-ember/90 text-white text-[11px] font-bold uppercase tracking-wider">
+                                Intensidade: Alta
+                            </span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-display font-extrabold text-xl text-white mb-2 group-hover:text-volt transition-colors">Spinning / Indoor Cycle</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                    Estúdio imersivo com iluminação DMX sincronizada, som surround e bikes Stages SC3 com medidor de potência (Watts) em telão.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-300">
+                                <span><i class="fa-regular fa-clock text-volt mr-1.5"></i>12 sessões diárias</span>
+                                <span class="text-volt font-semibold">45 min</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Modalidade 4: Boxe & Muay Thai -->
+                    <article data-category="lutas" class="modality-card group bg-charcoal rounded-2xl overflow-hidden border border-white/5 hover:border-volt/50 transition-all duration-300 flex flex-col">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Boxe e Muay Thai" 
+                                 onerror="this.src='https://placehold.co/800x500/161920/C8FF00?text=Boxe+Muay+Thai'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-obsidian/85 backdrop-blur-sm text-volt text-[11px] font-bold uppercase tracking-wider border border-volt/30">
+                                Lutas
+                            </span>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-ember/90 text-white text-[11px] font-bold uppercase tracking-wider">
+                                Intensidade: Alta
+                            </span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-display font-extrabold text-xl text-white mb-2 group-hover:text-volt transition-colors">Boxe & Muay Thai</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                    Ringue profissional, sacos de pancada preenchidos com gel de absorção e treinos técnicos voltados para condicionamento e defesa.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-300">
+                                <span><i class="fa-regular fa-clock text-volt mr-1.5"></i>Seg a Sáb • Manhã e Noite</span>
+                                <span class="text-volt font-semibold">60 min</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Modalidade 5: Yoga & Mobilidade -->
+                    <article data-category="mente" class="modality-card group bg-charcoal rounded-2xl overflow-hidden border border-white/5 hover:border-volt/50 transition-all duration-300 flex flex-col">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Yoga e Mobilidade" 
+                                 onerror="this.src='https://placehold.co/800x500/161920/C8FF00?text=Yoga+Mobilidade'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-obsidian/85 backdrop-blur-sm text-volt text-[11px] font-bold uppercase tracking-wider border border-volt/30">
+                                Mente & Corpo
+                            </span>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-emerald-600/90 text-white text-[11px] font-bold uppercase tracking-wider">
+                                Intensidade: Moderada
+                            </span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-display font-extrabold text-xl text-white mb-2 group-hover:text-volt transition-colors">Yoga & Mobilidade</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                    Sala zen isolada acusticamente com piso aquecido para Vinyasa Flow, descompressão articular e recuperação neuromuscular profunda.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-300">
+                                <span><i class="fa-regular fa-clock text-volt mr-1.5"></i>Todos os dias • 07h às 21h</span>
+                                <span class="text-volt font-semibold">50 min</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Modalidade 6: Natação / Hidro -->
+                    <article data-category="cardio" class="modality-card group bg-charcoal rounded-2xl overflow-hidden border border-white/5 hover:border-volt/50 transition-all duration-300 flex flex-col">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Natação e Hidro" 
+                                 onerror="this.src='https://placehold.co/800x500/161920/C8FF00?text=Natacao+Hidro'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-obsidian/85 backdrop-blur-sm text-volt text-[11px] font-bold uppercase tracking-wider border border-volt/30">
+                                Aquático
+                            </span>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-sky-600/90 text-white text-[11px] font-bold uppercase tracking-wider">
+                                Intensidade: Variável
+                            </span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-display font-extrabold text-xl text-white mb-2 group-hover:text-volt transition-colors">Natação / Hidro</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                    Piscina semiolímpica de 25m aquecida a 28°C com tratamento 100% salinizado (sem cloro agressivo) e raias monitoradas.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-300">
+                                <span><i class="fa-regular fa-clock text-volt mr-1.5"></i>Seg a Dom • 06h às 23h</span>
+                                <span class="text-volt font-semibold">50 min</span>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             PASSO 2: BLOCO COMPARATIVO DE PREÇOS E BENEFÍCIOS DOS PLANOS
+        ====================================================================== -->
+        <section id="planos" class="py-20 lg:py-28 bg-charcoal/50 border-t border-white/5 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Cabeçalho da Seção + Toggle Mensal / Anual -->
+                <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+                    <span class="text-volt font-display font-bold text-xs uppercase tracking-[0.25em]">Investimento Transparente</span>
+                    <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase mt-2 mb-4">
+                        ESCOLHA O PLANO DA SUA <span class="text-volt">EVOLUÇÃO</span>
+                    </h2>
+                    <p class="text-gray-400 text-sm sm:text-base mb-8">
+                        Sem taxas ocultas de cancelamento. Alterne para o ciclo anual e economize até <strong class="text-volt">20%</strong> na mensalidade.
+                    </p>
+
+                    <!-- Toggle Ciclo de Cobrança -->
+                    <div class="inline-flex items-center p-1.5 rounded-2xl bg-obsidian border border-white/10">
+                        <button type="button" id="btn-mensal" onclick="setBillingCycle('mensal')" class="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-display font-bold uppercase tracking-wider transition-all text-gray-400 hover:text-white">
+                            Plano Mensal
+                        </button>
+                        <button type="button" id="btn-anual" onclick="setBillingCycle('anual')" class="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-display font-bold uppercase tracking-wider transition-all bg-volt text-obsidian shadow-[0_0_15px_rgba(200,255,0,0.3)]">
+                            Plano Anual <span class="ml-1.5 px-2 py-0.5 text-[10px] rounded-full bg-obsidian text-volt font-black">-20% OFF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards Comparativos Lado a Lado (3 Planos) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-20">
+                    
+                    <!-- PLANO 1: ESSENTIAL -->
+                    <div class="reveal bg-charcoal rounded-3xl p-8 border border-white/10 flex flex-col justify-between hover:border-white/25 transition-all">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="font-display font-extrabold text-xl text-white uppercase tracking-wide">Essential</span>
+                                <span class="px-3 py-1 rounded-lg bg-graphite text-gray-300 text-xs font-semibold">Unidade Única</span>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-6">
+                                Ideal para quem busca musculação de altíssimo nível e cardio em uma unidade fixa.
+                            </p>
+                            <div class="mb-6 pb-6 border-b border-white/10">
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-gray-400 text-lg font-bold">R$</span>
+                                    <span id="price-essential" class="font-display font-black text-4xl sm:text-5xl text-white">149</span>
+                                    <span class="text-gray-400 text-sm">,90/mês</span>
+                                </div>
+                                <p id="note-essential" class="text-xs text-volt mt-1.5 font-medium">Cobrado anualmente (12x sem juros) • Taxa Zero</p>
+                            </div>
+
+                            <ul class="space-y-3.5 text-sm mb-8">
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>Acesso ilimitado à unidade escolhida (24h)</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>App IRONPULSE com treinos e telemetria</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>1 Avaliação Bioimpedância na adesão</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-500">
+                                    <i class="fa-solid fa-minus text-gray-600 text-base w-4 text-center"></i>
+                                    <span>Acesso a todas as 5 unidades SP</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-500">
+                                    <i class="fa-solid fa-minus text-gray-600 text-base w-4 text-center"></i>
+                                    <span>Aulas coletivas e piscina ilimitadas</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-500">
+                                    <i class="fa-solid fa-minus text-gray-600 text-base w-4 text-center"></i>
+                                    <span>Área VIP Recovery & Convidados</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button type="button" onclick="selectPlanAndScroll('Essential')" class="w-full py-4 px-6 rounded-xl bg-graphite hover:bg-white/15 text-white font-display font-bold text-xs uppercase tracking-wider border border-white/15 transition-all">
+                            Selecionar Plano Essential
+                        </button>
+                    </div>
+
+                    <!-- PLANO 2: PERFORMANCE (DESTAQUE MAIS POPULAR) -->
+                    <div class="reveal relative bg-gradient-to-b from-graphite to-charcoal rounded-3xl p-8 border-2 border-volt shadow-[0_0_45px_rgba(200,255,0,0.14)] flex flex-col justify-between lg:-translate-y-3">
+                        <!-- Badge Mais Popular -->
+                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-volt text-obsidian font-display font-black text-xs uppercase tracking-widest px-5 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 whitespace-nowrap">
+                            <i class="fa-solid fa-fire"></i>
+                            <span>Mais Popular</span>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-4 mt-2">
+                                <span class="font-display font-extrabold text-2xl text-white uppercase tracking-wide">Performance</span>
+                                <span class="px-3 py-1 rounded-lg bg-volt/15 text-volt text-xs font-bold border border-volt/30">Multi-Unidades</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-6">
+                                Liberdade total na rede com todas as modalidades coletivas e acompanhamento mensal.
+                            </p>
+                            <div class="mb-6 pb-6 border-b border-white/15">
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-volt text-lg font-bold">R$</span>
+                                    <span id="price-performance" class="font-display font-black text-5xl text-white">219</span>
+                                    <span class="text-gray-300 text-sm">,90/mês</span>
+                                </div>
+                                <p id="note-performance" class="text-xs text-volt mt-1.5 font-medium">Economize R$ 600/ano no plano anual • Taxa Zero</p>
+                            </div>
+
+                            <ul class="space-y-3.5 text-sm mb-8">
+                                <li class="flex items-center gap-3 text-white font-medium">
+                                    <i class="fa-solid fa-circle-check text-volt text-base"></i>
+                                    <span>Acesso irrestrito a todas as 5 unidades SP</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-white font-medium">
+                                    <i class="fa-solid fa-circle-check text-volt text-base"></i>
+                                    <span>Aulas coletivas ilimitadas (Cross, Cycle, Lutas, Hidro)</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-white font-medium">
+                                    <i class="fa-solid fa-circle-check text-volt text-base"></i>
+                                    <span>Avaliação Bioimpedância 3D mensal</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-white font-medium">
+                                    <i class="fa-solid fa-circle-check text-volt text-base"></i>
+                                    <span>Leve 2 convidados por mês gratuitamente</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-500">
+                                    <i class="fa-solid fa-minus text-gray-600 text-base w-4 text-center"></i>
+                                    <span>Acesso ilimitado à Área VIP / Recovery Spa</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-500">
+                                    <i class="fa-solid fa-minus text-gray-600 text-base w-4 text-center"></i>
+                                    <span>Sessão mensal individual com Personal Trainer</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button type="button" onclick="selectPlanAndScroll('Performance')" class="w-full py-4 px-6 rounded-xl bg-volt hover:bg-voltHover text-obsidian font-display font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(200,255,0,0.3)] transition-all transform hover:scale-[1.02]">
+                            Selecionar Plano Performance
+                        </button>
+                    </div>
+
+                    <!-- PLANO 3: BLACK VIP -->
+                    <div class="reveal bg-charcoal rounded-3xl p-8 border border-white/10 flex flex-col justify-between hover:border-ember/50 transition-all">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="font-display font-extrabold text-xl text-white uppercase tracking-wide flex items-center gap-2">
+                                    Black VIP <i class="fa-solid fa-crown text-amber-400 text-sm"></i>
+                                </span>
+                                <span class="px-3 py-1 rounded-lg bg-amber-500/15 text-amber-300 text-xs font-bold border border-amber-500/30">All-Inclusive</span>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-6">
+                                Experiência concierge completa com recovery esportivo, personal trainer e conveniência total.
+                            </p>
+                            <div class="mb-6 pb-6 border-b border-white/10">
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-gray-400 text-lg font-bold">R$</span>
+                                    <span id="price-black" class="font-display font-black text-4xl sm:text-5xl text-white">349</span>
+                                    <span class="text-gray-400 text-sm">,90/mês</span>
+                                </div>
+                                <p id="note-black" class="text-xs text-volt mt-1.5 font-medium">Estacionamento cortesia 3h + Kit Toalhas incluso</p>
+                            </div>
+
+                            <ul class="space-y-3.5 text-sm mb-8">
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>Tudo do plano <strong class="text-white">Performance</strong> incluso</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>Acesso livre Área VIP Recovery (Crioterapia & Sauna)</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>1 sessão de Personal Trainer dedicada por mês</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>Leve até 5 convidados por mês em qualquer unidade</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>Serviço de toalhas e armário rotativo VIP</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-200">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                    <span>Estacionamento Valet com 3h gratuitas/dia</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button type="button" onclick="selectPlanAndScroll('Black VIP')" class="w-full py-4 px-6 rounded-xl bg-graphite hover:bg-white/15 text-white font-display font-bold text-xs uppercase tracking-wider border border-white/15 transition-all">
+                            Selecionar Plano Black VIP
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabela Comparativa Detalhada de Benefícios Técnicos -->
+                <div class="reveal bg-charcoal rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+                    <div class="p-6 sm:p-8 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display font-extrabold text-xl text-white uppercase">Comparativo Técnico Detalhado</h3>
+                            <p class="text-gray-400 text-xs sm:text-sm mt-1">Compare recurso por recurso antes de finalizar sua pré-matrícula.</p>
+                        </div>
+                        <span class="text-xs text-volt font-semibold uppercase tracking-wider"><i class="fa-solid fa-shield-halved mr-1.5"></i>Garantia de 7 dias</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[640px]">
+                            <thead>
+                                <tr class="bg-obsidian/60 border-b border-white/10 text-xs font-display uppercase tracking-wider">
+                                    <th class="py-4 px-6 text-gray-400 w-2/5">Benefício / Infraestrutura</th>
+                                    <th class="py-4 px-6 text-center text-white w-1/5">Essential</th>
+                                    <th class="py-4 px-6 text-center text-volt bg-volt/5 w-1/5">Performance</th>
+                                    <th class="py-4 px-6 text-center text-amber-300 w-1/5">Black VIP</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-sm">
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Acesso 24h às áreas de Musculação & Cardio</td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                    <td class="py-4 px-6 text-center bg-volt/5"><i class="fa-solid fa-check text-volt"></i></td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Acesso a todas as unidades (5 polos SP)</td>
+                                    <td class="py-4 px-6 text-center text-gray-500 text-xs">1 unidade</td>
+                                    <td class="py-4 px-6 text-center bg-volt/5"><i class="fa-solid fa-check text-volt"></i></td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Avaliação Bioimpedância 3D mensal</td>
+                                    <td class="py-4 px-6 text-center text-gray-500 text-xs">Apenas adesão</td>
+                                    <td class="py-4 px-6 text-center bg-volt/5"><i class="fa-solid fa-check text-volt"></i></td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Aulas coletivas ilimitadas (Cross, Lutas, Hidro)</td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center bg-volt/5"><i class="fa-solid fa-check text-volt"></i></td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Levar convidado (Guest Pass mensal)</td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center bg-volt/5 text-white font-semibold text-xs">2x / mês</td>
+                                    <td class="py-4 px-6 text-center text-amber-300 font-semibold text-xs">5x / mês</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Acesso Área VIP / Recovery (Crioterapia & Botas)</td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center bg-volt/5"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Personal Trainer 1x/mês (Ajuste biomecânico)</td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center bg-volt/5"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02]">
+                                    <td class="py-4 px-6 text-gray-200 font-medium">Toalhas de banho/treino & Estacionamento 3h</td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center bg-volt/5"><i class="fa-solid fa-minus text-gray-600"></i></td>
+                                    <td class="py-4 px-6 text-center"><i class="fa-solid fa-check text-emerald-400"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             PASSO 3: FORMULÁRIO DE MATRÍCULA NA PARTE INFERIOR DA PÁGINA
+        ====================================================================== -->
+        <section id="matricula" class="py-20 lg:py-28 relative overflow-hidden border-t border-white/10">
+            <!-- Glow de fundo -->
+            <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-volt/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    
+                    <!-- Coluna Esquerda: Argumentos de Conversão e Card Dinâmico da Unidade -->
+                    <div class="lg:col-span-5 reveal">
+                        <span class="text-volt font-display font-bold text-xs uppercase tracking-[0.25em]">Comece Hoje Mesmo</span>
+                        <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase mt-2 mb-4 leading-tight">
+                            GARANTA SUA VAGA E <span class="text-volt">ISENÇÃO DE ADESÃO</span>
+                        </h2>
+                        <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-8">
+                            Preencha seus dados ao lado para ativar sua pré-matrícula online. Você receberá o QR Code de acesso imediato no seu WhatsApp e E-mail, além de agendar sua primeira Bioimpedância 3D.
+                        </p>
+
+                        <!-- Box de Informações da Unidade Selecionada em Tempo Real -->
+                        <div id="unit-preview-card" class="bg-charcoal rounded-2xl p-6 border border-volt/30 shadow-xl mb-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-display font-bold uppercase tracking-wider text-volt flex items-center gap-2">
+                                    <i class="fa-solid fa-location-dot"></i> Unidade Selecionada
+                                </span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[11px] font-semibold">
+                                    Aberta 24h
+                                </span>
+                            </div>
+                            <h3 id="unit-name-display" class="font-display font-extrabold text-lg text-white mb-1">
+                                Unidade Paulista - Bela Vista
+                            </h3>
+                            <p id="unit-address-display" class="text-gray-300 text-sm mb-3">
+                                Av. Paulista, 1578 - Bela Vista, São Paulo - SP
+                            </p>
+                            <div class="flex flex-wrap gap-4 pt-3 border-t border-white/10 text-xs text-gray-400">
+                                <span><i class="fa-regular fa-clock text-volt mr-1.5"></i><span id="unit-hours-display">Seg a Dom: 24 horas</span></span>
+                                <span><i class="fa-solid fa-square-parking text-volt mr-1.5"></i>Valet no local</span>
+                            </div>
+                        </div>
+
+                        <!-- Selos de Segurança -->
+                        <div class="flex items-center gap-4 text-xs text-gray-400">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-lock text-volt"></i>
+                                <span>Dados protegidos (LGPD)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-bolt text-volt"></i>
+                                <span>Ativação instantânea</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna Direita: Formulário de Pré-Matrícula -->
+                    <div class="lg:col-span-7 reveal">
+                        <div class="bg-charcoal rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl">
+                            
+                            <!-- Formulário -->
+                            <form id="enrollment-form" novalidate class="space-y-5">
+                                <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                                    <h3 class="font-display font-extrabold text-xl text-white uppercase">Ficha de Pré-Matrícula</h3>
+                                    <span class="text-xs text-gray-400">* Campos obrigatórios</span>
+                                </div>
+
+                                <!-- Nome Completo -->
+                                <div>
+                                    <label for="fullName" class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+                                        Nome Completo *
+                                    </label>
+                                    <input type="text" id="fullName" name="fullName" required placeholder="Ex: Gabriel Henrique Silva"
+                                           class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-volt focus:ring-1 focus:ring-volt transition-colors">
+                                    <p class="error-msg hidden text-xs text-ember mt-1.5"><i class="fa-solid fa-circle-exclamation mr-1"></i>Informe seu nome e sobrenome completos.</p>
+                                </div>
+
+                                <!-- Grid CPF e Data de Nascimento -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label for="cpf" class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+                                            CPF *
+                                        </label>
+                                        <input type="text" id="cpf" name="cpf" required maxlength="14" placeholder="000.000.000-00"
+                                               class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-volt focus:ring-1 focus:ring-volt transition-colors">
+                                        <p class="error-msg hidden text-xs text-ember mt-1.5"><i class="fa-solid fa-circle-exclamation mr-1"></i>CPF inválido (11 dígitos).</p>
+                                    </div>
+
+                                    <div>
+                                        <label for="birthDate" class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+                                            Data de Nascimento *
+                                        </label>
+                                        <input type="date" id="birthDate" name="birthDate" required
+                                               class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/15 text-white text-sm focus:outline-none focus:border-volt focus:ring-1 focus:ring-volt transition-colors">
+                                        <p class="error-msg hidden text-xs text-ember mt-1.5"><i class="fa-solid fa-circle-exclamation mr-1"></i>Selecione sua data de nascimento.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Grid E-mail e Telefone/WhatsApp -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+                                            E-mail *
+                                        </label>
+                                        <input type="email" id="email" name="email" required placeholder="voce@exemplo.com.br"
+                                               class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-volt focus:ring-1 focus:ring-volt transition-colors">
+                                        <p class="error-msg hidden text-xs text-ember mt-1.5"><i class="fa-solid fa-circle-exclamation mr-1"></i>Informe um e-mail válido.</p>
+                                    </div>
+
+                                    <div>
+                                        <label for="phone" class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+                                            Telefone / WhatsApp *
+                                        </label>
+                                        <input type="tel" id="phone" name="phone" required maxlength="15" placeholder="(11) 99999-9999"
+                                               class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-volt focus:ring-1 focus:ring-volt transition-colors">
+                                        <p class="error-msg hidden text-xs text-ember mt-1.5"><i class="fa-solid fa-circle-exclamation mr-1"></i>Informe um telefone com DDD.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Grid Seleção de Plano e Unidade de Preferência -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label for="selectedPlan" class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+                                            Plano Desejado *
+                                        </label>
+                                        <div class="relative">
+                                            <select id="selectedPlan" name="selectedPlan" required
+                                                    class="w-full appearance-none px-4 py-3.5 rounded-xl bg-obsidian border border-volt/50 text-white font-semibold text-sm focus:outline-none focus:border-volt focus:ring-1 focus:ring-volt transition-colors cursor-pointer">
+                                                <option value="Essential">Plano Essential</option>
+                                                <option value="Performance" selected>Plano Performance (Mais Popular)</option>
+                                                <option value="Black VIP">Plano Black VIP</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-volt text-xs pointer-events-none"></i>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="selectedUnit" class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+                                            Unidade de Preferência *
+                                        </label>
+                                        <div class="relative">
+                                            <select id="selectedUnit" name="selectedUnit" required onchange="updateUnitDetails()"
+                                                    class="w-full appearance-none px-4 py-3.5 rounded-xl bg-obsidian border border-white/15 text-white text-sm focus:outline-none focus:border-volt focus:ring-1 focus:ring-volt transition-colors cursor-pointer">
+                                                <option value="paulista">Unidade Paulista - Bela Vista</option>
+                                                <option value="itaim">Unidade Itaim Bibi</option>
+                                                <option value="pinheiros">Unidade Pinheiros</option>
+                                                <option value="moema">Unidade Moema</option>
+                                                <option value="vilamariana">Unidade Vila Mariana</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Termos -->
+                                <div class="pt-1">
+                                    <label class="flex items-start gap-3 cursor-pointer">
+                                        <input type="checkbox" id="terms" required checked class="mt-1 w-4 h-4 rounded accent-volt cursor-pointer">
+                                        <span class="text-xs text-gray-400 leading-relaxed">
+                                            Concordo em receber o voucher de acesso e comunicações da <strong class="text-gray-200">IRONPULSE FITNESS</strong> via WhatsApp e E-mail conforme a Política de Privacidade.
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <!-- Botão de Envio Destacado -->
+                                <button type="submit" class="w-full py-4 px-8 rounded-xl bg-volt hover:bg-voltHover text-obsidian font-display font-black text-sm sm:text-base uppercase tracking-wider shadow-[0_0_30px_rgba(200,255,0,0.3)] hover:shadow-[0_0_40px_rgba(200,255,0,0.5)] transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3">
+                                    <span>Concluir Pré-Matrícula</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </form>
+
+                            <!-- Tela de Sucesso Personalizada (Oculta inicialmente) -->
+                            <div id="enrollment-success" class="hidden text-center py-6 space-y-6">
+                                <div class="w-20 h-20 rounded-full bg-volt/15 border-2 border-volt text-volt flex items-center justify-center text-4xl mx-auto shadow-[0_0_30px_rgba(200,255,0,0.25)]">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div>
+                                    <span class="px-3 py-1 rounded-full bg-volt/15 text-volt text-xs font-bold uppercase tracking-wider">Pré-Matrícula Confirmada</span>
+                                    <h3 id="success-title" class="font-display font-black text-2xl sm:text-3xl text-white uppercase mt-3">
+                                        BEM-VINDO À IRONPULSE!
+                                    </h3>
+                                    <p id="success-message" class="text-gray-300 text-sm sm:text-base mt-2 max-w-lg mx-auto leading-relaxed">
+                                        Sua reserva foi registrada com sucesso.
+                                    </p>
+                                </div>
+
+                                <div class="bg-obsidian rounded-2xl p-5 border border-white/10 max-w-md mx-auto text-left space-y-2.5 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Protocolo:</span>
+                                        <span id="success-protocol" class="font-mono font-bold text-volt">#IP-84920</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Plano Escolhido:</span>
+                                        <span id="success-plan" class="font-bold text-white">Plano Performance</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Unidade Base:</span>
+                                        <span id="success-unit" class="font-bold text-white">Unidade Paulista</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Taxa de Adesão:</span>
+                                        <span class="font-bold text-emerald-400">ISENTA (R$ 0,00)</span>
+                                    </div>
+                                </div>
+
+                                <button type="button" onclick="resetEnrollmentForm()" class="inline-flex items-center gap-2 text-xs font-display font-bold uppercase tracking-wider text-gray-400 hover:text-volt transition-colors pt-2">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                    <span>Realizar nova pré-matrícula</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =====================================================================
+         FOOTER INSTITUCIONAL
+    ====================================================================== -->
+    <footer class="bg-obsidian border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+                <div>
+                    <a href="#inicio" class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-xl bg-volt flex items-center justify-center text-obsidian font-display font-black text-lg">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <span class="font-display font-black text-lg tracking-wider text-white">IRON<span class="text-volt">PULSE</span></span>
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-5">
+                        Rede de academias de alta performance e tecnologia biométrica em São Paulo. Aberta 24 horas por dia, 365 dias por ano.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <a href="#inicio" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-charcoal hover:bg-volt hover:text-obsidian text-gray-300 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#inicio" aria-label="YouTube" class="w-10 h-10 rounded-xl bg-charcoal hover:bg-volt hover:text-obsidian text-gray-300 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#inicio" aria-label="Spotify" class="w-10 h-10 rounded-xl bg-charcoal hover:bg-volt hover:text-obsidian text-gray-300 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-spotify"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Navegação</h4>
+                    <ul class="space-y-2.5 text-sm text-gray-400">
+                        <li><a href="#inicio" class="hover:text-volt transition-colors">Sobre a IRONPULSE</a></li>
+                        <li><a href="#diferenciais" class="hover:text-volt transition-colors">Infraestrutura & Tecnologia</a></li>
+                        <li><a href="#modalidades" class="hover:text-volt transition-colors">Grade de Modalidades</a></li>
+                        <li><a href="#planos" class="hover:text-volt transition-colors">Planos e Comparativo</a></li>
+                        <li><a href="#matricula" class="hover:text-volt transition-colors">Pré-Matrícula Online</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Unidades São Paulo</h4>
+                    <ul class="space-y-2.5 text-sm text-gray-400">
+                        <li><i class="fa-solid fa-location-dot text-volt mr-2 text-xs"></i>Paulista - Bela Vista</li>
+                        <li><i class="fa-solid fa-location-dot text-volt mr-2 text-xs"></i>Itaim Bibi - Faria Lima</li>
+                        <li><i class="fa-solid fa-location-dot text-volt mr-2 text-xs"></i>Pinheiros - Oscar Freire</li>
+                        <li><i class="fa-solid fa-location-dot text-volt mr-2 text-xs"></i>Moema - Pássaros</li>
+                        <li><i class="fa-solid fa-location-dot text-volt mr-2 text-xs"></i>Vila Mariana - Metrô Ana Rosa</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Atendimento & App</h4>
+                    <p class="text-sm text-gray-400 mb-3">Central de Relacionamento:</p>
+                    <p class="text-white font-semibold text-sm mb-1"><i class="fa-brands fa-whatsapp text-volt mr-2"></i>(11) 98888-7700</p>
+                    <p class="text-gray-400 text-sm mb-4"><i class="fa-regular fa-envelope text-volt mr-2"></i>contato@ironpulse.com.br</p>
+                    <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-charcoal border border-white/10 text-xs text-gray-300">
+                        <i class="fa-brands fa-apple text-base text-white"></i>
+                        <i class="fa-brands fa-google-play text-sm text-volt"></i>
+                        <span>App disponível iOS & Android</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <p>&copy; 2026 IRONPULSE FITNESS S.A. Todos os direitos reservados. CNPJ 42.198.765/0001-10.</p>
+                <div class="flex gap-6">
+                    <a href="#matricula" class="hover:text-gray-300">Regulamento Geral</a>
+                    <a href="#matricula" class="hover:text-gray-300">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         MODAL INTERATIVO PARA AGENDAMENTO DE AULA EXPERIMENTAL
+    ====================================================================== -->
+    <div id="trial-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-obsidian/80 backdrop-blur-sm">
+        <div class="bg-charcoal border border-white/15 rounded-3xl max-w-md w-full p-6 sm:p-8 relative shadow-2xl">
+            <button type="button" onclick="closeTrialModal()" aria-label="Fechar modal" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-graphite text-gray-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div id="trial-form-container">
+                <span class="text-volt font-display font-bold text-xs uppercase tracking-widest">Free Pass 1 Dia</span>
+                <h3 class="font-display font-black text-2xl text-white uppercase mt-1 mb-2">Aula Experimental</h3>
+                <p class="text-gray-400 text-sm mb-6">Experimente nossa estrutura completa e faça uma aula coletiva gratuitamente.</p>
+
+                <form id="trial-form" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-gray-300 mb-1.5">Seu Nome</label>
+                        <input type="text" id="trial-name" required placeholder="Digite seu nome" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/15 text-white text-sm focus:outline-none focus:border-volt">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-gray-300 mb-1.5">WhatsApp</label>
+                        <input type="tel" id="trial-phone" required maxlength="15" placeholder="(11) 99999-9999" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/15 text-white text-sm focus:outline-none focus:border-volt">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-gray-300 mb-1.5">Unidade Desejada</label>
+                        <select id="trial-unit" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/15 text-white text-sm focus:outline-none focus:border-volt">
+                            <option value="Unidade Paulista - Bela Vista">Unidade Paulista - Bela Vista</option>
+                            <option value="Unidade Itaim Bibi">Unidade Itaim Bibi</option>
+                            <option value="Unidade Pinheiros">Unidade Pinheiros</option>
+                            <option value="Unidade Moema">Unidade Moema</option>
+                            <option value="Unidade Vila Mariana">Unidade Vila Mariana</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-volt hover:bg-voltHover text-obsidian font-display font-extrabold text-xs uppercase tracking-wider mt-2 transition-all">
+                        Gerar Passe Gratuito
+                    </button>
+                </form>
+            </div>
+
+            <div id="trial-success-container" class="hidden text-center py-4 space-y-4">
+                <div class="w-16 h-16 rounded-full bg-volt/15 text-volt flex items-center justify-center text-3xl mx-auto">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+                <h4 class="font-display font-black text-xl text-white uppercase">Passe Liberado!</h4>
+                <p id="trial-success-text" class="text-gray-300 text-sm leading-relaxed"></p>
+                <button type="button" onclick="closeTrialModal()" class="w-full py-3 rounded-xl bg-graphite text-white font-display font-bold text-xs uppercase tracking-wider">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         JAVASCRIPT: INTERATIVIDADE, FILTROS, MÁSCARAS E VALIDAÇÃO
+    ====================================================================== -->
+    <script>
+        // 1. Dados das Unidades de São Paulo
+        const unitsData = {
+            paulista: {
+                name: 'Unidade Paulista - Bela Vista',
+                address: 'Av. Paulista, 1578 - Bela Vista, São Paulo - SP',
+                hours: 'Seg a Dom: 24 horas (Incl. Feriados)'
+            },
+            itaim: {
+                name: 'Unidade Itaim Bibi',
+                address: 'Rua Joaquim Floriano, 913 - Itaim Bibi, São Paulo - SP',
+                hours: 'Seg a Dom: 24 horas (Incl. Feriados)'
+            },
+            pinheiros: {
+                name: 'Unidade Pinheiros',
+                address: 'Rua dos Pinheiros, 1140 - Pinheiros, São Paulo - SP',
+                hours: 'Seg a Dom: 24 horas (Incl. Feriados)'
+            },
+            moema: {
+                name: 'Unidade Moema',
+                address: 'Alameda dos Maracatins, 780 - Moema, São Paulo - SP',
+                hours: 'Seg a Dom: 24 horas (Incl. Feriados)'
+            },
+            vilamariana: {
+                name: 'Unidade Vila Mariana',
+                address: 'Rua Vergueiro, 2890 - Vila Mariana, São Paulo - SP',
+                hours: 'Seg a Dom: 24 horas (Incl. Feriados)'
+            }
+        };
+
+        // 2. Menu Mobile Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 3. Filtro Interativo da Galeria de Modalidades
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const modalityCards = document.querySelectorAll('.modality-card');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Atualizar estilo dos botões
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-volt', 'text-obsidian');
+                    b.classList.add('bg-charcoal', 'text-gray-300', 'border', 'border-white/10');
+                });
+                btn.classList.remove('bg-charcoal', 'text-gray-300', 'border', 'border-white/10');
+                btn.classList.add('bg-volt', 'text-obsidian');
+
+                const selectedCategory = btn.getAttribute('data-filter');
+
+                modalityCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // 4. Toggle de Preços (Mensal vs Anual)
+        let currentCycle = 'anual';
+        const pricingConfig = {
+            anual: {
+                essential: { price: '149', note: 'Cobrado anualmente (12x sem juros) • Taxa Zero' },
+                performance: { price: '219', note: 'Economize R$ 600/ano no plano anual • Taxa Zero' },
+                black: { price: '349', note: 'Estacionamento cortesia 3h + Kit Toalhas incluso' }
+            },
+            mensal: {
+                essential: { price: '189', note: 'Renovação mensal sem fidelidade • Adesão R$ 99' },
+                performance: { price: '269', note: 'Renovação mensal sem fidelidade • Adesão R$ 49' },
+                black: { price: '429', note: 'Renovação mensal sem fidelidade • Taxa Zero' }
+            }
+        };
+
+        function setBillingCycle(cycle) {
+            currentCycle = cycle;
+            const btnMensal = document.getElementById('btn-mensal');
+            const btnAnual = document.getElementById('btn-anual');
+
+            if (cycle === 'anual') {
+                btnAnual.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-display font-bold uppercase tracking-wider transition-all bg-volt text-obsidian shadow-[0_0_15px_rgba(200,255,0,0.3)]';
+                btnMensal.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-display font-bold uppercase tracking-wider transition-all text-gray-400 hover:text-white';
+            } else {
+                btnMensal.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-display font-bold uppercase tracking-wider transition-all bg-volt text-obsidian shadow-[0_0_15px_rgba(200,255,0,0.3)]';
+                btnAnual.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-display font-bold uppercase tracking-wider transition-all text-gray-400 hover:text-white';
+            }
+
+            document.getElementById('price-essential').textContent = pricingConfig[cycle].essential.price;
+            document.getElementById('note-essential').textContent = pricingConfig[cycle].essential.note;
+
+            document.getElementById('price-performance').textContent = pricingConfig[cycle].performance.price;
+            document.getElementById('note-performance').textContent = pricingConfig[cycle].performance.note;
+
+            document.getElementById('price-black').textContent = pricingConfig[cycle].black.price;
+            document.getElementById('note-black').textContent = pricingConfig[cycle].black.note;
+        }
+
+        // 5. Pré-selecionar Plano ao Clicar no Card e Rolar até o Formulário
+        function selectPlanAndScroll(planName) {
+            const planSelect = document.getElementById('selectedPlan');
+            planSelect.value = planName;
+
+            // Garantir que o formulário esteja visível caso o usuário já tenha enviado antes
+            resetEnrollmentForm(false);
+
+            const target = document.getElementById('matricula');
+            target.scrollIntoView({ behavior: 'smooth' });
+
+            // Destaque visual rápido no select
+            planSelect.classList.add('ring-2', 'ring-volt');
+            setTimeout(() => {
+                planSelect.classList.remove('ring-2', 'ring-volt');
+            }, 1500);
+        }
+
+        // 6. Atualizar Card de Detalhes da Unidade Selecionada
+        function updateUnitDetails() {
+            const unitKey = document.getElementById('selectedUnit').value;
+            const unitInfo = unitsData[unitKey];
+            if (unitInfo) {
+                document.getElementById('unit-name-display').textContent = unitInfo.name;
+                document.getElementById('unit-address-display').textContent = unitInfo.address;
+                document.getElementById('unit-hours-display').textContent = unitInfo.hours;
+            }
+        }
+
+        // 7. Máscaras de Entrada (CPF e Telefone/WhatsApp)
+        const cpfInput = document.getElementById('cpf');
+        cpfInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+
+        function applyPhoneMask(inputElement) {
+            inputElement.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.slice(0, 11);
+                if (value.length > 10) {
+                    value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+                } else if (value.length > 6) {
+                    value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+                } else if (value.length > 2) {
+                    value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+                } else if (value.length > 0) {
+                    value = value.replace(/^(\d*)/, '($1');
+                }
+                e.target.value = value;
+            });
+        }
+
+        applyPhoneMask(document.getElementById('phone'));
+        applyPhoneMask(document.getElementById('trial-phone'));
+
+        // 8. Validação e Submissão do Formulário de Matrícula
+        const enrollmentForm = document.getElementById('enrollment-form');
+        const enrollmentSuccess = document.getElementById('enrollment-success');
+
+        function setFieldError(input, hasError) {
+            const errorMsg = input.parentElement.querySelector('.error-msg');
+            if (hasError) {
+                input.classList.add('border-ember');
+                input.classList.remove('border-white/15');
+                if (errorMsg) errorMsg.classList.remove('hidden');
+            } else {
+                input.classList.remove('border-ember');
+                input.classList.add('border-white/15');
+                if (errorMsg) errorMsg.classList.add('hidden');
+            }
+        }
+
+        enrollmentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName');
+            const cpf = document.getElementById('cpf');
+            const birthDate = document.getElementById('birthDate');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const selectedPlan = document.getElementById('selectedPlan').value;
+            const selectedUnitKey = document.getElementById('selectedUnit').value;
+
+            let isValid = true;
+
+            // Validação Nome (pelo menos 2 palavras)
+            if (fullName.value.trim().split(/\s+/).length < 2) {
+                setFieldError(fullName, true);
+                isValid = false;
+            } else {
+                setFieldError(fullName, false);
+            }
+
+            // Validação CPF (14 caracteres com máscara)
+            if (cpf.value.replace(/\D/g, '').length !== 11) {
+                setFieldError(cpf, true);
+                isValid = false;
+            } else {
+                setFieldError(cpf, false);
+            }
+
+            // Validação Data de Nascimento
+            if (!birthDate.value) {
+                setFieldError(birthDate, true);
+                isValid = false;
+            } else {
+                setFieldError(birthDate, false);
+            }
+
+            // Validação E-mail
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value.trim())) {
+                setFieldError(email, true);
+                isValid = false;
+            } else {
+                setFieldError(email, false);
+            }
+
+            // Validação Telefone (mínimo 10 dígitos)
+            if (phone.value.replace(/\D/g, '').length < 10) {
+                setFieldError(phone, true);
+                isValid = false;
+            } else {
+                setFieldError(phone, false);
+            }
+
+            if (!isValid) return;
+
+            // Exibir feedback de sucesso personalizado
+            const firstName = fullName.value.trim().split(' ')[0];
+            const unitName = unitsData[selectedUnitKey].name;
+            const protocolNumber = '#IP-' + Math.floor(10000 + Math.random() * 90000);
+            const cycleLabel = currentCycle === 'anual' ? 'Anual' : 'Mensal';
+
+            document.getElementById('success-title').textContent = `PARABÉNS, ${firstName.toUpperCase()}!`;
+            document.getElementById('success-message').innerHTML = 
+                `Sua pré-matrícula está ativa. Enviamos o QR Code de acesso e o agendamento da sua Bioimpedância 3D para <strong class="text-white">${email.value}</strong> e WhatsApp <strong class="text-white">${phone.value}</strong>.`;
+            document.getElementById('success-protocol').textContent = protocolNumber;
+            document.getElementById('success-plan').textContent = `Plano ${selectedPlan} (${cycleLabel})`;
+            document.getElementById('success-unit').textContent = unitName;
+
+            enrollmentForm.classList.add('hidden');
+            enrollmentSuccess.classList.remove('hidden');
+        });
+
+        function resetEnrollmentForm(clearInputs = true) {
+            if (clearInputs) {
+                enrollmentForm.reset();
+                updateUnitDetails();
+            }
+            enrollmentSuccess.classList.add('hidden');
+            enrollmentForm.classList.remove('hidden');
+        }
+
+        // 9. Modal de Aula Experimental
+        const trialModal = document.getElementById('trial-modal');
+        const trialForm = document.getElementById('trial-form');
+
+        function openTrialModal() {
+            document.getElementById('trial-form-container').classList.remove('hidden');
+            document.getElementById('trial-success-container').classList.add('hidden');
+            trialModal.classList.remove('hidden');
+            trialModal.classList.add('flex');
+        }
+
+        function closeTrialModal() {
+            trialModal.classList.add('hidden');
+            trialModal.classList.remove('flex');
+        }
+
+        trialForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('trial-name').value.trim();
+            const unit = document.getElementById('trial-unit').value;
+            document.getElementById('trial-success-text').innerHTML = 
+                `Olá, <strong class="text-white">${name}</strong>! Seu Free Pass de 1 dia para a <strong class="text-volt">${unit}</strong> foi enviado para o seu WhatsApp. Apresente seu documento com foto na recepção.`;
+            document.getElementById('trial-form-container').classList.add('hidden');
+            document.getElementById('trial-success-container').classList.remove('hidden');
+            trialForm.reset();
+        });
+
+        // Fechar modal ao clicar fora
+        trialModal.addEventListener('click', (e) => {
+            if (e.target === trialModal) closeTrialModal();
+        });
+
+        // 10. Animação Suave ao Rolar (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>

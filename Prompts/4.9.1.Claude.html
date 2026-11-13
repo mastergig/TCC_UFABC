@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<!-- Sem maximum-scale nem user-scalable=no: o zoom por pinça precisa continuar funcionando -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gazeta de Serra Clara — Notícias locais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Princípios de robustez usados nesta página
+   - Tamanhos em rem/em; nada de altura fixa em blocos de texto.
+   - Layout intrínseco: grid auto-fit + min(100%, X) para nunca exigir
+     largura maior que a tela (WCAG 1.4.10 – Reflow a 320 px CSS).
+   - Media queries em em: acompanham o zoom E o tamanho de fonte do navegador.
+   - Palavras e URLs longas quebram (overflow-wrap) em vez de vazar.
+   - Cabeçalho fixo só quando há altura de sobra (zoom alto = pouca altura).
+   - Rolagem horizontal só na tabela (conteúdo 2D, exceção prevista no 1.4.10).
+   ========================================================= */
+
+:root{
+  --texto:#1c1b19; --texto-suave:#55524c; --fundo:#fbfaf7; --superficie:#ffffff;
+  --borda:#dcd8cf; --destaque:#a3261a; --destaque-escuro:#7d1b11; --link:#1d4f91;
+  --foco:#1d4f91; --chip:#f1ede4;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --raio:.5rem;
+  --espaco:clamp(1rem, 3vw, 2rem);
+  --largura-max:75rem;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --texto:#ece9e3; --texto-suave:#b6b1a7; --fundo:#141312; --superficie:#1d1c1a;
+    --borda:#3a3732; --destaque:#ff8a7a; --destaque-escuro:#ffb3a8; --link:#9cc3ff;
+    --foco:#9cc3ff; --chip:#2a2825;
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{
+  font-size:100%;                 /* respeita o tamanho de fonte escolhido pelo usuário */
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+html.texto-110{font-size:110%} html.texto-125{font-size:125%}
+html.texto-150{font-size:150%} html.texto-175{font-size:175%} html.texto-200{font-size:200%}
+
+body{
+  margin:0; background:var(--fundo); color:var(--texto);
+  font-family:var(--sans); font-size:1.0625rem; line-height:1.6;
+  overflow-wrap:break-word;       /* evita vazamento por palavras longas */
+}
+img,svg,video{max-width:100%; height:auto; display:block}
+h1,h2,h3{font-family:var(--serif); line-height:1.2; margin:0 0 .5em; text-wrap:balance}
+p{margin:0 0 1em}
+a{color:var(--link); text-underline-offset:.15em}
+a:hover{text-decoration-thickness:.12em}
+:focus-visible{outline:3px solid var(--foco); outline-offset:2px; border-radius:2px}
+
+.container{width:min(100% - 2*var(--espaco), var(--largura-max)); margin-inline:auto}
+.visualmente-oculto{
+  position:absolute!important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* Link de salto */
+.pular{
+  position:absolute; left:1rem; top:-10rem; z-index:100;
+  background:var(--superficie); color:var(--link); padding:.75em 1em;
+  border:2px solid var(--foco); border-radius:var(--raio); font-weight:700;
+}
+.pular:focus{top:1rem}
+
+/* ---------- Barra de acessibilidade ---------- */
+.barra-a11y{background:var(--chip); border-bottom:1px solid var(--borda); font-size:.9375rem}
+.barra-a11y .container{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; align-items:center;
+  justify-content:space-between; padding-block:.5rem;
+}
+.grupo-controles{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center}
+.grupo-controles span{font-weight:600}
+.botao{
+  font:inherit; font-weight:600; color:var(--texto); background:var(--superficie);
+  border:1px solid var(--borda); border-radius:var(--raio);
+  min-height:2.75rem; min-width:2.75rem; padding:.35em .8em; cursor:pointer;
+}
+.botao[aria-pressed="true"]{background:var(--texto); color:var(--fundo); border-color:var(--texto)}
+.data-hoje{color:var(--texto-suave)}
+
+/* ---------- Cabeçalho ---------- */
+.cabecalho{background:var(--superficie); border-bottom:3px solid var(--texto)}
+/* Fixo apenas com tela larga E alta: com zoom de 400% a altura útil é pequena
+   e um cabeçalho fixo cobriria o conteúdo. */
+@media (min-width:48em) and (min-height:40em){
+  .cabecalho{position:sticky; top:0; z-index:10}
+}
+.cabecalho .container{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.75rem 1.5rem; padding-block:.9rem;
+}
+.marca{
+  font-family:var(--serif); font-weight:700; font-size:clamp(1.5rem, 1.1rem + 2vw, 2.25rem);
+  color:var(--texto); text-decoration:none; line-height:1.1; margin-right:auto;
+}
+.marca small{display:block; font-family:var(--sans); font-size:.45em; font-weight:600;
+  color:var(--destaque); letter-spacing:.06em; text-transform:uppercase}
+
+/* Menu: <details> funciona sem JavaScript */
+.menu summary{
+  list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:.5em;
+}
+.menu summary::-webkit-details-marker{display:none}
+.menu summary::before{content:"☰"; font-size:1.2em; line-height:1}
+.menu[open] summary::before{content:"✕"}
+.menu ul{list-style:none; margin:.75rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.25rem .5rem}
+.menu a{
+  display:inline-block; padding:.5em .75em; min-height:2.75rem; border-radius:var(--raio);
+  color:var(--texto); text-decoration:none; font-weight:600;
+}
+.menu a:hover{background:var(--chip)}
+.menu a[aria-current="page"]{color:var(--destaque); text-decoration:underline; text-underline-offset:.3em}
+
+/* Em telas largas o menu fica sempre aberto (JS mantém o atributo open) */
+@media (min-width:60em){
+  .menu summary{display:none}
+  .menu ul{margin:0}
+  .cabecalho .container{flex-wrap:wrap}
+}
+@media (max-width:59.99em){
+  .menu{flex-basis:100%}
+  .menu ul{flex-direction:column}
+  .menu a{display:block}
+}
+
+/* Busca */
+.busca{display:flex; flex-wrap:wrap; gap:.5rem; flex:1 1 min(100%, 16rem); min-width:0; max-width:24rem}
+.busca input{
+  flex:1 1 min(100%, 10rem); width:100%; min-width:0; font:inherit; padding:.5em .75em; min-height:2.75rem;
+  border:1px solid var(--texto-suave); border-radius:var(--raio);
+  background:var(--fundo); color:var(--texto);
+}
+
+/* ---------- Faixa urgente ---------- */
+.alerta{background:var(--destaque); color:#fff; font-weight:600}
+@media (prefers-color-scheme: dark){ .alerta{color:#1a0d0b} }
+.alerta .container{display:flex; flex-wrap:wrap; gap:.25rem .75rem; padding-block:.6rem}
+.alerta strong{text-transform:uppercase; letter-spacing:.05em}
+.alerta a{color:inherit}
+
+/* ---------- Conteúdo ---------- */
+main{padding-block:var(--espaco) calc(var(--espaco) * 2)}
+.layout{
+  display:grid; gap:calc(var(--espaco) * 1.25);
+  grid-template-columns:minmax(0,1fr);   /* minmax(0,…) impede filhos de alargarem a coluna */
+}
+@media (min-width:64em){
+  .layout{grid-template-columns:minmax(0,1fr) minmax(16rem, 22rem)}
+}
+
+.rotulo{
+  display:inline-block; font-size:.8125rem; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--destaque); margin-bottom:.4em;
+}
+.meta{font-size:.9375rem; color:var(--texto-suave); display:flex; flex-wrap:wrap; gap:.15rem .75rem}
+
+/* Manchete */
+.manchete{
+  display:grid; gap:1.25rem; grid-template-columns:minmax(0,1fr);
+  padding-bottom:var(--espaco); border-bottom:1px solid var(--borda); margin-bottom:var(--espaco);
+}
+@media (min-width:48em){ .manchete{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); align-items:center} }
+.manchete h2{font-size:clamp(1.75rem, 1.2rem + 2.5vw, 2.75rem)}
+.manchete h2 a{color:var(--texto); text-decoration:none}
+.manchete h2 a:hover{text-decoration:underline}
+.linha-fina{font-size:1.15em; color:var(--texto-suave)}
+
+.ilustracao{border-radius:var(--raio); overflow:hidden; aspect-ratio:16/10; background:var(--chip)}
+.ilustracao svg{width:100%; height:100%}
+
+/* Grade de notícias: nunca mais larga que a tela */
+.secao-titulo{
+  font-size:1.5rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:.25rem 1rem;
+  border-top:3px solid var(--texto); padding-top:.5rem; margin-top:var(--espaco);
+}
+.secao-titulo a{font-family:var(--sans); font-size:.9375rem; font-weight:600}
+.grade{
+  list-style:none; margin:0; padding:0; display:grid; gap:1.5rem;
+  grid-template-columns:repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+}
+.cartao{
+  position:relative; display:flex; flex-direction:column; gap:.5rem;
+  background:var(--superficie); border:1px solid var(--borda); border-radius:var(--raio);
+  padding:1rem; height:100%;
+}
+.cartao h3{font-size:1.2rem; margin:0}
+.cartao h3 a{color:var(--texto); text-decoration:none}
+/* Cartão inteiro clicável sem aninhar elementos interativos */
+.cartao h3 a::after{content:""; position:absolute; inset:0; border-radius:var(--raio)}
+.cartao:hover h3 a{text-decoration:underline}
+.cartao:focus-within{outline:3px solid var(--foco); outline-offset:2px}
+.cartao h3 a:focus-visible{outline:none}
+.cartao p{margin:0; color:var(--texto-suave)}
+.cartao .meta{margin-top:auto}
+
+/* Lateral */
+aside > section{
+  background:var(--superficie); border:1px solid var(--borda); border-radius:var(--raio);
+  padding:1.25rem; margin-bottom:1.5rem;
+}
+aside h2{font-size:1.25rem}
+.mais-lidas{margin:0; padding-left:1.75em}
+.mais-lidas li{margin-bottom:.75em}
+.mais-lidas li::marker{font-family:var(--serif); font-weight:700; color:var(--destaque)}
+
+/* Tabela: única área com rolagem horizontal própria, focável por teclado */
+.tabela-rolavel{overflow-x:auto; border:1px solid var(--borda); border-radius:var(--raio)}
+.tabela-rolavel:focus-visible{outline-offset:0}
+table{border-collapse:collapse; width:100%; font-size:.9375rem}
+caption{text-align:left; font-weight:600; padding:.75rem .75rem 0}
+th,td{padding:.5rem .75rem; text-align:left; border-bottom:1px solid var(--borda); white-space:nowrap}
+thead th{background:var(--chip)}
+.dica-rolagem{font-size:.875rem; color:var(--texto-suave); margin:.5rem 0 0}
+
+/* Agenda */
+.agenda{list-style:none; margin:0; padding:0}
+.agenda li{display:grid; grid-template-columns:auto minmax(0,1fr); gap:.25rem .75rem; padding:.6rem 0; border-top:1px solid var(--borda)}
+.agenda li:first-child{border-top:0}
+.agenda time{font-weight:700; color:var(--destaque); min-width:3.5em}
+
+/* Newsletter */
+.newsletter form{display:flex; flex-wrap:wrap; gap:.5rem}
+.newsletter label{flex-basis:100%; font-weight:600}
+.newsletter input{
+  flex:1 1 min(100%, 12rem); width:100%; min-width:0; font:inherit; padding:.5em .75em; min-height:2.75rem;
+  border:1px solid var(--texto-suave); border-radius:var(--raio); background:var(--fundo); color:var(--texto);
+}
+.botao-primario{background:var(--destaque); color:#fff; border-color:var(--destaque)}
+@media (prefers-color-scheme: dark){ .botao-primario{color:#1a0d0b} }
+.status{margin:.5rem 0 0; font-weight:600}
+
+/* Rodapé */
+.rodape{background:var(--superficie); border-top:3px solid var(--texto); padding-block:var(--espaco); font-size:.9375rem}
+.rodape .colunas{display:grid; gap:1.5rem; grid-template-columns:repeat(auto-fit, minmax(min(100%, 13rem), 1fr))}
+.rodape h2{font-size:1.1rem}
+.rodape ul{list-style:none; margin:0; padding:0}
+.rodape li{margin-bottom:.4em}
+.aviso{color:var(--texto-suave); margin-top:1.5rem; border-top:1px solid var(--borda); padding-top:1rem}
+
+/* Teste de espaçamento de texto — valores mínimos do WCAG 1.4.12 */
+html.espacamento body *{
+  line-height:1.5!important; letter-spacing:.12em!important; word-spacing:.16em!important;
+}
+html.espacamento p{margin-bottom:2em!important}
+
+/* Diagnóstico visual de transbordo (botão "Verificar") */
+.relatorio{margin:0; font-weight:600}
+.relatorio.ok{color:#1f6f3a} .relatorio.erro{color:var(--destaque)}
+@media (prefers-color-scheme: dark){ .relatorio.ok{color:#7fd69a} }
+
+@media (prefers-reduced-motion: reduce){ *{scroll-behavior:auto!important; transition:none!important} }
+@media print{
+  .barra-a11y,.menu,.busca,.newsletter,.alerta{display:none}
+  .cabecalho{position:static}
+  a{color:inherit}
+}
+</style>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<div class="barra-a11y" role="region" aria-label="Preferências de leitura">
+  <div class="container">
+    <p class="data-hoje" id="data-hoje" style="margin:0">Serra Clara</p>
+    <div class="grupo-controles" role="group" aria-labelledby="rotulo-texto">
+      <span id="rotulo-texto">Tamanho do texto:</span>
+      <button class="botao" type="button" data-tamanho="-1" aria-label="Diminuir texto">A−</button>
+      <button class="botao" type="button" data-tamanho="0" aria-label="Texto no tamanho padrão">A</button>
+      <button class="botao" type="button" data-tamanho="1" aria-label="Aumentar texto">A+</button>
+      <output id="tamanho-atual" aria-live="polite">100%</output>
+    </div>
+    <div class="grupo-controles">
+      <button class="botao" type="button" id="btn-espacamento" aria-pressed="false">Espaçamento ampliado</button>
+      <button class="botao" type="button" id="btn-verificar">Verificar layout</button>
+      <p class="relatorio" id="relatorio" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<header class="cabecalho">
+  <div class="container">
+    <a class="marca" href="#">Gazeta de Serra Clara<small>Notícias da cidade e região</small></a>
+    <form class="busca" role="search" id="form-busca">
+      <label class="visualmente-oculto" for="q">Buscar notícias</label>
+      <input id="q" type="search" placeholder="Buscar notícias" autocomplete="off">
+      <button class="botao" type="submit">Buscar</button>
+    </form>
+    <details class="menu" id="menu">
+      <summary class="botao">Seções</summary>
+      <nav aria-label="Seções">
+        <ul>
+          <li><a href="#" aria-current="page">Início</a></li>
+          <li><a href="#cidade">Cidade</a></li>
+          <li><a href="#">Mobilidade</a></li>
+          <li><a href="#">Meio ambiente</a></li>
+          <li><a href="#">Educação</a></li>
+          <li><a href="#">Saúde</a></li>
+          <li><a href="#cultura">Cultura</a></li>
+          <li><a href="#">Esportes</a></li>
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<div class="alerta" role="region" aria-label="Aviso urgente">
+  <div class="container">
+    <strong>Atenção</strong>
+    <span>Interdição parcial na Avenida das Araucárias até domingo para obras de drenagem. <a href="#">Veja os desvios</a>.</span>
+  </div>
+</div>
+
+<main id="conteudo" tabindex="-1">
+  <div class="container layout">
+    <div>
+      <h1 class="visualmente-oculto">Notícias de Serra Clara</h1>
+
+      <article class="manchete">
+        <div>
+          <span class="rotulo">Meio ambiente</span>
+          <h2><a href="#">Parque linear do Córrego Fundo ganha 3 km de ciclovia e novos acessos pelos bairros</a></h2>
+          <p class="linha-fina">Obra integra cinco bairros da zona norte e prevê plantio de 1.200 mudas nativas ao longo das margens até março.</p>
+          <p class="meta"><span>Por Redação</span><time datetime="2026-11-12T09:30">12 nov. 2026, 9h30</time><span>Leitura de 4 min</span></p>
+        </div>
+        <div class="ilustracao">
+          <svg viewBox="0 0 320 200" role="img" aria-labelledby="ilus-t">
+            <title id="ilus-t">Ilustração: ciclovia margeando um córrego arborizado</title>
+            <rect width="320" height="200" fill="#cfe3d4"/>
+            <circle cx="262" cy="46" r="22" fill="#f4c95d"/>
+            <path d="M0 120 Q80 95 160 118 T320 112 V200 H0Z" fill="#7fb38a"/>
+            <path d="M0 150 Q90 132 170 150 T320 146 V200 H0Z" fill="#5c9cc4"/>
+            <path d="M0 176 Q100 160 180 176 T320 172" stroke="#e9e2d0" stroke-width="10" fill="none"/>
+            <g fill="#2f6b3e"><circle cx="48" cy="104" r="16"/><circle cx="118" cy="100" r="20"/><circle cx="214" cy="104" r="17"/><circle cx="284" cy="100" r="14"/></g>
+            <g fill="#5a3d2b"><rect x="46" y="112" width="4" height="14"/><rect x="116" y="112" width="4" height="16"/><rect x="212" y="112" width="4" height="14"/><rect x="282" y="108" width="4" height="14"/></g>
+          </svg>
+        </div>
+      </article>
+
+      <section aria-labelledby="t-cidade" id="cidade">
+        <h2 class="secao-titulo" id="t-cidade">Cidade <a href="#">Ver todas</a></h2>
+        <ul class="grade">
+          <li><article class="cartao">
+            <span class="rotulo">Mobilidade</span>
+            <h3><a href="#">Linha 214 passa a circular aos domingos a partir de dezembro</a></h3>
+            <p>Intervalo será de 30 minutos entre o Terminal Central e o Jardim Primavera.</p>
+            <p class="meta"><time datetime="2026-11-12T08:10">Hoje, 8h10</time></p>
+          </article></li>
+          <li><article class="cartao">
+            <span class="rotulo">Educação</span>
+            <h3><a href="#">Matrículas para creches municipais abrem na segunda-feira</a></h3>
+            <p>Inscrição é on-line ou presencial nas 14 unidades; documentos exigidos estão no site da prefeitura.</p>
+            <p class="meta"><time datetime="2026-11-11T17:45">Ontem, 17h45</time></p>
+          </article></li>
+          <li><article class="cartao">
+            <span class="rotulo">Saúde</span>
+            <h3><a href="#">Mutirão de vacinação funciona em horário estendido neste sábado</a></h3>
+            <p>Postos dos bairros Centro, Vila Nova e Morro Azul atendem das 8h às 20h.</p>
+            <p class="meta"><time datetime="2026-11-11T15:20">Ontem, 15h20</time></p>
+          </article></li>
+          <li><article class="cartao">
+            <span class="rotulo">Habitação</span>
+            <h3><a href="#">Conselho municipal debate revisão do plano diretor em audiências descentralizadas</a></h3>
+            <p>Encontros acontecem em quatro regiões; contribuições também podem ser enviadas por formulário.</p>
+            <p class="meta"><time datetime="2026-11-10T19:00">10 nov., 19h</time></p>
+          </article></li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="t-cultura" id="cultura">
+        <h2 class="secao-titulo" id="t-cultura">Cultura e lazer <a href="#">Ver todas</a></h2>
+        <ul class="grade">
+          <li><article class="cartao">
+            <span class="rotulo">Música</span>
+            <h3><a href="#">Festival na praça da Matriz reúne bandas da região no fim de semana</a></h3>
+            <p>Entrada gratuita; programação começa às 16h com grupos de choro e samba.</p>
+            <p class="meta"><time datetime="2026-11-12T07:00">Hoje, 7h</time></p>
+          </article></li>
+          <li><article class="cartao">
+            <span class="rotulo">Biblioteca</span>
+            <h3><a href="#">Biblioteca municipal amplia acervo em braile e audiolivros</a></h3>
+            <p>Novos títulos podem ser reservados pelo telefone ou no balcão de atendimento.</p>
+            <p class="meta"><time datetime="2026-11-09T10:30">9 nov., 10h30</time></p>
+          </article></li>
+          <li><article class="cartao">
+            <span class="rotulo">Feira</span>
+            <h3><a href="#">Feira de produtores agroecológicos muda para o estacionamento do ginásio</a></h3>
+            <p>Mudança é temporária, por causa da reforma da praça; horário continua o mesmo.</p>
+            <p class="meta"><time datetime="2026-11-08T12:00">8 nov., 12h</time></p>
+          </article></li>
+        </ul>
+      </section>
+    </div>
+
+    <aside aria-label="Destaques e serviços">
+      <section aria-labelledby="t-lidas">
+        <h2 id="t-lidas">Mais lidas</h2>
+        <ol class="mais-lidas">
+          <li><a href="#">Prefeitura divulga calendário de coleta seletiva por bairro</a></li>
+          <li><a href="#">Ponte da Estrada Velha será liberada para veículos leves</a></li>
+          <li><a href="#">Escola estadual vence olimpíada regional de matemática</a></li>
+          <li><a href="#">Novo horário do restaurante popular começa na próxima semana</a></li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="t-tempo">
+        <h2 id="t-tempo">Tempo nos próximos dias</h2>
+        <div class="tabela-rolavel" role="region" aria-labelledby="cap-tempo" tabindex="0">
+          <table>
+            <caption id="cap-tempo">Previsão para Serra Clara</caption>
+            <thead><tr><th scope="col">Dia</th><th scope="col">Mín.</th><th scope="col">Máx.</th><th scope="col">Chuva</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Qui</th><td>17 °C</td><td>26 °C</td><td>40%</td></tr>
+              <tr><th scope="row">Sex</th><td>18 °C</td><td>28 °C</td><td>20%</td></tr>
+              <tr><th scope="row">Sáb</th><td>16 °C</td><td>23 °C</td><td>80%</td></tr>
+              <tr><th scope="row">Dom</th><td>15 °C</td><td>22 °C</td><td>60%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="dica-rolagem">Em telas estreitas, a tabela pode ser rolada para os lados.</p>
+      </section>
+
+      <section aria-labelledby="t-agenda">
+        <h2 id="t-agenda">Agenda de hoje</h2>
+        <ul class="agenda">
+          <li><time datetime="2026-11-12T14:00">14h</time><span>Sessão da Câmara Municipal, com transmissão on-line</span></li>
+          <li><time datetime="2026-11-12T18:30">18h30</time><span>Oficina de compostagem no Centro Comunitário Vila Nova</span></li>
+          <li><time datetime="2026-11-12T20:00">20h</time><span>Cineclube exibe documentário sobre a história da cidade</span></li>
+        </ul>
+      </section>
+
+      <section class="newsletter" aria-labelledby="t-news">
+        <h2 id="t-news">Receba o resumo diário</h2>
+        <form id="form-news" novalidate>
+          <label for="email">Seu e-mail</label>
+          <input id="email" type="email" autocomplete="email" required aria-describedby="status-news">
+          <button class="botao botao-primario" type="submit">Assinar</button>
+        </form>
+        <p class="status" id="status-news" aria-live="polite"></p>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<footer class="rodape">
+  <div class="container">
+    <div class="colunas">
+      <section aria-labelledby="f1"><h2 id="f1">Gazeta de Serra Clara</h2><p>Jornalismo local independente desde 1987.</p></section>
+      <section aria-labelledby="f2"><h2 id="f2">Seções</h2>
+        <ul><li><a href="#cidade">Cidade</a></li><li><a href="#cultura">Cultura</a></li><li><a href="#">Esportes</a></li></ul></section>
+      <section aria-labelledby="f3"><h2 id="f3">Fale com a redação</h2>
+        <ul><li>redacao@gazetaserraclara.exemplo</li><li>(00) 0000-0000</li><li><a href="#">Política de correções</a></li></ul></section>
+    </div>
+    <p class="aviso">Página de demonstração: cidade, veículo e notícias são fictícios.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var raiz = document.documentElement;
+  var niveis = [100,110,125,150,175,200];
+  var classes = niveis.map(function(n){ return 'texto-' + n; });
+  var saida = document.getElementById('tamanho-atual');
+  var idx = 0;
+
+  function ler(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function gravar(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+  function aplicarTamanho(i){
+    idx = Math.max(0, Math.min(niveis.length-1, i));
+    classes.forEach(function(c){ raiz.classList.remove(c); });
+    if(idx>0) raiz.classList.add(classes[idx]);
+    saida.textContent = niveis[idx] + '%';
+    gravar('gsc-tamanho', String(idx));
+  }
+  var salvo = parseInt(ler('gsc-tamanho'),10);
+  aplicarTamanho(isNaN(salvo) ? 0 : salvo);
+
+  document.querySelectorAll('[data-tamanho]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var d = parseInt(b.getAttribute('data-tamanho'),10);
+      aplicarTamanho(d===0 ? 0 : idx + d);
+    });
+  });
+
+  var btnEsp = document.getElementById('btn-espacamento');
+  function aplicarEsp(on){
+    raiz.classList.toggle('espacamento', on);
+    btnEsp.setAttribute('aria-pressed', on ? 'true' : 'false');
+    gravar('gsc-esp', on ? '1' : '0');
+  }
+  aplicarEsp(ler('gsc-esp')==='1');
+  btnEsp.addEventListener('click', function(){ aplicarEsp(!raiz.classList.contains('espacamento')); });
+
+  // Menu: aberto em telas largas (em em, acompanha zoom), recolhível nas estreitas
+  var menu = document.getElementById('menu');
+  var mq = window.matchMedia('(min-width: 60em)');
+  function syncMenu(){ if(mq.matches) menu.open = true; else menu.open = false; }
+  syncMenu();
+  if(mq.addEventListener) mq.addEventListener('change', syncMenu); else mq.addListener(syncMenu);
+
+  // Data de hoje
+  try{
+    document.getElementById('data-hoje').textContent =
+      new Date().toLocaleDateString('pt-BR',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  }catch(e){}
+
+  // Verificador: procura transbordo horizontal fora das áreas roláveis previstas
+  var rel = document.getElementById('relatorio');
+  document.getElementById('btn-verificar').addEventListener('click', function(){
+    var larg = document.documentElement.clientWidth, problemas = 0;
+    document.querySelectorAll('body *').forEach(function(el){
+      if(el.closest('.tabela-rolavel') || el.closest('.visualmente-oculto') || el.classList.contains('pular')) return;
+      var r = el.getBoundingClientRect();
+      if(r.width && (r.right > larg + 1 || r.left < -1)) problemas++;
+    });
+    var rolagem = document.documentElement.scrollWidth > larg + 1;
+    if(!problemas && !rolagem){
+      rel.className='relatorio ok';
+      rel.textContent = 'Sem rolagem horizontal a ' + larg + ' px de largura.';
+    }else{
+      rel.className='relatorio erro';
+      rel.textContent = problemas + ' elemento(s) passam da largura de ' + larg + ' px.';
+    }
+  });
+
+  // Formulários (a página não envia dados)
+  document.getElementById('form-busca').addEventListener('submit', function(e){
+    e.preventDefault();
+    var q = document.getElementById('q').value.trim().toLowerCase();
+    if(!q) return;
+    var achado = Array.prototype.find.call(document.querySelectorAll('main h2 a, main h3 a'), function(a){
+      return a.textContent.toLowerCase().indexOf(q) > -1;
+    });
+    if(achado){ achado.focus(); achado.scrollIntoView({block:'center'}); }
+    else { rel.className='relatorio erro'; rel.textContent = 'Nenhuma notícia encontrada para "' + q + '".'; }
+  });
+  document.getElementById('form-news').addEventListener('submit', function(e){
+    e.preventDefault();
+    var campo = document.getElementById('email'), st = document.getElementById('status-news');
+    if(!campo.checkValidity()){
+      campo.setAttribute('aria-invalid','true');
+      st.textContent = 'Digite um e-mail válido, por exemplo nome@exemplo.com.';
+      campo.focus();
+    }else{
+      campo.removeAttribute('aria-invalid');
+      st.textContent = 'Demonstração: nenhum dado foi enviado.';
+    }
+  });
+})();
+</script>
+</body>
+</html>

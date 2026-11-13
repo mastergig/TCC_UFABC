@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardápio Interativo</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f8f8f8;
+}
+
+/* Barra de Navegação */
+nav{
+    position:sticky;
+    top:0;
+    background:#222;
+    padding:15px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    z-index:1000;
+}
+
+nav button{
+    padding:10px 18px;
+    border:none;
+    background:#e67e22;
+    color:#fff;
+    cursor:pointer;
+    border-radius:6px;
+    transition:.3s;
+}
+
+nav button:hover{
+    background:#d35400;
+}
+
+/* Cardápio */
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.categoria{
+    margin-bottom:40px;
+}
+
+.categoria h2{
+    background:#333;
+    color:#fff;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.item{
+    background:#fff;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.item-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.item h3{
+    color:#333;
+}
+
+.preco{
+    font-weight:bold;
+    color:#e67e22;
+}
+
+.descricao{
+    color:#666;
+    margin-bottom:8px;
+}
+
+.alergenos{
+    display:inline-block;
+    background:#ffe5e5;
+    color:#c0392b;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:0.85rem;
+}
+</style>
+</head>
+<body>
+
+<!-- PASSO 2 - Barra de Navegação -->
+<nav>
+    <button onclick="filtrarCategoria('todos')">Todos</button>
+    <button onclick="filtrarCategoria('cafe')">Café da Manhã</button>
+    <button onclick="filtrarCategoria('executivo')">Executivo</button>
+    <button onclick="filtrarCategoria('alacarte')">À La Carte</button>
+    <button onclick="filtrarCategoria('bebidas')">Bebidas</button>
+    <button onclick="filtrarCategoria('sobremesas')">Sobremesas</button>
+</nav>
+
+<div class="container">
+
+    <!-- PASSO 1 - Estrutura HTML Semântica -->
+
+    <section class="categoria cafe">
+        <h2>Café da Manhã</h2>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Ovos Benedict</h3>
+                <span class="preco">R$ 32,00</span>
+            </div>
+            <p class="descricao">
+                Ovos poché sobre muffin inglês com molho holandês.
+            </p>
+            <span class="alergenos">Contém: Glúten, Ovos, Leite</span>
+        </article>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Tapioca Nordestina</h3>
+                <span class="preco">R$ 20,00</span>
+            </div>
+            <p class="descricao">
+                Tapioca recheada com queijo coalho e manteiga.
+            </p>
+            <span class="alergenos">Contém: Leite</span>
+        </article>
+    </section>
+
+    <section class="categoria executivo">
+        <h2>Prato Executivo</h2>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Filé de Frango Grelhado</h3>
+                <span class="preco">R$ 38,00</span>
+            </div>
+            <p class="descricao">
+                Acompanhado de arroz, feijão e legumes salteados.
+            </p>
+            <span class="alergenos">Sem alergênicos principais</span>
+        </article>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Parmegiana Bovina</h3>
+                <span class="preco">R$ 45,00</span>
+            </div>
+            <p class="descricao">
+                Carne empanada com molho artesanal e queijo gratinado.
+            </p>
+            <span class="alergenos">Contém: Glúten e Leite</span>
+        </article>
+    </section>
+
+    <section class="categoria alacarte">
+        <h2>À La Carte</h2>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Salmão ao Molho de Maracujá</h3>
+                <span class="preco">R$ 72,00</span>
+            </div>
+            <p class="descricao">
+                Salmão grelhado servido com arroz de amêndoas.
+            </p>
+            <span class="alergenos">Contém: Peixes e Oleaginosas</span>
+        </article>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Risoto de Funghi</h3>
+                <span class="preco">R$ 58,00</span>
+            </div>
+            <p class="descricao">
+                Risoto cremoso preparado com cogumelos especiais.
+            </p>
+            <span class="alergenos">Contém: Leite</span>
+        </article>
+    </section>
+
+    <section class="categoria bebidas">
+        <h2>Bebidas</h2>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Suco Natural de Laranja</h3>
+                <span class="preco">R$ 10,00</span>
+            </div>
+            <p class="descricao">
+                Preparado na hora com frutas frescas.
+            </p>
+            <span class="alergenos">Sem alergênicos principais</span>
+        </article>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Cappuccino Italiano</h3>
+                <span class="preco">R$ 14,00</span>
+            </div>
+            <p class="descricao">
+                Café espresso, leite vaporizado e cacau.
+            </p>
+            <span class="alergenos">Contém: Leite</span>
+        </article>
+    </section>
+
+    <section class="categoria sobremesas">
+        <h2>Sobremesas</h2>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Petit Gateau</h3>
+                <span class="preco">R$ 24,00</span>
+            </div>
+            <p class="descricao">
+                Bolo quente de chocolate com sorvete de creme.
+            </p>
+            <span class="alergenos">Contém: Glúten, Ovos e Leite</span>
+        </article>
+
+        <article class="item">
+            <div class="item-header">
+                <h3>Cheesecake de Frutas Vermelhas</h3>
+                <span class="preco">R$ 22,00</span>
+            </div>
+            <p class="descricao">
+                Base crocante com creme de queijo e calda artesanal.
+            </p>
+            <span class="alergenos">Contém: Glúten e Leite</span>
+        </article>
+    </section>
+
+</div>
+
+<!-- PASSO 3 - JavaScript de Filtro -->
+<script>
+function filtrarCategoria(categoria){
+
+    const secoes = document.querySelectorAll('.categoria');
+
+    secoes.forEach(secao => {
+
+        if(categoria === 'todos'){
+            secao.style.display = 'block';
+        }
+        else if(secao.classList.contains(categoria)){
+            secao.style.display = 'block';
+        }
+        else{
+            secao.style.display = 'none';
+        }
+
+    });
+
+}
+</script>
+
+</body>
+</html>

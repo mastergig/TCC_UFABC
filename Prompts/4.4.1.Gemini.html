@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bistrô & Café Paulista — Cardápio Digital</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display (Títulos elegantes) & Inter (Leitura limpa) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        stone: {
+                            50: '#faf9f6',
+                            100: '#f5f2eb',
+                            200: '#e7e2d5',
+                            800: '#292524',
+                            900: '#1c1917',
+                        },
+                        amber: {
+                            600: '#b45309',
+                            700: '#92400e',
+                            800: '#78350f',
+                        },
+                        emerald: {
+                            800: '#1b4332',
+                            900: '#081c15',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-amber-200 selection:text-stone-900">
+
+    <!-- Cabeçalho Principal -->
+    <header class="bg-emerald-900 text-stone-50 sticky top-0 z-30 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Nome -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-600/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                        <i data-lucide="coffee" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-50">Bistrô & Café Paulista</h1>
+                        <p class="text-xs text-stone-300 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                            Aberto agora • Jardins, São Paulo
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Botão Comanda (Mobile e Tablet) -->
+                <button onclick="toggleCartDrawer(true)" class="lg:hidden relative flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2.5 rounded-2xl font-medium transition shadow-sm active:scale-95">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span class="hidden sm:inline">Comanda</span>
+                    <span id="mobile-cart-badge" class="bg-stone-900 text-amber-400 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Hero Acolhedor -->
+    <section class="relative bg-stone-900 text-stone-50 overflow-hidden">
+        <div class="absolute inset-0 opacity-35">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1600&q=80" 
+                 onerror="this.src='https://placehold.co/1600x500/1c1917/d6d3d1?text=Bistro+%26+Cafe+Paulista'"
+                 alt="Ambiente do Bistrô" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/60 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">
+                Gastronomia Artesanal & Cafés Especiais
+            </span>
+            <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold max-w-2xl leading-tight mb-3">
+                Sabores afetivos com o toque contemporâneo de São Paulo.
+            </h2>
+            <p class="text-stone-300 max-w-xl text-sm sm:text-base">
+                Do espresso matinal aos pratos executivos e jantares à la carte. Escolha seus pratos favoritos e envie direto para nossa cozinha.
+            </p>
+        </div>
+    </section>
+
+    <!-- Barra de Controle: Abas de Categoria, Pesquisa e Filtros -->
+    <div class="bg-stone-50/95 backdrop-blur-md border-b border-stone-200 sticky top-20 z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-4">
+            
+            <!-- Abas de Categorias -->
+            <nav id="category-tabs" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar" aria-label="Categorias do Cardápio">
+                <!-- Gerado dinamicamente via JS -->
+            </nav>
+
+            <!-- Pesquisa & Filtros Dietéticos -->
+            <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+                <!-- Campo de Busca -->
+                <div class="relative flex-1 max-w-md">
+                    <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="search-input" placeholder="Buscar prato, ingrediente ou bebida..." 
+                           class="w-full pl-10 pr-9 py-2.5 bg-white border border-stone-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-600/40 focus:border-amber-600 transition">
+                    <button id="clear-search" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-1">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Pills de Filtros Dietéticos -->
+                <div id="dietary-filters" class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
+                    <button data-filter="bestseller" onclick="toggleFilter('bestseller')" class="filter-btn flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-medium border border-stone-200 bg-white text-stone-700 hover:bg-stone-100 transition whitespace-nowrap">
+                        <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-600"></i>
+                        Mais Pedido
+                    </button>
+                    <button data-filter="vegetarian" onclick="toggleFilter('vegetarian')" class="filter-btn flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-medium border border-stone-200 bg-white text-stone-700 hover:bg-stone-100 transition whitespace-nowrap">
+                        <i data-lucide="leaf" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        Vegetariano
+                    </button>
+                    <button data-filter="glutenFree" onclick="toggleFilter('glutenFree')" class="filter-btn flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-medium border border-stone-200 bg-white text-stone-700 hover:bg-stone-100 transition whitespace-nowrap">
+                        <i data-lucide="wheat-off" class="w-3.5 h-3.5 text-amber-700"></i>
+                        Sem Glúten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal: Grade do Menu + Comanda Lateral (Desktop) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 items-start">
+            
+            <!-- Seção dos Pratos -->
+            <div class="flex-1 w-full">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 id="current-category-title" class="font-serif text-2xl font-bold text-stone-900">Todos os Pratos</h3>
+                        <p id="results-count" class="text-sm text-stone-500 mt-0.5">Mostrando 20 opções disponíveis</p>
+                    </div>
+                </div>
+
+                <!-- Grid de Cards -->
+                <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Cards inseridos via JS -->
+                </div>
+
+                <!-- Estado Vazio -->
+                <div id="empty-state" class="hidden text-center py-16 px-4 bg-white rounded-3xl border border-stone-200/80">
+                    <div class="w-16 h-16 rounded-full bg-stone-100 flex items-center justify-center mx-auto mb-4 text-stone-400">
+                        <i data-lucide="utensils-crossed" class="w-8 h-8"></i>
+                    </div>
+                    <h4 class="font-serif text-xl font-bold text-stone-800 mb-2">Nenhum prato encontrado</h4>
+                    <p class="text-sm text-stone-500 max-w-md mx-auto mb-6">Não encontramos opções com os filtros atuais. Tente buscar por outro termo ou limpar os filtros selecionados.</p>
+                    <button onclick="resetAllFilters()" class="px-5 py-2.5 bg-emerald-900 text-white text-sm font-medium rounded-2xl hover:bg-emerald-800 transition">
+                        Limpar todos os filtros
+                    </button>
+                </div>
+            </div>
+
+            <!-- Comanda Lateral Fixa (Desktop lg+) -->
+            <aside class="hidden lg:block w-96 sticky top-56 bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+                <div id="desktop-cart-container"></div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Drawer Lateral da Comanda (Mobile/Tablet) -->
+    <div id="mobile-cart-overlay" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity" onclick="toggleCartDrawer(false)"></div>
+    <aside id="mobile-cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out lg:hidden flex flex-col">
+        <div id="mobile-cart-container" class="h-full flex flex-col"></div>
+    </aside>
+
+    <!-- Modal de Detalhes do Prato & Observações -->
+    <div id="item-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeItemModal(event)">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all" onclick="event.stopPropagation()">
+            <div class="relative h-56 bg-stone-200">
+                <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+                <button onclick="closeItemModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-stone-900/70 text-white flex items-center justify-center hover:bg-stone-900 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div id="modal-badges" class="absolute bottom-3 left-4 flex flex-wrap gap-1.5"></div>
+            </div>
+            <div class="p-6">
+                <div class="flex justify-between items-start gap-4 mb-2">
+                    <h3 id="modal-title" class="font-serif text-2xl font-bold text-stone-900"></h3>
+                    <span id="modal-price" class="text-lg font-bold text-emerald-800 whitespace-nowrap"></span>
+                </div>
+                <p id="modal-desc" class="text-sm text-stone-600 leading-relaxed mb-5"></p>
+                
+                <div class="mb-5">
+                    <label for="modal-notes" class="block text-xs font-semibold uppercase tracking-wider text-stone-500 mb-2">
+                        Observações para a cozinha (opcional)
+                    </label>
+                    <textarea id="modal-notes" rows="2" placeholder="Ex: Ponto da carne ao ponto, sem cebola, gelo e limão..." 
+                              class="w-full px-3.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-600/40 focus:border-amber-600"></textarea>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center border border-stone-200 rounded-2xl bg-stone-50 p-1">
+                        <button onclick="changeModalQty(-1)" class="w-9 h-9 rounded-xl flex items-center justify-center text-stone-600 hover:bg-white transition">
+                            <i data-lucide="minus" class="w-4 h-4"></i>
+                        </button>
+                        <span id="modal-qty" class="w-10 text-center font-semibold text-stone-900">1</span>
+                        <button onclick="changeModalQty(1)" class="w-9 h-9 rounded-xl flex items-center justify-center text-stone-600 hover:bg-white transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <button onclick="confirmAddFromModal()" class="flex-1 bg-emerald-900 hover:bg-emerald-800 text-white font-semibold py-3 px-5 rounded-2xl transition flex items-center justify-center gap-2 shadow-sm active:scale-98">
+                        <span>Adicionar</span>
+                        <span id="modal-total-btn" class="text-amber-300 font-bold"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Pedido Finalizado -->
+    <div id="order-success-modal" class="fixed inset-0 bg-stone-900/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-stone-900 mb-2">Pedido Enviado!</h3>
+            <p id="order-success-summary" class="text-sm text-stone-600 mb-6 leading-relaxed"></p>
+            <div class="bg-stone-50 rounded-2xl p-4 mb-6 text-left border border-stone-200/80">
+                <div class="flex justify-between text-xs text-stone-500 mb-1">
+                    <span>Número do Pedido</span>
+                    <span class="font-mono font-bold text-stone-800" id="order-number">#SP-4092</span>
+                </div>
+                <div class="flex justify-between text-xs text-stone-500">
+                    <span>Tempo estimado</span>
+                    <span class="font-semibold text-emerald-800" id="order-eta">20 - 30 min</span>
+                </div>
+            </div>
+            <button onclick="closeSuccessModal()" class="w-full py-3 bg-emerald-900 hover:bg-emerald-800 text-white font-semibold rounded-2xl transition">
+                Voltar ao Cardápio
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação Rápida -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-stone-900 text-white px-4 py-3 rounded-2xl shadow-lg flex items-center gap-2.5 text-sm font-medium opacity-0 pointer-events-none transition-all duration-300 translate-y-3">
+        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+        <span id="toast-message">Item adicionado à comanda</span>
+    </div>
+
+    <!-- JavaScript da Aplicação -->
+    <script>
+        // ==========================================
+        // 1. DADOS DO CARDÁPIO (Bistrô & Café Paulista)
+        // ==========================================
+        const CATEGORIES = [
+            { id: 'all', name: 'Todos', icon: 'layout-grid' },
+            { id: 'cafe', name: 'Café da Manhã', icon: 'croissant' },
+            { id: 'executivo', name: 'Prato Executivo', icon: 'utensils' },
+            { id: 'alacarte', name: 'À La Carte', icon: 'chef-hat' },
+            { id: 'sobremesas', name: 'Sobremesas', icon: 'cake-slice' },
+            { id: 'bebidas', name: 'Bebidas', icon: 'cup-soda' }
+        ];
+
+        const MENU_ITEMS = [
+            // --- CAFÉ DA MANHÃ ---
+            {
+                id: 1,
+                category: 'cafe',
+                name: 'Pão na Chapa com Requeijão de Corte',
+                description: 'Pão francês artesanal tostado na manteiga de garrafa com generosa camada de requeijão cremoso gratinado.',
+                price: 16.90,
+                image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80',
+                bestseller: true,
+                vegetarian: true,
+                glutenFree: false
+            },
+            {
+                id: 2,
+                category: 'cafe',
+                name: 'Cesta de Pães de Queijo da Serra',
+                description: '6 unidades quentinhas feitas com queijo Canastra curado, crocantes por fora e macias por dentro.',
+                price: 22.00,
+                image: 'https://images.unsplash.com/photo-1598142982901-df6cec10ae35?auto=format&fit=crop&w=800&q=80',
+                bestseller: true,
+                vegetarian: true,
+                glutenFree: true
+            },
+            {
+                id: 3,
+                category: 'cafe',
+                name: 'Ovos Beneditinos Paulista',
+                description: 'Dois ovos pochê sobre brioche tostado, peito de peru defumado, espinafre salteado e molho hollandaise cítrico.',
+                price: 34.50,
+                image: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: false,
+                glutenFree: false
+            },
+            {
+                id: 4,
+                category: 'cafe',
+                name: 'Tapioca Caprese com Pesto',
+                description: 'Goma hidratada artesanalmente recheada com mussarela de búfala, tomate confit, manjericão fresco e pesto de castanhas.',
+                price: 26.00,
+                image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: true
+            },
+
+            // --- PRATO EXECUTIVO ---
+            {
+                id: 5,
+                category: 'executivo',
+                name: 'Picadinho Paulista Completo',
+                description: 'Cubos de filé mignon ao molho escuro da casa, arroz branco soltinho, feijão preto temperado, ovo pochê, banana à milanesa e farofa.',
+                price: 54.90,
+                image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                bestseller: true,
+                vegetarian: false,
+                glutenFree: false
+            },
+            {
+                id: 6,
+                category: 'executivo',
+                name: 'Filé de Frango Grelhado às Ervas',
+                description: 'Peito de frango orgânico marinado no alecrim, acompanhado de purê de mandioquinha baroa e legumes salteados na manteiga.',
+                price: 44.00,
+                image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: false,
+                glutenFree: true
+            },
+            {
+                id: 7,
+                category: 'executivo',
+                name: 'Strogonoff de Cogumelos Frescos',
+                description: 'Mix de shimeji, paris e portobello em molho cremoso de páprica defumada, servido com arroz integral e batata palha artesanal.',
+                price: 46.50,
+                image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: true
+            },
+            {
+                id: 8,
+                category: 'executivo',
+                name: 'Saint Peter ao Molho de Maracujá',
+                description: 'Filé de tilápia grelhado com redução suave de maracujá doce, arroz de coco e salada verde com castanha-do-pará.',
+                price: 52.00,
+                image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: false,
+                glutenFree: true
+            },
+
+            // --- À LA CARTE ---
+            {
+                id: 9,
+                category: 'alacarte',
+                name: 'Bife Ancho com Risoto de Parmesão',
+                description: '300g de corte nobre grelhado na parrilla com flor de sal, acompanhado de risoto cremoso de parmesão 24 meses.',
+                price: 89.00,
+                image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=800&q=80',
+                bestseller: true,
+                vegetarian: false,
+                glutenFree: true
+            },
+            {
+                id: 10,
+                category: 'alacarte',
+                name: 'Ravióli de Brie com Damasco',
+                description: 'Massa fresca artesanal recheada com queijo brie e damasco turco, finalizada na manteiga de sálvia e amêndoas laminadas.',
+                price: 68.00,
+                image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: false
+            },
+            {
+                id: 11,
+                category: 'alacarte',
+                name: 'Salmão em Crosta de Gergelim',
+                description: 'Posta alta de salmão selada, servida sobre mousseline de batata-doce roxa e aspargos grelhados ao azeite trufado.',
+                price: 84.50,
+                image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: false,
+                glutenFree: true
+            },
+            {
+                id: 12,
+                category: 'alacarte',
+                name: 'Polpettone Recheado à Parmegiana',
+                description: 'Clássico paulistano recheado com mussarela derretida, coberto com molho de tomates pelados e servido com fettuccine na manteiga.',
+                price: 72.00,
+                image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80',
+                bestseller: true,
+                vegetarian: false,
+                glutenFree: false
+            },
+
+            // --- SOBREMESAS ---
+            {
+                id: 13,
+                category: 'sobremesas',
+                name: 'Pudim de Leite Condensado com Fava de Baunilha',
+                description: 'Receita tradicional sem furinhos, textura aveludada e calda de caramelo âmbar.',
+                price: 21.00,
+                image: 'https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?auto=format&fit=crop&w=800&q=80',
+                bestseller: true,
+                vegetarian: true,
+                glutenFree: true
+            },
+            {
+                id: 14,
+                category: 'sobremesas',
+                name: 'Petit Gâteau de Chocolate Belga 70%',
+                description: 'Bolinho quente com interior cremoso servido com bola de sorvete artesanal de creme e farofa de pistache.',
+                price: 29.50,
+                image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: false
+            },
+            {
+                id: 15,
+                category: 'sobremesas',
+                name: 'Cheesecake de Goiabada Cascão',
+                description: 'Base crocante de biscoito, creme suave de cream cheese e calda quente de goiabada artesanal de Minas.',
+                price: 25.00,
+                image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: false
+            },
+
+            // --- BEBIDAS ---
+            {
+                id: 16,
+                category: 'bebidas',
+                name: 'Café Coado Especial (V60)',
+                description: 'Grãos 100% Arábica da Alta Mogiana com notas de chocolate ao leite e caramelo. Servido na jarra individual (250ml).',
+                price: 14.00,
+                image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
+                bestseller: true,
+                vegetarian: true,
+                glutenFree: true
+            },
+            {
+                id: 17,
+                category: 'bebidas',
+                name: 'Cappuccino Italiano Cremoso',
+                description: 'Espresso duplo, leite vaporizado na temperatura ideal e cacau em pó polvilhado.',
+                price: 15.50,
+                image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: true
+            },
+            {
+                id: 18,
+                category: 'bebidas',
+                name: 'Soda Italiana de Frutas Vermelhas',
+                description: 'Xarope artesanal de morango, amora e framboesa com água com gás, gelo e alecrim fresco.',
+                price: 18.00,
+                image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: true
+            },
+            {
+                id: 19,
+                category: 'bebidas',
+                name: 'Suco Natural de Laranja Bahia',
+                description: 'Espremido na hora, sem adição de açúcar ou conservantes (400ml).',
+                price: 14.50,
+                image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=800&q=80',
+                bestseller: false,
+                vegetarian: true,
+                glutenFree: true
+            }
+        ];
+
+        // ==========================================
+        // 2. ESTADO DA APLICAÇÃO
+        // ==========================================
+        let state = {
+            selectedCategory: 'all',
+            searchQuery: '',
+            filters: {
+                bestseller: false,
+                vegetarian: false,
+                glutenFree: false
+            },
+            cart: [], // { uid, itemId, name, price, qty, notes }
+            orderType: 'table', // 'table' | 'delivery'
+            tableNumber: '',
+            deliveryAddress: '',
+            modalItem: null,
+            modalQty: 1
+        };
+
+        // ==========================================
+        // 3. UTILITÁRIOS DE FORMATAÇÃO
+        // ==========================================
+        const formatBRL = (value) => {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        };
+
+        // ==========================================
+        // 4. RENDERIZAÇÃO DE CATEGORIAS E MENU
+        // ==========================================
+        function renderCategories() {
+            const container = document.getElementById('category-tabs');
+            container.innerHTML = CATEGORIES.map(cat => {
+                const isActive = state.selectedCategory === cat.id;
+                const activeClasses = isActive 
+                    ? 'bg-emerald-900 text-white border-emerald-900 shadow-sm' 
+                    : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-100';
+                return `
+                    <button onclick="selectCategory('${cat.id}')" 
+                            class="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-medium border transition whitespace-nowrap ${activeClasses}">
+                        <i data-lucide="${cat.icon}" class="w-4 h-4 ${isActive ? 'text-amber-300' : 'text-stone-500'}"></i>
+                        <span>${cat.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function getFilteredItems() {
+            return MENU_ITEMS.filter(item => {
+                // Filtro de categoria
+                if (state.selectedCategory !== 'all' && item.category !== state.selectedCategory) {
+                    return false;
+                }
+                // Filtro de pesquisa textual
+                if (state.searchQuery.trim() !== '') {
+                    const q = state.searchQuery.toLowerCase();
+                    const matchName = item.name.toLowerCase().includes(q);
+                    const matchDesc = item.description.toLowerCase().includes(q);
+                    if (!matchName && !matchDesc) return false;
+                }
+                // Filtros dietéticos / destaques
+                if (state.filters.bestseller && !item.bestseller) return false;
+                if (state.filters.vegetarian && !item.vegetarian) return false;
+                if (state.filters.glutenFree && !item.glutenFree) return false;
+
+                return true;
+            });
+        }
+
+        function renderMenu() {
+            const grid = document.getElementById('menu-grid');
+            const emptyState = document.getElementById('empty-state');
+            const countLabel = document.getElementById('results-count');
+            const categoryTitle = document.getElementById('current-category-title');
+
+            const catObj = CATEGORIES.find(c => c.id === state.selectedCategory);
+            categoryTitle.textContent = catObj.id === 'all' ? 'Cardápio Completo' : catObj.name;
+
+            const items = getFilteredItems();
+            countLabel.textContent = items.length === 1 
+                ? '1 opção encontrada' 
+                : `${items.length} opções disponíveis`;
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                lucide.createIcons();
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = items.map(item => {
+                const badgesHTML = `
+                    ${item.bestseller ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800"><i data-lucide="flame" class="w-3 h-3"></i> Mais Pedido</span>` : ''}
+                    ${item.vegetarian ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800"><i data-lucide="leaf" class="w-3 h-3"></i> Vegetariano</span>` : ''}
+                    ${item.glutenFree ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-stone-200 text-stone-700"><i data-lucide="wheat-off" class="w-3 h-3"></i> Sem Glúten</span>` : ''}
+                `;
+
+                return `
+                    <article class="group bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-xs hover:shadow-md hover:border-amber-600/30 transition-all duration-200 flex flex-col justify-between">
+                        <div>
+                            <!-- Imagem do Prato -->
+                            <div class="relative h-48 overflow-hidden bg-stone-100 cursor-pointer" onclick="openItemModal(${item.id})">
+                                <img src="${item.image}" 
+                                     onerror="this.src='https://placehold.co/600x400/e7e2d5/57534e?text=${encodeURIComponent(item.name)}'"
+                                     alt="${item.name}" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                                    <span class="text-white text-xs font-medium flex items-center gap-1">
+                                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Personalizar pedido
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Informações -->
+                            <div class="p-5 pb-3">
+                                <div class="flex flex-wrap gap-1.5 mb-2.5">
+                                    ${badgesHTML}
+                                </div>
+                                <h4 onclick="openItemModal(${item.id})" class="font-serif text-lg font-bold text-stone-900 group-hover:text-amber-700 transition cursor-pointer leading-snug">
+                                    ${item.name}
+                                </h4>
+                                <p class="text-sm text-stone-500 mt-1.5 line-clamp-2 leading-relaxed">
+                                    ${item.description}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Rodapé do Card: Preço & Botão Adicionar -->
+                        <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-stone-100 mt-2">
+                            <div>
+                                <span class="text-xs text-stone-400 block">Valor</span>
+                                <span class="text-lg font-bold text-emerald-900">${formatBRL(item.price)}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openItemModal(${item.id})" title="Adicionar com observação" class="p-2.5 rounded-2xl border border-stone-200 text-stone-600 hover:bg-stone-100 transition">
+                                    <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="quickAddToCart(${item.id})" class="flex items-center gap-1.5 bg-emerald-900 hover:bg-emerald-800 text-white text-sm font-medium px-4 py-2.5 rounded-2xl transition active:scale-95 shadow-xs">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <span>Adicionar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // 5. INTERAÇÕES DE FILTRO E PESQUISA
+        // ==========================================
+        function selectCategory(catId) {
+            state.selectedCategory = catId;
+            renderCategories();
+            renderMenu();
+            lucide.createIcons();
+        }
+
+        function toggleFilter(filterKey) {
+            state.filters[filterKey] = !state.filters[filterKey];
+            updateFilterButtonsUI();
+            renderMenu();
+        }
+
+        function updateFilterButtonsUI() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const key = btn.dataset.filter;
+                if (state.filters[key]) {
+                    btn.classList.remove('bg-white', 'text-stone-700', 'border-stone-200');
+                    btn.classList.add('bg-amber-100', 'text-amber-900', 'border-amber-400', 'font-semibold');
+                } else {
+                    btn.classList.add('bg-white', 'text-stone-700', 'border-stone-200');
+                    btn.classList.remove('bg-amber-100', 'text-amber-900', 'border-amber-400', 'font-semibold');
+                }
+            });
+        }
+
+        function clearSearch() {
+            state.searchQuery = '';
+            const input = document.getElementById('search-input');
+            input.value = '';
+            document.getElementById('clear-search').classList.add('hidden');
+            renderMenu();
+        }
+
+        function resetAllFilters() {
+            state.selectedCategory = 'all';
+            state.filters = { bestseller: false, vegetarian: false, glutenFree: false };
+            clearSearch();
+            updateFilterButtonsUI();
+            renderCategories();
+            renderMenu();
+            lucide.createIcons();
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            state.searchQuery = e.target.value;
+            const clearBtn = document.getElementById('clear-search');
+            if (state.searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderMenu();
+        });
+
+        // ==========================================
+        // 6. MODAL DE DETALHES E OBSERVAÇÕES
+        // ==========================================
+        function openItemModal(itemId) {
+            const item = MENU_ITEMS.find(i => i.id === itemId);
+            if (!item) return;
+
+            state.modalItem = item;
+            state.modalQty = 1;
+
+            document.getElementById('modal-img').src = item.image;
+            document.getElementById('modal-title').textContent = item.name;
+            document.getElementById('modal-price').textContent = formatBRL(item.price);
+            document.getElementById('modal-desc').textContent = item.description;
+            document.getElementById('modal-notes').value = '';
+            document.getElementById('modal-qty').textContent = '1';
+            document.getElementById('modal-total-btn').textContent = formatBRL(item.price);
+
+            const badgesContainer = document.getElementById('modal-badges');
+            badgesContainer.innerHTML = `
+                ${item.bestseller ? `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500 text-white shadow-xs">Mais Pedido</span>` : ''}
+                ${item.vegetarian ? `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-700 text-white shadow-xs">Vegetariano</span>` : ''}
+                ${item.glutenFree ? `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-stone-800 text-white shadow-xs">Sem Glúten</span>` : ''}
+            `;
+
+            document.getElementById('item-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeItemModal() {
+            document.getElementById('item-modal').classList.add('hidden');
+            state.modalItem = null;
+        }
+
+        function changeModalQty(delta) {
+            if (!state.modalItem) return;
+            state.modalQty = Math.max(1, state.modalQty + delta);
+            document.getElementById('modal-qty').textContent = state.modalQty;
+            document.getElementById('modal-total-btn').textContent = formatBRL(state.modalItem.price * state.modalQty);
+        }
+
+        function confirmAddFromModal() {
+            if (!state.modalItem) return;
+            const notes = document.getElementById('modal-notes').value.trim();
+            addItemToCart(state.modalItem, state.modalQty, notes);
+            closeItemModal();
+        }
+
+        // ==========================================
+        // 7. GERENCIAMENTO DA COMANDA / CARRINHO
+        // ==========================================
+        function quickAddToCart(itemId) {
+            const item = MENU_ITEMS.find(i => i.id === itemId);
+            if (!item) return;
+            addItemToCart(item, 1, '');
+        }
+
+        function addItemToCart(item, qty, notes) {
+            // Verifica se já existe um item idêntico com a mesma observação
+            const existing = state.cart.find(c => c.itemId === item.id && c.notes === notes);
+            if (existing) {
+                existing.qty += qty;
+            } else {
+                state.cart.push({
+                    uid: Date.now() + Math.random().toString(36).substring(2, 6),
+                    itemId: item.id,
+                    name: item.name,
+                    price: item.price,
+                    qty: qty,
+                    notes: notes
+                });
+            }
+
+            renderCart();
+            showToast(`"${item.name}" adicionado!`);
+        }
+
+        function updateCartItemQty(uid, delta) {
+            const idx = state.cart.findIndex(c => c.uid === uid);
+            if (idx === -1) return;
+
+            state.cart[idx].qty += delta;
+            if (state.cart[idx].qty <= 0) {
+                state.cart.splice(idx, 1);
+            }
+            renderCart();
+        }
+
+        function setOrderType(type) {
+            state.orderType = type;
+            renderCart();
+        }
+
+        function handleOrderInput(field, value) {
+            state[field] = value;
+        }
+
+        function renderCart() {
+            const totalItems = state.cart.reduce((acc, item) => acc + item.qty, 0);
+            const subtotal = state.cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const deliveryFee = (state.orderType === 'delivery' && subtotal > 0) ? 9.90 : 0;
+            const serviceFee = (state.orderType === 'table' && subtotal > 0) ? subtotal * 0.10 : 0;
+            const total = subtotal + deliveryFee + serviceFee;
+
+            // Atualiza badge mobile
+            document.getElementById('mobile-cart-badge').textContent = totalItems;
+
+            const cartHTML = `
+                <!-- Cabeçalho da Comanda -->
+                <div class="p-5 bg-stone-900 text-stone-50 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="receipt" class="w-5 h-5 text-amber-400"></i>
+                        <h3 class="font-serif text-lg font-bold">Sua Comanda</h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-medium bg-stone-800 text-amber-300 px-2.5 py-1 rounded-full">
+                            ${totalItems} ${totalItems === 1 ? 'item' : 'itens'}
+                        </span>
+                        <button onclick="toggleCartDrawer(false)" class="lg:hidden p-1.5 text-stone-400 hover:text-white">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seletor Mesa vs Delivery -->
+                <div class="p-4 border-b border-stone-200 bg-stone-50">
+                    <div class="grid grid-cols-2 gap-1.5 p-1 bg-stone-200/70 rounded-2xl">
+                        <button onclick="setOrderType('table')" class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-semibold transition ${state.orderType === 'table' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-600 hover:text-stone-900'}">
+                            <i data-lucide="utensils" class="w-3.5 h-3.5 text-amber-700"></i>
+                            Na Mesa
+                        </button>
+                        <button onclick="setOrderType('delivery')" class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-semibold transition ${state.orderType === 'delivery' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-600 hover:text-stone-900'}">
+                            <i data-lucide="bike" class="w-3.5 h-3.5 text-emerald-700"></i>
+                            Delivery
+                        </button>
+                    </div>
+
+                    <!-- Campo dinâmico de Mesa ou Endereço -->
+                    <div class="mt-3">
+                        ${state.orderType === 'table' ? `
+                            <div class="relative">
+                                <i data-lucide="hash" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                <input type="text" value="${state.tableNumber}" oninput="handleOrderInput('tableNumber', this.value)" 
+                                       placeholder="Número da sua mesa (ex: 12)" 
+                                       class="w-full pl-9 pr-3 py-2 text-xs bg-white border border-stone-200 rounded-xl focus:outline-none focus:border-amber-600">
+                            </div>
+                        ` : `
+                            <div class="relative">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                <input type="text" value="${state.deliveryAddress}" oninput="handleOrderInput('deliveryAddress', this.value)" 
+                                       placeholder="Rua, número e complemento..." 
+                                       class="w-full pl-9 pr-3 py-2 text-xs bg-white border border-stone-200 rounded-xl focus:outline-none focus:border-amber-600">
+                            </div>
+                        `}
+                    </div>
+                </div>
+
+                <!-- Lista de Itens -->
+                <div class="flex-1 overflow-y-auto p-4 space-y-3 max-h-[45vh] lg:max-h-[36vh]">
+                    ${state.cart.length === 0 ? `
+                        <div class="text-center py-10 px-4">
+                            <div class="w-12 h-12 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                            </div>
+                            <p class="text-sm font-medium text-stone-700">Sua comanda está vazia</p>
+                            <p class="text-xs text-stone-400 mt-1">Escolha pratos e bebidas deliciosos no cardápio ao lado.</p>
+                        </div>
+                    ` : state.cart.map(item => `
+                        <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-stone-50 border border-stone-200/70">
+                            <div class="flex-1 min-w-0">
+                                <h5 class="text-sm font-semibold text-stone-800 leading-snug">${item.name}</h5>
+                                ${item.notes ? `<p class="text-[11px] text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded-lg inline-block mt-1">Obs: ${item.notes}</p>` : ''}
+                                <p class="text-xs font-bold text-emerald-800 mt-1">${formatBRL(item.price * item.qty)}</p>
+                            </div>
+                            <div class="flex items-center gap-1.5 bg-white border border-stone-200 rounded-xl p-1">
+                                <button onclick="updateCartItemQty('${item.uid}', -1)" class="w-6 h-6 rounded-lg flex items-center justify-center text-stone-600 hover:bg-stone-100 transition">
+                                    <i data-lucide="${item.qty === 1 ? 'trash-2' : 'minus'}" class="w-3.5 h-3.5 ${item.qty === 1 ? 'text-red-500' : ''}"></i>
+                                </button>
+                                <span class="text-xs font-bold w-5 text-center">${item.qty}</span>
+                                <button onclick="updateCartItemQty('${item.uid}', 1)" class="w-6 h-6 rounded-lg flex items-center justify-center text-stone-600 hover:bg-stone-100 transition">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- Resumo Financeiro & Checkout -->
+                <div class="p-5 border-t border-stone-200 bg-stone-50/80 space-y-3">
+                    <div class="space-y-1.5 text-xs">
+                        <div class="flex justify-between text-stone-500">
+                            <span>Subtotal</span>
+                            <span>${formatBRL(subtotal)}</span>
+                        </div>
+                        ${state.orderType === 'table' ? `
+                            <div class="flex justify-between text-stone-500">
+                                <span>Taxa de serviço opcional (10%)</span>
+                                <span>${formatBRL(serviceFee)}</span>
+                            </div>
+                        ` : `
+                            <div class="flex justify-between text-stone-500">
+                                <span>Taxa de entrega (São Paulo)</span>
+                                <span>${formatBRL(deliveryFee)}</span>
+                            </div>
+                        `}
+                        <div class="flex justify-between text-base font-bold text-stone-900 pt-2 border-t border-stone-200">
+                            <span>Total</span>
+                            <span class="text-emerald-900">${formatBRL(total)}</span>
+                        </div>
+                    </div>
+
+                    <button onclick="checkoutOrder()" ${state.cart.length === 0 ? 'disabled' : ''} 
+                            class="w-full py-3.5 px-4 rounded-2xl font-semibold text-sm text-white transition flex items-center justify-center gap-2 shadow-sm
+                            ${state.cart.length === 0 ? 'bg-stone-300 cursor-not-allowed' : 'bg-amber-600 hover:bg-amber-700 active:scale-98'}">
+                        <span>Finalizar Pedido</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('desktop-cart-container').innerHTML = cartHTML;
+            document.getElementById('mobile-cart-container').innerHTML = cartHTML;
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // 8. DRAWER MOBILE, CHECKOUT & FEEDBACK
+        // ==========================================
+        function toggleCartDrawer(open) {
+            const overlay = document.getElementById('mobile-cart-overlay');
+            const drawer = document.getElementById('mobile-cart-drawer');
+            if (open) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => drawer.classList.remove('translate-x-full'), 10);
+            } else {
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        function checkoutOrder() {
+            if (state.cart.length === 0) return;
+
+            // Validação amigável sem alert()
+            if (state.orderType === 'table' && !state.tableNumber.trim()) {
+                showToast('Por favor, informe o número da sua mesa.');
+                return;
+            }
+            if (state.orderType === 'delivery' && !state.deliveryAddress.trim()) {
+                showToast('Por favor, informe o endereço de entrega.');
+                return;
+            }
+
+            const randomOrder = '#SP-' + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('order-number').textContent = randomOrder;
+
+            const summaryEl = document.getElementById('order-success-summary');
+            const etaEl = document.getElementById('order-eta');
+
+            if (state.orderType === 'table') {
+                summaryEl.textContent = `Recebemos o pedido para a Mesa ${state.tableNumber}. Nossa equipe já iniciou o preparo na cozinha!`;
+                etaEl.textContent = '15 - 25 min';
+            } else {
+                summaryEl.textContent = `Seu pedido será entregue em "${state.deliveryAddress}". Acompanhe o preparo com carinho pela nossa cozinha.`;
+                etaEl.textContent = '35 - 50 min';
+            }
+
+            toggleCartDrawer(false);
+            document.getElementById('order-success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('order-success-modal').classList.add('hidden');
+            state.cart = [];
+            renderCart();
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('opacity-0', 'translate-y-3');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-3');
+            }, 2600);
+        }
+
+        // ==========================================
+        // 9. INICIALIZAÇÃO
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderMenu();
+            renderCart();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Brasil Destinos | Blog de Turismo</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#333;
+    line-height:1.6;
+}
+
+/* HEADER */
+
+header{
+    background:linear-gradient(135deg,#0077b6,#0096c7);
+    color:white;
+    padding:40px 8%;
+}
+
+header h1{
+    font-size:2.4rem;
+}
+
+header p{
+    margin-top:10px;
+}
+
+.search-container{
+    margin-top:25px;
+    display:flex;
+    gap:10px;
+}
+
+.search-container input{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+}
+
+.search-container button{
+    padding:14px 25px;
+    border:none;
+    background:#023e8a;
+    color:white;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.search-container button:hover{
+    background:#012f69;
+}
+
+/* NAVEGAÇÃO */
+
+nav{
+    background:white;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    padding:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+nav a{
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#0077b6;
+}
+
+/* LAYOUT */
+
+.container{
+    max-width:1400px;
+    margin:40px auto;
+    padding:0 30px;
+
+    display:grid;
+    grid-template-columns:3fr 1fr;
+    gap:30px;
+}
+
+/* POSTS */
+
+.posts{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.region{
+    background:#caf0f8;
+    color:#0077b6;
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:.8rem;
+    margin-bottom:12px;
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+.meta{
+    display:flex;
+    justify-content:space-between;
+    font-size:.85rem;
+    color:#777;
+    margin:15px 0;
+}
+
+.read-more{
+    display:inline-block;
+    text-decoration:none;
+    color:#0077b6;
+    font-weight:bold;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    height:max-content;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.sidebar h2{
+    margin-bottom:20px;
+    color:#0077b6;
+}
+
+.destination{
+    padding:15px 0;
+    border-bottom:1px solid #eee;
+}
+
+.destination:last-child{
+    border:none;
+}
+
+.destination span{
+    display:block;
+    color:#777;
+    font-size:.9rem;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:50px;
+    background:#023e8a;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+@media(max-width:900px){
+
+.container{
+    grid-template-columns:1fr;
+}
+
+.search-container{
+    flex-direction:column;
+}
+
+nav{
+    flex-wrap:wrap;
+}
+
+}
+</style>
+</head>
+<body>
+
+<header>
+
+<h1>🌎 Brasil Destinos</h1>
+
+<p>
+Explore praias paradisíacas, florestas amazônicas, cidades históricas
+e paisagens incríveis em todas as regiões do Brasil.
+</p>
+
+<div class="search-container">
+<input type="text" placeholder="Buscar por estado ou região...">
+<button>Pesquisar</button>
+</div>
+
+</header>
+
+<nav>
+<a href="#">Nordeste</a>
+<a href="#">Amazônia</a>
+<a href="#">Sudeste</a>
+<a href="#">Sul</a>
+<a href="#">Centro-Oeste</a>
+</nav>
+
+<main class="container">
+
+<section class="posts">
+
+<article class="card">
+
+<img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Jericoacoara">
+
+<div class="card-content">
+
+<span class="region">Nordeste</span>
+
+<h3>Jericoacoara: O Paraíso das Dunas e Lagoas</h3>
+
+<p>
+Descubra um dos destinos mais procurados do Ceará,
+com lagoas cristalinas e pores do sol inesquecíveis.
+</p>
+
+<div class="meta">
+<span>✍️ Mariana Costa</span>
+<span>⏱️ 6 min</span>
+</div>
+
+<a href="#" class="read-more">Ler artigo →</a>
+
+</div>
+</article>
+
+<article class="card">
+
+<img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86" alt="Manaus">
+
+<div class="card-content">
+
+<span class="region">Amazônia</span>
+
+<h3>Encontro das Águas em Manaus</h3>
+
+<p>
+Uma experiência única onde os rios Negro e Solimões
+correm lado a lado sem se misturar.
+</p>
+
+<div class="meta">
+<span>✍️ Ricardo Almeida</span>
+<span>⏱️ 8 min</span>
+</div>
+
+<a href="#" class="read-more">Ler artigo →</a>
+
+</div>
+</article>
+
+<article class="card">
+
+<img src="https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f" alt="Rio de Janeiro">
+
+<div class="card-content">
+
+<span class="region">Sudeste</span>
+
+<h3>Rio de Janeiro Além do Cristo Redentor</h3>
+
+<p>
+Conheça praias escondidas, trilhas e atrações que vão
+muito além dos roteiros tradicionais.
+</p>
+
+<div class="meta">
+<span>✍️ Fernanda Lima</span>
+<span>⏱️ 7 min</span>
+</div>
+
+<a href="#" class="read-more">Ler artigo →</a>
+
+</div>
+</article>
+
+<article class="card">
+
+<img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963" alt="Gramado">
+
+<div class="card-content">
+
+<span class="region">Sul</span>
+
+<h3>Gramado: Charme Europeu na Serra Gaúcha</h3>
+
+<p>
+Arquitetura encantadora, gastronomia e eventos durante
+todo o ano.
+</p>
+
+<div class="meta">
+<span>✍️ Carlos Mendes</span>
+<span>⏱️ 5 min</span>
+</div>
+
+<a href="#" class="read-more">Ler artigo →</a>
+
+</div>
+</article>
+
+</section>
+
+<aside class="sidebar">
+
+<h2>🔥 Mais Visitados</h2>
+
+<div class="destination">
+<strong>Fernando de Noronha</strong>
+<span>Pernambuco</span>
+</div>
+
+<div class="destination">
+<strong>Lençóis Maranhenses</strong>
+<span>Maranhão</span>
+</div>
+
+<div class="destination">
+<strong>Chapada Diamantina</strong>
+<span>Bahia</span>
+</div>
+
+<div class="destination">
+<strong>Bonito</strong>
+<span>Mato Grosso do Sul</span>
+</div>
+
+<div class="destination">
+<strong>Gramado</strong>
+<span>Rio Grande do Sul</span>
+</div>
+
+<div class="destination">
+<strong>Alter do Chão</strong>
+<span>Pará</span>
+</div>
+
+</aside>
+
+</main>
+
+<footer>
+<p>© 2026 Brasil Destinos • Blog de Turismo Nacional</p>
+</footer>
+
+</body>
+</html>

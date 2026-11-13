@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundo Turismo - Reserve Voos e Hotéis</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#333;
+}
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#0d47a1;
+    color:#fff;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+.navbar{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+}
+
+nav ul{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.hero{
+    margin-top:80px;
+    background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+    url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1500&q=80");
+    background-size:cover;
+    background-position:center;
+    height:600px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+}
+
+.hero-content h1{
+    font-size:60px;
+    margin-bottom:20px;
+}
+
+.hero-content p{
+    font-size:22px;
+    margin-bottom:30px;
+}
+
+.btn{
+    background:#ff9800;
+    color:white;
+    padding:15px 35px;
+    border:none;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.section{
+    max-width:1200px;
+    margin:auto;
+    padding:80px 20px;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:40px;
+    font-size:38px;
+    color:#0d47a1;
+}
+
+.reservas{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:30px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.card h3{
+    margin-bottom:20px;
+    color:#0d47a1;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+input, select{
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    background:#0d47a1;
+    color:white;
+    border:none;
+    padding:14px;
+    font-size:16px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#08357c;
+}
+
+.destinos{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.destino{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.destino:hover{
+    transform:translateY(-5px);
+}
+
+.destino img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.destino-info{
+    padding:20px;
+}
+
+.destino-info h4{
+    margin-bottom:10px;
+}
+
+.preco{
+    color:#0d47a1;
+    font-weight:bold;
+    font-size:18px;
+}
+
+footer{
+    background:#0d47a1;
+    color:white;
+    text-align:center;
+    padding:40px 20px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    max-width:400px;
+}
+
+.modal-content h3{
+    color:#0d47a1;
+    margin-bottom:15px;
+}
+
+@media(max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    nav ul{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .hero-content h1{
+        font-size:40px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+        <div class="logo">✈ Mundo Turismo</div>
+
+        <nav>
+            <ul>
+                <li><a href="#destinos">Destinos</a></li>
+                <li><a href="#reservas">Reservas</a></li>
+                <li><a href="#hoteis">Hotéis</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Explore o Mundo</h1>
+        <p>Reserve voos, hotéis e pacotes de viagem com segurança.</p>
+        <a href="#reservas" class="btn">Reservar Agora</a>
+    </div>
+</section>
+
+<section class="section" id="reservas">
+
+    <h2 class="section-title">Sistema de Reservas</h2>
+
+    <div class="reservas">
+
+        <div class="card">
+            <h3>✈ Reserva de Voos</h3>
+
+            <form id="formVoo">
+                <input type="text" placeholder="Cidade de Origem" required>
+                <input type="text" placeholder="Destino" required>
+
+                <input type="date" required>
+                <input type="date" required>
+
+                <input type="number" placeholder="Quantidade de Passageiros" required>
+
+                <button type="submit">
+                    Buscar Voos
+                </button>
+            </form>
+        </div>
+
+        <div class="card" id="hoteis">
+
+            <h3>🏨 Reserva de Hotéis</h3>
+
+            <form id="formHotel">
+
+                <input type="text" placeholder="Cidade ou Hotel" required>
+
+                <input type="date" required>
+                <input type="date" required>
+
+                <select required>
+                    <option value="">Quantidade de Quartos</option>
+                    <option>1 Quarto</option>
+                    <option>2 Quartos</option>
+                    <option>3 Quartos</option>
+                </select>
+
+                <button type="submit">
+                    Buscar Hotéis
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section" id="destinos">
+
+    <h2 class="section-title">Destinos em Destaque</h2>
+
+    <div class="destinos">
+
+        <div class="destino">
+            <img src="https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=800&q=80">
+            <div class="destino-info">
+                <h4>Paris</h4>
+                <p>França</p>
+                <p class="preco">A partir de R$ 4.999</p>
+            </div>
+        </div>
+
+        <div class="destino">
+            <img src="https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?auto=format&fit=crop&w=800&q=80">
+            <div class="destino-info">
+                <h4>Orlando</h4>
+                <p>Estados Unidos</p>
+                <p class="preco">A partir de R$ 3.799</p>
+            </div>
+        </div>
+
+        <div class="destino">
+            <img src="https://images.unsplash.com/photo-1513735492246-483525079686?auto=format&fit=crop&w=800&q=80">
+            <div class="destino-info">
+                <h4>Lisboa</h4>
+                <p>Portugal</p>
+                <p class="preco">A partir de R$ 3.299</p>
+            </div>
+        </div>
+
+        <div class="destino">
+            <img src="https://images.unsplash.com/photo-1593380853098-358d7f2e5f42?auto=format&fit=crop&w=800&q=80">
+            <div class="destino-info">
+                <h4>Gramado</h4>
+                <p>Brasil</p>
+                <p class="preco">A partir de R$ 899</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section">
+    <h2 class="section-title">Pacotes Promocionais</h2>
+
+    <div class="card">
+        <h3>🌎 Pacote Completo</h3>
+        <p>
+            Inclui passagem aérea, hospedagem,
+            traslado, seguro viagem e passeios turísticos.
+        </p>
+    </div>
+</section>
+
+<footer id="contato">
+    <h3>Mundo Turismo</h3>
+    <p>contato@mundoturismo.com.br</p>
+    <p>(11) 99999-9999</p>
+</footer>
+
+<div class="modal" id="modal">
+
+    <div class="modal-content">
+
+        <h3>Reserva Recebida!</h3>
+
+        <p>
+            Sua solicitação foi enviada com sucesso.
+            Em breve nossa equipe entrará em contato.
+        </p>
+
+        <br>
+
+        <button onclick="fecharModal()">
+            Fechar
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const modal = document.getElementById("modal");
+
+document.getElementById("formVoo")
+.addEventListener("submit", function(e){
+    e.preventDefault();
+    modal.style.display="flex";
+});
+
+document.getElementById("formHotel")
+.addEventListener("submit", function(e){
+    e.preventDefault();
+    modal.style.display="flex";
+});
+
+function fecharModal(){
+    modal.style.display="none";
+}
+
+</script>
+
+</body>
+</html>

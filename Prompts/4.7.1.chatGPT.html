@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerFit Academia</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #111;
+            color: #fff;
+        }
+
+        header {
+            background: #191919;
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #b5f32d;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: #b5f32d;
+        }
+
+        .hero {
+            min-height: 420px;
+            background:
+                linear-gradient(90deg, #111 15%, #111a 60%, #1118),
+                url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600")
+                center/cover;
+            display: flex;
+            align-items: center;
+            padding: 60px 10%;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #b5f32d;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #ddd;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #b5f32d;
+            color: #111;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #96cf18;
+        }
+
+        .benefits {
+            padding: 55px 8%;
+            text-align: center;
+        }
+
+        .benefits h2 {
+            font-size: 32px;
+            margin-bottom: 35px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: #202020;
+            padding: 30px 20px;
+            border-radius: 10px;
+        }
+
+        .card h3 {
+            color: #b5f32d;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .registration {
+            background: #1b1b1b;
+            padding: 60px 20px;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: auto;
+            background: #252525;
+            padding: 35px;
+            border-radius: 12px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #b5f32d;
+        }
+
+        .form-container > p {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #555;
+            background: #333;
+            color: white;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #b5f32d;
+        }
+
+        .form-container button {
+            width: 100%;
+            font-size: 16px;
+        }
+
+        #mensagem {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #314719;
+            color: #d5ff8a;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #111;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            nav a {
+                margin: 0 8px;
+                font-size: 14px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 25px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">POWERFIT</div>
+
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#beneficios">Benefícios</a>
+            <a href="#inscricao">Inscreva-se</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>SUPERE SEUS <span>LIMITES!</span></h1>
+
+            <p>
+                Transforme seu corpo, fortaleça sua mente
+                e alcance seus objetivos com a PowerFit.
+                Sua melhor versão começa aqui!
+            </p>
+
+            <a href="#inscricao" class="btn">
+                QUERO ME INSCREVER
+            </a>
+        </div>
+    </section>
+
+    <section class="benefits" id="beneficios">
+        <h2>POR QUE ESCOLHER A POWERFIT?</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Musculação</h3>
+                <p>
+                    Equipamentos modernos e estrutura
+                    completa para seu treinamento.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Personal Trainer</h3>
+                <p>
+                    Profissionais qualificados para
+                    acompanhar sua evolução.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Qualidade de Vida</h3>
+                <p>
+                    Atividades físicas para melhorar
+                    sua saúde e bem-estar.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="registration" id="inscricao">
+        <div class="form-container">
+
+            <h2>FAÇA SUA INSCRIÇÃO</h2>
+            <p>Preencha seus dados e comece sua transformação!</p>
+
+            <form id="formInscricao">
+
+                <div class="form-group">
+                    <label for="nome">Nome completo:</label>
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Digite seu nome"
+                        required
+                        minlength="3"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="exemplo@email.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input
+                        type="tel"
+                        id="telefone"
+                        placeholder="(11) 99999-9999"
+                        required
+                        pattern="[0-9() +\-]{10,20}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="nascimento">Data de nascimento:</label>
+                    <input
+                        type="date"
+                        id="nascimento"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="plano">Escolha seu plano:</label>
+
+                    <select id="plano" required>
+                        <option value="">Selecione um plano</option>
+                        <option value="Mensal">Mensal - R$ 99,90</option>
+                        <option value="Trimestral">Trimestral - R$ 269,90</option>
+                        <option value="Anual">Anual - R$ 899,90</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="objetivo">Qual seu objetivo?</label>
+
+                    <select id="objetivo" required>
+                        <option value="">Selecione seu objetivo</option>
+                        <option value="Hipertrofia">Ganho de massa muscular</option>
+                        <option value="Emagrecimento">Emagrecimento</option>
+                        <option value="Condicionamento">Condicionamento físico</option>
+                        <option value="Saude">Saúde e bem-estar</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">
+                    FINALIZAR INSCRIÇÃO
+                </button>
+
+            </form>
+
+            <div id="mensagem" role="status" aria-live="polite"></div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 PowerFit Academia - Todos os direitos reservados.</p>
+        <p>Seu esforço de hoje é sua conquista de amanhã!</p>
+    </footer>
+
+    <script>
+        const formulario = document.getElementById("formInscricao");
+        const mensagem = document.getElementById("mensagem");
+
+        formulario.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById("nome").value;
+            const plano = document.getElementById("plano").value;
+            const objetivo = document.getElementById("objetivo").value;
+
+            mensagem.style.display = "block";
+
+            mensagem.innerHTML = `
+                <strong>Inscrição realizada com sucesso!</strong><br><br>
+                Seja bem-vindo(a), ${nome}!<br>
+                Plano escolhido: ${plano}<br>
+                Objetivo: ${objetivo}<br><br>
+                Aguarde nosso contato!
+            `;
+
+            formulario.reset();
+        });
+    </script>
+
+</body>
+</html>

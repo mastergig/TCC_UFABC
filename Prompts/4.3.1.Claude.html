@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linha &amp; Trama – Roupas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f4f8;--surface:#fff;--ink:#17214d;--muted:#5d6687;--line:#d9deea;--accent:#f2b705;--on-accent:#17214d;--danger:#b3261e;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10152e;--surface:#1a2145;--ink:#eef0f8;--muted:#a3aac7;--line:#2c3563;--danger:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10152e;--surface:#1a2145;--ink:#eef0f8;--muted:#a3aac7;--line:#2c3563;--danger:#ff8a80;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "DM Sans",system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:30}
+h1,h2,h3,.logo{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:12px clamp(16px,4vw,48px)}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-.02em}
+.cart-btn{display:flex;align-items:center;gap:8px;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:10px 18px;font-weight:700}
+.cart-btn .count{background:var(--accent);color:var(--on-accent);border-radius:999px;min-width:24px;padding:0 7px;text-align:center;font-size:.85rem;line-height:24px}
+.hero{padding:clamp(40px,8vw,96px) clamp(16px,4vw,48px) 32px;max-width:1200px;margin:0 auto}
+.hero h1{font-size:clamp(2.4rem,8vw,5.6rem);font-weight:800;line-height:.98;letter-spacing:-.035em;max-width:14ch}
+.hero p{max-width:46ch;color:var(--muted);font-size:1.1rem;margin:20px 0 0}
+.bar{max-width:1200px;margin:0 auto;padding:16px clamp(16px,4vw,48px);display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 16px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{max-width:1200px;margin:0 auto;padding:8px clamp(16px,4vw,48px) 64px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.tile{aspect-ratio:1/1;display:grid;place-items:center;font-size:5.5rem}
+.info{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.info h3{font-size:1.1rem;font-weight:700}
+.price{font-weight:700;font-size:1.1rem}
+.sizes{display:flex;gap:6px;flex-wrap:wrap}
+.sizes button{width:40px;height:36px;border:1px solid var(--line);background:transparent;border-radius:8px;font-weight:500}
+.sizes button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.add{margin-top:auto;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);font-weight:700;padding:12px}
+.add:active{transform:scale(.98)}
+.hint{color:var(--danger);font-size:.85rem;min-height:1.2em;margin:0}
+.scrim{position:fixed;inset:0;background:rgba(10,14,35,.55);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--surface);z-index:50;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);border-left:1px solid var(--line)}
+aside.on{transform:none}
+.ah{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.ah h2{font-size:1.3rem}
+.x{border:0;background:transparent;font-size:1.6rem;line-height:1;padding:4px 8px}
+.items{flex:1;overflow:auto;padding:8px 20px}
+.item{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.item .t{width:56px;height:56px;border-radius:10px;display:grid;place-items:center;font-size:1.8rem}
+.item b{display:block}
+.item small{color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:transparent}
+.rm{border:0;background:transparent;color:var(--danger);font-size:.85rem;text-decoration:underline}
+.empty{color:var(--muted);text-align:center;padding:48px 8px}
+.foot{padding:16px 20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.ship{font-size:.9rem;color:var(--muted)}
+.meter{height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+.row{display:flex;justify-content:space-between;font-weight:700;font-size:1.15rem}
+.buy{border:0;border-radius:10px;background:var(--ink);color:var(--bg);font-weight:700;padding:14px}
+.buy:disabled{opacity:.4;cursor:not-allowed}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:60;max-width:90%}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+footer{text-align:center;color:var(--muted);padding:24px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Linha &amp; Trama</div>
+  <button class="cart-btn" id="open" aria-label="Abrir carrinho">Carrinho <span class="count" id="count">0</span></button>
+</header>
+
+<section class="hero">
+  <h1>Roupa boa pro dia inteiro.</h1>
+  <p>Algodão, linho e malha com corte reto, feitos para durar muitas lavagens. Frete grátis acima de R$&nbsp;300.</p>
+</section>
+
+<div class="bar" id="filters" role="group" aria-label="Filtrar por categoria"></div>
+<main class="grid" id="grid"></main>
+<footer>© 2026 Linha &amp; Trama · Loja de demonstração</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside id="drawer" aria-label="Carrinho de compras" aria-hidden="true">
+  <div class="ah"><h2>Seu carrinho</h2><button class="x" id="close" aria-label="Fechar carrinho">×</button></div>
+  <div class="items" id="items"></div>
+  <div class="foot">
+    <div class="ship" id="shipTxt"></div>
+    <div class="meter"><i id="meter"></i></div>
+    <div class="row"><span>Subtotal</span><span id="sub">R$ 0,00</span></div>
+    <button class="buy" id="buy" disabled>Finalizar compra</button>
+    <button class="rm" id="clear" style="align-self:center">Esvaziar carrinho</button>
+  </div>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const P=[
+{id:1,n:"Camiseta básica algodão",c:"Camisetas",p:79.9,e:"👕",bg:"#dbe6ff",s:["P","M","G","GG"]},
+{id:2,n:"Camiseta oversized",c:"Camisetas",p:99.9,e:"👕",bg:"#ffe9a8",s:["P","M","G","GG"]},
+{id:3,n:"Calça jeans reta",c:"Calças",p:219.9,e:"👖",bg:"#c9d3ee",s:["38","40","42","44"]},
+{id:4,n:"Calça de linho",c:"Calças",p:189.9,e:"👖",bg:"#efe3cf",s:["38","40","42","44"]},
+{id:5,n:"Vestido midi de malha",c:"Vestidos",p:179.9,e:"👗",bg:"#f8d3da",s:["P","M","G"]},
+{id:6,n:"Vestido camisa listrado",c:"Vestidos",p:229.9,e:"👗",bg:"#d4ecdf",s:["P","M","G"]},
+{id:7,n:"Jaqueta corta-vento",c:"Casacos",p:289.9,e:"🧥",bg:"#ffd7bf",s:["P","M","G","GG"]},
+{id:8,n:"Moletom com capuz",c:"Casacos",p:199.9,e:"🧥",bg:"#e0d6f5",s:["P","M","G","GG"]},
+{id:9,n:"Cachecol de lã",c:"Acessórios",p:69.9,e:"🧣",bg:"#fbd9cf",s:["Único"]},
+{id:10,n:"Boné de sarja",c:"Acessórios",p:59.9,e:"🧢",bg:"#cfe8f1",s:["Único"]}
+];
+const FREE=300,KEY="lt-cart-v1";
+const money=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const $=id=>document.getElementById(id);
+let cart=[],cat="Todos",pick={};
+try{cart=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(cart))cart=[]}catch(e){cart=[]}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(cart))}catch(e){}};
+
+function filters(){
+  const cs=["Todos",...new Set(P.map(x=>x.c))];
+  $("filters").innerHTML=cs.map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
+}
+function grid(){
+  $("grid").innerHTML=P.filter(x=>cat==="Todos"||x.c===cat).map(x=>{
+    const sel=pick[x.id]||(x.s.length===1?x.s[0]:"");
+    return `<article class="card"><div class="tile" style="background:${x.bg}" aria-hidden="true">${x.e}</div>
+    <div class="info"><h3>${x.n}</h3><div class="price">${money(x.p)}</div>
+    <div class="sizes" role="group" aria-label="Tamanho de ${x.n}">${x.s.map(s=>`<button aria-pressed="${s===sel}" data-id="${x.id}" data-s="${s}" style="${s==="Único"?"width:auto;padding:0 12px":""}">${s}</button>`).join("")}</div>
+    <p class="hint" id="h${x.id}"></p>
+    <button class="add" data-add="${x.id}">Adicionar ao carrinho</button></div></article>`}).join("");
+}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800)}
+function add(id){
+  const x=P.find(i=>i.id===id),s=pick[id]||(x.s.length===1?x.s[0]:"");
+  if(!s){$("h"+id).textContent="Escolha um tamanho.";return}
+  const k=id+"-"+s,f=cart.find(i=>i.k===k);
+  f?f.q++:cart.push({k,id,s,q:1});
+  save();render();toast(`${x.n} (${s}) adicionada`);
+}
+function render(){
+  const n=cart.reduce((a,i)=>a+i.q,0),sub=cart.reduce((a,i)=>a+i.q*P.find(x=>x.id===i.id).p,0);
+  $("count").textContent=n;$("sub").textContent=money(sub);$("buy").disabled=!n;
+  $("clear").style.display=n?"":"none";
+  $("meter").style.width=Math.min(100,sub/FREE*100)+"%";
+  $("shipTxt").textContent=!n?`Frete grátis acima de ${money(FREE)}.`:sub>=FREE?"Você ganhou frete grátis.":`Faltam ${money(FREE-sub)} para o frete grátis.`;
+  $("items").innerHTML=n?cart.map(i=>{const x=P.find(p=>p.id===i.id);
+    return `<div class="item"><div class="t" style="background:${x.bg}">${x.e}</div>
+    <div><b>${x.n}</b><small>Tamanho ${i.s} · ${money(x.p)}</small>
+    <div class="qty"><button data-d="-1" data-k="${i.k}" aria-label="Diminuir quantidade">−</button><span>${i.q}</span><button data-d="1" data-k="${i.k}" aria-label="Aumentar quantidade">+</button></div></div>
+    <div style="text-align:right"><b>${money(x.p*i.q)}</b><br><button class="rm" data-rm="${i.k}">Remover</button></div></div>`}).join(""):`<div class="empty">Seu carrinho está vazio.<br>Escolha uma peça e um tamanho para começar.</div>`;
+}
+function drawer(o){
+  $("drawer").classList.toggle("on",o);$("scrim").classList.toggle("on",o);
+  $("drawer").setAttribute("aria-hidden",!o);
+  if(o)$("close").focus();else $("open").focus();
+}
+$("filters").onclick=e=>{const c=e.target.closest("[data-c]");if(c){cat=c.dataset.c;filters();grid()}};
+$("grid").onclick=e=>{
+  const s=e.target.closest("[data-s]");
+  if(s){const id=+s.dataset.id;pick[id]=s.dataset.s;
+    s.parentNode.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b===s));
+    $("h"+id).textContent="";return}
+  const a=e.target.closest("[data-add]");if(a)add(+a.dataset.add);
+};
+$("items").onclick=e=>{
+  const d=e.target.closest("[data-d]"),r=e.target.closest("[data-rm]");
+  if(d){const i=cart.find(x=>x.k===d.dataset.k);i.q+=+d.dataset.d;if(i.q<1)cart=cart.filter(x=>x!==i)}
+  else if(r)cart=cart.filter(x=>x.k!==r.dataset.rm);
+  else return;
+  save();render();
+};
+$("clear").onclick=()=>{cart=[];save();render()};
+$("buy").onclick=()=>{
+  const t=cart.reduce((a,i)=>a+i.q*P.find(x=>x.id===i.id).p,0);
+  cart=[];save();render();drawer(false);toast(`Pedido de ${money(t)} confirmado. Obrigado!`);
+};
+$("open").onclick=()=>drawer(true);$("close").onclick=()=>drawer(false);$("scrim").onclick=()=>drawer(false);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("drawer").classList.contains("on"))drawer(false)});
+filters();grid();render();
+</script>
+</body>
+</html>

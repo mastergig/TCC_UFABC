@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fotografia profissional para pequenas empresas. Transforme sua marca com imagens que impressionam e vendem.">
+    <title>PIXEL | Fotografia Criativa para Empresas</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg: #070b18;
+            --bg-card: #0e162b;
+            --primary: #00d9ff;
+            --secondary: #735bff;
+            --text: #f4f7ff;
+            --muted: #929db5;
+            --border: rgba(0, 217, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(0, 217, 255, .09), transparent 30%),
+                radial-gradient(circle at 85% 80%, rgba(115, 91, 255, .12), transparent 35%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: min(1150px, 90%);
+            margin: auto;
+        }
+
+        /* HEADER */
+
+        header {
+            height: 85px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .nav-links a {
+            transition: .3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-button {
+            border: 1px solid var(--primary);
+            padding: 11px 20px;
+            border-radius: 6px;
+            color: var(--primary);
+        }
+
+        .nav-button:hover {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 20px rgba(0,217,255,.4);
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 95px 0 65px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 16px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: var(--primary);
+            background: rgba(0,217,255,.04);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(40px, 6vw, 68px);
+            line-height: 1.08;
+            letter-spacing: -2.5px;
+            margin: 27px 0 20px;
+        }
+
+        h1 span {
+            background: linear-gradient(90deg, var(--primary), #8b7aff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: auto;
+            color: var(--muted);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* CONTACT SECTION */
+
+        .contact-section {
+            padding: 20px 0 100px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: .85fr 1.15fr;
+            gap: 35px;
+            align-items: stretch;
+        }
+
+        /* CONTACT INFORMATION */
+
+        .contact-info {
+            padding: 40px 35px;
+            background: linear-gradient(145deg, #101c35, #0b1224);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,217,255,.12);
+            right: -110px;
+            bottom: -110px;
+            box-shadow: 0 0 0 25px rgba(0,217,255,.02),
+                        0 0 0 50px rgba(0,217,255,.02);
+        }
+
+        .contact-info h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info > p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 17px;
+            margin-bottom: 27px;
+        }
+
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,217,255,.08);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--primary);
+            font-size: 21px;
+        }
+
+        .info-item small {
+            color: var(--muted);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .info-item strong {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: var(--primary);
+            transition: .3s;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--bg);
+            transform: translateY(-4px);
+            box-shadow: 0 0 15px rgba(0,217,255,.35);
+        }
+
+        /* FORM */
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,.07);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #dce5f8;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: #080f20;
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 7px;
+            padding: 14px 15px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: .3s;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #65718b;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,217,255,.08);
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: #080f20;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 7px;
+            background: linear-gradient(90deg, #00bfe8, #6655ef);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .3s;
+            letter-spacing: .4px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,217,255,.3);
+            filter: brightness(1.15);
+        }
+
+        .submit-button:active {
+            transform: scale(.98);
+        }
+
+        .privacy {
+            margin-top: 17px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .privacy span {
+            color: var(--primary);
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: 30px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .footer-content strong {
+            color: var(--primary);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                min-height: 400px;
+            }
+
+            .hero {
+                padding-top: 70px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links > a:not(.nav-button) {
+                display: none;
+            }
+
+            .logo {
+                font-size: 23px;
+            }
+
+            .hero {
+                padding: 65px 0 45px;
+            }
+
+            h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .contact-form,
+            .contact-info {
+                padding: 27px 22px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container navbar">
+            <a href="#" class="logo">PIXEL<span>.</span></a>
+
+            <nav class="nav-links">
+                <a href="#inicio">Início</a>
+                <a href="#contato">Serviços</a>
+                <a href="#contato">Contato</a>
+                <a href="#contato" class="nav-button">Solicitar orçamento ↗</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <main>
+        <section class="hero" id="inicio">
+            <div class="container">
+
+                <div class="eyebrow">
+                    Fotografia que conecta
+                </div>
+
+                <h1>
+                    Sua marca merece<br>
+                    ser <span>vista de perto.</span>
+                </h1>
+
+                <p>
+                    Transformamos momentos, produtos e ideias em imagens
+                    extraordinárias. Fotografia profissional para pequenas
+                    empresas que querem se destacar no mercado.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact-section" id="contato">
+            <div class="container">
+
+                <div class="contact-grid">
+
+                    <!-- CONTACT INFORMATION -->
+                    <div class="contact-info">
+
+                        <h2>Vamos conversar?</h2>
+
+                        <p>
+                            Conte um pouco sobre seu negócio e descubra como
+                            podemos transformar sua comunicação visual.
+                            Estamos prontos para tirar seu projeto do papel.
+                        </p>
+
+                        <div class="info-item">
+                            <div class="info-icon">✉</div>
+                            <div>
+                                <small>E-mail</small>
+                                <strong>contato@pixelstudio.com.br</strong>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">☎</div>
+                            <div>
+                                <small>Telefone / WhatsApp</small>
+                                <strong>+55 (11) 99999-9999</strong>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">◷</div>
+                            <div>
+                                <small>Horário de atendimento</small>
+                                <strong>Segunda a sexta, 09h às 18h</strong>
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram">IG</a>
+                            <a href="#" aria-label="Facebook">FB</a>
+                            <a href="#" aria-label="LinkedIn">IN</a>
+                        </div>
+
+                    </div>
+
+                    <!-- CONTACT FORM -->
+                    <div class="contact-form">
+
+                        <div class="form-header">
+                            <h2>Conte seu projeto.</h2>
+                            <p>Preencha os campos abaixo. É rápido e sem compromisso.</p>
+                        </div>
+
+                        <form action="mailto:contato@pixelstudio.com.br"
+                              method="post"
+                              enctype="text/plain">
+
+                            <div class="form-row">
+
+                                <div class="form-group">
+                                    <label for="nome">Seu nome *</label>
+                                    <input
+                                        type="text"
+                                        id="nome"
+                                        name="Nome"
+                                        placeholder="Ex: João Silva"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="empresa">Nome da empresa</label>
+                                    <input
+                                        type="text"
+                                        id="empresa"
+                                        name="Empresa"
+                                        placeholder="Ex: Minha Empresa">
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="form-group">
+                                    <label for="email">Seu e-mail *</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="Email"
+                                        placeholder="seu@email.com"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="telefone">Telefone / WhatsApp</label>
+                                    <input
+                                        type="tel"
+                                        id="telefone"
+                                        name="Telefone"
+                                        placeholder="(11) 99999-9999">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="servico">Qual serviço você procura?</label>
+
+                                <select id="servico" name="Servico">
+                                    <option value="">Selecione uma opção</option>
+                                    <option value="Fotografia de produtos">Fotografia de produtos</option>
+                                    <option value="Fotografia corporativa">Fotografia corporativa</option>
+                                    <option value="Fotografia gastronômica">Fotografia gastronômica</option>
+                                    <option value="Fotografia para redes sociais">Fotografia para redes sociais</option>
+                                    <option value="Ensaio empresarial">Ensaio empresarial</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mensagem">Conte um pouco sobre seu projeto</label>
+
+                                <textarea
+                                    id="mensagem"
+                                    name="Mensagem"
+                                    placeholder="Descreva sua ideia, necessidade ou objetivo..."></textarea>
+                            </div>
+
+                            <button type="submit" class="submit-button">
+                                ENVIAR MINHA SOLICITAÇÃO ↗
+                            </button>
+
+                            <p class="privacy">
+                                🔒 Seus dados são utilizados apenas para entrar em contato.
+                                <span>Privacidade garantida.</span>
+                            </p>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+
+            <div class="logo">PIXEL<span>.</span></div>
+
+            <p>© 2026 PIXEL Studio. Todos os direitos reservados.</p>
+
+            <p>Feito para marcas que querem ir além.</p>
+
+        </div>
+    </footer>
+
+</body>
+</html>

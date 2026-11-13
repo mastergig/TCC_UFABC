@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cine Bairro - Filmes em Cartaz</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#111;
+    color:#fff;
+}
+
+header{
+    background:#c40000;
+    padding:20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 2px 10px rgba(0,0,0,.4);
+}
+
+header h1{
+    font-size:2rem;
+}
+
+.hero{
+    text-align:center;
+    padding:40px 20px;
+    background:linear-gradient(135deg,#1a1a1a,#000);
+}
+
+.hero h2{
+    color:#ffd700;
+    margin-bottom:10px;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding:30px 0;
+}
+
+.filmes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#1b1b1b;
+    border-radius:12px;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:380px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.classificacao{
+    display:inline-block;
+    background:#ffd700;
+    color:#000;
+    font-weight:bold;
+    padding:5px 10px;
+    border-radius:20px;
+    margin:10px 0;
+}
+
+.sinopse{
+    color:#ddd;
+    margin-bottom:15px;
+    line-height:1.4;
+}
+
+.horarios{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.horario{
+    background:#333;
+    padding:8px 15px;
+    border-radius:20px;
+}
+
+.formulario{
+    margin-top:60px;
+    background:#1b1b1b;
+    padding:30px;
+    border-radius:12px;
+}
+
+.formulario h2{
+    margin-bottom:20px;
+    color:#ffd700;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    background:#c40000;
+    color:white;
+    border:none;
+    padding:14px 25px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+button:hover{
+    background:#ff0000;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.modal-content{
+    background:white;
+    color:black;
+    padding:30px;
+    border-radius:12px;
+    text-align:center;
+    width:90%;
+    max-width:450px;
+}
+
+.modal-content h3{
+    color:green;
+    margin-bottom:15px;
+}
+
+.fechar{
+    margin-top:20px;
+    background:#c40000;
+}
+
+footer{
+    background:#000;
+    text-align:center;
+    padding:20px;
+    margin-top:50px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🎬 Cine Bairro</h1>
+</header>
+
+<section class="hero">
+    <h2>Filmes em Cartaz</h2>
+    <p>Confira os horários e reserve seus ingressos online.</p>
+</section>
+
+<div class="container">
+
+    <section class="filmes">
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600" alt="Filme">
+            <div class="card-content">
+                <h3>Aventura nas Estrelas</h3>
+                <span class="classificacao">12 Anos</span>
+                <p class="sinopse">
+                    Uma equipe de exploradores embarca em uma jornada intergaláctica
+                    para salvar uma colônia distante.
+                </p>
+
+                <div class="horarios">
+                    <span class="horario">15h</span>
+                    <span class="horario">18h</span>
+                    <span class="horario">21h</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600" alt="Filme">
+            <div class="card-content">
+                <h3>Mistério na Cidade</h3>
+                <span class="classificacao">14 Anos</span>
+                <p class="sinopse">
+                    Um detetive tenta desvendar uma série de desaparecimentos
+                    inexplicáveis que assustam a população.
+                </p>
+
+                <div class="horarios">
+                    <span class="horario">15h</span>
+                    <span class="horario">18h</span>
+                    <span class="horario">21h</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=600" alt="Filme">
+            <div class="card-content">
+                <h3>Risos Sem Limites</h3>
+                <span class="classificacao">Livre</span>
+                <p class="sinopse">
+                    Uma comédia divertida acompanhando situações inusitadas
+                    de um grupo de amigos.
+                </p>
+
+                <div class="horarios">
+                    <span class="horario">15h</span>
+                    <span class="horario">18h</span>
+                    <span class="horario">21h</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="formulario">
+        <h2>🎟 Reservar Ingressos</h2>
+
+        <form id="reservaForm">
+
+            <div class="form-group">
+                <label>Nome Completo</label>
+                <input type="text" id="nome" required>
+            </div>
+
+            <div class="form-group">
+                <label>Filme</label>
+                <select id="filme" required>
+                    <option value="">Selecione</option>
+                    <option>Aventura nas Estrelas</option>
+                    <option>Mistério na Cidade</option>
+                    <option>Risos Sem Limites</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Horário</label>
+                <select id="horario" required>
+                    <option value="">Selecione</option>
+                    <option>15h</option>
+                    <option>18h</option>
+                    <option>21h</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Quantidade de Ingressos</label>
+                <input
+                    type="number"
+                    id="quantidade"
+                    min="1"
+                    max="10"
+                    value="1"
+                    required>
+            </div>
+
+            <button type="submit">
+                Confirmar Reserva
+            </button>
+
+        </form>
+    </section>
+
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3>✅ Reserva Confirmada!</h3>
+
+        <p id="resumoReserva"></p>
+
+        <button class="fechar" onclick="fecharModal()">
+            Fechar
+        </button>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Cine Bairro | Sistema de Reserva Online</p>
+</footer>
+
+<script>
+const formulario = document.getElementById("reservaForm");
+const modal = document.getElementById("modal");
+const resumo = document.getElementById("resumoReserva");
+
+formulario.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const nome = document.getElementById("nome").value;
+    const filme = document.getElementById("filme").value;
+    const horario = document.getElementById("horario").value;
+    const quantidade = document.getElementById("quantidade").value;
+
+    resumo.innerHTML = `
+        <strong>${nome}</strong>, sua reserva foi realizada com sucesso.<br><br>
+        Filme: <strong>${filme}</strong><br>
+        Horário: <strong>${horario}</strong><br>
+        Ingressos: <strong>${quantidade}</strong>
+    `;
+
+    modal.style.display = "flex";
+    formulario.reset();
+});
+
+function fecharModal(){
+    modal.style.display = "none";
+}
+
+window.onclick = function(event){
+    if(event.target === modal){
+        modal.style.display = "none";
+    }
+};
+</script>
+
+</body>
+</html>

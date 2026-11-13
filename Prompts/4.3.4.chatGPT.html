@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBAN STORE | Moda Urbana</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* CABEÇALHO */
+        header {
+            background: #111;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .cart-button {
+            background: #ff6b35;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cart-button:hover {
+            background: #e95725;
+        }
+
+        #cart-count {
+            background: white;
+            color: #ff6b35;
+            border-radius: 50%;
+            padding: 3px 7px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        /* BANNER */
+        .banner {
+            background: #292929;
+            color: white;
+            text-align: center;
+            padding: 65px 20px;
+        }
+
+        .banner h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .banner p {
+            color: #ccc;
+        }
+
+        /* VITRINE */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .container h2 {
+            margin-bottom: 25px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,.08);
+            transition: transform .3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            background: #ddd;
+        }
+
+        .product-info {
+            padding: 18px;
+        }
+
+        .product-info h3 {
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #ff6b35;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .add-button {
+            width: 100%;
+            background: #111;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background: #ff6b35;
+        }
+
+        /* FUNDO ESCURO DO DRAWER */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.5);
+            visibility: hidden;
+            opacity: 0;
+            transition: .3s;
+            z-index: 20;
+        }
+
+        .overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* CARRINHO LATERAL */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            max-width: 90%;
+            height: 100vh;
+            background: white;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            transition: right .3s ease;
+            box-shadow: -5px 0 15px rgba(0,0,0,.2);
+        }
+
+        .drawer.active {
+            right: 0;
+        }
+
+        .drawer-header {
+            padding: 22px;
+            background: #111;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-button {
+            background: none;
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* ITENS DO CARRINHO */
+        .cart-items {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .cart-item h4 {
+            margin-bottom: 7px;
+        }
+
+        .cart-item p {
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        .remove-button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 7px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #777;
+            margin-top: 40px;
+        }
+
+        /* TOTAL */
+        .cart-footer {
+            padding: 22px;
+            border-top: 1px solid #ddd;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .checkout-button {
+            width: 100%;
+            padding: 14px;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .checkout-button:hover {
+            background: #e95725;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 500px) {
+            .banner h1 {
+                font-size: 28px;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <div class="logo">URBAN STORE</div>
+
+        <button class="cart-button" onclick="openCart()">
+            🛒 Carrinho
+            <span id="cart-count">0</span>
+        </button>
+    </header>
+
+    <!-- BANNER -->
+    <section class="banner">
+        <h1>Vista seu estilo!</h1>
+        <p>Moda urbana para quem não segue padrões.</p>
+    </section>
+
+    <!-- VITRINE -->
+    <main class="container">
+        <h2>Nossos Produtos</h2>
+
+        <div class="products" id="products"></div>
+    </main>
+
+    <!-- FUNDO ESCURO -->
+    <div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+    <!-- CARRINHO LATERAL -->
+    <aside class="drawer" id="drawer">
+
+        <div class="drawer-header">
+            <h2>Meu Carrinho</h2>
+
+            <button class="close-button"
+                    onclick="closeCart()"
+                    aria-label="Fechar carrinho">
+                &times;
+            </button>
+        </div>
+
+        <div class="cart-items" id="cart-items">
+            <p class="empty-cart">Seu carrinho está vazio.</p>
+        </div>
+
+        <div class="cart-footer">
+
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">R$ 0,00</span>
+            </div>
+
+            <button class="checkout-button"
+                    onclick="checkout()">
+                Finalizar Compra
+            </button>
+
+        </div>
+    </aside>
+
+    <footer>
+        <p>&copy; 2026 Urban Store - Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // BANCO DE PRODUTOS FICTÍCIO
+        const products = [
+            {
+                id: 1,
+                name: "Camiseta Oversized",
+                price: 79.90,
+                image: "https://placehold.co/400x400/333333/FFFFFF?text=Camiseta"
+            },
+            {
+                id: 2,
+                name: "Calça Cargo",
+                price: 149.90,
+                image: "https://placehold.co/400x400/555555/FFFFFF?text=Calca"
+            },
+            {
+                id: 3,
+                name: "Moletom Streetwear",
+                price: 189.90,
+                image: "https://placehold.co/400x400/777777/FFFFFF?text=Moletom"
+            },
+            {
+                id: 4,
+                name: "Jaqueta Jeans",
+                price: 219.90,
+                image: "https://placehold.co/400x400/444444/FFFFFF?text=Jaqueta"
+            },
+            {
+                id: 5,
+                name: "Boné Urban",
+                price: 59.90,
+                image: "https://placehold.co/400x400/222222/FFFFFF?text=Bone"
+            },
+            {
+                id: 6,
+                name: "Tênis Casual",
+                price: 249.90,
+                image: "https://placehold.co/400x400/666666/FFFFFF?text=Tenis"
+            }
+        ];
+
+        // ESTADO DO CARRINHO
+        let cart = [];
+
+        // FORMATAR VALORES EM REAIS
+        function formatPrice(value) {
+            return value.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+        }
+
+        // EXIBIR PRODUTOS NA VITRINE
+        function renderProducts() {
+            const container = document.getElementById("products");
+
+            container.innerHTML = products.map(product => `
+                <article class="product">
+                    <img
+                        src="${product.image}"
+                        alt="${product.name}"
+                    >
+
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+
+                        <p class="price">
+                            ${formatPrice(product.price)}
+                        </p>
+
+                        <button
+                            class="add-button"
+                            onclick="addToCart(${product.id})">
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </article>
+            `).join("");
+        }
+
+        // ADICIONAR PRODUTO AO CARRINHO
+        function addToCart(productId) {
+            const product = products.find(
+                item => item.id === productId
+            );
+
+            if (!product) return;
+
+            cart.push(product);
+
+            updateCart();
+
+        }
+
+        // REMOVER PRODUTO DO CARRINHO
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+
+            updateCart();
+        }
+
+        // ATUALIZAR CARRINHO E TOTAL
+        function updateCart() {
+
+            const cartItems = document.getElementById("cart-items");
+            const cartCount = document.getElementById("cart-count");
+            const cartTotal = document.getElementById("cart-total");
+
+            // Atualizar contador
+            cartCount.textContent = cart.length;
+
+            // Calcular total
+            const total = cart.reduce(
+                (sum, item) => sum + item.price,
+                0
+            );
+
+            cartTotal.textContent = formatPrice(total);
+
+            // Exibir itens
+            if (cart.length === 0) {
+
+                cartItems.innerHTML = `
+                    <p class="empty-cart">
+                        Seu carrinho está vazio.
+                    </p>
+                `;
+
+                return;
+            }
+
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+
+                    <div>
+                        <h4>${item.name}</h4>
+                        <p>${formatPrice(item.price)}</p>
+                    </div>
+
+                    <button
+                        class="remove-button"
+                        onclick="removeFromCart(${index})">
+                        Remover
+                    </button>
+
+                </div>
+            `).join("");
+        }
+
+        // ABRIR CARRINHO
+        function openCart() {
+            document.getElementById("drawer")
+                .classList.add("active");
+
+            document.getElementById("overlay")
+                .classList.add("active");
+        }
+
+        // FECHAR CARRINHO
+        function closeCart() {
+            document.getElementById("drawer")
+                .classList.remove("active");
+
+            document.getElementById("overlay")
+                .classList.remove("active");
+        }
+
+        // FINALIZAR COMPRA (SIMULAÇÃO)
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Adicione produtos antes de finalizar a compra!");
+                return;
+            }
+
+            alert(
+                "Compra simulada com sucesso!\nTotal: " +
+                formatPrice(
+                    cart.reduce((sum, item) => sum + item.price, 0)
+                )
+            );
+
+            cart = [];
+            updateCart();
+            closeCart();
+        }
+
+        // INICIALIZAÇÃO
+        renderProducts();
+        updateCart();
+
+    </script>
+
+</body>
+</html>
