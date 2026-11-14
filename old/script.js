@@ -150,9 +150,9 @@ function writePrompts()
             html += "<a target=_blank href='../Prompts/"+prompts[i].id+"."+AIs[j].html+".html' alt='Página gerada pelo "+AIs[j].Name+"'>"+AIs[j].Name+"</a>";
 
             html += "<ul>";
-            html += "<li><a href='../Prompts/"+prompts[i].id+"."+AIs[j].html+"_axeDev Tools.csv' target=_blank alt='Relatório de Acessibilidade axeDev Tools referente à "+AIs[j].Name+"'>relatório axeDev Tools</a></li>";
-            html += "<li><a href='../Prompts/"+prompts[i].id+"."+AIs[j].html+"_lighthouse.pdf' target=_blank alt='Relatório de Acessibilidade Google LightHouse referente à "+AIs[j].Name+"'>relatório Google LightHouse</a></li>";
-            html += "<li><a href='../Prompts/"+prompts[i].id+"."+AIs[j].html+"_ASES.pdf' target=_blank alt='Relatório de Acessibilidade ASES referente à "+AIs[j].Name+"'>relatório ASES</a></li>";
+            html += "<li><a href='../Prompts/"+prompts[i].id+"."+AIs[j].html+"_axeDev Tools.json' target=_blank alt='Relatório de Acessibilidade axeDev Tools referente à "+AIs[j].Name+"'>relatório axeDev Tools</a></li>";
+            html += "<li><a href='../Prompts/"+prompts[i].id+"."+AIs[j].html+"_lighthouse.html' target=_blank alt='Relatório de Acessibilidade Google LightHouse referente à "+AIs[j].Name+"'>relatório Google LightHouse</a></li>";
+            //html += "<li><a href='../Prompts/"+prompts[i].id+"."+AIs[j].html+"_ASES.pdf' target=_blank alt='Relatório de Acessibilidade ASES referente à "+AIs[j].Name+"'>relatório ASES</a></li>";
             html += "<li><a href='https://wave.webaim.org/report#/https://mastergig.github.io/TCC_UFABC/Prompts/"+prompts[i].id+"."+AIs[j].html+".html' target=_blank alt='Relatório de Acessibilidade WAVE referente à "+AIs[j].Name+"'>relatório WAVE</a></li>";
             html += "</ul>";
             
